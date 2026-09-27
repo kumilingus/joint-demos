@@ -347,7 +347,7 @@ body {
 
 .joint-toolbar [data-type="zoomIn"] { --icon: var(--icon-zoom-in); }
 .joint-toolbar [data-type="zoomOut"] { --icon: var(--icon-zoom-out); }
-.joint-toolbar [data-type="zoomToFit"] { --icon: var(--icon-fit); }
+.joint-toolbar [data-name="zoomToFit"] { --icon: var(--icon-fit); }
 .joint-toolbar [data-type="undo"] { --icon: var(--icon-undo); }
 .joint-toolbar [data-name="open"] { --icon: var(--icon-open); }
 .joint-toolbar [data-name="save"] { --icon: var(--icon-save); }

@@ -1,7 +1,7 @@
 import Controller from './Controller';
 import type { App } from '../app';
 import { ColorScheme, Mode } from '../const';
-import { openDiagram, saveDiagram } from '../actions';
+import { openDiagram, saveDiagram, zoomToFit } from '../actions';
 
 /**
  * The toolbar buttons. Active in every mode.
@@ -14,6 +14,7 @@ export default class ToolbarController extends Controller {
 
         this.listenTo(toolbar, {
             'mode:pointerclick': onModePointerclick,
+            'zoomToFit:pointerclick': onZoomToFitPointerclick,
             // In the edit mode only (the buttons are not in the toolbar of the runtime mode)
             'save:pointerclick': onSavePointerclick,
             'open:pointerclick': onOpenPointerclick,
@@ -36,4 +37,8 @@ function onSavePointerclick(app: App) {
 
 function onOpenPointerclick(app: App) {
     openDiagram(app);
+}
+
+function onZoomToFitPointerclick(app: App) {
+    zoomToFit(app);
 }

@@ -1,6 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import type { App } from './app';
-import { GRID_SIZE } from './const';
+import { GRID_SIZE, Mode } from './const';
+import { fitOptions, runtimeFitOptions } from './config';
 import { getImages, IMAGES_ATTRIBUTE, type ImageEntry } from './images';
 import { DerivedGroup, keysInUse, loadCustomShapes, loadDerivedGroup } from './stencil';
 import { getFavorites, removeFavorite } from './favorites';
@@ -175,4 +176,9 @@ export function deleteImage(app: App, imageId: string): void {
     graph.removeCells(graph.getElements().filter(element => element.attr('image/imageId') === imageId));
     graph.set(IMAGES_ATTRIBUTE, rest);
     graph.stopBatch('delete-image');
+}
+
+/** Show the whole diagram: on loading, entering the runtime mode (a wider canvas) and with the toolbar button. */
+export function zoomToFit(app: App): void {
+    app.scroller.zoomToFit(app.mode === Mode.Runtime ? runtimeFitOptions : fitOptions);
 }

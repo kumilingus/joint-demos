@@ -149,7 +149,7 @@ export const fitOptions: dia.Paper.ScaleContentOptions = {
  */
 export const runtimeFitOptions: dia.Paper.ScaleContentOptions = {
     ...fitOptions,
-    padding: 60,
+    padding: 50,
     maxScale: 2
 };
 
@@ -235,10 +235,10 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             max: ZOOM.max,
             attrs: { button: { 'data-tooltip': 'Zoom in' }}
         }, {
-            type: 'zoomToFit',
+            // Not the `zoomToFit` tool (it rounds the zoom): the same fit as on loading (see `zoomToFit()`)
+            type: 'button',
             name: 'zoomToFit',
             group: 'zoom',
-            ...fitOptions,
             attrs: { button: { 'data-tooltip': 'Zoom to fit the diagram' }}
         }, {
             type: 'button',

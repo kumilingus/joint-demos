@@ -6,9 +6,9 @@ import { createNavigator } from './navigator';
 import boilerHouse from './diagram/boilerHouse.json';
 import { ColorScheme, Mode } from './const';
 import {
-    canvasColors, fitOptions, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, runtimeFitOptions, snaplinesOptions, tooltipOptions
+    canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions
 } from './config';
-import { addImages, clearSelection } from './actions';
+import { addImages, clearSelection, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
 import { getImages, IMAGES_ATTRIBUTE } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
@@ -132,7 +132,7 @@ export class App {
         // A diagram without images (or favorites) has none (not those of the previous one).
         this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], ...json });
         this.history.reset();
-        this.scroller.zoomToFit(fitOptions);
+        zoomToFit(this);
         this.paper.unfreeze();
     }
 
@@ -160,11 +160,8 @@ export class App {
         setControlsOperable(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;
-        if (mode === Mode.Runtime) {
-            // The side panels are hidden (the attribute above) and the canvas is wider:
-            // the whole diagram is shown in it.
-            this.scroller.zoomToFit(runtimeFitOptions);
-        }
+        // The side panels are hidden in the runtime mode (the attribute above): the canvas is wider.
+        if (mode === Mode.Runtime) zoomToFit(this);
     }
 
     protected leaveMode(mode: Mode): void {
