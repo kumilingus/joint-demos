@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, coneGradient, cylinderGradient, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -15,7 +15,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A cyclone separator: the dust spins down the cone, the clean gas leaves through the top. */
-export class Cyclone extends Shape {
+export default class Cyclone extends Shape {
 
     get overflow(): Overflow {
         return { top: 18, left: 24 };

@@ -1,6 +1,6 @@
 /*
  * What the shapes of the palette are: the name and a description shown when a shape is clicked
- * in the palette (see `palette.ts`).
+ * in the palette (see `shape-preview.ts`).
  */
 
 export interface ShapeDescription {

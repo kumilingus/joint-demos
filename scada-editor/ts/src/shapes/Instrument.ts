@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { Layer } from '../const';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -16,7 +16,7 @@ const markup = util.svg/* xml */`
  * (e.g. PT = pressure transmitter, FT = flow, LT = level, TT = temperature)
  * and the loop number on the bottom.
  */
-export class Instrument extends Shape {
+export default class Instrument extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;

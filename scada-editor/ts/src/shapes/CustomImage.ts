@@ -3,7 +3,7 @@ import { util } from '@joint/plus';
 import { GRID_SIZE } from '../const';
 import { defineImage, definePlaceholder, findImage, type ImageEntry } from '../images';
 import { labelAttributes } from './ports';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 // The largest default size of an uploaded image (it keeps its aspect ratio)
 // The default size of an image: as much area as a square of this side (a wide image is wider, not smaller)...
@@ -24,7 +24,7 @@ const markup = util.svg/* xml */`
  * A shape of the user: an uploaded image. It refers to the image by its id (`attrs/image/imageId`):
  * the image is stored on the graph and in the DOM once per paper (see `images.ts`).
  */
-export class CustomImage extends Shape {
+export default class CustomImage extends Shape {
 
     // Resized freely: the image keeps its aspect ratio in any size (centered, see `defineImage()`).
     // The smallest size is a step (not a part of the default size: an image can be dropped narrower).

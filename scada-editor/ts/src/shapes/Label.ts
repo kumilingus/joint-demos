@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { LABEL_COLOR, Layer } from '../const';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -10,7 +10,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A text on the canvas (a name of an area, a note), wrapped in its box. Nothing connects to it. */
-export class Label extends Shape {
+export default class Label extends Shape {
 
     get overflow(): Overflow {
         return { bottom: 0 };

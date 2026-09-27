@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -12,7 +12,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class Filter extends Shape {
+export default class Filter extends Shape {
 
     get stubLength(): number {
         return 30;

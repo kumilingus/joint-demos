@@ -4,7 +4,7 @@ import { createStencil } from './stencil';
 import { createGraph } from './layers';
 import { createSelection } from './selection';
 import { createNavigator } from './navigator';
-import boilerHouse from './diagram/boilerHouse.json';
+import boilerHouse from './diagram/boiler-house.json';
 import { ColorScheme, Mode } from './const';
 import {
     canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions

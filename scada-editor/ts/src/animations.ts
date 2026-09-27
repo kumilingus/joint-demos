@@ -1,5 +1,6 @@
 import type { dia } from '@joint/plus';
-import type { LiquidState, Panel } from './shapes/Panel';
+import type Panel from './shapes/Panel';
+import type { LiquidState } from './shapes/Panel';
 import { BOX_POSITIONS } from './shapes/ConveyorBelt';
 
 /*

@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -12,7 +12,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A valve letting the liquid flow in one direction only (from left to right). */
-export class CheckValve extends Shape {
+export default class CheckValve extends Shape {
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };

@@ -1,5 +1,5 @@
 import { type dia, g } from '@joint/plus';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** How far the drawing of a shape reaches out of its model bounding box (on top of the default). */
 export interface Overflow {

@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape, type ControlKind } from './Shape';
+import Shape, { type ControlKind } from './Shape';
 
 /** A roller of the belt at `cx`, as big as the belt is tall (the shorter side, `s`). */
 const roller = (cx: string) => ({
@@ -40,7 +40,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A belt conveyor carrying boxes from the left to the right. */
-export class ConveyorBelt extends Shape {
+export default class ConveyorBelt extends Shape {
 
     get control(): ControlKind {
         return 'power';

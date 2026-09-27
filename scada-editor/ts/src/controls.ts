@@ -1,5 +1,5 @@
 import { dia, util, type mvc } from '@joint/plus';
-import { Shape } from './shapes/Shape';
+import Shape from './shapes/Shape';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls

@@ -3,7 +3,7 @@ import { labelAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 // The packing bed in the middle of the column (relative heights)
 const BED_TOP = 0.35;
@@ -32,7 +32,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A gas scrubber: the gas rises through the packing, washed by the liquid sprayed from the top. */
-export class Scrubber extends Shape {
+export default class Scrubber extends Shape {
 
     get overflow(): Overflow {
         return { top: 14, bottom: 36 };

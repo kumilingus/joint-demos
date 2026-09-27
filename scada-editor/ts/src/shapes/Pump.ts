@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // Rotor metrics
 const r = 30;
@@ -19,7 +19,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class Pump extends Shape {
+export default class Pump extends Shape {
 
     get resizable(): Resizable {
         return false;

@@ -1,5 +1,5 @@
 import type { dia } from '@joint/plus';
-import { Shape } from './shapes/Shape';
+import Shape from './shapes/Shape';
 
 /*
  * The tags: the IDs of the elements (`P-101`, `FT-101`, ...), set by the user.

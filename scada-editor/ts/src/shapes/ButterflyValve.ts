@@ -1,8 +1,8 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
-import { bowTieAttributes, leverAttributes } from './valveBody';
+import { bowTieAttributes, leverAttributes } from './valve-body';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -14,7 +14,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A quarter-turn valve with a disc: along the flow when open, across it when closed. */
-export class ButterflyValve extends Shape {
+export default class ButterflyValve extends Shape {
 
     get resizable(): Resizable {
         return false;

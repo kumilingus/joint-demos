@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { type ControlKind, Shape } from './Shape';
+import Shape, { type ControlKind } from './Shape';
 
 // The impeller at the bottom of the shaft
 const impellerTransform = 'translate(calc(w / 2), calc(0.8 * h))';
@@ -19,7 +19,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A tank with an agitator: a motor on top turning an impeller inside. */
-export class MixingTank extends Shape {
+export default class MixingTank extends Shape {
 
     // The agitator is switched on and off (it stirs while on, see `animations.ts`).
     get control(): ControlKind {

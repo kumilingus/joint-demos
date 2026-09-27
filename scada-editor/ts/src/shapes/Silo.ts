@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, coneGradient, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 // The body of the silo between the roof and the hopper (relative heights)
 const BODY_TOP = 0.1;
@@ -20,7 +20,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A silo for bulk solids: a conical roof, a cylindrical body and a hopper on legs. */
-export class Silo extends Shape {
+export default class Silo extends Shape {
 
     get overflow(): Overflow {
         return { right: 4, bottom: 34, left: 4 };

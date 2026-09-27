@@ -1,9 +1,9 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
-import { bowTieAttributes } from './valveBody';
+import { bowTieAttributes } from './valve-body';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -15,7 +15,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** An electrically operated valve: the coil on top lights up when the valve is open. */
-export class SolenoidValve extends Shape {
+export default class SolenoidValve extends Shape {
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };

@@ -4,8 +4,8 @@ import type { RUNTIME } from './controls';
 import { connectionStrategy } from './connections';
 import type { DERIVED } from './shapes/routing';
 import type { PREFERENCE } from './favorites';
-import { Label } from './shapes/Label';
-import { SignalLine } from './shapes/SignalLine';
+import Label from './shapes/Label';
+import SignalLine from './shapes/SignalLine';
 
 export const ZOOM = { min: 0.2, max: 3 };
 

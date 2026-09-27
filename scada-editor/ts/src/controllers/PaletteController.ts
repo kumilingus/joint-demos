@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, refreshPalette } from '../actions';
-import { showPaletteShape } from '../palette';
+import { showShapePreview } from '../shape-preview';
 
 /**
  * A shape clicked in the palette (not dragged, see `dragThreshold`) is shown in the inspector panel.
@@ -29,7 +29,7 @@ export default class PaletteController extends Controller {
 function onPaletteShapeClick(app: App, cellView: dia.CellView) {
     // The inspector panel shows the shape of the palette instead of the selection.
     clearSelection(app);
-    showPaletteShape(app, cellView);
+    showShapePreview(app, cellView);
 }
 
 let refreshScheduled = false;

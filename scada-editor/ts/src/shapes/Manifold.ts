@@ -4,7 +4,7 @@ import { branchPorts, fittingPorts } from './ports';
 import { FITTING_STUB_LENGTH } from './Fitting';
 import type { Overflow } from './footprint';
 import { labelAttributes } from './ports';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 // Where the outlets are along the header (relative to its width)
 const OUTLETS = ['calc(0.2 * w)', 'calc(0.5 * w)', 'calc(0.8 * w)'];
@@ -16,7 +16,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A distribution header: one inlet on the left, the outlets below it. */
-export class Manifold extends Shape {
+export default class Manifold extends Shape {
 
     get resizable(): Resizable {
         return false;

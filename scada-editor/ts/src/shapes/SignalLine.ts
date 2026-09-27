@@ -9,7 +9,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A signal line: an instrument (a transmitter) connected to what it measures or controls. */
-export class SignalLine extends dia.Link {
+export default class SignalLine extends dia.Link {
 
     defaults(): dia.Link.Attributes {
         return {

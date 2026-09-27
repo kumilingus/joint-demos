@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { Animations } from '../animations';
-import { Panel } from '../shapes/Panel';
+import Panel from '../shapes/Panel';
 
 /**
  * Animates the plant (see `animations.ts`) and keeps the animations in sync with its state:

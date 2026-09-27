@@ -3,7 +3,7 @@ import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, pipeGradient } from './gradients';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 const saddle = (x: number) => `M calc(${x} * w - 14) calc(h + 12) L calc(${x} * w - 8) calc(h - 6) H calc(${x} * w + 8) L calc(${x} * w + 14) calc(h + 12) Z`;
 
@@ -18,7 +18,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A horizontal two-phase separator: the liquid settles at the bottom, the gas leaves on the top. */
-export class Separator extends Shape {
+export default class Separator extends Shape {
 
     get stubLength(): number {
         return 30;

@@ -30,8 +30,8 @@ interface Shown {
 let shown: Shown | null = null;
 
 /** Show the shape of the palette (its view in the palette is outlined). */
-export function showPaletteShape(app: App, cellView: dia.CellView): void {
-    closePaletteShape();
+export function showShapePreview(app: App, cellView: dia.CellView): void {
+    closeShapePreview();
     const cell = cellView.model;
     const type = cell.get('type');
     const { title, description } = descriptions[type] ?? { title: type, description: '' };
@@ -86,7 +86,7 @@ export function showPaletteShape(app: App, cellView: dia.CellView): void {
     shown = { el, paper, cellView };
 }
 
-export function closePaletteShape(): void {
+export function closeShapePreview(): void {
     if (!shown) return;
     highlighters.mask.remove(shown.cellView, PALETTE_HIGHLIGHTER_ID);
     shown.paper.remove();

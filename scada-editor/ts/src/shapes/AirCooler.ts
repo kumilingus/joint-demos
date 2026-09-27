@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, pipeGradient, sphereGradient } from './gradients';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // A small blade of a fan, pointing up from its hub; the other two are rotated copies.
 const BLADE = 'M 0 0 C 2 -5 10 -12 4 -17 C -1 -15 -5 -8 0 0 Z';
@@ -29,7 +29,7 @@ const markup = util.svg/* xml */`
  * A fin-fan air cooler: the fluid runs through the tube bundle,
  * the fans on top blow air through it (they spin while the cooler is on).
  */
-export class AirCooler extends Shape {
+export default class AirCooler extends Shape {
 
     get resizable(): Resizable {
         return false;

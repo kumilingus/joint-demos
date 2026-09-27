@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape, type ControlKind } from './Shape';
+import Shape, { type ControlKind } from './Shape';
 
 // The cooling fins across the housing (relative x positions)
 const FINS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
@@ -21,7 +21,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** An electric motor: a finned housing on feet with the shaft on the right. */
-export class Motor extends Shape {
+export default class Motor extends Shape {
 
     get control(): ControlKind {
         return 'power';

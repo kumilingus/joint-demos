@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 const nozzle = {
     width: 16,
@@ -22,7 +22,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A shell-and-tube heat exchanger: the tubes run through the shell from the left to the right. */
-export class HeatExchanger extends Shape {
+export default class HeatExchanger extends Shape {
 
     get stubLength(): number {
         return 30;

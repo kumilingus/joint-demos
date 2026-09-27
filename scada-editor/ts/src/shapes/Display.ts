@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR } from '../const';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -14,7 +14,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A panel display showing a value with its unit. */
-export class Display extends Shape {
+export default class Display extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;

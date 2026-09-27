@@ -3,7 +3,7 @@ import { PIPE_COLOR } from '../const';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // The cover slides over the frame opening (the frame is 30 wide with 3 on each side).
 const COVER_MAX_WIDTH = 24;
@@ -21,7 +21,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class ControlValve extends Shape {
+export default class ControlValve extends Shape {
 
     get resizable(): Resizable {
         return false;

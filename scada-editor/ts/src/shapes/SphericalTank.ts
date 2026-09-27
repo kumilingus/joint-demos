@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 // The legs around the equator (relative x positions)
 const LEGS = [0.12, 0.38, 0.62, 0.88]
@@ -19,7 +19,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A pressure sphere for liquefied gas, standing on legs. */
-export class SphericalTank extends Shape {
+export default class SphericalTank extends Shape {
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };

@@ -3,7 +3,7 @@ import { labelAttributes } from './ports';
 import { METAL_STROKE } from './gradients';
 import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import { type Resizable, Shape } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 // The width of the tube
 const WIDTH = 20;
@@ -25,7 +25,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A liquid-in-glass thermometer showing a temperature from 0 to 100 %. */
-export class Thermometer extends Shape {
+export default class Thermometer extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;

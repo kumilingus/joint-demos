@@ -1,13 +1,13 @@
 import { type dia, util } from '@joint/plus';
 import type { Overflow } from './footprint';
-import { type Anchors, Shape, type Resizable } from './Shape';
+import Shape, { type Anchors, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
     <path @selector='body' />
 `;
 
-export class Join extends Shape {
+export default class Join extends Shape {
 
     // A fitting: as big as the pipes it joins
     get resizable(): Resizable {

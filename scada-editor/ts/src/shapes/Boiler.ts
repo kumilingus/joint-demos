@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 // The flames are drawn around the bottom center of the firebox.
 const flamesTransform = 'translate(calc(w / 2), calc(h - 18))';
@@ -17,7 +17,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class Boiler extends Shape {
+export default class Boiler extends Shape {
 
     get overflow(): Overflow {
         return { top: 16 };

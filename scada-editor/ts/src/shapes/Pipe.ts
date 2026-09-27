@@ -10,7 +10,7 @@ const markup = util.svg/* xml */`
     <path @selector='flow' fill='none' />
 `;
 
-export class Pipe extends dia.Link {
+export default class Pipe extends dia.Link {
 
     defaults(): dia.Link.Attributes {
         return {

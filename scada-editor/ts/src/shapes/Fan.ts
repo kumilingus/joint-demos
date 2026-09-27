@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // One blade pointing up from the hub; the other two are rotated copies.
 const BLADE = 'M 0 0 C 4 -8 16 -20 6 -30 C -2 -26 -8 -14 0 0 Z';
@@ -23,7 +23,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class Fan extends Shape {
+export default class Fan extends Shape {
 
     get resizable(): Resizable {
         return false;

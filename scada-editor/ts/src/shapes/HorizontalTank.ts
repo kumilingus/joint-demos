@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 const saddle = (x: number) => `M calc(${x} * w - 16) calc(h + 12) L calc(${x} * w - 10) calc(h - 8) H calc(${x} * w + 10) L calc(${x} * w + 16) calc(h + 12) Z`;
 
@@ -17,7 +17,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A horizontal storage tank ("bullet") resting on two saddles. */
-export class HorizontalTank extends Shape {
+export default class HorizontalTank extends Shape {
 
     get overflow(): Overflow {
         return { top: 16, bottom: 36 };

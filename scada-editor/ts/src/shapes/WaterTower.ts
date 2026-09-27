@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, coneGradient, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 // The tank on the top (relative height of its bottom)
 const TANK_BOTTOM = 0.42;
@@ -18,7 +18,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** An elevated water tank: a tank on braced legs, with a conical roof. */
-export class WaterTower extends Shape {
+export default class WaterTower extends Shape {
 
     get overflow(): Overflow {
         return { top: 16, bottom: 34 };

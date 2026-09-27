@@ -40,7 +40,7 @@ export enum DerivedGroup {
 const groups: Record<string, ui.Stencil.Group> = {
     // The shapes used in the diagram
     [DerivedGroup.InUse]: { index: 1, label: 'In Use' },
-    // The shapes marked as favorite (in the inspector panel, see `palette.ts`)
+    // The shapes marked as favorite (in the inspector panel, see `shape-preview.ts`)
     [DerivedGroup.Favorites]: { index: 2, label: 'Favorites' },
     // The shapes of the user: uploaded images
     custom: { index: 3, label: 'Custom' },

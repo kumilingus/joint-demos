@@ -43,7 +43,7 @@ src/
   layers.ts        the graph with its layers
   stencil.ts       the palette: groups, layout, the derived groups, the upload button
   packing.ts       the skyline packing
-  palette.ts       a palette shape shown in the inspector panel (descriptions.ts: the texts)
+  shape-preview.ts a shape of the palette clicked: shown in the inspector panel (descriptions.ts: the texts)
   images.ts        the images of the user
   favorites.ts     the favorite shapes
   inspector.ts     the inputs of the inspector

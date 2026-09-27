@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import type { Overflow } from './footprint';
 import { Layer } from '../const';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 const flange = (x: string) => ({
     x,
@@ -25,7 +25,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A flow element: a plate with a hole between two flanges (the flow is measured by the pressure drop). */
-export class OrificePlate extends Shape {
+export default class OrificePlate extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;

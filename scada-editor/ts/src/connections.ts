@@ -1,6 +1,6 @@
 import { type dia, g } from '@joint/plus';
 import { GRID_SIZE } from './const';
-import { Shape } from './shapes/Shape';
+import Shape from './shapes/Shape';
 
 /*
  * Where the end of a pipe connects (when its arrowhead is dropped or snapped):

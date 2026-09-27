@@ -1,9 +1,9 @@
 import type { dia } from '@joint/plus';
-import { Fitting } from './Fitting';
+import Fitting from './Fitting';
 import type { Side } from './ports';
 
 /** A pipe elbow: the line turns by 90 degrees (from the left down). */
-export class Elbow extends Fitting {
+export default class Elbow extends Fitting {
 
     get sides(): Side[] {
         return ['left', 'bottom'];

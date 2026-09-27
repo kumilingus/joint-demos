@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, pipeGradient, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // The spokes of the impeller, around the center of the casing
 const SPOKES = Array.from({ length: 8 }, (_, i) => {
@@ -23,7 +23,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A centrifugal blower: the air leaves the casing through the outlet on the top. */
-export class Blower extends Shape {
+export default class Blower extends Shape {
 
     get resizable(): Resizable {
         return false;

@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 import { METAL_STROKE, plateGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 // The margins of the window: fixed, the window takes the rest of the height.
 const WINDOW_TOP = 15;
@@ -88,7 +88,7 @@ const markup = util.svg/* xml */`
  * It's usually embedded in a tank so that it moves with it.
  * Everything but the text scales with the size of the element.
  */
-export class Panel extends Shape {
+export default class Panel extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;

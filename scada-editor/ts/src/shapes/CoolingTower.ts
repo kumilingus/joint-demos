@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** The steam thins out as it rises. */
 const steamGradient: dia.SVGGradientJSON = {
@@ -31,7 +31,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A hyperboloid cooling tower with steam coming out of it. */
-export class CoolingTower extends Shape {
+export default class CoolingTower extends Shape {
 
     get overflow(): Overflow {
         return { top: 72, right: 12, bottom: 36, left: 8 };

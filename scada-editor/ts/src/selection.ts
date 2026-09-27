@@ -1,5 +1,5 @@
 import { highlighters, type mvc, type dia, ui, V } from '@joint/plus';
-import { Pipe } from './shapes/Pipe';
+import Pipe from './shapes/Pipe';
 import { SELECTION_COLOR, SELECTION_PADDING } from './const';
 
 /*

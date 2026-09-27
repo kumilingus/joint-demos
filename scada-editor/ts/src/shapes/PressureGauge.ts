@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 import type { Thresholds } from './Panel';
 import { Layer, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 
@@ -56,7 +56,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class PressureGauge extends Shape {
+export default class PressureGauge extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;

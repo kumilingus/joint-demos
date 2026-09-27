@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** The side the tip of the zone points to: where the pipe comes from. */
 export type TipSide = 'left' | 'right';
@@ -20,7 +20,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class Zone extends Shape {
+export default class Zone extends Shape {
 
     get rotatable(): boolean {
         return false;

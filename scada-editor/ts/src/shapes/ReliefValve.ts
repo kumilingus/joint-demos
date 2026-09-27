@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 // The spring inside the bonnet: a zig-zag between the relative heights 0.08 and 0.42
 const SPRING = Array.from({ length: 7 }, (_, i) => {
@@ -21,7 +21,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A safety valve: the spring keeps it shut until the pressure lifts the disc. */
-export class ReliefValve extends Shape {
+export default class ReliefValve extends Shape {
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };

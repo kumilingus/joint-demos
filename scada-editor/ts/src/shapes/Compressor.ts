@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -11,7 +11,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export class Compressor extends Shape {
+export default class Compressor extends Shape {
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };

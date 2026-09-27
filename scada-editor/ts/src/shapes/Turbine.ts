@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, pipeGradient } from './gradients';
-import { Shape, type ControlKind } from './Shape';
+import Shape, { type ControlKind } from './Shape';
 
 // The stages of blades, growing with the casing (relative x positions)
 const BLADES = [0.25, 0.45, 0.65, 0.85]
@@ -22,7 +22,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A steam turbine: the casing widens as the steam expands from the left to the right. */
-export class Turbine extends Shape {
+export default class Turbine extends Shape {
 
     get control(): ControlKind {
         return 'power';

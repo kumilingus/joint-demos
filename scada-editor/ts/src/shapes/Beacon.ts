@@ -3,7 +3,7 @@ import { labelAttributes } from './ports';
 import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, MAX_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 const LAMP_OFF_COLOR = '#9aa3ab';
 
@@ -17,7 +17,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** An alarm beacon: the lamp glows while it's on. */
-export class Beacon extends Shape {
+export default class Beacon extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;

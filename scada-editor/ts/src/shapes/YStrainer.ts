@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, cylinderGradient, pipeGradient } from './gradients';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -13,7 +13,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** An inline strainer: the dirt is caught by the screen in the leg of the Y. */
-export class YStrainer extends Shape {
+export default class YStrainer extends Shape {
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };

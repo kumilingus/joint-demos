@@ -59,7 +59,7 @@ const minSize = (size: number) => Math.max(SIZE_STEP, Math.round(size * MIN_SIZE
  * The base of all the shapes of the SCADA editor. The features are defined on the prototype
  * (as getters): a shape overrides only those that differ from the defaults below.
  */
-export abstract class Shape extends dia.Element implements ShapeFeatures {
+export default abstract class Shape extends dia.Element implements ShapeFeatures {
 
     get resizable(): Resizable {
         return true;

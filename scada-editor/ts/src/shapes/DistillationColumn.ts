@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 // The trays inside the column, alternating from the left and the right wall
 const TRAYS = Array.from({ length: 8 }, (_, i) => {
@@ -33,7 +33,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A tall column separating a mixture on its trays. */
-export class DistillationColumn extends Shape {
+export default class DistillationColumn extends Shape {
 
     get overflow(): Overflow {
         return { top: 12, bottom: 36, left: 12 };

@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import { fittingPorts, type Side } from './ports';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable } from './Shape';
+import Shape, { type Resizable } from './Shape';
 
 // How far the pipe stubs reach out of a fitting
 export const FITTING_STUB_LENGTH = 20;
@@ -16,7 +16,7 @@ const markup = util.svg/* xml */`
  * A pipe fitting: a small metal body with pipe stubs on some of its sides (see `fittingPorts()`).
  * A fitting is rotated to turn its stubs.
  */
-export abstract class Fitting extends Shape {
+export default abstract class Fitting extends Shape {
 
     /** The sides with a pipe stub */
     abstract get sides(): Side[];

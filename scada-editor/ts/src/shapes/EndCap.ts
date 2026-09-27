@@ -1,9 +1,9 @@
 import type { dia } from '@joint/plus';
-import { Fitting } from './Fitting';
+import Fitting from './Fitting';
 import type { Side } from './ports';
 
 /** An end cap: it closes the end of a line. */
-export class EndCap extends Fitting {
+export default class EndCap extends Fitting {
 
     get sides(): Side[] {
         return ['left'];

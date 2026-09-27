@@ -3,9 +3,9 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { GRID_SIZE, SELECTION_PADDING } from '../const';
 import { closeInspector, openInspector } from '../inspector';
-import { closePaletteShape } from '../palette';
+import { closeShapePreview } from '../shape-preview';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../tools';
-import { type ResizeOptions, Shape } from '../shapes/Shape';
+import Shape, { type ResizeOptions } from '../shapes/Shape';
 
 /**
  * Shows the selected cells in the inspector and a single selected cell with its tools: an element
@@ -38,7 +38,7 @@ function onCellRemove(app: App, cell: dia.Cell) {
 function updateInspector(app: App) {
     const { selection, inspectorEl } = app;
     // A selection replaces the shape of the palette shown in the panel.
-    closePaletteShape();
+    closeShapePreview();
     if (selection.length === 1) {
         openInspector(inspectorEl, selection.at(0));
     } else {

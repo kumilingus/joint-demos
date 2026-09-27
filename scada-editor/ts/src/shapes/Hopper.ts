@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, coneGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -13,7 +13,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** An open bin narrowing into a chute at the bottom. */
-export class Hopper extends Shape {
+export default class Hopper extends Shape {
 
     get overflow(): Overflow {
         return { top: 4, right: 4, left: 4 };

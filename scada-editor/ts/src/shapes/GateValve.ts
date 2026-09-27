@@ -1,8 +1,8 @@
 import { type dia, util } from '@joint/plus';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
-import { bowTieAttributes } from './valveBody';
+import { bowTieAttributes } from './valve-body';
 import type { Overflow } from './footprint';
-import { Shape, type Resizable, type ControlKind } from './Shape';
+import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // How high the handwheel is above the valve: the stem rises when the valve opens.
 const HANDWHEEL_OPEN = -36;
@@ -18,7 +18,7 @@ const markup = util.svg/* xml */`
 `;
 
 /** A gate valve with a rising stem: the handwheel is up while the valve is open. */
-export class GateValve extends Shape {
+export default class GateValve extends Shape {
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
