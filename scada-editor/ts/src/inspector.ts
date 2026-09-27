@@ -49,17 +49,24 @@ function getInputs(element: dia.Element): Inputs {
         };
     }
 
-    // A zone points to the side its pipe comes from.
-    if (element.has('facing')) {
-        inputs.facing = {
-            type: 'select-button-group',
-            label: 'Facing',
-            options: [
-                { value: 'left', content: 'Left' },
-                { value: 'right', content: 'Right' }
-            ],
-            group: 'general',
-            index: index++
+    // A zone points to the side its pipe comes from (the outline of its body, see `Zone`).
+    if (element.attr('body/tipSide') !== undefined) {
+        const attrs = (inputs.attrs || {}) as Record<string, Inputs>;
+        inputs.attrs = {
+            ...attrs,
+            body: {
+                ...attrs.body,
+                tipSide: {
+                    type: 'select-button-group',
+                    label: 'Tip',
+                    options: [
+                        { value: 'left', content: 'Left' },
+                        { value: 'right', content: 'Right' }
+                    ],
+                    group: 'general',
+                    index: index++
+                }
+            }
         };
     }
 

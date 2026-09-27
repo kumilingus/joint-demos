@@ -4,7 +4,15 @@ import type { Overflow } from './footprint';
 import { Shape } from './Shape';
 
 /** The side the tip of the zone points to: where the pipe comes from. */
-export type ZoneFacing = 'left' | 'right';
+export type TipSide = 'left' | 'right';
+
+/** The outline of a zone of the size, with the tip at the middle of the side. */
+function zoneOutline(side: TipSide, width: number, height: number): string {
+    const tip = height / 2;
+    return side === 'right'
+        ? `M ${width} ${tip} L ${width - tip} 0 H 0 V ${height} H ${width - tip} Z`
+        : `M 0 ${tip} L ${tip} 0 H ${width} V ${height} H ${tip} Z`;
+}
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -30,14 +38,13 @@ export class Zone extends Shape {
                 width: 120,
                 height: 40
             },
-            facing: 'left',
             attrs: {
                 body: {
                     fill: '#ffffff',
                     stroke: '#cad8e3',
                     strokeWidth: 1,
-                    // The tip on the left (see `updateFacing()` for the right)
-                    d: 'M 0 calc(0.5*h) calc(0.5*h) 0 H calc(w) V calc(h) H calc(0.5*h) Z'
+                    // The outline (see `tip-side` below), edited in the inspector
+                    tipSide: 'left'
                 },
                 label: {
                     text: 'Zone',
@@ -47,6 +54,7 @@ export class Zone extends Shape {
                     fill: LIQUID_COLOR,
                     textVerticalAnchor: 'middle',
                     textAnchor: 'middle',
+                    x: 'calc(w / 2)',
                     y: 'calc(h / 2)'
                 }
             }
@@ -57,22 +65,14 @@ export class Zone extends Shape {
         this.markup = markup;
     }
 
-    initialize(...args: Parameters<dia.Element['initialize']>): void {
-        super.initialize(...args);
-        this.updateFacing();
-        this.on('change:facing', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateFacing(options));
-    }
-
-    /**
-     * A zone facing right is the mirror image of the one facing left
-     * (`calc()` can't express the tip at `w - h / 2`).
-     * The label is centered in the body, next to the tip.
-     */
-    updateFacing(options?: dia.Cell.Options): void {
-        const right = (this.get('facing') as ZoneFacing) === 'right';
-        this.attr({
-            body: { transform: right ? 'translate(calc(w), 0) scale(-1, 1)' : null },
-            label: { x: right ? 'calc(w / 2 - 10)' : 'calc(w / 2 + 10)' }
-        }, options);
-    }
+    static attributes = {
+        // The outline of the body for its size, the tip on the side (`tipSide` in the attributes:
+        // the names are looked up in the kebab case).
+        'tip-side': {
+            set(this: dia.ElementView, side: TipSide, refBBox: dia.BBox) {
+                return { d: zoneOutline(side === 'right' ? 'right' : 'left', refBBox.width, refBBox.height) };
+            },
+            unset: 'd'
+        }
+    };
 }

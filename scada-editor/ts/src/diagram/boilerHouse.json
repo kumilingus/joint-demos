@@ -985,14 +985,12 @@
       },
       "angle": 0,
       "type": "Zone",
-      "facing": "right",
       "attrs": {
         "body": {
-          "transform": "translate(calc(w), 0) scale(-1, 1)"
+          "tipSide": "right"
         },
         "label": {
-          "text": "Water Supply",
-          "x": "calc(w / 2 - 10)"
+          "text": "Water Supply"
         }
       },
       "tag": "Z-101",
@@ -2328,14 +2326,12 @@
       },
       "angle": 0,
       "type": "Zone",
-      "facing": "left",
       "attrs": {
         "body": {
-          "transform": null
+          "tipSide": "left"
         },
         "label": {
-          "text": "Process",
-          "x": "calc(w / 2 + 10)"
+          "text": "Process"
         }
       },
       "tag": "Z-102",

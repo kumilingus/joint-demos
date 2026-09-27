@@ -229,19 +229,17 @@ function createShapes(): Record<string, dia.Cell[]> {
             new Manifold(),
             new YStrainer(),
             new OrificePlate(),
-            new Zone(),
-            new Zone({ facing: 'right' })
+            new Zone()
         ]
     };
 }
 
 /**
  * What identifies a shape of the palette (computed from the shape, so that the shapes of any diagram
- * are found in the palette): the type, and the variant for the types with more of them in the palette.
+ * are found in the palette): the type, plus the image for an uploaded image.
  */
 export function paletteKey(cell: dia.Cell): string {
     const type = cell.get('type');
-    if (type === 'Zone') return `${type}:${cell.get('facing') ?? 'left'}`;
     if (type === 'CustomImage') return `${type}:${cell.attr('image/imageId')}`;
     return type;
 }
