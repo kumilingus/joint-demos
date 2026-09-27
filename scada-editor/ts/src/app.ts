@@ -160,8 +160,8 @@ export class App {
         setControlsOperable(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;
-        // The side panels are hidden in the runtime mode (the attribute above): the canvas is wider.
-        if (mode === Mode.Runtime) zoomToFit(this);
+        // The side panels are hidden in the runtime mode only (the attribute above): the canvas changes its size.
+        zoomToFit(this);
     }
 
     protected leaveMode(mode: Mode): void {
