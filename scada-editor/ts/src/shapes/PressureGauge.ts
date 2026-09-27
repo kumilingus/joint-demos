@@ -1,0 +1,194 @@
+import { type dia, util } from '@joint/plus';
+import { labelAttributes } from './ports';
+import type { Overflow } from './footprint';
+import { Shape, type Resizable } from './Shape';
+import type { Thresholds } from './Panel';
+import { Layer, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
+
+// The dial is drawn around the center of the element.
+const dialTransform = 'translate(calc(w / 2), calc(h / 2))';
+
+// The scale: 270° from the bottom left (0 %) to the bottom right (100 %), clockwise
+const SCALE_START = 135;
+const SCALE_SWEEP = 270;
+
+// Ticks on the scale
+const TICKS = Array.from({ length: 7 }, (_, i) => {
+    const angle = (SCALE_START + i * SCALE_SWEEP / 6) * Math.PI / 180;
+    const [cos, sin] = [Math.cos(angle), Math.sin(angle)];
+    const p = (r: number) => `${(r * cos).toFixed(2)} ${(r * sin).toFixed(2)}`;
+    return `M ${p(17)} L ${p(22)}`;
+}).join(' ');
+
+// The radius of the warning zones of the scale
+const ZONE_RADIUS = 22;
+
+const DEFAULT_THRESHOLDS: Thresholds = { low: 0, high: 75 };
+
+/** The angle (in degrees) of a value (0 - 100) on the scale. */
+const scaleAngle = (value: number) => SCALE_START + value / 100 * SCALE_SWEEP;
+
+/** An arc of the scale between two values (nothing if they're the same). */
+function zone(from: number, to: number): string {
+    if (to <= from) return 'M 0 0';
+    const point = (value: number) => {
+        const angle = scaleAngle(value) * Math.PI / 180;
+        return `${(ZONE_RADIUS * Math.cos(angle)).toFixed(2)} ${(ZONE_RADIUS * Math.sin(angle)).toFixed(2)}`;
+    };
+    const large = (to - from) / 100 * SCALE_SWEEP > 180 ? 1 : 0;
+    return `M ${point(from)} A ${ZONE_RADIUS} ${ZONE_RADIUS} 0 ${large} 1 ${point(to)}`;
+}
+
+const clamp = (value: unknown) => Math.max(0, Math.min(100, Number(value) || 0));
+
+export class PressureGauge extends Shape {
+
+    get graphLayer(): Layer {
+        return Layer.Instruments;
+    }
+
+    get resizable(): Resizable {
+        return false;
+    }
+
+    get rotatable(): boolean {
+        return false;
+    }
+
+    get overflow(): Overflow {
+        return { bottom: 38 };
+    }
+
+    defaults(): dia.Element.Attributes {
+        return {
+            ...super.defaults,
+            type: 'PressureGauge',
+            size: {
+                width: 60,
+                height: 60
+            },
+            // The pressure in % of the scale
+            value: 60,
+            // The warning zones: below the low threshold (none by default) and above the high one
+            thresholds: { ...DEFAULT_THRESHOLDS },
+            attrs: {
+                root: {
+                    magnetSelector: 'body'
+                },
+                stem: {
+                    x: 'calc(w / 2 - 5)',
+                    y: 'calc(h - 2)',
+                    width: 10,
+                    height: 16,
+                    fill: '#999',
+                    stroke: '#555',
+                    strokeWidth: 2
+                },
+                body: {
+                    cx: 'calc(w / 2)',
+                    cy: 'calc(h / 2)',
+                    r: 'calc(w / 2)',
+                    fill: '#fff',
+                    stroke: '#444',
+                    strokeWidth: 4
+                },
+                ticks: {
+                    d: TICKS,
+                    transform: dialTransform,
+                    stroke: '#333',
+                    strokeWidth: 2,
+                    strokeLinecap: 'round'
+                },
+                // The warning zones of the scale (see `updateZones()`)
+                lowZone: {
+                    transform: dialTransform,
+                    fill: 'none',
+                    stroke: MIN_LIQUID_COLOR,
+                    strokeWidth: 3
+                },
+                highZone: {
+                    transform: dialTransform,
+                    fill: 'none',
+                    stroke: MAX_LIQUID_COLOR,
+                    strokeWidth: 3
+                },
+                needleGroup: {
+                    transform: dialTransform
+                },
+                // Pointing up; turned (with a CSS transform, so that it sweeps) to the value.
+                needle: {
+                    d: 'M -3 0 L 0 -20 L 3 0 Z',
+                    fill: '#ED2637',
+                    style: { transition: 'transform 0.6s ease-out' }
+                },
+                hub: {
+                    cx: 'calc(w / 2)',
+                    cy: 'calc(h / 2)',
+                    r: 4,
+                    fill: '#333'
+                },
+                unit: {
+                    text: 'bar',
+                    x: 'calc(w / 2)',
+                    y: 'calc(0.75 * h)',
+                    textAnchor: 'middle',
+                    textVerticalAnchor: 'middle',
+                    fontSize: 9,
+                    fontFamily: 'sans-serif',
+                    fill: '#555'
+                },
+                label: {
+                    ...labelAttributes,
+                    text: 'Gauge',
+                    y: 'calc(h + 20)'
+                }
+            }
+        };
+    }
+
+    preinitialize(): void {
+        this.markup = util.svg/* xml */`
+            <rect @selector='stem' />
+            <circle @selector='body' />
+            <path @selector='ticks' />
+            <path @selector='lowZone' />
+            <path @selector='highZone' />
+            <g @selector='needleGroup'>
+                <path @selector='needle' />
+            </g>
+            <circle @selector='hub' />
+            <text @selector='unit' />
+            <text @selector='label' />
+        `;
+    }
+
+    initialize(...args: Parameters<dia.Element['initialize']>): void {
+        super.initialize(...args);
+        this.updateNeedle();
+        this.updateZones();
+        this.on('change:value', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateNeedle(options));
+        this.on('change:thresholds', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateZones(options));
+    }
+
+    /** The thresholds, with the low one never above the high one. */
+    get thresholds(): Thresholds {
+        const { low, high } = { ...DEFAULT_THRESHOLDS, ...this.get('thresholds') };
+        const clampedLow = clamp(low);
+        return { low: clampedLow, high: Math.max(clampedLow, clamp(high)) };
+    }
+
+    /** The yellow zone from the start of the scale to the low threshold, the red one from the high threshold to the end. */
+    updateZones(options?: dia.Cell.Options): void {
+        const { low, high } = this.thresholds;
+        this.attr({
+            lowZone: { d: zone(0, low) },
+            highZone: { d: zone(high, 100) }
+        }, options);
+    }
+
+    /** The needle points to the value on the scale (it's drawn pointing up: at 270°). */
+    updateNeedle(options?: dia.Cell.Options): void {
+        const angle = scaleAngle(clamp(this.get('value'))) - 270;
+        this.attr('needle/style/transform', `rotate(${angle.toFixed(1)}deg)`, options);
+    }
+}

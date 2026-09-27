@@ -1,0 +1,74 @@
+import { type dia, util } from '@joint/plus';
+import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { METAL_STROKE, sphereGradient } from './gradients';
+import { Shape, type Resizable, type ControlKind } from './Shape';
+
+export class Compressor extends Shape {
+
+    get resizable(): Resizable {
+        return { preserveAspectRatio: true };
+    }
+
+    get control(): ControlKind {
+        return 'power';
+    }
+
+    get stubLength(): number {
+        return 30;
+    }
+
+    defaults(): dia.Element.Attributes {
+        return {
+            ...super.defaults,
+            type: 'Compressor',
+            size: {
+                width: 80,
+                height: 80
+            },
+            // 0 = off, 1 = on
+            power: 0,
+            attrs: {
+                root: {
+                    magnetSelector: 'body'
+                },
+                base: {
+                    d: 'M calc(0.15 * w) calc(h) L calc(0.3 * w) calc(0.8 * h) H calc(0.7 * w) L calc(0.85 * w) calc(h) Z',
+                    fill: '#777',
+                    stroke: '#333',
+                    strokeWidth: 2,
+                    strokeLinejoin: 'round'
+                },
+                body: {
+                    cx: 'calc(w / 2)',
+                    cy: 'calc(h / 2)',
+                    r: 'calc(0.45 * w)',
+                    stroke: METAL_STROKE,
+                    strokeWidth: 2,
+                    fill: sphereGradient
+                },
+                // The ISA symbol of a compressor: a trapezoid narrowing in the direction of the flow.
+                symbol: {
+                    d: 'M calc(0.22 * w) calc(0.22 * h) L calc(0.78 * w) calc(0.36 * h) V calc(0.64 * h) L calc(0.22 * w) calc(0.78 * h) Z',
+                    fill: '#777',
+                    stroke: '#222',
+                    strokeWidth: 2,
+                    strokeLinejoin: 'round'
+                },
+                label: {
+                    ...labelAttributes,
+                    text: 'Compressor'
+                }
+            },
+            ports: pipePorts(centerPortPosition)
+        };
+    }
+
+    preinitialize(): void {
+        this.markup = util.svg/* xml */`
+            <path @selector='base' />
+            <circle @selector='body' />
+            <path @selector='symbol' />
+            <text @selector='label' />
+        `;
+    }
+}

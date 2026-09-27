@@ -1,0 +1,86 @@
+import { type dia, util } from '@joint/plus';
+import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { METAL_STROKE, cylinderGradient, pipeGradient } from './gradients';
+import { Shape, type Resizable } from './Shape';
+
+/** An inline strainer: the dirt is caught by the screen in the leg of the Y. */
+export class YStrainer extends Shape {
+
+    get resizable(): Resizable {
+        return { preserveAspectRatio: true };
+    }
+
+    get stubLength(): number {
+        return 20;
+    }
+
+    get tagPrefix(): string {
+        return 'STR';
+    }
+
+    defaults(): dia.Element.Attributes {
+        return {
+            ...super.defaults,
+            type: 'YStrainer',
+            size: {
+                width: 80,
+                height: 60
+            },
+            attrs: {
+                root: {
+                    magnetSelector: 'body'
+                },
+                // The leg of the Y, down to the right
+                leg: {
+                    d: 'M calc(0.3 * w) calc(0.5 * h) H calc(0.6 * w) L calc(0.85 * w) calc(h - 8) H calc(0.55 * w) Z',
+                    stroke: METAL_STROKE,
+                    strokeWidth: 2,
+                    strokeLinejoin: 'round',
+                    fill: cylinderGradient
+                },
+                screen: {
+                    d: 'M calc(0.47 * w) calc(0.55 * h) L calc(0.7 * w) calc(h - 12)',
+                    stroke: '#333',
+                    strokeWidth: 2,
+                    strokeDasharray: '3,2'
+                },
+                cap: {
+                    x: 'calc(0.52 * w)',
+                    y: 'calc(h - 10)',
+                    width: 'calc(0.36 * w)',
+                    height: 10,
+                    rx: 2,
+                    ry: 2,
+                    fill: '#666',
+                    stroke: '#333',
+                    strokeWidth: 1.5
+                },
+                body: {
+                    y: 'calc(0.5 * h - 14)',
+                    width: 'calc(w)',
+                    height: 28,
+                    rx: 6,
+                    ry: 6,
+                    stroke: METAL_STROKE,
+                    strokeWidth: 2,
+                    fill: pipeGradient
+                },
+                label: {
+                    ...labelAttributes,
+                    text: 'Strainer'
+                }
+            },
+            ports: pipePorts(centerPortPosition)
+        };
+    }
+
+    preinitialize(): void {
+        this.markup = util.svg/* xml */`
+            <path @selector='leg' />
+            <path @selector='screen' />
+            <rect @selector='cap' />
+            <rect @selector='body' />
+            <text @selector='label' />
+        `;
+    }
+}

@@ -1,0 +1,89 @@
+import { type dia, util } from '@joint/plus';
+import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import type { Overflow } from './footprint';
+import { Layer } from '../const';
+import { Shape, type Resizable } from './Shape';
+
+const flange = (x: string) => ({
+    x,
+    width: 8,
+    height: 'calc(h)',
+    rx: 2,
+    ry: 2,
+    fill: '#9aa3ab',
+    stroke: '#555',
+    strokeWidth: 1.5
+});
+
+/** A flow element: a plate with a hole between two flanges (the flow is measured by the pressure drop). */
+export class OrificePlate extends Shape {
+
+    get graphLayer(): Layer {
+        return Layer.Instruments;
+    }
+
+    get resizable(): Resizable {
+        return false;
+    }
+
+    get stubLength(): number {
+        return 20;
+    }
+
+    get overflow(): Overflow {
+        return { top: 14 };
+    }
+
+    get tagPrefix(): string {
+        return 'FE';
+    }
+
+    defaults(): dia.Element.Attributes {
+        return {
+            ...super.defaults,
+            type: 'OrificePlate',
+            size: {
+                width: 40,
+                height: 60
+            },
+            attrs: {
+                root: {
+                    magnetSelector: 'body'
+                },
+                // The tab of the plate sticking out on the top
+                tab: {
+                    x: 'calc(w / 2 - 3)',
+                    y: -14,
+                    width: 6,
+                    height: 16,
+                    fill: '#555',
+                    stroke: '#333',
+                    strokeWidth: 1
+                },
+                body: {
+                    x: 'calc(w / 2 - 3)',
+                    width: 6,
+                    height: 'calc(h)',
+                    fill: '#333'
+                },
+                upstream: flange('calc(w / 2 - 11)'),
+                downstream: flange('calc(w / 2 + 3)'),
+                label: {
+                    ...labelAttributes,
+                    text: 'Orifice'
+                }
+            },
+            ports: pipePorts(centerPortPosition)
+        };
+    }
+
+    preinitialize(): void {
+        this.markup = util.svg/* xml */`
+            <rect @selector='tab' />
+            <rect @selector='upstream' />
+            <rect @selector='downstream' />
+            <rect @selector='body' />
+            <text @selector='label' />
+        `;
+    }
+}

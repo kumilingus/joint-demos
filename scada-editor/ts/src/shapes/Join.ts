@@ -1,0 +1,44 @@
+import { type dia, util } from '@joint/plus';
+import type { Overflow } from './footprint';
+import { type Anchors, Shape, type Resizable } from './Shape';
+
+export class Join extends Shape {
+
+    get resizable(): Resizable {
+        return { preserveAspectRatio: true };
+    }
+
+    // The pipes meet in the middle of the fitting.
+    get anchors(): Anchors {
+        return 'middles';
+    }
+
+    get overflow(): Overflow {
+        return { bottom: 0 };
+    }
+
+    defaults(): dia.Element.Attributes {
+        return {
+            ...super.defaults,
+            type: 'Join',
+            size: {
+                width: 40,
+                height: 40
+            },
+            attrs: {
+                body: {
+                    fill: '#eee',
+                    stroke: '#666',
+                    strokeWidth: 2,
+                    d: 'M 10 0 H calc(w - 10) l 10 10 V calc(h - 10) l -10 10 H 10 l -10 -10 V 10 Z'
+                }
+            }
+        };
+    }
+
+    preinitialize(): void {
+        this.markup = util.svg/* xml */`
+            <path @selector='body' />
+        `;
+    }
+}

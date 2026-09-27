@@ -1,0 +1,887 @@
+/*
+ * JointJS+ styles go into a cascade layer: the styles of the app below are
+ * not layered, so they win over them whatever the specificity of the selectors.
+ *
+ * The app runs the `scada` theme (see `main.ts`). JointJS+ has no such theme,
+ * so none of the built-in theme styles apply: the components keep only their
+ * layout, and everything they look like is defined here.
+ */
+@import '@joint/plus/joint-plus.css' layer(joint);
+
+/* Design tokens (a neutral palette in the style of shadcn/ui) */
+
+:root {
+    --background: #ffffff;
+    --foreground: #09090b;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --primary: #18181b;
+    --primary-foreground: #fafafa;
+    --primary-hover: #27272a;
+    --ring: rgb(24 24 27 / 0.12);
+    --ring-strong: #a1a1aa;
+    /* The color of the selection on the canvas (`SELECTION_COLOR` in `const.ts`). */
+    --selection: #0075f2;
+    --overlay: rgb(255 255 255 / 0.92);
+    color-scheme: light;
+
+    --radius: 8px;
+    --radius-md: 6px;
+    --radius-sm: 4px;
+    --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+
+    --font: 'Inter', 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+    /* Icons (Lucide), used as masks so that they take the color of the text. */
+    --icon-zoom-in: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35M11 8v6M8 11h6'/%3E%3C/svg%3E");
+    --icon-zoom-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35M8 11h6'/%3E%3C/svg%3E");
+    --icon-fit: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2'/%3E%3C/svg%3E");
+    --icon-play: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='6 3 20 12 6 21 6 3'/%3E%3C/svg%3E");
+    --icon-eye: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+    --icon-pencil: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5zM15 5l4 4'/%3E%3C/svg%3E");
+    --icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+    --icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+    --icon-undo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 14 4 9l5-5'/%3E%3Cpath d='M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11'/%3E%3C/svg%3E");
+    --icon-redo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 14 5-5-5-5'/%3E%3Cpath d='M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13'/%3E%3C/svg%3E");
+    --icon-sun: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2m-7.07-2.93 1.41-1.41M17.66 6.34l1.41-1.41M2 12h2m16 0h2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41'/%3E%3C/svg%3E");
+    --icon-moon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z'/%3E%3C/svg%3E");
+    --icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* The dark color scheme (switched in the toolbar, see `App.setColorScheme()`) */
+:root[data-color-scheme="dark"] {
+    /* Navy, like a control room screen */
+    --background: #0b1526;
+    --foreground: #e6edf7;
+    --muted: #15233a;
+    --muted-foreground: #8ea3c2;
+    --border: #1e2f4a;
+    --input: #283d5e;
+    --primary: #e6edf7;
+    --primary-foreground: #0b1526;
+    --primary-hover: #c6d4e8;
+    --ring: rgb(125 211 252 / 0.2);
+    --ring-strong: #4b6a94;
+    --selection: #38bdf8;
+    --overlay: rgb(11 21 38 / 0.92);
+    --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    color-scheme: dark;
+}
+
+/*
+ * The diagram in the dark: CSS wins over the presentation attributes of the shapes,
+ * so the dark texts of the shapes are lightened here (on the canvas and in the palette).
+ */
+/*
+ * The steel of the shapes in blue: the stops of the metal gradients (`gradients.ts`),
+ * matched by their colors, and the outline of the metal parts (`METAL_STROKE`).
+ */
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#737c84"] { stop-color: #3f5877; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#a3acb4"] { stop-color: #6f88a8; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#e9edf0"] { stop-color: #b9cbe0; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#ffffff"] { stop-color: #dbe6f3; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#d6dce1"] { stop-color: #9fb4cf; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#a7b0b8"] { stop-color: #6f86a4; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#6a737b"] { stop-color: #34496a; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#eef1f4"] { stop-color: #c3d3e6; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#bac2c9"] { stop-color: #7f97b6; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#7f888f"] { stop-color: #3f5877; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#f4f6f8"] { stop-color: #cfdcea; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#dde2e6"] { stop-color: #a9bcd3; }
+:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#b9c1c8"] { stop-color: #7f95b1; }
+:root[data-color-scheme="dark"] .joint-paper [stroke="#6a737b"] { stroke: #5b7699; }
+
+/* The flat light parts of the metal: the joins and the ends (flanges) of the pipe stubs */
+:root[data-color-scheme="dark"] .joint-paper [data-type="Join"] [joint-selector="body"],
+:root[data-color-scheme="dark"] .joint-paper [joint-selector="pipeEnd"] {
+    fill: #a9bcd3;
+    stroke: #5b7699;
+}
+
+/* An instrument bubble: a dark body with light strokes */
+:root[data-color-scheme="dark"] .joint-paper [data-type="Instrument"] [joint-selector="body"] {
+    fill: #10213a;
+    stroke: #9fb4cf;
+}
+
+:root[data-color-scheme="dark"] .joint-paper [data-type="Instrument"] [joint-selector="divider"] {
+    stroke: #9fb4cf;
+}
+
+:root[data-color-scheme="dark"] .joint-paper [data-type="Instrument"] text {
+    fill: #dbe6f3;
+}
+
+:root[data-color-scheme="dark"] {
+    --dark-face: #10213a;
+    --dark-ink: #9fb4cf;
+    --dark-text: #dbe6f3;
+}
+
+/* The white faces of the shapes: dark, with light strokes (like the instrument bubble) */
+:root[data-color-scheme="dark"] .joint-paper :is(
+    [data-type="Zone"],
+    [data-type="PressureGauge"],
+    [data-type="Thermometer"],
+    [data-type="BallValve"],
+    [data-type="ButterflyValve"],
+    [data-type="SolenoidValve"],
+    [data-type="GateValve"],
+    [data-type="CheckValve"],
+    [data-type="ReliefValve"]
+) > [joint-selector="body"] {
+    fill: var(--dark-face);
+    stroke: var(--dark-ink);
+}
+
+:root[data-color-scheme="dark"] .joint-paper [data-type="Zone"] > [joint-selector="body"] {
+    stroke: #2e4a70;
+}
+
+/* The dial of a gauge */
+:root[data-color-scheme="dark"] .joint-paper [data-type="PressureGauge"] [joint-selector="ticks"] {
+    stroke: var(--dark-text);
+}
+
+:root[data-color-scheme="dark"] .joint-paper [data-type="PressureGauge"] [joint-selector="hub"] {
+    fill: var(--dark-text);
+}
+
+:root[data-color-scheme="dark"] .joint-paper [data-type="PressureGauge"] [joint-selector="unit"] {
+    fill: var(--dark-ink);
+}
+
+/* The filled half of a check valve, the cover of a control valve */
+:root[data-color-scheme="dark"] .joint-paper [data-type="CheckValve"] [joint-selector="inlet"],
+:root[data-color-scheme="dark"] .joint-paper [data-type="ControlValve"] [joint-selector="cover"] {
+    fill: var(--dark-ink);
+}
+
+/* The light gray metal (the rotor ring of a pump, the housing of a fan, the nozzles): blue steel */
+:root[data-color-scheme="dark"] .joint-paper :is(rect, circle, path):is([fill="#eee"], [fill="#ddd"]) {
+    fill: #7f95b1;
+}
+
+:root[data-color-scheme="dark"] .joint-paper [data-type="AirCooler"] [joint-selector="plenum"] {
+    fill: #4a6285;
+}
+
+/* The labels below the shapes (a zone has its label on its own white body) */
+:root[data-color-scheme="dark"] .joint-paper [data-type]:not([data-type="Zone"]) > text[joint-selector="label"] {
+    fill: #cfdcee;
+}
+
+:root[data-color-scheme="dark"] .joint-paper [joint-selector="legs"],
+:root[data-color-scheme="dark"] .joint-paper [data-type="Thermometer"] [joint-selector="ticks"],
+:root[data-color-scheme="dark"] .joint-paper [data-type="CheckValve"] [joint-selector="arrow"],
+:root[data-color-scheme="dark"] .joint-paper [data-type="standard.Link"] [joint-selector="line"] {
+    stroke: #a1a1aa;
+}
+
+:root[data-color-scheme="dark"] .joint-paper [data-type="Chimney"] [joint-selector="smoke"] {
+    /* Semi-transparent over a dark canvas, it would be dark too. */
+    fill: #d4d4d8;
+    fill-opacity: 0.85;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* An icon drawn from one of the `--icon-*` masks, in the color of the text. */
+.joint-toolbar button::before,
+.search-wrap::before,
+.group > .group-label::before {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    background-color: currentColor;
+    mask: var(--icon) center / contain no-repeat;
+}
+
+/* Layout */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.canvas {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/*
+ * Runtime mode: the palette and the undo / redo buttons don't exist in it (see `App.enterMode()`),
+ * the inspector is closed - its empty panel is not in the way of the canvas.
+ */
+.app[data-mode="runtime"] .inspector-panel {
+    display: none;
+}
+
+/* Toolbar */
+
+/* `ui.Toolbar` replaces the classes of its element. */
+.joint-toolbar {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    gap: 12px;
+    height: 56px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--background);
+}
+
+.joint-toolbar .joint-toolbar-group {
+    gap: 0;
+}
+
+.joint-toolbar .joint-widget + .joint-widget,
+.joint-toolbar-group + .joint-toolbar-group {
+    margin-left: 0;
+}
+
+/* The mode button on the right (`align: Right` in `config.ts`) */
+.joint-toolbar .joint-toolbar-group.right.group-first {
+    margin-left: auto;
+}
+
+.joint-toolbar [data-name="title"] {
+    padding-right: 16px;
+    border-right: 1px solid var(--border);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+/* A button of the toolbar: outlined, with an icon and / or a text. */
+.joint-toolbar button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 500 14px/1 var(--font);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.joint-toolbar button::before {
+    display: none;
+}
+
+.joint-toolbar button:hover:not(:disabled) {
+    background: var(--muted);
+}
+
+.joint-toolbar button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ring);
+    border-color: var(--ring-strong);
+}
+
+.joint-toolbar button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* The history and the zoom buttons: groups of square icon buttons. */
+.joint-toolbar :is([data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button {
+    width: 36px;
+    padding: 0;
+    border-radius: 0;
+    color: var(--muted-foreground);
+}
+
+.joint-toolbar :is([data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button:hover:not(:disabled) {
+    color: var(--foreground);
+}
+
+.joint-toolbar :is([data-group="history"], [data-group="zoom"]) button + button {
+    margin-left: -1px;
+}
+
+.joint-toolbar :is([data-group="history"], [data-group="zoom"]) button:first-child {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.joint-toolbar :is([data-group="history"], [data-group="zoom"]) button:last-child {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.joint-toolbar :is([data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button::before,
+.joint-toolbar [data-name="mode"]::before {
+    display: inline-block;
+}
+
+.joint-toolbar [data-type="zoomIn"] { --icon: var(--icon-zoom-in); }
+.joint-toolbar [data-type="zoomOut"] { --icon: var(--icon-zoom-out); }
+.joint-toolbar [data-type="zoomToFit"] { --icon: var(--icon-fit); }
+.joint-toolbar [data-type="undo"] { --icon: var(--icon-undo); }
+.joint-toolbar [data-type="redo"] { --icon: var(--icon-redo); }
+
+/* The color scheme button shows the one it switches to. */
+.joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-moon); }
+:root[data-color-scheme="dark"] .joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-sun); }
+
+.joint-toolbar-group[data-group="colorScheme"] {
+    margin-right: 8px;
+}
+
+/* A group of one button: rounded on both sides */
+.joint-toolbar [data-group="colorScheme"] button {
+    border-radius: var(--radius-md);
+}
+
+/* The mode button: the primary action. Its icon says which mode it switches to. */
+.joint-toolbar [data-name="mode"] {
+    min-width: 112px;
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--primary-foreground);
+}
+
+.joint-toolbar [data-name="mode"]:hover:not(:disabled) {
+    border-color: var(--primary-hover);
+    background: var(--primary-hover);
+}
+
+.app[data-mode="edit"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-play); }
+.app[data-mode="runtime"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-pencil); }
+
+/* Panels (palette and inspector) */
+
+.stencil-panel,
+.inspector-panel {
+    position: relative;
+    flex-shrink: 0;
+    overflow: auto;
+    background: var(--background);
+}
+
+/* A group of a panel: a header that opens and closes it, and its content. */
+.group {
+    border-bottom: 1px solid var(--border);
+}
+
+.group > .group-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 12px 16px;
+    background: none;
+    color: var(--foreground);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.group > .group-label:hover {
+    background: var(--muted);
+}
+
+.group > .group-label::before {
+    --icon: var(--icon-chevron);
+    order: 1;
+    margin-left: auto;
+    width: 14px;
+    height: 14px;
+    color: var(--muted-foreground);
+    transition: transform 0.2s;
+}
+
+.group.closed > .group-label::before {
+    transform: rotate(-90deg);
+}
+
+/* Palette */
+
+.stencil-panel {
+    width: 240px;
+    border-right: 1px solid var(--border);
+}
+
+.stencil-panel .search-wrap {
+    position: relative;
+    height: 60px;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* The magnifier inside the search field */
+.stencil-panel .search-wrap::before {
+    --icon: var(--icon-search);
+    position: absolute;
+    top: 22px;
+    left: 23px;
+    /* Above the input, which the layout of the stencil puts at `z-index: 1`. */
+    z-index: 2;
+    color: var(--muted-foreground);
+    pointer-events: none;
+}
+
+/* The groups are below the search. */
+.stencil-panel > .content {
+    top: 60px;
+}
+
+.stencil-panel .search {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 34px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 14px var(--font);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.stencil-panel .search::placeholder {
+    color: var(--muted-foreground);
+}
+
+.stencil-panel .search:focus {
+    border-color: var(--ring-strong);
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* The layout of the stencil caps a collapsed group at the height of its label. */
+.stencil-panel .group.closed {
+    max-height: none;
+}
+
+.stencil-panel .group.closed > .elements {
+    display: none;
+}
+
+/* The clear button of the search field */
+.stencil-panel .search::-webkit-search-cancel-button {
+    width: 14px;
+    height: 14px;
+    background-color: var(--muted-foreground);
+    mask: var(--icon-close) center / contain no-repeat;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* No match: the message of the stencil, below the search. */
+.stencil-panel.not-found::after {
+    top: 76px;
+    height: auto;
+    padding: 0 16px;
+    color: var(--muted-foreground);
+    font-size: 13px;
+}
+
+/*
+ * Not the stencil `cellCursor` option: it sets `pointer-events: bounding-box`,
+ * and the bounding box of a straight pipe has no height, so it can't be grabbed.
+ */
+.stencil-panel .joint-cell {
+    cursor: grab;
+}
+
+/* Inspector */
+
+.inspector-panel {
+    width: 280px;
+    border-left: 1px solid var(--border);
+}
+
+.inspector-panel:empty::before {
+    content: 'Select an element to see its properties.';
+    display: block;
+    margin: 16px;
+    padding: 32px 16px;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    color: var(--muted-foreground);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.joint-inspector {
+    font-size: 14px;
+}
+
+.joint-inspector .group {
+    padding-bottom: 8px;
+}
+
+.joint-inspector .group.closed {
+    padding-bottom: 0;
+}
+
+/*
+ * A closed group hides its fields. The layout of the inspector does it too,
+ * but in the `joint` layer, where the `display` of the fields below would win over it.
+ */
+.joint-inspector .group.closed > .field {
+    display: none;
+}
+
+.joint-inspector .field {
+    padding: 6px 16px 10px;
+}
+
+.joint-inspector label {
+    display: block;
+    margin: 0 0 6px;
+    color: var(--foreground);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* The layout of the inspector appends a colon to every label. */
+.joint-inspector label::after {
+    content: none;
+}
+
+/* Text */
+
+.joint-inspector input[type="text"] {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 14px var(--font);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.joint-inspector input[type="text"]:focus {
+    border-color: var(--ring-strong);
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Range: the label on the left, the value on the right, the slider below. */
+
+.joint-inspector .range-field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+.joint-inspector .range-field label.with-output {
+    float: none;
+    flex: 1;
+}
+
+.joint-inspector .range-field output,
+.joint-inspector .range-field .units {
+    float: none;
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+.joint-inspector input[type="range"] {
+    flex-basis: 100%;
+    width: 100%;
+    margin: 8px 0 0;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* Toggle: a switch. (The inspector lays the checkbox transparently over it.) */
+
+.joint-inspector .toggle-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.joint-inspector .toggle-field > label {
+    margin: 0;
+}
+
+.joint-inspector .toggle {
+    flex-shrink: 0;
+    width: 36px;
+    height: 20px;
+}
+
+.joint-inspector .toggle input {
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.joint-inspector .toggle span {
+    border-radius: 999px;
+    background: var(--input);
+    transition: background-color 0.15s;
+}
+
+.joint-inspector .toggle span::before {
+    display: none;
+}
+
+.joint-inspector .toggle span i {
+    top: 2px;
+    right: auto;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--background);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+    transition: transform 0.15s;
+}
+
+.joint-inspector .toggle span i::before {
+    display: none;
+}
+
+.joint-inspector .toggle input:checked + span {
+    background: var(--primary);
+}
+
+.joint-inspector .toggle input:checked + span i {
+    right: auto;
+    transform: translateX(16px);
+}
+
+.joint-inspector .toggle input:focus-visible + span {
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Select button group: a segmented control. */
+
+.joint-select-button-group {
+    display: flex;
+    padding: 3px;
+    border-radius: var(--radius);
+    background: var(--muted);
+}
+
+.select-button-group-button {
+    /* As wide as the text (and the rest of the group shared): a long option keeps its padding */
+    flex: 1 1 auto;
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    color: var(--muted-foreground);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.select-button-group-button:hover {
+    color: var(--foreground);
+}
+
+.select-button-group-button.selected {
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+}
+
+/* Selection of an element on the canvas (the frame of `ui.FreeTransform`) */
+
+.joint-free-transform {
+    border: 1px solid var(--selection);
+    border-radius: 2px;
+}
+
+.joint-free-transform > div {
+    border: 1.5px solid var(--selection);
+    border-radius: 2px;
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+}
+
+.joint-free-transform > .rotate {
+    border-radius: 50%;
+}
+
+.joint-free-transform > div:hover,
+.joint-free-transform > div.in-operation {
+    background: var(--selection);
+}
+
+/* The link tools of a selected pipe (see `tools.ts`) */
+
+.vertex-handle {
+    /* As the handles of the frame of a selected element */
+    fill: var(--background);
+}
+
+.vertex-handle:hover {
+    fill: var(--selection);
+}
+
+.source-arrowhead:hover,
+.target-arrowhead:hover {
+    fill-opacity: 0.6;
+}
+
+/* Navigator: a minimap in the bottom right corner of the canvas */
+
+.navigator-panel {
+    /* Center the minimap (what the navigator does for an element it creates itself). */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--overlay);
+    backdrop-filter: blur(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.joint-navigator .current-view {
+    border: 1.5px solid var(--selection);
+    border-radius: var(--radius-sm);
+}
+
+/* Controls of the equipment (see `controls.ts`) */
+
+/*
+ * Shown while editing, but not operated: its inputs and buttons ignore the pointer,
+ * so a click lands on the control itself - a part of the element (to select it,
+ * or to move it by dragging).
+ */
+.app[data-mode="edit"] .jj-control :is(input, button) {
+    pointer-events: none;
+}
+
+.app[data-mode="edit"] .jj-control > div {
+    cursor: move;
+}
+
+.jj-switch,
+.jj-checkbox,
+.jj-slider {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 13px var(--font);
+}
+
+.jj-switch,
+.jj-slider {
+    padding: 3px;
+}
+
+.jj-switch-label,
+.jj-slider-label {
+    width: 100%;
+    margin: 0 0 2px;
+    font-weight: 500;
+    text-align: center;
+    white-space: pre;
+}
+
+/* The button of the current state is the enabled one (see `controls.ts`). */
+.jj-switch-on,
+.jj-switch-off {
+    width: 50%;
+    height: 22px;
+    border: 1px solid var(--primary);
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font: 500 12px var(--font);
+    cursor: pointer;
+}
+
+.jj-switch-on {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.jj-switch-off {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.jj-switch-on:disabled,
+.jj-switch-off:disabled {
+    border-color: var(--input);
+    background: var(--muted);
+    color: var(--muted-foreground);
+    cursor: default;
+}
+
+.jj-checkbox-input {
+    width: 14px;
+    height: 14px;
+    margin: 2px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.jj-slider-input {
+    width: 100%;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.jj-slider-output {
+    display: block;
+    width: 100%;
+    color: var(--muted-foreground);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
