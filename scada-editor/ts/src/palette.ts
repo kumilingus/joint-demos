@@ -81,7 +81,7 @@ export function showPaletteShape(app: App, cellView: dia.CellView): void {
 
     highlighters.mask.add(cellView, 'root', PALETTE_HIGHLIGHTER_ID, {
         padding: 4,
-        attrs: { stroke: SELECTION_COLOR, 'stroke-width': 2, 'stroke-linejoin': 'round' }
+        attrs: { stroke: SELECTION_COLOR, strokeWidth: 2, strokeLinejoin: 'round' }
     });
     shown = { el, paper, cellView };
 }

@@ -18,7 +18,7 @@ const arrowheadAttributes = {
     rx: 10,
     ry: 10,
     fill: SELECTION_COLOR,
-    'fill-opacity': 0.35,
+    fillOpacity: 0.35,
     stroke: 'none',
     cursor: 'move'
 };
@@ -43,7 +43,7 @@ export const VertexHandle = linkTools.Vertices.VertexHandle.extend({
         r: 5,
         fill: '#ffffff',
         stroke: SELECTION_COLOR,
-        'stroke-width': 1.5,
+        strokeWidth: 1.5,
         cursor: 'move'
     }
 });

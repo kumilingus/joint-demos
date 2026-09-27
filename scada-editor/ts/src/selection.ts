@@ -42,10 +42,10 @@ function frameOptions(cell: dia.Cell): highlighters.StrokeHighlighterArguments {
         return {
             layer: 'back',
             attrs: {
-                'stroke': SELECTION_COLOR,
-                'stroke-width': lineWidth + 6,
-                'stroke-linejoin': 'round',
-                'stroke-linecap': 'square'
+                stroke: SELECTION_COLOR,
+                strokeWidth: lineWidth + 6,
+                strokeLinejoin: 'round',
+                strokeLinecap: 'square'
             }
         };
     }
@@ -54,8 +54,8 @@ function frameOptions(cell: dia.Cell): highlighters.StrokeHighlighterArguments {
         rx: 2,
         ry: 2,
         attrs: {
-            'stroke': SELECTION_COLOR,
-            'stroke-width': 1.5
+            stroke: SELECTION_COLOR,
+            strokeWidth: 1.5
         }
     };
 }

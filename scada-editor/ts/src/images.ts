@@ -83,7 +83,7 @@ export function definePlaceholder(paper: dia.Paper): string {
     id = `scada-image-${++counter}`;
     V('symbol', { id, class: 'missing-image', viewBox: '0 0 48 48', preserveAspectRatio: 'xMidYMid meet' })
         .append([
-            V('rect', { x: 1, y: 1, width: 46, height: 46, rx: 4, fill: 'none', 'stroke-dasharray': '4 3' }),
+            V('rect', { x: 1, y: 1, width: 46, height: 46, rx: 4, fill: 'none', strokeDasharray: '4 3' }),
             // An image crossed out
             V('path', { d: 'M 14 14 H 34 V 34 H 14 Z M 14 30 L 21 23 L 27 29 M 26 22 A 2 2 0 1 0 26.1 22 M 12 12 L 36 36', fill: 'none' })
         ])
