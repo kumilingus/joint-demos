@@ -811,11 +811,18 @@ body {
     color: var(--foreground);
 }
 
-/* Selection of an element on the canvas (the frame of `ui.FreeTransform`) */
+/* The region selecting the cells (Shift + drag on the blank canvas, `ui.Selection`) */
+
+.joint-selection.lasso {
+    opacity: 1;
+    border: 1px solid var(--selection);
+    background: color-mix(in srgb, var(--selection) 10%, transparent);
+}
+
+/* The handles of a single selected element (`ui.FreeTransform`): its frame is the one of the selection (see `selection.ts`) */
 
 .joint-free-transform {
-    border: 1px solid var(--selection);
-    border-radius: 2px;
+    border: none;
 }
 
 .joint-free-transform > div {

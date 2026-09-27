@@ -24,17 +24,6 @@ export function toggleCell(app: App, cell: dia.Cell): void {
     }
 }
 
-/** Move the other selected cells with the one moved by the user (by the same amount). */
-export function moveSelectionWith(app: App, cell: dia.Cell, dx: number, dy: number): void {
-    const { selection } = app;
-    if (!selection.has(cell)) return;
-    selection.each((other) => {
-        if (other === cell) return;
-        // A pipe between the selected elements moves with them (its vertices).
-        (other as dia.Element | dia.Link).translate(dx, dy, { selectionMove: true });
-    });
-}
-
 export function clearSelection(app: App): void {
     app.selection.reset();
 }

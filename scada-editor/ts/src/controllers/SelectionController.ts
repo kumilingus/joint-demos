@@ -1,95 +1,32 @@
-import { dia, highlighters, linkTools, ui } from '@joint/plus';
+import { dia, linkTools, ui } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { GRID_SIZE, SELECTION_COLOR } from '../const';
+import { GRID_SIZE, SELECTION_PADDING } from '../const';
 import { closeInspector, openInspector } from '../inspector';
 import { closePaletteShape } from '../palette';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../tools';
 import { type ResizeOptions, Shape } from '../shapes/Shape';
-import { Pipe } from '../shapes/Pipe';
-
-const SELECTION_HIGHLIGHTER_ID = 'selection';
-
-/** The frames showing the selection of elements. */
-const freeTransforms = new WeakMap<dia.Cell, ui.FreeTransform>();
-
-/** The cells shown as selected. */
-const shown = new Set<dia.Cell>();
-
-// How far the frame of an element in a multiple selection is around it
-const FRAME_PADDING = 4;
 
 /**
- * The frame of an element in a multiple selection: its bounding box (from the model),
- * drawn in the element (it rotates with it) and redrawn when it is resized.
- */
-class SelectionFrame extends dia.HighlighterView {
-
-    preinitialize(): void {
-        this.tagName = 'rect';
-        this.UPDATE_ATTRIBUTES = ['size'];
-    }
-
-    protected highlight(cellView: dia.CellView): void {
-        const { width, height } = (cellView.model as dia.Element).size();
-        this.vel.attr({
-            x: -FRAME_PADDING,
-            y: -FRAME_PADDING,
-            width: width + 2 * FRAME_PADDING,
-            height: height + 2 * FRAME_PADDING,
-            fill: 'none',
-            stroke: SELECTION_COLOR,
-            'stroke-width': 1.5,
-            'stroke-dasharray': '4 3',
-            'pointer-events': 'none'
-        });
-    }
-}
-
-/**
- * Shows the selected cells on the canvas and in the inspector. Active in every mode.
- * A single selected cell can be transformed (an element) or reshaped (a pipe) and inspected;
- * a multiple selection is only framed (the elements) and outlined (the pipes).
+ * Shows the selected cells in the inspector and a single selected cell with its tools: an element
+ * with the free transform, a pipe with the link tools (the frames are drawn by `ui.Selection`,
+ * see `selection.ts`). Active in every mode.
  */
 export default class SelectionController extends Controller {
 
     startListening(): void {
         const { selection, graph } = this.context;
 
-        this.listenTo(selection, {
-            'add': onSelectionAdd,
-            'remove': onSelectionRemove,
-            'reset': onSelectionReset
-        });
-
-        this.listenTo(graph, {
-            'remove': onCellRemove
-        });
+        this.listenTo(selection, 'add remove reset', updateSelection);
+        this.listenTo(graph, 'remove', onCellRemove);
     }
 }
 
-function onSelectionAdd(app: App) {
-    updateSelection(app);
-}
-
-function onSelectionRemove(app: App) {
-    updateSelection(app);
-}
-
-function onSelectionReset(app: App) {
-    updateSelection(app);
-}
-
-/** A cell looks different when it is selected alone or with others: the whole selection is shown again. */
+/** A cell selected alone is shown with its tools (and in the inspector). */
 function updateSelection(app: App) {
     const { selection } = app;
-    shown.forEach(cell => hideSelected(app, cell));
-    shown.clear();
-    const single = selection.length === 1;
-    selection.each((cell) => {
-        showSelected(app, cell, single);
-        shown.add(cell);
-    });
+    hideSelected(app);
+    if (selection.length === 1) showSelected(app, selection.at(0));
     updateInspector(app);
 }
 
@@ -109,28 +46,21 @@ function updateInspector(app: App) {
     }
 }
 
-function showSelected(app: App, cell: dia.Cell, single: boolean) {
+function showSelected(app: App, cell: dia.Cell) {
     const cellView = cell.findView(app.paper);
     if (!cellView) return;
-    if (!single) {
-        if (cell.isElement()) {
-            SelectionFrame.add(cellView, 'root', SELECTION_HIGHLIGHTER_ID);
-        } else {
-            outlinePipe(cellView);
-        }
-        return;
-    }
     if (cell.isElement()) {
-        // The frame of the free transform shows the selection of an element.
-        const freeTransform = new ui.FreeTransform({
+        // An element can be resized and rotated.
+        new ui.FreeTransform({
             cellView,
             ...getTransformOptions(cell),
+            // The padding in the coordinates of the graph: as the frame of the selection (see `selection.ts`)
+            usePaperScale: true,
+            padding: SELECTION_PADDING,
             // The selection is cleared by the app.
             clearAll: false,
-            clearOnBlankPointerdown: false
-        });
-        freeTransform.render();
-        freeTransforms.set(cell, freeTransform);
+            clearOnBlankPointerdown: false,
+        }).render();
         return;
     }
     // A pipe can be reshaped (vertices) and reconnected (arrowheads).
@@ -142,21 +72,6 @@ function showSelected(app: App, cell: dia.Cell, single: boolean) {
             new TargetArrowhead()
         ]
     }));
-    outlinePipe(cellView);
-}
-
-/** A link is outlined without its (invisible) wrapper: a pipe by its outline, a signal line by its line. */
-function outlinePipe(cellView: dia.CellView) {
-    const selector = cellView.model instanceof Pipe ? 'outline' : 'line';
-    highlighters.mask.add(cellView, selector, SELECTION_HIGHLIGHTER_ID, {
-        padding: 6,
-        layer: 'back',
-        attrs: {
-            'stroke': SELECTION_COLOR,
-            'stroke-width': 2,
-            'stroke-linejoin': 'round'
-        }
-    });
 }
 
 /** The resize handles for the constraints: all of them, unless the width or the height can't change. */
@@ -185,11 +100,8 @@ function getTransformOptions(cell: dia.Cell): Partial<ui.FreeTransform.Options> 
     };
 }
 
-function hideSelected(app: App, cell: dia.Cell) {
-    freeTransforms.get(cell)?.remove();
-    freeTransforms.delete(cell);
-    const cellView = cell.findView(app.paper);
-    if (!cellView) return;
-    dia.HighlighterView.remove(cellView, SELECTION_HIGHLIGHTER_ID);
-    cellView.removeTools();
+/** The tools of the cells are the ones of the selection only. */
+function hideSelected(app: App) {
+    ui.FreeTransform.clear(app.paper);
+    app.paper.removeTools();
 }

@@ -2,6 +2,7 @@ import { dia, mvc, ui } from '@joint/plus';
 import { cellNamespace } from './shapes';
 import { createStencil } from './stencil';
 import { createGraph } from './layers';
+import { createSelection } from './selection';
 import { createNavigator } from './navigator';
 import boilerHouse from './diagram/boilerHouse.json';
 import { ColorScheme, Mode } from './const';
@@ -50,6 +51,8 @@ export class App {
     mode: Mode = Mode.Edit;
     colorScheme: ColorScheme = getInitialColorScheme();
     selection = new mvc.Collection<dia.Cell>();
+    /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
+    selectionView: ui.Selection;
 
     /** Controllers listening in every mode. */
     controllers: Controller[];
@@ -78,6 +81,8 @@ export class App {
         });
         el.querySelector('.canvas')!.appendChild(this.scroller.el);
         this.scroller.render();
+
+        this.selectionView = createSelection(this.scroller, this.selection);
 
         this.navigator = createNavigator(el.querySelector('.navigator-panel')!, this.scroller);
 

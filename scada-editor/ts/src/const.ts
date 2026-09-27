@@ -29,6 +29,9 @@ export const PIPE_COLOR = '#6CC59A';
 // The colors of the parts of the shapes are CSS variables (`--shape-*` in `styles.css`): themed there.
 export const LABEL_COLOR = 'var(--shape-label)';
 export const SELECTION_COLOR = '#0075F2';
+
+/** How far the frame of a selected element is around it (`ui.FreeTransform` and the frames of `ui.Selection`) */
+export const SELECTION_PADDING = 6;
 /** The colors of the app (the design tokens of `styles.css` and the canvas, see `config.ts`). */
 export enum ColorScheme {
     Light = 'light',

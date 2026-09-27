@@ -8,7 +8,7 @@ An editor of a SCADA plant diagram, built with JointJS+, with a runtime mode whe
 - **Palette** - `ui.Stencil`; each group is packed with a skyline packing of the shape footprints (`packing.ts`, no third-party code), without the labels. A click on a shape shows it in the inspector panel with a description, where it can be made a favorite (and an uploaded image renamed or deleted); a drag starts once the pointer moves.
   - **In Use** and **Favorites** are made of the other groups (hidden while empty). A shape is matched by `paletteKey()`: its type, plus the image for an uploaded image.
   - **Custom** - uploaded images. They are stored on the graph (`graph.get('images')`) and an element refers to its image by id, so an image is saved once and is in the DOM once per paper (`images.ts`: a `<symbol>` in the paper defs, a `<use>` in each element). An element whose image is not in the diagram (pasted from another one) shows a placeholder.
-- **Editing** - on a grid (`GRID_SIZE`), elements resize in two grid steps; snaplines; selection by click, `Ctrl` / `Cmd` / `Shift` + click and `Shift` + drag (a region); `ui.FreeTransform` and link tools for a single selection, frames for a multiple one; copy / cut / paste (`ui.Clipboard`); undo / redo (`dia.CommandManager`).
+- **Editing** - on a grid (`GRID_SIZE`), elements resize in two grid steps; snaplines; selection by click, `Ctrl` / `Cmd` / `Shift` + click and `Shift` + drag (a region touching the cells, a pipe by its route); `ui.Selection` frames the selected cells and moves them together (`selection.ts`), `ui.FreeTransform` and link tools for a single selection; copy / cut / paste (`ui.Clipboard`); undo / redo (`dia.CommandManager`).
 - **Pipes** - dragged from the palette and connected with the arrowheads: to a pipe stub (a port) if the element has any, otherwise to its side (`connectionStrategy` in `connections.ts` pins the anchor to the side nearest to the pointer, relative to the size). A signal line connects to the body of an element, nothing connects to a label. The routing (straight, orthogonal, curved) is chosen in the inspector (`shapes/routing.ts`).
 - **Layers** - `background`, `pipes`, `equipment`, `instruments` and `foreground` (`layers.ts`): a pipe is under the equipment, a level panel over its tank; a cell is put in another layer in the inspector (the logo of the example is in the background).
 - **Inspector** - `ui.Inspector` for a single selected cell: the tag, the texts, the values and thresholds, whether the control is used, the routing of a link, the text, size and color of a label, the layer.
@@ -53,6 +53,7 @@ src/
   simulation.ts    the mock of the plant
   animations.ts    the runtime animations
   navigator.ts     the minimap
+  selection.ts     the selection on the canvas (`ui.Selection`): the region, the frames
   diagram/         the example: a boiler house, a JSON file as saved by the Save button (with the JointJS logo as an image)
   shapes/          the shapes (see Shape features); ports.ts the pipe stubs, footprint.ts the area a shape takes
   controllers/     the event handling
@@ -66,10 +67,10 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 |---|---|---|
 | `CanvasController` | always | paper: blank drag (panning), pinch, pan |
 | `ControlsController` | always | graph: the controls of the added elements |
-| `SelectionController` | always | the selection: free transform, link tools, frames, the inspector |
+| `SelectionController` | always | the selection: free transform, link tools, the inspector |
 | `TagsController` | always | graph: a free tag for every element |
 | `ToolbarController` | each mode | toolbar: mode, color scheme, save, open |
-| `EditController` | edit | paper: cell click, blank drag (a region); graph: the selection moving together |
+| `EditController` | edit | paper: cell click, blank drag (a region) |
 | `PaletteController` | edit | palette: shape click; graph: the derived palette groups |
 | `KeyboardController` | edit | the keyboard shortcuts |
 | `RuntimeController` | runtime | paper: a cell drag pans the canvas |
