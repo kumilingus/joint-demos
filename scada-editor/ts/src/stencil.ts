@@ -33,15 +33,15 @@ const GAP = 20;
 
 /** The groups of the palette filled with the shapes of the others (and hidden while empty) */
 export enum DerivedGroup {
-    InUse = 'inUse',
-    Favorites = 'favorites'
+    Favorites = 'favorites',
+    InUse = 'inUse'
 }
 
 const groups: Record<string, ui.Stencil.Group> = {
-    // The shapes used in the diagram
-    [DerivedGroup.InUse]: { index: 1, label: 'In Use' },
     // The shapes marked as favorite (in the inspector panel, see `shape-preview.ts`)
-    [DerivedGroup.Favorites]: { index: 2, label: 'Favorites' },
+    [DerivedGroup.Favorites]: { index: 1, label: 'Favorites' },
+    // The shapes used in the diagram
+    [DerivedGroup.InUse]: { index: 2, label: 'In Use' },
     // The shapes of the user: uploaded images
     custom: { index: 3, label: 'Custom' },
     piping: { index: 4, label: 'Piping' },
