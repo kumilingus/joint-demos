@@ -608,7 +608,7 @@ body {
 }
 
 .inspector-panel:empty::before {
-    content: 'Select an element to see its properties.';
+    content: 'Select a shape on the canvas or in the stencil to see its properties.';
     display: block;
     margin: 16px;
     padding: 32px 16px;
