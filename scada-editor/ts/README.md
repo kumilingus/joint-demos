@@ -14,7 +14,7 @@ An editor of a SCADA plant diagram, built with JointJS+, with a runtime mode whe
 - **Inspector** - `ui.Inspector` for a single selected cell: the tag, the texts, the values and thresholds, whether the control is used, the routing of a link, the text, size and color of a label, the layer.
 - **Save / open** - JSON from `graph.toJSON()`: the cells, the images and the favorites (not the layers). A file is loaded into a scratch graph first, so an invalid one doesn't replace the diagram.
 - **Runtime mode** - the palette, the history and the file buttons don't exist in it. `simulation.ts` sends random updates addressed by the element tags; `animations.ts` spins the rotors and the agitators, carries the boxes of a conveyor, moves the liquid through the pipes, the control valves and the level panels, and animates the flames, the smoke and the alarm. The controls (HTML in highlighters) are operated in this mode only; while editing they are `inert`.
-- **Light / dark** - the design tokens in `styles.css`. The shapes use CSS variables for their colors (`fill: 'var(--shape-face)'`, the stops of the metal gradients, ...): the dark scheme redefines them (blue steel, dark faces), no selectors override the shapes.
+- **Light / dark** - the design tokens in `variables.css`. The shapes use CSS variables for their colors, `--shape-*` in `shapes.css` (`fill: 'var(--shape-face)'`, the stops of the metal gradients, ...): the dark scheme redefines them (blue steel, dark faces), no selectors override the shapes.
 - **Tooltips** - `ui.Tooltip` for every element with `data-tooltip`.
 
 ## History

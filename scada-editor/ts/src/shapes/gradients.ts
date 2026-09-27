@@ -4,7 +4,7 @@ import type { dia } from '@joint/plus';
  * The shading of the equipment: brushed steel lit from the top left.
  * The highlight is off-center and the edges are darker, so that
  * the cylinders and the spheres read as round.
- * The colors are CSS variables (`--shape-metal-*`, ... in `styles.css`): blue steel in the dark theme.
+ * The colors are CSS variables (`--shape-metal-*`, ... in `shapes.css`): blue steel in the dark theme.
  */
 
 /** The outline of the metal parts: the color of the shaded edge, so the outline blends into it. */

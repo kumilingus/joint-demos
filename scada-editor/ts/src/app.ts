@@ -140,7 +140,7 @@ export class App {
         this.paper.unfreeze();
     }
 
-    /** The colors of the page (the design tokens in `styles.css`) and of the canvas. */
+    /** The colors of the page (the design tokens in `variables.css`) and of the canvas. */
     setColorScheme(colorScheme: ColorScheme): void {
         this.colorScheme = colorScheme;
         document.documentElement.dataset.colorScheme = colorScheme;
