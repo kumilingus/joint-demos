@@ -5,7 +5,7 @@ An editor of a SCADA plant diagram, built with JointJS+, with a runtime mode whe
 ## Features
 
 - **Canvas** - `ui.PaperScroller` (pan, zoom, pinch) and a `ui.Navigator` minimap with simplified views.
-- **Palette** - `ui.Stencil`; each group is packed with a skyline packing of the shape footprints (`packing.ts`, no third-party code), without the labels. A click on a shape shows it in the inspector panel with a description, where it can be made a favorite (and an uploaded image renamed or deleted); a drag starts once the pointer moves.
+- **Palette** - `ui.Stencil`; each group is packed with a skyline packing of the shape footprints (`packing.ts`, no third-party code), without the labels. A click on a shape shows it in the inspector panel with a description, where it can be made a favorite (and an uploaded image renamed or deleted); a drag starts once the pointer moves, a dropped shape is selected.
   - **In Use** and **Favorites** are made of the other groups (hidden while empty). A shape is matched by `paletteKey()`: its type, plus the image for an uploaded image.
   - **Custom** - uploaded images. They are stored on the graph (`graph.get('images')`) and an element refers to its image by id, so an image is saved once and is in the DOM once per paper (`images.ts`: a `<symbol>` in the paper defs, a `<use>` in each element). An element whose image is not in the diagram (pasted from another one) shows a placeholder.
 - **Editing** - on a grid (`GRID_SIZE`), elements resize in two grid steps; snaplines; selection by click, `Ctrl` / `Cmd` / `Shift` + click and `Shift` + drag (a region touching the cells, a pipe by its route); `ui.Selection` frames the selected cells and moves them together (`selection.ts`), `ui.FreeTransform` and link tools for a single selection; copy / cut / paste (`ui.Clipboard`); undo / redo (`dia.CommandManager`).
@@ -71,7 +71,7 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | `TagsController` | always | graph: a free tag for every element |
 | `ToolbarController` | each mode | toolbar: mode, color scheme, save, open |
 | `EditController` | edit | paper: cell click, blank drag (a region) |
-| `PaletteController` | edit | palette: shape click; graph: the derived palette groups |
+| `PaletteController` | edit | palette: shape click, shape drop; graph: the derived palette groups |
 | `KeyboardController` | edit | the keyboard shortcuts |
 | `RuntimeController` | runtime | paper: a cell drag pans the canvas |
 | `SimulationController` | runtime | the mock of the plant |

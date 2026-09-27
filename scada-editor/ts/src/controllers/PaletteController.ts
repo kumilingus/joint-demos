@@ -1,11 +1,12 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { clearSelection, refreshPalette } from '../actions';
+import { clearSelection, refreshPalette, selectCell } from '../actions';
 import { showShapePreview } from '../shape-preview';
 
 /**
- * A shape clicked in the palette (not dragged, see `dragThreshold`) is shown in the inspector panel.
+ * A shape clicked in the palette (not dragged, see `dragThreshold`) is shown in the inspector panel,
+ * a shape dropped on the canvas is selected.
  * The groups of the palette made of the diagram follow it: the shapes in use, the images of the user.
  * Active in the edit mode only (the palette exists in it only).
  */
@@ -20,6 +21,7 @@ export default class PaletteController extends Controller {
             // the favorites changed; a diagram loaded (`fromJSON()` sets them silently and resets the cells)
             'add remove reset change:images change:favorites': onDiagramChange
         });
+        this.listenTo(stencil, 'element:drop', onPaletteShapeDrop);
         Object.keys(stencil.options.groups || {}).forEach((group) => {
             this.listenTo(stencil.getPaper(group), 'cell:pointerclick', onPaletteShapeClick);
         });
@@ -30,6 +32,11 @@ function onPaletteShapeClick(app: App, cellView: dia.CellView) {
     // The inspector panel shows the shape of the palette instead of the selection.
     clearSelection(app);
     showShapePreview(app, cellView);
+}
+
+/** The view of the dropped cell (a link too) in the canvas */
+function onPaletteShapeDrop(app: App, cellView: dia.CellView) {
+    selectCell(app, cellView.model);
 }
 
 let refreshScheduled = false;
