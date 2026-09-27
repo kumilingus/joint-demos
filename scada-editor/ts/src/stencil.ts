@@ -131,6 +131,9 @@ export function createStencil(
         })
     });
 
+    // Every load, reload and search of a group fits its paper (see `fitToFootprints()`).
+    // `fitPaperToContent()` is a method of the stencil not in its typings.
+    (stencil as ui.Stencil & { fitPaperToContent: (paper: dia.Paper) => void }).fitPaperToContent = fitToFootprints;
     stencil.render();
 
     Object.keys(groups).forEach((group) => {
@@ -252,7 +255,7 @@ function shapesByKey(images: ImageLibrary): Map<string, dia.Cell> {
 /** A group of the palette with the shapes of the keys (in the order of the palette), hidden if there are none. */
 export function loadDerivedGroup(stencil: ui.Stencil, group: DerivedGroup, keys: Set<string>, images: ImageLibrary): void {
     const shapes = [...shapesByKey(images)].filter(([key]) => keys.has(key)).map(([, cell]) => cell);
-    loadGroup(stencil, group, shapes);
+    stencil.loadGroup(shapes, group);
     const groupEl = stencil.el.querySelector<HTMLElement>(`.group[data-name="${group}"]`);
     if (groupEl) groupEl.hidden = shapes.length === 0;
 }
@@ -268,14 +271,14 @@ export function customShapes(images: ImageLibrary): dia.Cell[] {
 }
 
 /**
- * Load the shapes into the group, with its paper as big as they are. The stencil measures the rendered
- * shapes (nothing is measured in a hidden or a collapsed group): the paper is fitted to their footprints
- * instead (the model geometry, as their layout).
+ * Fit the paper of a group to the footprints of its shapes (the model geometry, as their layout),
+ * not to the rendered views: nothing is measured in a hidden or a collapsed group.
+ * While searching, to the shapes that match.
  */
-function loadGroup(stencil: ui.Stencil, group: string, shapes: dia.Cell[]): void {
-    stencil.loadGroup(shapes, group);
-    const paper = stencil.getPaper(group);
-    const footprints = paper.model.getCells().map(cell => getFootprint(cell, { label: false }));
+function fitToFootprints(paper: dia.Paper): void {
+    const footprints = paper.model.getCells()
+        .filter(cell => !paper.findViewByModel(cell)?.el.classList.contains('unmatched'))
+        .map(cell => getFootprint(cell, { label: false }));
     const contentArea = footprints.length > 0
         ? footprints.reduce((area, footprint) => area.union(footprint))
         : new g.Rect(0, 0, 0, 0);
@@ -288,7 +291,7 @@ function loadGroup(stencil: ui.Stencil, group: string, shapes: dia.Cell[]): void
 
 /** Show the images of the diagram in the group of the custom shapes (after an upload, after loading a diagram). */
 export function loadCustomShapes(stencil: ui.Stencil, images: ImageLibrary): void {
-    loadGroup(stencil, 'custom', customShapes(images));
+    stencil.loadGroup(customShapes(images), 'custom');
 }
 
 /** A button in the group of the custom shapes: it uploads images (into the diagram, see `onUpload`). */

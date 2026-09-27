@@ -1,9 +1,10 @@
 import type { dia } from '@joint/plus';
 import type { LiquidState, Panel } from './shapes/Panel';
+import { BOX_POSITIONS } from './shapes/ConveyorBelt';
 
 /*
  * The animations of the runtime mode (the Web Animations API on the views of the cells):
- * the rotors spin and the agitators stir while the power is on, the liquid flows through the pipes and the open valves,
+ * the rotors spin, the agitators stir and the conveyors carry while the power is on, the liquid flows through the pipes and the open valves,
  * the flames flicker, the smoke rises, the liquid in a level gauge rises and falls to its new level.
  * Nothing is animated while the diagram is edited.
  *
@@ -49,6 +50,30 @@ function stir(view: dia.CellView, height: number, duration: number): Animation[]
     ], { ...LOOP, duration, easing: 'ease-in-out' })];
 }
 
+/**
+ * The boxes ride on the belt: each moves to where the next one was (a step apart), the front one fading out
+ * at the end of the belt while the back one fades in - so the loop is seamless.
+ */
+function carry(view: dia.CellView, duration: number): Animation[] {
+    const [back, front] = [node(view, 'box1'), node(view, 'box2')];
+    if (!back || !front) return [];
+    const step = (BOX_POSITIONS[1] - BOX_POSITIONS[0]) * (view.model as dia.Element).size().width;
+    const options = { ...LOOP, duration };
+    return [
+        back.animate([
+            { transform: 'translateX(0)', opacity: 0 },
+            { opacity: 1, offset: 0.2 },
+            { transform: `translateX(${step}px)`, opacity: 1 }
+        ], options),
+        front.animate([
+            { transform: 'translateX(0)', opacity: 1 },
+            // Fading out before it gets off the end of the belt
+            { opacity: 1, offset: 0.55 },
+            { transform: `translateX(${step}px)`, opacity: 0 }
+        ], options)
+    ];
+}
+
 const isOn = (model: dia.Cell) => Boolean(model.get('power'));
 
 /** Whether the liquid passes the element: a switched off pump or a closed valve stops it. */
@@ -90,6 +115,7 @@ const center = (cellView: dia.CellView): [number, number] => {
 const animators: Record<string, Animator> = {
     // The rotor and the spokes are drawn around the center already (their groups are moved there).
     Pump: view => isOn(view.model) ? spin(node(view, 'rotor'), [0, 0], 1000) : [],
+    ConveyorBelt: view => isOn(view.model) ? carry(view, 2000) : [],
     // The impellers at the bottom of the shafts (see `MixingTank`, `Reactor`)
     MixingTank: view => isOn(view.model) ? stir(view, 0.8, 900) : [],
     Reactor: view => isOn(view.model) ? stir(view, 0.75, 1100) : [],

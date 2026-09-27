@@ -10,10 +10,10 @@ An editor of a SCADA plant diagram, built with JointJS+, with a runtime mode whe
   - **Custom** - uploaded images. They are stored on the graph (`graph.get('images')`) and an element refers to its image by id, so an image is saved once and is in the DOM once per paper (`images.ts`: a `<symbol>` in the paper defs, a `<use>` in each element). An element whose image is not in the diagram (pasted from another one) shows a placeholder.
 - **Editing** - on a grid (`GRID_SIZE`), elements resize in two grid steps; snaplines; selection by click, `Ctrl` / `Cmd` / `Shift` + click and `Shift` + drag (a region); `ui.FreeTransform` and link tools for a single selection, frames for a multiple one; copy / cut / paste (`ui.Clipboard`); undo / redo (`dia.CommandManager`).
 - **Pipes** - dragged from the palette and connected with the arrowheads: to a pipe stub (a port) if the element has any, otherwise to its side (`connectionStrategy` in `connections.ts` pins the anchor to the side nearest to the pointer, relative to the size). A signal line connects to the body of an element, nothing connects to a label. The routing (straight, orthogonal, curved) is chosen in the inspector (`shapes/routing.ts`).
-- **Layers** - `pipes`, `equipment` and `instruments` (`layers.ts`): a pipe is under the equipment, a level panel over its tank.
-- **Inspector** - `ui.Inspector` for a single selected cell: the tag, the texts, the values and thresholds, whether the control is used, the routing of a link, the text, size and color of a label.
+- **Layers** - `background`, `pipes`, `equipment`, `instruments` and `foreground` (`layers.ts`): a pipe is under the equipment, a level panel over its tank; a cell is put in another layer in the inspector (the logo of the example is in the background).
+- **Inspector** - `ui.Inspector` for a single selected cell: the tag, the texts, the values and thresholds, whether the control is used, the routing of a link, the text, size and color of a label, the layer.
 - **Save / open** - JSON from `graph.toJSON()`: the cells, the images and the favorites (not the layers). A file is loaded into a scratch graph first, so an invalid one doesn't replace the diagram.
-- **Runtime mode** - the palette, the history and the file buttons don't exist in it. `simulation.ts` sends random updates addressed by the element tags; `animations.ts` spins the rotors and the agitators, moves the liquid through the pipes, the control valves and the level panels, and animates the flames, the smoke and the alarm. The controls (HTML in highlighters) are operated in this mode only; while editing they are `inert`.
+- **Runtime mode** - the palette, the history and the file buttons don't exist in it. `simulation.ts` sends random updates addressed by the element tags; `animations.ts` spins the rotors and the agitators, carries the boxes of a conveyor, moves the liquid through the pipes, the control valves and the level panels, and animates the flames, the smoke and the alarm. The controls (HTML in highlighters) are operated in this mode only; while editing they are `inert`.
 - **Light / dark** - the design tokens in `styles.css`; in the dark scheme CSS maps the gradient stops of the shapes to blue steel.
 - **Tooltips** - `ui.Tooltip` for every element with `data-tooltip`.
 
@@ -53,7 +53,7 @@ src/
   simulation.ts    the mock of the plant
   animations.ts    the runtime animations
   navigator.ts     the minimap
-  diagram/         the example (a boiler house)
+  diagram/         the example: a boiler house, a JSON file as saved by the Save button (with the JointJS logo as an image)
   shapes/          the shapes (see Shape features); ports.ts the pipe stubs, footprint.ts the area a shape takes
   controllers/     the event handling
 ```

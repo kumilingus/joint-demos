@@ -1,0 +1,2738 @@
+{
+  "cells": [
+    {
+      "source": {
+        "id": "92f4d111-ba18-41fb-940a-3a2d5b32fa09",
+        "anchor": {
+          "name": "right",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "37a68821-71c8-475e-ae95-32a4ae7c75ff",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "0f2dbc88-648f-44b6-b7f0-6ba98a215bd8"
+    },
+    {
+      "source": {
+        "id": "37a68821-71c8-475e-ae95-32a4ae7c75ff",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "edff9a04-428d-442e-8c89-8d342499565b",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "bfafdc8b-fdfc-4ca0-8e45-ee900da520bc"
+    },
+    {
+      "source": {
+        "id": "edff9a04-428d-442e-8c89-8d342499565b",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "907c2990-e903-4d79-b81e-6081359dbddc",
+        "anchor": {
+          "name": "left",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "013c0bfe-71a7-4e37-ba34-9818e719aebb"
+    },
+    {
+      "source": {
+        "id": "907c2990-e903-4d79-b81e-6081359dbddc",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "dy": -100
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "b61fa3c3-f74b-49ee-a725-05b14d4e0fb7",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "af8455f8-49a6-4936-aa9e-2cd6862ca7eb"
+    },
+    {
+      "source": {
+        "id": "907c2990-e903-4d79-b81e-6081359dbddc",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "dy": 70
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "19798285-91a4-4270-b36c-c2b0563f2981",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "89f2c0d6-9de7-4831-88dd-46511e035378"
+    },
+    {
+      "source": {
+        "id": "b61fa3c3-f74b-49ee-a725-05b14d4e0fb7",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "7e28b6d6-e4b2-4fa7-8fb9-ad7e2da1652a",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "75c4fb78-f919-4e90-ae23-c9a415fce7da"
+    },
+    {
+      "source": {
+        "id": "19798285-91a4-4270-b36c-c2b0563f2981",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "b21f6eac-22e3-4626-bac3-563c54fe63c3",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "3ff60656-3c53-425b-84ee-969c6058dcb0"
+    },
+    {
+      "source": {
+        "id": "7e28b6d6-e4b2-4fa7-8fb9-ad7e2da1652a",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
+        "anchor": {
+          "name": "top",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "36c7594e-97c2-48f9-ba94-00331ed3ea6e"
+    },
+    {
+      "source": {
+        "id": "b21f6eac-22e3-4626-bac3-563c54fe63c3",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
+        "anchor": {
+          "name": "bottom",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "0d72a9b0-6279-4572-82ae-1a30f3a87169"
+    },
+    {
+      "source": {
+        "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
+        "anchor": {
+          "name": "right",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "1d70ffef-d846-4dd8-a083-f8e6df47522f",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "ef9cd832-e8f7-4bcf-87dc-edea86831c4f"
+    },
+    {
+      "source": {
+        "id": "1d70ffef-d846-4dd8-a083-f8e6df47522f",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "510e490b-1493-44ed-8387-aca25a40ae2c",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "fab80060-78de-4e3d-bfdd-938bda5eecdc"
+    },
+    {
+      "source": {
+        "id": "510e490b-1493-44ed-8387-aca25a40ae2c",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "d19f18ca-627c-444c-80a2-068c00525a20",
+        "anchor": {
+          "name": "left",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "60441b5e-f1f5-4a7f-af53-e4f00721fdf6"
+    },
+    {
+      "source": {
+        "id": "d19f18ca-627c-444c-80a2-068c00525a20",
+        "anchor": {
+          "name": "right",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "d2e97f11-f42a-41d0-8b87-3fd404bd0b6e",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "dy": -40
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "9ac03fad-3615-49ff-8091-67b17d9cdaee"
+    },
+    {
+      "source": {
+        "id": "d19f18ca-627c-444c-80a2-068c00525a20",
+        "anchor": {
+          "name": "bottom",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "5eb21bfc-fc24-46dd-9eaa-7cf120239722",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "dy": 40
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "vertices": [
+        {
+          "x": 1360,
+          "y": 520
+        },
+        {
+          "x": 1690,
+          "y": 520
+        },
+        {
+          "x": 1690,
+          "y": 420
+        }
+      ],
+      "id": "a75a17ca-614e-450a-b1f8-d98d7a39b8a1"
+    },
+    {
+      "source": {
+        "id": "d2e97f11-f42a-41d0-8b87-3fd404bd0b6e",
+        "anchor": {
+          "name": "top",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
+        "anchor": {
+          "name": "bottom",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "0764439f-589e-4f34-a079-56194a2bc73c"
+    },
+    {
+      "source": {
+        "id": "5eb21bfc-fc24-46dd-9eaa-7cf120239722",
+        "anchor": {
+          "name": "top",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
+        "anchor": {
+          "name": "bottom",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "9128e9c1-e279-4c0f-a807-75271a9ab751"
+    },
+    {
+      "source": {
+        "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
+        "anchor": {
+          "name": "right",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
+        "anchor": {
+          "name": "left",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "b49a7afd-89b0-4a53-af9c-a5476efeda48"
+    },
+    {
+      "source": {
+        "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
+        "anchor": {
+          "name": "right",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "89503623-a5a4-4323-acda-a4dc59ac2293",
+        "port": "left",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "290d23e4-ea74-470f-997c-9ebc28330c0d"
+    },
+    {
+      "source": {
+        "id": "89503623-a5a4-4323-acda-a4dc59ac2293",
+        "port": "right",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "rotate": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "640a02e9-3a97-4add-bbb9-f715328e9222",
+        "anchor": {
+          "name": "left",
+          "args": {}
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "02907c7a-a21c-4112-9402-a4820cec8fc9"
+    },
+    {
+      "source": {
+        "id": "d2e97f11-f42a-41d0-8b87-3fd404bd0b6e",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "dy": -20
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "7756cf04-61db-4ae9-aab5-abb234a61d68",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "dy": 80
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {
+        "line": {
+          "stroke": "#9aa3ab"
+        }
+      },
+      "id": "e3658874-dcc3-4dfa-8aee-d2beada85c0d"
+    },
+    {
+      "source": {
+        "id": "5eb21bfc-fc24-46dd-9eaa-7cf120239722",
+        "anchor": {
+          "name": "right",
+          "args": {
+            "dy": -20
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "386baf6b-b77e-4fb3-bbfd-926d870e29aa",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "dy": 80
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {
+        "line": {
+          "stroke": "#9aa3ab"
+        }
+      },
+      "id": "314733b8-9f08-44fa-96c6-8d69bf527440"
+    },
+    {
+      "position": {
+        "x": 0,
+        "y": 380
+      },
+      "size": {
+        "width": 120,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Zone",
+      "facing": "right",
+      "attrs": {
+        "body": {
+          "transform": "translate(calc(w), 0) scale(-1, 1)"
+        },
+        "label": {
+          "text": "Water Supply",
+          "x": "calc(w / 2 - 10)"
+        }
+      },
+      "tag": "Z-101",
+      "id": "92f4d111-ba18-41fb-940a-3a2d5b32fa09",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 170,
+        "y": 370
+      },
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "HandValve",
+      "open": true,
+      "attrs": {
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "label": {
+          "text": "Inlet Valve"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)",
+                "y": "calc(h / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 50,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 0,
+            "position": {},
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {}
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "HV-101",
+      "id": "37a68821-71c8-475e-ae95-32a4ae7c75ff",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 290,
+        "y": 360
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "Filter",
+      "attrs": {
+        "label": {
+          "text": "Softener"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)",
+                "y": "calc(h / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 60,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 0,
+            "position": {},
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {}
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "F-101",
+      "id": "edff9a04-428d-442e-8c89-8d342499565b",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 430,
+        "y": 250
+      },
+      "size": {
+        "width": 160,
+        "height": 300
+      },
+      "angle": 0,
+      "type": "LiquidTank",
+      "attrs": {
+        "label": {
+          "text": "Feedwater Tank"
+        }
+      },
+      "tag": "TK-101",
+      "id": "907c2990-e903-4d79-b81e-6081359dbddc",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 690,
+        "y": 230
+      },
+      "size": {
+        "width": 100,
+        "height": 100
+      },
+      "angle": 0,
+      "type": "Pump",
+      "power": 1,
+      "attrs": {
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "label": {
+          "text": "Feed Pump 1"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 80,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 1,
+            "position": {
+              "args": {
+                "y": "calc(0.7 * h)"
+              }
+            },
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {
+                "y": "calc(0.3 * h)"
+              }
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "P-101",
+      "id": "b61fa3c3-f74b-49ee-a725-05b14d4e0fb7",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 690,
+        "y": 400
+      },
+      "size": {
+        "width": 100,
+        "height": 100
+      },
+      "angle": 0,
+      "type": "Pump",
+      "power": 0,
+      "attrs": {
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "label": {
+          "text": "Feed Pump 2"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 80,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 1,
+            "position": {
+              "args": {
+                "y": "calc(0.7 * h)"
+              }
+            },
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {
+                "y": "calc(0.3 * h)"
+              }
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "P-102",
+      "id": "19798285-91a4-4270-b36c-c2b0563f2981",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 870,
+        "y": 240
+      },
+      "size": {
+        "width": 60,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "CheckValve",
+      "attrs": {
+        "label": {
+          "text": "NRV 1"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)",
+                "y": "calc(h / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 50,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 0,
+            "position": {},
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {}
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "NRV-101",
+      "id": "7e28b6d6-e4b2-4fa7-8fb9-ad7e2da1652a",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 870,
+        "y": 410
+      },
+      "size": {
+        "width": 60,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "CheckValve",
+      "attrs": {
+        "label": {
+          "text": "NRV 2"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)",
+                "y": "calc(h / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 50,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 0,
+            "position": {},
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {}
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "NRV-102",
+      "id": "b21f6eac-22e3-4626-bac3-563c54fe63c3",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 980,
+        "y": 320
+      },
+      "size": {
+        "width": 40,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Join",
+      "attrs": {},
+      "tag": "J-101",
+      "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1230,
+        "y": 310
+      },
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "ControlValve",
+      "open": 0.75,
+      "attrs": {
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "cover": {
+          "width": 6
+        },
+        "label": {
+          "text": "Feed Valve"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)",
+                "y": "calc(h / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 50,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 0,
+            "position": {},
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {}
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "CV-101",
+      "id": "510e490b-1493-44ed-8387-aca25a40ae2c",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1340,
+        "y": 320
+      },
+      "size": {
+        "width": 40,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Join",
+      "attrs": {},
+      "tag": "J-102",
+      "id": "d19f18ca-627c-444c-80a2-068c00525a20",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1430,
+        "y": 300
+      },
+      "size": {
+        "width": 120,
+        "height": 160
+      },
+      "angle": 0,
+      "type": "Boiler",
+      "attrs": {
+        "label": {
+          "text": "Boiler 1"
+        }
+      },
+      "tag": "B-101",
+      "id": "d2e97f11-f42a-41d0-8b87-3fd404bd0b6e",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1590,
+        "y": 160
+      },
+      "size": {
+        "width": 60,
+        "height": 240
+      },
+      "angle": 0,
+      "type": "Chimney",
+      "attrs": {
+        "label": {
+          "text": "Stack 1"
+        }
+      },
+      "tag": "ST-101",
+      "id": "7756cf04-61db-4ae9-aab5-abb234a61d68",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1730,
+        "y": 300
+      },
+      "size": {
+        "width": 120,
+        "height": 160
+      },
+      "angle": 0,
+      "type": "Boiler",
+      "attrs": {
+        "label": {
+          "text": "Boiler 2"
+        }
+      },
+      "tag": "B-102",
+      "id": "5eb21bfc-fc24-46dd-9eaa-7cf120239722",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1890,
+        "y": 160
+      },
+      "size": {
+        "width": 60,
+        "height": 240
+      },
+      "angle": 0,
+      "type": "Chimney",
+      "attrs": {
+        "label": {
+          "text": "Stack 2"
+        }
+      },
+      "tag": "ST-102",
+      "id": "386baf6b-b77e-4fb3-bbfd-926d870e29aa",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1470,
+        "y": 20
+      },
+      "size": {
+        "width": 40,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Join",
+      "attrs": {},
+      "tag": "J-103",
+      "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1770,
+        "y": 20
+      },
+      "size": {
+        "width": 40,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Join",
+      "attrs": {},
+      "tag": "J-104",
+      "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 2010,
+        "y": 10
+      },
+      "size": {
+        "width": 160,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "HeatExchanger",
+      "attrs": {
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "label": {
+          "text": "Process Heater"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)",
+                "y": "calc(h / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 110,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 0,
+            "position": {},
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {}
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "HX-101",
+      "id": "89503623-a5a4-4323-acda-a4dc59ac2293",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 2240,
+        "y": 20
+      },
+      "size": {
+        "width": 120,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Zone",
+      "facing": "left",
+      "attrs": {
+        "body": {
+          "transform": null
+        },
+        "label": {
+          "text": "Process",
+          "x": "calc(w / 2 + 10)"
+        }
+      },
+      "tag": "Z-102",
+      "id": "640a02e9-3a97-4add-bbb9-f715328e9222",
+      "layer": "equipment"
+    },
+    {
+      "position": {
+        "x": 1980,
+        "y": 140
+      },
+      "size": {
+        "width": 500,
+        "height": 140
+      },
+      "angle": 0,
+      "type": "CustomImage",
+      "attrs": {
+        "image": {
+          "imageId": "image-jointjs-logo"
+        },
+        "label": {
+          "text": ""
+        }
+      },
+      "tag": "IMG-101",
+      "id": "a6b1a638-988b-4a67-af1a-cfb29d8dba93",
+      "layer": "background",
+      "z": 1
+    },
+    {
+      "position": {
+        "x": 460,
+        "y": 300
+      },
+      "size": {
+        "width": 100,
+        "height": 240
+      },
+      "angle": 0,
+      "type": "Panel",
+      "level": 65,
+      "thresholds": {
+        "low": 20,
+        "high": 80
+      },
+      "attrs": {
+        "panelBody": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "liquid": {
+          "fill": "#0EAD69",
+          "y": "calc(0.35 * h + 4.5)",
+          "height": "calc(0.65 * h - 19.5)"
+        },
+        "lowMark": {
+          "d": "M calc(0.1 * w) calc(0.8 * h - 9) H calc(0.5 * w)"
+        },
+        "highMark": {
+          "d": "M calc(0.1 * w) calc(0.2 * h + 9) H calc(0.5 * w)"
+        }
+      },
+      "tag": "LI-101",
+      "id": "f5d65fb4-7195-49e5-b6e1-97e172cfa5a1",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 1090,
+        "y": 310
+      },
+      "size": {
+        "width": 80,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "FlowMeter",
+      "attrs": {
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "value": {
+          "text": "18.6"
+        },
+        "label": {
+          "text": "Feedwater Flow"
+        }
+      },
+      "ports": {
+        "groups": {
+          "pipes": {
+            "position": {
+              "name": "absolute",
+              "args": {
+                "x": "calc(w / 2)",
+                "y": "calc(h / 2)"
+              }
+            },
+            "markup": [
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeBody"
+              },
+              {
+                "namespaceURI": "http://www.w3.org/2000/svg",
+                "tagName": "rect",
+                "style": {},
+                "selector": "pipeEnd"
+              }
+            ],
+            "size": {
+              "width": 60,
+              "height": 30
+            },
+            "attrs": {
+              "portRoot": {
+                "magnet": "passive",
+                "magnetSelector": "pipeEnd",
+                "highlighterSelector": "pipeEnd"
+              },
+              "pipeBody": {
+                "width": "calc(w)",
+                "height": "calc(h)",
+                "y": "calc(h / -2)",
+                "fill": {
+                  "type": "linearGradient",
+                  "stops": [
+                    {
+                      "offset": "0%",
+                      "color": "#737c84"
+                    },
+                    {
+                      "offset": "10%",
+                      "color": "#a3acb4"
+                    },
+                    {
+                      "offset": "24%",
+                      "color": "#e9edf0"
+                    },
+                    {
+                      "offset": "32%",
+                      "color": "#ffffff"
+                    },
+                    {
+                      "offset": "48%",
+                      "color": "#d6dce1"
+                    },
+                    {
+                      "offset": "78%",
+                      "color": "#a7b0b8"
+                    },
+                    {
+                      "offset": "100%",
+                      "color": "#6a737b"
+                    }
+                  ],
+                  "attrs": {
+                    "x1": "0%",
+                    "y1": "0%",
+                    "x2": "0%",
+                    "y2": "100%"
+                  }
+                }
+              },
+              "pipeEnd": {
+                "width": 10,
+                "height": "calc(h+6)",
+                "y": "calc(h / -2 - 3)",
+                "stroke": "#6a737b",
+                "strokeWidth": 3,
+                "fill": "white"
+              }
+            }
+          }
+        },
+        "items": [
+          {
+            "id": "left",
+            "group": "pipes",
+            "z": 0,
+            "position": {},
+            "attrs": {
+              "pipeBody": {
+                "x": "calc(-1 * w)"
+              },
+              "pipeEnd": {
+                "x": "calc(-1 * w)"
+              }
+            }
+          },
+          {
+            "id": "right",
+            "group": "pipes",
+            "z": 0,
+            "position": {
+              "args": {}
+            },
+            "attrs": {
+              "pipeEnd": {
+                "x": "calc(w - 10)"
+              }
+            }
+          }
+        ]
+      },
+      "tag": "FM-101",
+      "id": "1d70ffef-d846-4dd8-a083-f8e6df47522f",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 1100,
+        "y": 200
+      },
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Instrument",
+      "attrs": {
+        "tag": {
+          "text": "FT"
+        }
+      },
+      "tag": "FT-101",
+      "id": "d8f8f326-0a92-4347-9019-11ad27688f98",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 1560,
+        "y": -110
+      },
+      "size": {
+        "width": 120,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Display",
+      "attrs": {
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "value": {
+          "text": "10.4"
+        },
+        "label": {
+          "text": "Steam Pressure"
+        }
+      },
+      "tag": "DI-101",
+      "id": "21ce6895-5426-442f-8d93-16e340013c60",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 1710,
+        "y": -110
+      },
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "PressureGauge",
+      "value": 60,
+      "thresholds": {
+        "low": 0,
+        "high": 75
+      },
+      "attrs": {
+        "lowZone": {
+          "d": "M 0 0"
+        },
+        "highZone": {
+          "d": "M 20.33 -8.42 A 22 22 0 0 1 15.56 15.56"
+        },
+        "needle": {
+          "style": {
+            "transform": "rotate(27.0deg)"
+          }
+        },
+        "label": {
+          "text": "Header"
+        }
+      },
+      "tag": "PG-101",
+      "id": "b6830c2e-7065-41bd-bdcb-265849d8b909",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 1850,
+        "y": -110
+      },
+      "size": {
+        "width": 40,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Beacon",
+      "power": 0,
+      "attrs": {
+        "glow": {
+          "display": "none"
+        },
+        "lamp": {
+          "fill": "#9aa3ab"
+        },
+        "body": {
+          "fill": {
+            "attrs": {}
+          }
+        },
+        "label": {
+          "text": "High Pressure"
+        }
+      },
+      "tag": "AL-101",
+      "id": "726dd0a3-f351-4851-9fe7-24a2a0bb0a96",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 2200,
+        "y": -150
+      },
+      "size": {
+        "width": 20,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Thermometer",
+      "value": 75,
+      "attrs": {
+        "column": {
+          "y": "calc(0.230 * h)",
+          "height": "calc(0.720 * h - 8)"
+        },
+        "label": {
+          "text": "Steam Temp."
+        }
+      },
+      "tag": "TI-101",
+      "id": "1731c148-59b4-440b-87cc-a4a38964522b",
+      "layer": "instruments"
+    },
+    {
+      "source": {
+        "id": "d8f8f326-0a92-4347-9019-11ad27688f98",
+        "anchor": {
+          "name": "bottom"
+        }
+      },
+      "target": {
+        "id": "1d70ffef-d846-4dd8-a083-f8e6df47522f",
+        "anchor": {
+          "name": "top"
+        }
+      },
+      "type": "SignalLine",
+      "layer": "instruments",
+      "routing": "straight",
+      "router": {
+        "name": "normal"
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {},
+      "id": "4b339ca0-8d89-4279-82d7-2c21cc136a15"
+    }
+  ],
+  "favorites": [
+    "Pipe",
+    "Join"
+  ],
+  "images": {
+    "image-jointjs-logo": {
+      "href": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgdmVyc2lvbj0iMS4yIiBpZD0iamotbG9nbyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTAwMCAyODAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNTYiPjxwYXRoIGZpbGw9IiNEQTNENDAiIGQ9Im0xMzAuNzEgMjI1LjcxbC0yNy4yOC0yNy4yN3EwLTAuMDEgMC0wLjAxaDc2LjQxdi0xMDMuNjhoMjcuMjhjMCAwIDAgNTkuNCAwIDk4LjE5bC0zMi43NyAzMi43N3ptMzMwLjM3LTExNi45N2MxMC42OCAxMC40MSAxNy4yOSAyNS44NyAxNy4yOSA0Ni4xMyAwIDIwLjI2LTYuNjEgMzUuNzEtMTcuMjkgNDYuMTMtMTAuNjkgMTAuNDEtMjUuNDcgMTUuNzktNDEuOTEgMTUuNzktMTYuNDQgMC0zMS4yMi01LjM4LTQxLjkxLTE1Ljc5LTEwLjY4LTEwLjQyLTE3LjI5LTI1Ljg3LTE3LjI5LTQ2LjEzIDAtMjAuMjYgNi42MS0zNS43MiAxNy4yOS00Ni4xMyAxMC42OS0xMC40MSAyNS40Ny0xNS43OSA0MS45MS0xNS43OSAxNi40NCAwIDMxLjIyIDUuMzggNDEuOTEgMTUuNzl6bTQwMS40MS0xOC42MXEtOC4yMy03LjE0LTIyLjc2LTcuMTUtMTEuNzcgMC4wMS0xOC4zIDUuMDctNi41OSA1LjExLTYuNTkgMTQuNDIgMCA2LjY3IDMuNDcgMTAuODkgMy40MiA0LjE4IDEwLjI3IDcuNTkgNi43NyAzLjM3IDIwLjk2IDguNmgwLjAxcTE0Ljk4IDUuODUgMjMuOTUgMTAuNjIgOC45MiA0Ljc0IDE1LjMxIDEzLjI2IDYuMzggOC40OCA2LjM4IDIxLjE2IDAgMTIuNDgtNi4yOCAyMi4wNS02LjI5IDkuNTgtMTguMDMgMTQuODYtMTEuNzggNS4yOS0yNy43NiA1LjI5LTE1Ljk5IDAtMjguMDktNS40LTEyLjA1LTUuMzktMTguNTUtMTUuMTgtNi40OS05Ljc5LTYuNDktMjIuNzF2LTcuNjZoMjMuMzd2Ni4zNnEtMC4wMSAxMC4xNyA4LjcxIDE2LjkyIDguNjQgNi43IDIyLjk1IDYuNyAxMy4wNS0wLjAxIDE5LjY5LTUuNzQgNi42OS01Ljc2IDYuNjktMTQuODQtMC4wMS02LjIzLTMuNjktMTAuNTYtMy42My00LjI5LTEwLjM3LTcuODEtNi42Ny0zLjQ4LTIwLjAxLTguNyAwIDAtMC4wMSAwLTE0Ljk4LTUuNjQtMjQuMjctMTAuNjMtOS4yMy00Ljk1LTE1LjQyLTEzLjQ2LTYuMTYtOC40OS02LjE2LTIxLjE3IDAtMTguOTMgMTMuMzktMjkuOSAxMy40NS0xMSAzNS45My0xMC45OSAxNS43NyAwIDI3Ljg2IDUuNjEgMTIuMDcgNS42IDE4Ljc4IDE1LjYyIDYuNyAxMC4wMSA2LjcgMjMuMTN2NS45MmgtMjMuMzd2LTQuNjFxMC0xMC4zOC04LjI3LTE3LjU2em0tMzE4LjU0IDE4LjM1aDEuNTJjNy4yLTkuNiAxOC42My0xNS41MyAzNC45NC0xNS41MyAxNC4xMiAwIDI1LjUxIDQuMjMgMzMuMzggMTIuMTggNy44OCA3Ljk1IDEyLjI3IDE5LjY1IDEyLjI3IDM0Ljcxdjc0Ljk2aC0yMS43NHYtNzEuNzFjMC05Ljg0LTIuNDYtMTcuMzctNy4yNC0yMi40Mi00Ljc4LTUuMDMtMTEuODQtNy41NS0yMC44OC03LjU1LTEwLjA5IDAtMTguMTkgMy4wNS0yMy43NCA5LjQtNS4wNSA1Ljc5LTcuOTkgMTQuMjYtOC41MSAyNS40N3Y2Ni41M2gtMjEuODN2LTExOS43NmgyMS44M3ptLTE5NC45NS0xMy43M2MwIDAgMCA2My41OCAwIDk4LjJsLTIxLjg1IDIxLjg1Yy0xMC4yOSAwLTIyLjUzIDAtMzIuODEgMGwtMjEuODMtMjEuODNxMCAwIDAgMGg1NC42NnYtOTguMjJ6bTM1My40NiA5OC4yMmwtMjEuODMgMjEuODNjMCAwLTEwLjg5IDAtMjEuOCAwbC0yMS44NS0yMS44NXYtMTMwLjk0aDIxLjgzdjMyLjc0aDMyLjc0djIxLjgzaC0zMi43NHY3Ni4zOWg5OC4zMXYtMTMwLjk2aDIxLjgzYzAgMCAwIDg4LjcgMCAxMzAuOTRsLTIxLjg1IDIxLjg1Yy0xMC4yOSAwLTIyLjUzIDAtMzIuODEgMCAwIDAtMjEuODMtMjEuODMtMjEuODMtMjEuODN6bS0yMTMuMTctOTguMjJoMjEuODN2MTE5Ljc3aC0yMS44M3ptLTk2LjggMjkuMzZjLTYuNiA3LjA1LTEwLjQ0IDE3LjQ0LTEwLjQ0IDMwLjc1IDAgMTMuMyAzLjg0IDIzLjY5IDEwLjQ0IDMwLjc0IDYuNTcgNy4wMiAxNS44NiAxMC42OSAyNi42OCAxMC42OSAxMC44MiAwIDIwLjExLTMuNjcgMjYuNjgtMTAuNjkgNi42MS03LjA1IDEwLjQ1LTE3LjQ0IDEwLjQ1LTMwLjc0IDAtMTMuMzEtMy44NC0yMy43LTEwLjQ1LTMwLjc1LTYuNTctNy4wMS0xNS44Ni0xMC42OS0yNi42OC0xMC42OS0xMC44MiAwLTIwLjExIDMuNjgtMjYuNjggMTAuNjl6bS0yOTkuOTkgNjMuMzhsLTI3LjI4LTI3LjI4cTAgMCAwIDBoNzYuNHYtMTAzLjY5aDI3LjI5YzAgMCAwIDU5LjQgMCA5OC4ybC0zMi43NyAzMi43N3ptMzk2Ljc5LTEyNS40OGgyMS44MnYyMS44MmgtMjEuODJ6bS0xNjIuMTEgMGgyMS44MnYyMS44M2gtMjEuODJ6IiAvPjwvc3ZnPgo=",
+      "width": 200,
+      "height": 56,
+      "name": "JointJS"
+    }
+  }
+}

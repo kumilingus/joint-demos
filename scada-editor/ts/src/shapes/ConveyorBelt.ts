@@ -4,14 +4,22 @@ import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { Shape, type ControlKind } from './Shape';
 
-const roller = (cx: string) => ({
+/**
+ * A roller of the belt, as big as the belt is tall (the shorter side, `s`), at `cx` - from the right end
+ * if `fromRight` (`calc()` takes one variable: the roller is translated to the right end).
+ */
+const roller = (cx: string, fromRight = false) => ({
     cx,
     cy: 'calc(h / 2)',
-    r: 'calc(h / 2 - 4)',
+    r: 'calc(s / 2 - 4)',
+    ...(fromRight ? { transform: 'translate(calc(w), 0)' } : {}),
     fill: sphereGradient,
     stroke: METAL_STROKE,
     strokeWidth: 2
 });
+
+/** Where the boxes are on the belt (relative to its width): one step of the carrying apart (see `animations.ts`) */
+export const BOX_POSITIONS = [0.2, 0.6];
 
 const box = (x: number) => ({
     x: `calc(${x} * w)`,
@@ -57,18 +65,18 @@ export class ConveyorBelt extends Shape {
                 body: {
                     width: 'calc(w)',
                     height: 'calc(h)',
-                    rx: 'calc(h / 2)',
-                    ry: 'calc(h / 2)',
+                    rx: 'calc(s / 2)',
+                    ry: 'calc(s / 2)',
                     fill: '#444',
                     stroke: '#222',
                     strokeWidth: 2
                 },
-                // The end rollers are in the rounded ends of the belt (half of the default height from the edges).
-                roller1: roller('20'),
+                // The end rollers are in the rounded ends of the belt.
+                roller1: roller('calc(s / 2)'),
                 roller2: roller('calc(w / 2)'),
-                roller3: roller('calc(w - 20)'),
-                box1: box(0.2),
-                box2: box(0.6),
+                roller3: roller('calc(-0.5 * s)', true),
+                box1: box(BOX_POSITIONS[0]),
+                box2: box(BOX_POSITIONS[1]),
                 label: {
                     ...labelAttributes,
                     text: 'Conveyor',

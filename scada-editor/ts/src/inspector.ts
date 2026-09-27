@@ -1,6 +1,7 @@
 import { ui, type dia } from '@joint/plus';
 import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
+import { Layer } from './const';
 
 const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
@@ -126,12 +127,31 @@ const LINK_NAMES: Record<string, string> = {
     SignalLine: 'Signal line'
 };
 
+/** The layer of the graph the cell is in (moved between them when changed, see `layers.ts`). */
+const layerInput = (group: string) => ({
+    layer: {
+        type: 'select',
+        label: 'Layer',
+        options: [
+            { value: Layer.Foreground, content: 'Foreground' },
+            { value: Layer.Instruments, content: 'Instruments' },
+            { value: Layer.Equipment, content: 'Equipment' },
+            { value: Layer.Pipes, content: 'Pipes' },
+            { value: Layer.Background, content: 'Background' }
+        ],
+        group,
+        index: 100
+    }
+});
+
 export function openInspector(el: HTMLElement, cell: dia.Cell): void {
     closeInspector();
     const linkName = LINK_NAMES[cell.get('type')] ?? 'Pipe';
     ui.Inspector.create(el, {
         cell,
-        inputs: cell.isElement() ? getInputs(cell as dia.Element) : isRouted(cell) ? linkInputs : {},
+        inputs: cell.isElement()
+            ? { ...getInputs(cell as dia.Element), ...layerInput('general') }
+            : { ...(isRouted(cell) ? linkInputs : {}), ...layerInput('link') },
         groups: { ...groups, link: { ...groups!.link, label: linkName }}
     });
 }

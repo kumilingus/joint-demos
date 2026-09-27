@@ -5,7 +5,7 @@ import { GRID_SIZE, SELECTION_COLOR } from '../const';
 import { closeInspector, openInspector } from '../inspector';
 import { closePaletteShape } from '../palette';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../tools';
-import { Shape } from '../shapes/Shape';
+import { type ResizeOptions, Shape } from '../shapes/Shape';
 import { Pipe } from '../shapes/Pipe';
 
 const SELECTION_HIGHLIGHTER_ID = 'selection';
@@ -159,6 +159,16 @@ function outlinePipe(cellView: dia.CellView) {
     });
 }
 
+/** The resize handles for the constraints: all of them, unless the width or the height can't change. */
+function resizeDirections({ minWidth, maxWidth, minHeight, maxHeight }: ResizeOptions): dia.Direction[] {
+    const fixedWidth = minWidth !== undefined && minWidth === maxWidth;
+    const fixedHeight = minHeight !== undefined && minHeight === maxHeight;
+    if (fixedWidth && fixedHeight) return [];
+    if (fixedWidth) return ['top', 'bottom'];
+    if (fixedHeight) return ['left', 'right'];
+    return ['top-left', 'top', 'top-right', 'right', 'bottom-right', 'bottom', 'bottom-left', 'left'];
+}
+
 /** How the shape can be transformed: resized (down to its minimal size, keeping its aspect ratio, ...) and rotated. */
 function getTransformOptions(cell: dia.Cell): Partial<ui.FreeTransform.Options> {
     if (!Shape.isShape(cell)) return {};
@@ -167,6 +177,8 @@ function getTransformOptions(cell: dia.Cell): Partial<ui.FreeTransform.Options> 
         allowRotation: cell.rotatable,
         // No resize handles at all, or the constraints of resizing (the minimal size, ...)
         ...(resizeOptions ? resizeOptions : { resizeDirections: [] }),
+        // A fixed width or height: the handles of the other one only
+        ...(resizeOptions ? { resizeDirections: resizeDirections(resizeOptions) } : {}),
         // The size changes in two steps of the grid: the half of it (the center of the element,
         // where the pipes are often anchored) stays on the grid too.
         resizeGrid: { width: 2 * GRID_SIZE, height: 2 * GRID_SIZE }

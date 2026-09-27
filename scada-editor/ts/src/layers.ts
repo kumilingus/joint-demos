@@ -13,7 +13,7 @@ export function createGraph(): dia.Graph {
     const graph = new dia.Graph({}, { cellNamespace });
     graph.fromJSON({
         cells: [],
-        layers: [{ id: Layer.Pipes }, { id: Layer.Equipment }, { id: Layer.Instruments }],
+        layers: Object.values(Layer).map(id => ({ id })),
         defaultLayer: Layer.Equipment
     });
     return graph;

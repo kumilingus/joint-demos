@@ -172,6 +172,7 @@
 
 /* The labels below the shapes (a zone has its label on its own white body),
    and a label (a text on its own) unless the user has chosen its color */
+:root[data-color-scheme="dark"] .joint-paper [data-type="Thermometer"] > text[joint-selector="reading"],
 :root[data-color-scheme="dark"] .joint-paper [data-type]:not([data-type="Zone"], [data-type="Label"]) > text[joint-selector="label"],
 :root[data-color-scheme="dark"] .joint-paper [data-type="Label"] > text[joint-selector="label"][fill="#350100"] {
     fill: #cfdcee;
@@ -525,6 +526,16 @@ body {
     stroke-linejoin: round;
 }
 
+/* A search hides the links that don't match too (the default CSS of the stencil hides the elements only) */
+.joint-stencil .joint-link.unmatched {
+    display: none;
+}
+
+/* A cleared search shows the empty groups again (the stencil leaves them unmatched): Custom has its upload button. */
+.joint-stencil:not(.stencil-filtered) .group.unmatched:not([hidden]) {
+    display: block;
+}
+
 /* The palette shows the shapes without their labels (a label and a zone are their text). */
 .stencil-panel .joint-paper [data-type]:not([data-type="Label"], [data-type="Zone"]) > text[joint-selector="label"] {
     display: none;
@@ -646,6 +657,7 @@ body {
 /* Text */
 
 .joint-inspector input[type="text"],
+.joint-inspector select,
 .palette-shape-field input {
     width: 100%;
     height: 36px;
@@ -661,6 +673,7 @@ body {
 }
 
 .joint-inspector input[type="text"]:focus,
+.joint-inspector select:focus,
 .palette-shape-field input:focus {
     border-color: var(--ring-strong);
     box-shadow: 0 0 0 3px var(--ring);
@@ -936,6 +949,30 @@ body {
     font-size: 11px;
     font-variant-numeric: tabular-nums;
     text-align: center;
+}
+
+/* A select of the inspector: as the text inputs, with a chevron (in the color of the text, drawn by its field) */
+.joint-inspector select {
+    appearance: none;
+    padding-right: 32px;
+    cursor: pointer;
+}
+
+.joint-inspector .select-field {
+    position: relative;
+}
+
+.joint-inspector .select-field::after {
+    content: '';
+    position: absolute;
+    /* In the middle of the right end of the select (inside the padding of the field) */
+    right: 28px;
+    bottom: 21px;
+    width: 14px;
+    height: 14px;
+    background-color: var(--muted-foreground);
+    mask: var(--icon-chevron) center / contain no-repeat;
+    pointer-events: none;
 }
 
 /* A shape of the palette shown in the inspector panel (clicked in the palette) */

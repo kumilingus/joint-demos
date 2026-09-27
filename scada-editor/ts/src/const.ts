@@ -7,11 +7,16 @@ export enum Mode {
     Runtime = 'runtime'
 }
 
-/** The layers of the graph, from the bottom: the pipes under the equipment, the instruments over it. */
+/**
+ * The layers of the graph, from the bottom: the pipes under the equipment, the instruments over it;
+ * the background and the foreground for what the user puts under or over everything (see the inspector).
+ */
 export enum Layer {
+    Background = 'background',
     Pipes = 'pipes',
     Equipment = 'equipment',
-    Instruments = 'instruments'
+    Instruments = 'instruments',
+    Foreground = 'foreground'
 }
 
 /** The grid: the elements move and resize, and the anchors of the pipes snap, in its steps. */

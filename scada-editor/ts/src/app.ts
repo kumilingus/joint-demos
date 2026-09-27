@@ -3,7 +3,7 @@ import { cellNamespace } from './shapes';
 import { createStencil } from './stencil';
 import { createGraph } from './layers';
 import { createNavigator } from './navigator';
-import { createBoilerHouse } from './diagram/boilerHouse';
+import boilerHouse from './diagram/boilerHouse.json';
 import { ColorScheme, Mode } from './const';
 import {
     canvasColors, fitOptions, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, runtimeFitOptions, snaplinesOptions, tooltipOptions
@@ -119,13 +119,6 @@ export class App {
         this.enterMode(mode);
     }
 
-    load(cells: dia.Cell[]): void {
-        this.graph.resetCells(cells);
-        // Loading the diagram is not undoable.
-        this.history.reset();
-        this.scroller.zoomToFit(fitOptions);
-        this.paper.unfreeze();
-    }
 
     /**
      * Load a diagram saved with `saveDiagram()`: its cells, its images (see `images.ts`) and the favorite
@@ -140,6 +133,7 @@ export class App {
         this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], ...json });
         this.history.reset();
         this.scroller.zoomToFit(fitOptions);
+        this.paper.unfreeze();
     }
 
     /** The colors of the page (the design tokens in `styles.css`) and of the canvas. */
@@ -241,6 +235,7 @@ function storeColorScheme(colorScheme: ColorScheme): void {
 
 export function init(el: HTMLElement = document.querySelector<HTMLElement>('.app')!): App {
     const app = new App(el);
-    app.load(createBoilerHouse());
+    // The example (a boiler house), saved with the Save button: its cells, its images and favorites
+    app.loadJSON(boilerHouse as dia.Graph.JSON);
     return app;
 }
