@@ -155,10 +155,14 @@
     fill: var(--dark-ink);
 }
 
-/* The filled half of a check valve, the cover of a control valve */
-:root[data-color-scheme="dark"] .joint-paper [data-type="CheckValve"] [joint-selector="inlet"],
+/* The cover of a control valve */
 :root[data-color-scheme="dark"] .joint-paper [data-type="ControlValve"] [joint-selector="cover"] {
     fill: var(--dark-ink);
+}
+
+/* The filled half of a check valve: brighter than the steel around it (in the blue steel, it would blend in) */
+:root[data-color-scheme="dark"] .joint-paper [data-type="CheckValve"] [joint-selector="inlet"] {
+    fill: #f1f5f9;
 }
 
 /* The light gray metal (the rotor ring of a pump, the housing of a fan, the nozzles): blue steel */
