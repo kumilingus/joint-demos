@@ -2,10 +2,15 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
-import { Shape } from './Shape';
+import { type ControlKind, Shape } from './Shape';
 
 /** A jacketed reactor: a vessel with dished ends, a heating jacket and an agitator. */
 export class Reactor extends Shape {
+
+    // The agitator is switched on and off (it stirs while on, see `animations.ts`).
+    get control(): ControlKind {
+        return 'power';
+    }
 
     get overflow(): Overflow {
         return { top: 30, right: 6, bottom: 34, left: 6 };
@@ -15,6 +20,7 @@ export class Reactor extends Shape {
         return {
             ...super.defaults,
             type: 'Reactor',
+            power: 1,
             size: {
                 width: 100,
                 height: 160

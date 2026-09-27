@@ -6,16 +6,21 @@ import { createNavigator } from './navigator';
 import { createBoilerHouse } from './diagram/boilerHouse';
 import { ColorScheme, Mode } from './const';
 import {
-    canvasColors, fitOptions, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, runtimeFitOptions, snaplinesOptions
+    canvasColors, fitOptions, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, runtimeFitOptions, snaplinesOptions, tooltipOptions
 } from './config';
-import { clearSelection } from './actions';
+import { addImages, clearSelection } from './actions';
+import { setControlsOperable } from './controls';
+import { getImages, IMAGES_ATTRIBUTE } from './images';
+import { FAVORITES_ATTRIBUTE } from './favorites';
 import {
     type Controller,
     AnimationsController,
     CanvasController,
     ControlsController,
     EditController,
+    ImagesController,
     KeyboardController,
+    PaletteController,
     RuntimeController,
     SelectionController,
     SimulationController,
@@ -40,6 +45,7 @@ export class App {
     /** The toolbar of the current mode */
     toolbar!: ui.Toolbar;
     keyboard: ui.Keyboard;
+    tooltip: ui.Tooltip;
 
     mode: Mode = Mode.Edit;
     colorScheme: ColorScheme = getInitialColorScheme();
@@ -76,9 +82,12 @@ export class App {
 
         this.keyboard = new ui.Keyboard();
 
+        this.tooltip = new ui.Tooltip(tooltipOptions);
+
         this.controllers = [
             new CanvasController(this),
             new ControlsController(this),
+            new ImagesController(this),
             new SelectionController(this),
             new TagsController(this)
         ];
@@ -87,7 +96,8 @@ export class App {
             [Mode.Edit]: [
                 new ToolbarController(this),
                 new EditController(this),
-                new KeyboardController(this)
+                new KeyboardController(this),
+                new PaletteController(this)
             ],
             [Mode.Runtime]: [
                 new ToolbarController(this),
@@ -117,6 +127,21 @@ export class App {
         this.paper.unfreeze();
     }
 
+    /**
+     * Load a diagram saved with `saveDiagram()`: its cells, its images (see `images.ts`) and the favorite
+     * shapes of the palette (see `favorites.ts`), into the layers of the app.
+     */
+    loadJSON(json: dia.Graph.JSON): void {
+        // Tried on a graph of its own first (an unknown type of a shape, an unknown layer, ...):
+        // the diagram is not replaced by a part of the file.
+        createGraph().fromJSON(json);
+        clearSelection(this);
+        // A diagram without images (or favorites) has none (not those of the previous one).
+        this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], ...json });
+        this.history.reset();
+        this.scroller.zoomToFit(fitOptions);
+    }
+
     /** The colors of the page (the design tokens in `styles.css`) and of the canvas. */
     setColorScheme(colorScheme: ColorScheme): void {
         this.colorScheme = colorScheme;
@@ -138,6 +163,7 @@ export class App {
         }
         this.modeControllers[mode].forEach(controller => controller.startListening());
         this.paper.setInteractivity(interactivity[mode]);
+        setControlsOperable(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;
         if (mode === Mode.Runtime) {
@@ -171,7 +197,10 @@ export class App {
         const el = document.createElement('div');
         el.className = 'stencil-panel';
         this.el.querySelector('.main')!.prepend(el);
-        this.stencil = createStencil(el, this.scroller, snaplines);
+        this.stencil = createStencil(el, this.scroller, snaplines, {
+            getImages: () => getImages(this.graph),
+            onUpload: images => addImages(this, images)
+        });
     }
 
     protected destroyStencil(): void {

@@ -49,7 +49,6 @@ export function createBoilerHouse(): dia.Cell[] {
         position: { x: 460, y: 300 },
         level: 65
     });
-    feedwaterTank.embed(feedwaterLevel);
 
     // Feed pumps (one on duty, one on standby)
 

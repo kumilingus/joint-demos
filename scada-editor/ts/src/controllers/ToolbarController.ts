@@ -1,6 +1,7 @@
 import Controller from './Controller';
 import type { App } from '../app';
 import { ColorScheme, Mode } from '../const';
+import { openDiagram, saveDiagram } from '../actions';
 
 /**
  * The toolbar buttons. Active in every mode.
@@ -13,6 +14,9 @@ export default class ToolbarController extends Controller {
 
         this.listenTo(toolbar, {
             'mode:pointerclick': onModePointerclick,
+            // In the edit mode only (the buttons are not in the toolbar of the runtime mode)
+            'save:pointerclick': onSavePointerclick,
+            'open:pointerclick': onOpenPointerclick,
             'colorScheme:pointerclick': onColorSchemePointerclick
         });
     }
@@ -24,4 +28,12 @@ function onModePointerclick(app: App) {
 
 function onColorSchemePointerclick(app: App) {
     app.setColorScheme(app.colorScheme === ColorScheme.Light ? ColorScheme.Dark : ColorScheme.Light);
+}
+
+function onSavePointerclick(app: App) {
+    saveDiagram(app);
+}
+
+function onOpenPointerclick(app: App) {
+    openDiagram(app);
 }

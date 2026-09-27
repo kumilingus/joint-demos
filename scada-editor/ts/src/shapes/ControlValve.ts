@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { LIQUID_COLOR } from '../const';
+import { PIPE_COLOR } from '../const';
 import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
@@ -49,11 +49,26 @@ export class ControlValve extends Shape {
                     strokeWidth: 2,
                     fill: sphereGradient
                 },
+                // The pipe seen through the window: as tall as the pipes, with their outline (see `Pipe`)
+                liquidOutline: {
+                    d: 'M calc(w / 2 - 12) calc(h / 2) h 24',
+                    stroke: '#444',
+                    strokeWidth: 16
+                },
                 liquid: {
-                    d: 'M calc(w / 2 + 12) calc(h / 2) h -24',
-                    stroke: LIQUID_COLOR,
-                    strokeWidth: 24,
-                    strokeDasharray: '3,1'
+                    d: 'M calc(w / 2 - 12) calc(h / 2) h 24',
+                    stroke: PIPE_COLOR,
+                    strokeWidth: 10
+                },
+                // The dashes of the flowing liquid: hidden, shown by the animation in the runtime mode
+                flow: {
+                    d: 'M calc(w / 2 - 12) calc(h / 2) h 24',
+                    fill: 'none',
+                    stroke: '#ffffff',
+                    strokeOpacity: 0,
+                    strokeWidth: 3,
+                    strokeDasharray: '6 18',
+                    strokeLinecap: 'round'
                 },
                 cover: {
                     x: 'calc(w / 2 - 12)',
@@ -106,7 +121,9 @@ export class ControlValve extends Shape {
             <path @selector='control' />
             <ellipse @selector='body' />
             <rect @selector='coverFrame' />
+            <path @selector='liquidOutline' />
             <path @selector='liquid' />
+            <path @selector='flow' />
             <rect @selector='cover' />
             <text @selector='label' />
         `;

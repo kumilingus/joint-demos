@@ -4,7 +4,8 @@ import { Shape } from './shapes/Shape';
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
  * in a `foreignObject`. They are shown in both modes, but can be operated
- * in the runtime mode only (see `styles.css`, where they are styled too).
+ * in the runtime mode only: while editing they are inert (not focused, not clicked -
+ * the pointer goes through to the element, to select it or to move it).
  */
 
 /**
@@ -21,7 +22,16 @@ export function isControlEvent(evt: dia.Event): boolean {
     return evt.target instanceof Element && evt.target.closest(`.${CONTROL_CLASS}`) !== null;
 }
 
+/** Whether the controls of the paper can be operated (in the runtime mode, see `setControlsOperable()`). */
+const operable = new WeakMap<dia.Paper, boolean>();
+
 abstract class Control extends dia.HighlighterView {
+
+    /** Inert unless the controls of its paper can be operated (the HTML content: `inert` is an HTML attribute). */
+    protected updateInert(cellView: dia.CellView): void {
+        const inert = !operable.get(cellView.paper!);
+        this.el.querySelectorAll('foreignObject > *').forEach(node => node.toggleAttribute('inert', inert));
+    }
 
     /** The nodes of `children` by their `@selector`. */
     protected get nodes(): Record<string, HTMLElement> {
@@ -60,6 +70,7 @@ class PumpControl extends Control {
     protected highlight(cellView: dia.CellView): void {
         this.renderChildren();
         (this.nodes.input as HTMLInputElement).checked = Boolean(cellView.model.get('power'));
+        this.updateInert(cellView);
     }
 
     onChange(evt: dia.Event): void {
@@ -97,6 +108,7 @@ class ToggleValveControl extends Control {
         (buttonOn as HTMLButtonElement).disabled = !isOpen;
         (buttonOff as HTMLButtonElement).disabled = isOpen;
         label.textContent = model.attr('label/text');
+        this.updateInert(cellView);
     }
 
     onButtonClick(): void {
@@ -139,6 +151,7 @@ class SliderValveControl extends Control {
         this.placeBelow(model);
         this.nodes.label.textContent = model.attr('label/text');
         this.nodes.value.textContent = getOpenText(open);
+        this.updateInert(cellView);
     }
 
     onInput(evt: dia.Event): void {
@@ -185,6 +198,12 @@ export function updateControl(paper: dia.Paper, element: dia.Element): void {
 
 export function addControls(paper: dia.Paper): void {
     paper.model.getElements().forEach(element => updateControl(paper, element));
+}
+
+/** The controls can be operated (in the runtime mode) or not (inert, while editing). */
+export function setControlsOperable(paper: dia.Paper, value: boolean): void {
+    operable.set(paper, value);
+    addControls(paper);
 }
 
 export function removeControls(paper: dia.Paper): void {

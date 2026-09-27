@@ -1,6 +1,9 @@
-import type { dia } from '@joint/plus';
+import { type dia, util } from '@joint/plus';
 import type { App } from './app';
 import { GRID_SIZE } from './const';
+import { getImages, IMAGES_ATTRIBUTE, type ImageEntry } from './images';
+import { DerivedGroup, keysInUse, loadCustomShapes, loadDerivedGroup } from './stencil';
+import { getFavorites, removeFavorite } from './favorites';
 
 export function selectCell(app: App, cell: dia.Cell): void {
     app.selection.reset([cell]);
@@ -98,4 +101,78 @@ export function paste(app: App): void {
     const cells = clipboard.pasteCells(graph, { translate: PASTE_OFFSET });
     graph.stopBatch('paste');
     selectCells(app, cells);
+}
+
+/** Add the uploaded images to the diagram (they are saved with it, shown in the palette; an undo removes them). */
+export function addImages(app: App, images: ImageEntry[]): void {
+    const { graph } = app;
+    let library = getImages(graph);
+    images.forEach((image) => {
+        library = { ...library, [`image-${util.uuid()}`]: image };
+    });
+    graph.set(IMAGES_ATTRIBUTE, library);
+}
+
+const DIAGRAM_FILE_NAME = 'scada-diagram.json';
+
+/**
+ * Download the diagram as JSON: the cells, the images and the favorites. Not the layers:
+ * they are those of the app (see `layers.ts`), a cell says in which one it is.
+ */
+export function saveDiagram(app: App): void {
+    const { layers: _layers, defaultLayer: _defaultLayer, ...diagram } = app.graph.toJSON();
+    const json = JSON.stringify(diagram, null, 2);
+    const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = DIAGRAM_FILE_NAME;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+/** Let the user pick a JSON file of a diagram and load it. */
+export function openDiagram(app: App): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json,.json';
+    input.addEventListener('change', async() => {
+        const [file] = Array.from(input.files || []);
+        if (!file) return;
+        try {
+            const json = JSON.parse(await file.text());
+            if (!Array.isArray(json?.cells)) throw new Error('no cells');
+            // Throws before anything changes if the file can't be loaded.
+            app.loadJSON(json);
+        } catch (error) {
+            window.alert(`"${file.name}" is not a diagram (${(error as Error).message}).`);
+        }
+    });
+    input.click();
+}
+
+/** The groups of the palette made of the diagram: the shapes in use, the favorites, the images of the user. */
+export function refreshPalette(app: App): void {
+    const { stencil, graph } = app;
+    if (!stencil) return;
+    const images = getImages(graph);
+    loadCustomShapes(stencil, images);
+    loadDerivedGroup(stencil, DerivedGroup.InUse, keysInUse(graph), images);
+    loadDerivedGroup(stencil, DerivedGroup.Favorites, getFavorites(graph), images);
+}
+
+/**
+ * Delete an image of the user: from the palette, and every element showing it from the diagram.
+ * One step of the history (the images are a part of the diagram): an undo brings back both.
+ */
+export function deleteImage(app: App, imageId: string): void {
+    const { graph } = app;
+    const { [imageId]: image, ...rest } = getImages(graph);
+    if (!image) return;
+    clearSelection(app);
+    // Not a favorite anymore (the favorites are not in the history: an undo doesn't make it one again)
+    removeFavorite(graph, `CustomImage:${imageId}`);
+    graph.startBatch('delete-image');
+    graph.removeCells(graph.getElements().filter(element => element.attr('image/imageId') === imageId));
+    graph.set(IMAGES_ATTRIBUTE, rest);
+    graph.stopBatch('delete-image');
 }

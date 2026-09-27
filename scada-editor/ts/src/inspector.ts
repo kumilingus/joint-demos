@@ -4,7 +4,8 @@ import { isRouted } from './shapes/routing';
 
 const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
-    link: { label: 'Link', index: 1 },
+    // Named after the kind of the link (see `LINK_NAMES`)
+    link: { label: 'Pipe', index: 1 },
     values: { label: 'Values', index: 2 },
     thresholds: { label: 'Thresholds', index: 3 },
     controls: { label: 'Controls', index: 4 }
@@ -35,13 +36,14 @@ function getInputs(element: dia.Element): Inputs {
     });
     if (Object.keys(attrs).length > 0) inputs.attrs = attrs;
 
-    // A label (a text on its own) has a size of the text too.
+    // A label (a text on its own) has a size and a color of the text too.
     if (element.get('type') === 'Label') {
         inputs.attrs = {
             ...(inputs.attrs as Inputs),
             label: {
                 ...(inputs.attrs as Record<string, Inputs>).label,
-                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'general', index: index++ }
+                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'general', index: index++ },
+                fill: { type: 'color', label: 'Color', group: 'general', index: index++ }
             }
         };
     }
@@ -118,12 +120,19 @@ const linkInputs: Inputs = {
     }
 };
 
+/** What the user calls the links: a pipe carries the medium, a signal line the measurement. */
+const LINK_NAMES: Record<string, string> = {
+    Pipe: 'Pipe',
+    SignalLine: 'Signal line'
+};
+
 export function openInspector(el: HTMLElement, cell: dia.Cell): void {
     closeInspector();
+    const linkName = LINK_NAMES[cell.get('type')] ?? 'Pipe';
     ui.Inspector.create(el, {
         cell,
         inputs: cell.isElement() ? getInputs(cell as dia.Element) : isRouted(cell) ? linkInputs : {},
-        groups
+        groups: { ...groups, link: { ...groups!.link, label: linkName }}
     });
 }
 

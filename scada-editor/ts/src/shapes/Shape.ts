@@ -106,9 +106,16 @@ export abstract class Shape extends dia.Element implements ShapeFeatures {
     /**
      * The pipe stubs start in the center of the element (behind it):
      * they reach half of its width and `stubLength` out of it, whatever its size.
+     * The branches (going down from the middle of the height, see `branchPorts()`) half of its height.
      */
     fitPipeStubs(options?: dia.Cell.Options): void {
-        this.prop(['ports', 'groups', 'pipes', 'size', 'width'], this.size().width / 2 + this.stubLength!, options);
+        const { width, height } = this.size();
+        if (this.prop(['ports', 'groups', 'pipes'])) {
+            this.prop(['ports', 'groups', 'pipes', 'size', 'width'], width / 2 + this.stubLength!, options);
+        }
+        if (this.prop(['ports', 'groups', 'branches'])) {
+            this.prop(['ports', 'groups', 'branches', 'size', 'width'], height / 2 + this.stubLength!, options);
+        }
     }
 
     /**

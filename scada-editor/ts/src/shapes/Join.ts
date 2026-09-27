@@ -4,8 +4,9 @@ import { type Anchors, Shape, type Resizable } from './Shape';
 
 export class Join extends Shape {
 
+    // A fitting: as big as the pipes it joins
     get resizable(): Resizable {
-        return { preserveAspectRatio: true };
+        return false;
     }
 
     // The pipes meet in the middle of the fitting.

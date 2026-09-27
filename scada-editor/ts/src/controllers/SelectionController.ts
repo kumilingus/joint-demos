@@ -3,6 +3,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { GRID_SIZE, SELECTION_COLOR } from '../const';
 import { closeInspector, openInspector } from '../inspector';
+import { closePaletteShape } from '../palette';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../tools';
 import { Shape } from '../shapes/Shape';
 import { Pipe } from '../shapes/Pipe';
@@ -99,6 +100,8 @@ function onCellRemove(app: App, cell: dia.Cell) {
 /** The inspector shows a cell only when it is the only one selected. */
 function updateInspector(app: App) {
     const { selection, inspectorEl } = app;
+    // A selection replaces the shape of the palette shown in the panel.
+    closePaletteShape();
     if (selection.length === 1) {
         openInspector(inspectorEl, selection.at(0));
     } else {

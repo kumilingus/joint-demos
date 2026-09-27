@@ -3,7 +3,7 @@ import type { LiquidState, Panel } from './shapes/Panel';
 
 /*
  * The animations of the runtime mode (the Web Animations API on the views of the cells):
- * the rotors spin while the power is on, the liquid flows through the pipes and the open valves,
+ * the rotors spin and the agitators stir while the power is on, the liquid flows through the pipes and the open valves,
  * the flames flicker, the smoke rises, the liquid in a level gauge rises and falls to its new level.
  * Nothing is animated while the diagram is edited.
  *
@@ -32,6 +32,23 @@ function spin(target: SVGElement | null, [x, y]: [number, number], duration: num
     ], { ...LOOP, duration })];
 }
 
+/**
+ * Turn the impeller of an agitator around its shaft (seen from the side: it flips over), at the height
+ * of the element (0 - 1). The impeller is drawn translated there: the translation is a part of the animation.
+ */
+function stir(view: dia.CellView, height: number, duration: number): Animation[] {
+    const target = node(view, 'impeller');
+    if (!target) return [];
+    const size = (view.model as dia.Element).size();
+    const at = `translate(${size.width / 2}px, ${size.height * height}px)`;
+    const origin = { transformBox: 'view-box', transformOrigin: '0px 0px' };
+    return [target.animate([
+        { ...origin, transform: `${at} scaleX(1)` },
+        { ...origin, transform: `${at} scaleX(-1)` },
+        { ...origin, transform: `${at} scaleX(1)` }
+    ], { ...LOOP, duration, easing: 'ease-in-out' })];
+}
+
 const isOn = (model: dia.Cell) => Boolean(model.get('power'));
 
 /** Whether the liquid passes the element: a switched off pump or a closed valve stops it. */
@@ -50,13 +67,18 @@ function isFlowing(link: dia.Link): boolean {
 // The length of the dash pattern of the flow (see `Pipe`): the offset that moves it by one period
 const FLOW_PERIOD = 24;
 
+/** The dashes move along the path (from its start to its end), as fast in a pipe as in a valve. */
+function flowAlong(target: SVGElement): Animation {
+    return target.animate([
+        { strokeOpacity: 0.8, strokeDashoffset: FLOW_PERIOD },
+        { strokeOpacity: 0.8, strokeDashoffset: 0 }
+    ], { ...LOOP, duration: 800 });
+}
+
 const flow: Animator = (linkView) => {
     const target = node(linkView, 'flow');
     if (!target || !isFlowing(linkView.model as dia.Link)) return [];
-    return [target.animate([
-        { strokeOpacity: 0.8, strokeDashoffset: FLOW_PERIOD },
-        { strokeOpacity: 0.8, strokeDashoffset: 0 }
-    ], { ...LOOP, duration: 800 })];
+    return [flowAlong(target)];
 };
 
 /** The center of the element in its own coordinates */
@@ -68,17 +90,20 @@ const center = (cellView: dia.CellView): [number, number] => {
 const animators: Record<string, Animator> = {
     // The rotor and the spokes are drawn around the center already (their groups are moved there).
     Pump: view => isOn(view.model) ? spin(node(view, 'rotor'), [0, 0], 1000) : [],
+    // The impellers at the bottom of the shafts (see `MixingTank`, `Reactor`)
+    MixingTank: view => isOn(view.model) ? stir(view, 0.8, 900) : [],
+    Reactor: view => isOn(view.model) ? stir(view, 0.75, 1100) : [],
     Blower: view => isOn(view.model) ? spin(node(view, 'spokes'), [0, 0], 700) : [],
     Fan: view => isOn(view.model) ? spin(node(view, 'blades'), center(view), 600) : [],
     // The blades of each fan are drawn around its hub (their groups are moved there).
     AirCooler: view => isOn(view.model)
         ? [...spin(node(view, 'fan1Blades'), [0, 0], 500), ...spin(node(view, 'fan2Blades'), [0, 0], 550)]
         : [],
+    // The liquid flows through the window of an open valve as through the pipes.
     ControlValve: view => {
-        const target = node(view, 'liquid');
+        const target = node(view, 'flow');
         if (!target || !view.model.get('open')) return [];
-        // 24 is the length of the liquid path (see `ControlValve`)
-        return [target.animate([{ strokeDashoffset: 0 }, { strokeDashoffset: 24 }], { ...LOOP, duration: 3000 })];
+        return [flowAlong(target)];
     },
     Boiler: view => ['flameOuter', 'flameInner'].flatMap((selector, index) => {
         const target = node(view, selector);

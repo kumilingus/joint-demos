@@ -7,7 +7,6 @@ export enum Mode {
     Runtime = 'runtime'
 }
 
-/** The grid: the elements move and resize, and the anchors of the pipes snap, in its steps. */
 /** The layers of the graph, from the bottom: the pipes under the equipment, the instruments over it. */
 export enum Layer {
     Pipes = 'pipes',
@@ -15,6 +14,7 @@ export enum Layer {
     Instruments = 'instruments'
 }
 
+/** The grid: the elements move and resize, and the anchors of the pipes snap, in its steps. */
 export const GRID_SIZE = 10;
 
 export const LIQUID_COLOR = '#0EAD69';

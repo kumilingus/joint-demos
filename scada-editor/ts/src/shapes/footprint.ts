@@ -19,10 +19,31 @@ const PIPE_HALF_WIDTH = 8;
 const PORT_END_OVERHANG = 3;
 
 /**
- * The area the cell takes on the paper, computed from the model only:
- * the bounding box, the ports and the overflow of the shape (`Shape.overflow`).
+ * How far the drawing of the element reaches out of its bounding box if its label is not shown:
+ * the label is the last thing below (or above) the shape - the drawing ends where the label starts.
  */
-export function getFootprint(cell: dia.Cell): g.Rect {
+function withoutLabel(element: dia.Element, overflow: Required<Overflow>): Required<Overflow> {
+    const { y, text } = element.attr('label') || {};
+    if (text === undefined) return overflow;
+    // Below: `calc(h + 18)` (from the top of the text)
+    const below = typeof y === 'string' ? y.match(/^calc\(h\s*\+\s*(\d+(?:\.\d+)?)\)$/) : null;
+    if (below) return { ...overflow, bottom: Math.min(overflow.bottom, Number(below[1])) };
+    // Above: `-10` (from the bottom of the text)
+    if (typeof y === 'number' && y < 0) return { ...overflow, top: Math.min(overflow.top, -y) };
+    return overflow;
+}
+
+export interface FootprintOptions {
+    /** Whether the label of the element is shown (and counted), `true` by default */
+    label?: boolean;
+}
+
+/**
+ * The area the cell takes on the paper, computed from the model only:
+ * the bounding box, the ports and the overflow of the shape (`Shape.overflow`),
+ * with or without its label.
+ */
+export function getFootprint(cell: dia.Cell, { label = true }: FootprintOptions = {}): g.Rect {
     const bbox = cell.getBBox();
     if (cell.isLink()) return bbox.inflate(PIPE_HALF_WIDTH);
 
@@ -45,5 +66,13 @@ export function getFootprint(cell: dia.Cell): g.Rect {
 
     const overflow = Shape.isShape(element) ? element.overflow : {};
     const { top = 0, right = 0, bottom = 0, left = 0 } = { ...DEFAULT_OVERFLOW, ...overflow };
-    return footprint.moveAndExpand({ x: -left, y: -top, width: left + right, height: top + bottom });
+    const drawing = label
+        ? { top, right, bottom, left }
+        : withoutLabel(element, { top, right, bottom, left });
+    return footprint.moveAndExpand({
+        x: -drawing.left,
+        y: -drawing.top,
+        width: drawing.left + drawing.right,
+        height: drawing.top + drawing.bottom
+    });
 }

@@ -31,13 +31,19 @@ function pinToSide(element: dia.Element, coords: g.PlainPoint): g.Point {
     return point;
 }
 
+/** A part of the length as a percentage (`'37.5%'`) */
+const percent = (value: number, length: number) => `${length > 0 ? Number((value / length * 100).toFixed(3)) : 0}%`;
+
 export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end, view, magnet, coords) => {
     // A port has the anchor of its own (the end of the pipe stub).
     if (view.findAttribute('port', magnet)) {
         delete end.anchor;
         return end;
     }
-    const { x, y } = pinToSide(view.model as dia.Element, coords);
-    end.anchor = { name: 'topLeft', args: { dx: x, dy: y, rotate: true }};
+    const element = view.model as dia.Element;
+    const { x, y } = pinToSide(element, coords);
+    const { width, height } = element.size();
+    // Relative to the size: the end stays on its side when the element is resized.
+    end.anchor = { name: 'topLeft', args: { dx: percent(x, width), dy: percent(y, height), rotate: true }};
     return end;
 };

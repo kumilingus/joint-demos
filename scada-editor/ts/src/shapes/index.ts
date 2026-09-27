@@ -47,6 +47,12 @@ import { Zone } from './Zone';
 import { Join } from './Join';
 import { Pipe } from './Pipe';
 import { Label } from './Label';
+import { CustomImage } from './CustomImage';
+import { Tee } from './Tee';
+import { Cross } from './Cross';
+import { Elbow } from './Elbow';
+import { EndCap } from './EndCap';
+import { Manifold } from './Manifold';
 import { SignalLine } from './SignalLine';
 
 export {
@@ -56,7 +62,7 @@ export {
     LiquidTank, ConicTank, MixingTank, Silo, SphericalTank, Hopper, HorizontalTank, WaterTower,
     Chimney, CoolingTower,
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display, Trend,
-    Zone, Join, Pipe, Label, SignalLine, YStrainer, OrificePlate
+    Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, CustomImage, YStrainer, OrificePlate
 };
 
 export const cellNamespace = {
@@ -109,5 +115,11 @@ export const cellNamespace = {
     Join,
     Label,
     Pipe,
-    SignalLine
+    SignalLine,
+    CustomImage,
+    Tee,
+    Cross,
+    Elbow,
+    EndCap,
+    Manifold
 };

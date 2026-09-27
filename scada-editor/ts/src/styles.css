@@ -40,9 +40,15 @@
     --icon-zoom-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35M8 11h6'/%3E%3C/svg%3E");
     --icon-fit: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2'/%3E%3C/svg%3E");
     --icon-play: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='6 3 20 12 6 21 6 3'/%3E%3C/svg%3E");
-    --icon-eye: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
     --icon-pencil: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5zM15 5l4 4'/%3E%3C/svg%3E");
     --icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+    --icon-save: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3'/%3E%3C/svg%3E");
+    --icon-open: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z'/%3E%3C/svg%3E");
+    --icon-layers: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z'/%3E%3Cpath d='m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65'/%3E%3Cpath d='m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65'/%3E%3C/svg%3E");
+    --icon-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='18' x='3' y='3' rx='2' ry='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21'/%3E%3C/svg%3E");
+    --icon-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z'/%3E%3C/svg%3E");
+    --icon-trash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'/%3E%3C/svg%3E");
+    --icon-upload: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12'/%3E%3C/svg%3E");
     --icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
     --icon-undo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 14 4 9l5-5'/%3E%3Cpath d='M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11'/%3E%3C/svg%3E");
     --icon-redo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 14 5-5-5-5'/%3E%3Cpath d='M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13'/%3E%3C/svg%3E");
@@ -70,12 +76,12 @@
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
     --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     color-scheme: dark;
+    /* The white faces of the shapes in the dark */
+    --dark-face: #10213a;
+    --dark-ink: #9fb4cf;
+    --dark-text: #dbe6f3;
 }
 
-/*
- * The diagram in the dark: CSS wins over the presentation attributes of the shapes,
- * so the dark texts of the shapes are lightened here (on the canvas and in the palette).
- */
 /*
  * The steel of the shapes in blue: the stops of the metal gradients (`gradients.ts`),
  * matched by their colors, and the outline of the metal parts (`METAL_STROKE`).
@@ -114,12 +120,6 @@
 
 :root[data-color-scheme="dark"] .joint-paper [data-type="Instrument"] text {
     fill: #dbe6f3;
-}
-
-:root[data-color-scheme="dark"] {
-    --dark-face: #10213a;
-    --dark-ink: #9fb4cf;
-    --dark-text: #dbe6f3;
 }
 
 /* The white faces of the shapes: dark, with light strokes (like the instrument bubble) */
@@ -170,15 +170,17 @@
     fill: #4a6285;
 }
 
-/* The labels below the shapes (a zone has its label on its own white body) */
-:root[data-color-scheme="dark"] .joint-paper [data-type]:not([data-type="Zone"]) > text[joint-selector="label"] {
+/* The labels below the shapes (a zone has its label on its own white body),
+   and a label (a text on its own) unless the user has chosen its color */
+:root[data-color-scheme="dark"] .joint-paper [data-type]:not([data-type="Zone"], [data-type="Label"]) > text[joint-selector="label"],
+:root[data-color-scheme="dark"] .joint-paper [data-type="Label"] > text[joint-selector="label"][fill="#350100"] {
     fill: #cfdcee;
 }
 
 :root[data-color-scheme="dark"] .joint-paper [joint-selector="legs"],
 :root[data-color-scheme="dark"] .joint-paper [data-type="Thermometer"] [joint-selector="ticks"],
 :root[data-color-scheme="dark"] .joint-paper [data-type="CheckValve"] [joint-selector="arrow"],
-:root[data-color-scheme="dark"] .joint-paper [data-type="standard.Link"] [joint-selector="line"] {
+:root[data-color-scheme="dark"] .joint-paper [data-type="SignalLine"] [joint-selector="line"] {
     stroke: #a1a1aa;
 }
 
@@ -207,6 +209,8 @@ body {
 /* An icon drawn from one of the `--icon-*` masks, in the color of the text. */
 .joint-toolbar button::before,
 .search-wrap::before,
+.stencil-upload::before,
+.group:is([data-name="favorites"], [data-name="inUse"], [data-name="custom"]) > .group-label::after,
 .group > .group-label::before {
     content: '';
     display: inline-block;
@@ -301,10 +305,6 @@ body {
     transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
-.joint-toolbar button::before {
-    display: none;
-}
-
 .joint-toolbar button:hover:not(:disabled) {
     background: var(--muted);
 }
@@ -321,38 +321,35 @@ body {
 }
 
 /* The history and the zoom buttons: groups of square icon buttons. */
-.joint-toolbar :is([data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button {
     width: 36px;
     padding: 0;
     border-radius: 0;
     color: var(--muted-foreground);
 }
 
-.joint-toolbar :is([data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button:hover:not(:disabled) {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button:hover:not(:disabled) {
     color: var(--foreground);
 }
 
-.joint-toolbar :is([data-group="history"], [data-group="zoom"]) button + button {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"]) button + button {
     margin-left: -1px;
 }
 
-.joint-toolbar :is([data-group="history"], [data-group="zoom"]) button:first-child {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"]) button:first-child {
     border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
 
-.joint-toolbar :is([data-group="history"], [data-group="zoom"]) button:last-child {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"]) button:last-child {
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
-}
-
-.joint-toolbar :is([data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button::before,
-.joint-toolbar [data-name="mode"]::before {
-    display: inline-block;
 }
 
 .joint-toolbar [data-type="zoomIn"] { --icon: var(--icon-zoom-in); }
 .joint-toolbar [data-type="zoomOut"] { --icon: var(--icon-zoom-out); }
 .joint-toolbar [data-type="zoomToFit"] { --icon: var(--icon-fit); }
 .joint-toolbar [data-type="undo"] { --icon: var(--icon-undo); }
+.joint-toolbar [data-name="open"] { --icon: var(--icon-open); }
+.joint-toolbar [data-name="save"] { --icon: var(--icon-save); }
 .joint-toolbar [data-type="redo"] { --icon: var(--icon-redo); }
 
 /* The color scheme button shows the one it switches to. */
@@ -496,6 +493,72 @@ body {
     display: none;
 }
 
+/* The first groups have an icon before their labels: the shapes in the diagram (layers),
+   the favorite shapes (a star, as the button making a shape a favorite), the images of the user.
+   The star is in the color of the text (the others are muted). */
+.group:is([data-name="favorites"], [data-name="inUse"], [data-name="custom"]) > .group-label::after {
+    order: -1;
+    width: 14px;
+    height: 14px;
+}
+
+.group[data-name="inUse"] > .group-label::after {
+    --icon: var(--icon-layers);
+    color: var(--muted-foreground);
+}
+
+.group[data-name="custom"] > .group-label::after {
+    --icon: var(--icon-image);
+    color: var(--muted-foreground);
+}
+
+.group[data-name="favorites"] > .group-label::after {
+    --icon: var(--icon-star);
+    color: var(--foreground);
+}
+
+/* The placeholder of a missing image (see `definePlaceholder()`) */
+.missing-image {
+    stroke: var(--muted-foreground);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* The palette shows the shapes without their labels (a label and a zone are their text). */
+.stencil-panel .joint-paper [data-type]:not([data-type="Label"], [data-type="Zone"]) > text[joint-selector="label"] {
+    display: none;
+}
+
+/* The button uploading images into the group of the custom shapes */
+.stencil-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 4px 16px 12px;
+    height: 32px;
+    border: 1px dashed var(--input);
+    border-radius: var(--radius-md);
+    color: var(--muted-foreground);
+    font: 500 13px/1 var(--font);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.stencil-upload::before {
+    --icon: var(--icon-upload);
+}
+
+.stencil-upload:hover {
+    background: var(--muted);
+    color: var(--foreground);
+}
+
+.stencil-panel .group.closed > .stencil-upload {
+    display: none;
+}
+
 /* The clear button of the search field */
 .stencil-panel .search::-webkit-search-cancel-button {
     width: 14px;
@@ -582,7 +645,8 @@ body {
 
 /* Text */
 
-.joint-inspector input[type="text"] {
+.joint-inspector input[type="text"],
+.palette-shape-field input {
     width: 100%;
     height: 36px;
     padding: 0 12px;
@@ -596,7 +660,8 @@ body {
     transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.joint-inspector input[type="text"]:focus {
+.joint-inspector input[type="text"]:focus,
+.palette-shape-field input:focus {
     border-color: var(--ring-strong);
     box-shadow: 0 0 0 3px var(--ring);
 }
@@ -795,19 +860,6 @@ body {
 
 /* Controls of the equipment (see `controls.ts`) */
 
-/*
- * Shown while editing, but not operated: its inputs and buttons ignore the pointer,
- * so a click lands on the control itself - a part of the element (to select it,
- * or to move it by dragging).
- */
-.app[data-mode="edit"] .jj-control :is(input, button) {
-    pointer-events: none;
-}
-
-.app[data-mode="edit"] .jj-control > div {
-    cursor: move;
-}
-
 .jj-switch,
 .jj-checkbox,
 .jj-slider {
@@ -884,4 +936,144 @@ body {
     font-size: 11px;
     font-variant-numeric: tabular-nums;
     text-align: center;
+}
+
+/* A shape of the palette shown in the inspector panel (clicked in the palette) */
+
+.palette-shape {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+}
+
+.palette-shape-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--muted);
+    overflow: hidden;
+}
+
+.palette-shape-title {
+    margin: 0;
+    color: var(--foreground);
+    font: 600 15px/1.3 var(--font);
+}
+
+.palette-shape-description {
+    margin: 0;
+    color: var(--muted-foreground);
+    font: 13px/1.5 var(--font);
+}
+
+.palette-shape-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    color: var(--foreground);
+    font: 500 13px var(--font);
+}
+
+/* Tooltips (`ui.Tooltip`): a bubble in the primary color with a small arrow pointing to the target */
+
+.joint-tooltip {
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    box-shadow: var(--shadow-xs);
+    color: var(--primary-foreground);
+    font: 500 12px/1.4 var(--font);
+}
+
+.joint-tooltip .tooltip-content {
+    padding: 6px 10px;
+}
+
+.joint-tooltip .tooltip-arrow {
+    border-width: 5px;
+}
+
+.joint-tooltip.left .tooltip-arrow,
+.joint-tooltip.right .tooltip-arrow {
+    margin-top: -5px;
+}
+
+.joint-tooltip.top .tooltip-arrow,
+.joint-tooltip.bottom .tooltip-arrow {
+    margin-left: -5px;
+}
+
+.joint-tooltip .tooltip-arrow-mask {
+    display: none;
+}
+
+.joint-tooltip.left .tooltip-arrow { border-right-color: var(--primary); }
+.joint-tooltip.right .tooltip-arrow { border-left-color: var(--primary); }
+.joint-tooltip.top .tooltip-arrow { border-bottom-color: var(--primary); }
+.joint-tooltip.bottom .tooltip-arrow { border-top-color: var(--primary); }
+
+.palette-shape-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+/* A button of the panel: outlined, with an icon */
+.palette-shape-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 500 13px/1 var(--font);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.palette-shape-button:hover {
+    background: var(--muted);
+}
+
+.palette-shape-button::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: currentColor;
+    mask: var(--icon) center / contain no-repeat;
+}
+
+.palette-shape-button.favorite {
+    --icon: var(--icon-star);
+}
+
+.palette-shape-button.favorite.active {
+    border-color: #f5b301;
+    color: #b07d00;
+}
+
+.palette-shape-button.favorite.active::before {
+    background: #f5b301;
+}
+
+:root[data-color-scheme="dark"] .palette-shape-button.favorite.active {
+    color: #f5b301;
+}
+
+.palette-shape-button.danger {
+    --icon: var(--icon-trash);
+    color: #dc2626;
+}
+
+.palette-shape-button.danger:hover {
+    border-color: #dc2626;
+    background: rgb(220 38 38 / 0.08);
 }

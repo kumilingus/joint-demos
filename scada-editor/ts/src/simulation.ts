@@ -75,6 +75,8 @@ const generators: Record<string, Generator> = {
     Turbine: togglePower(0.15),
     ConveyorBelt: togglePower(0.15),
     AirCooler: togglePower(0.15),
+    MixingTank: togglePower(0.15),
+    Reactor: togglePower(0.15),
     HandValve: toggleOpen(0.1),
     ButterflyValve: toggleOpen(0.1),
     BallValve: toggleOpen(0.1),

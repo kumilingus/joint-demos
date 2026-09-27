@@ -1,0 +1,86 @@
+import type { dia } from '@joint/plus';
+import { util } from '@joint/plus';
+import { GRID_SIZE } from '../const';
+import { defineImage, definePlaceholder, findImage, type ImageEntry } from '../images';
+import { labelAttributes } from './ports';
+import { Shape, type Resizable } from './Shape';
+
+// The largest default size of an uploaded image (it keeps its aspect ratio)
+const MAX_SIZE = 100;
+
+// The size changes in two steps of the grid (see `Shape`).
+const SIZE_STEP = 2 * GRID_SIZE;
+
+/**
+ * A shape of the user: an uploaded image. It refers to the image by its id (`attrs/image/imageId`):
+ * the image is stored on the graph and in the DOM once per paper (see `images.ts`).
+ */
+export class CustomImage extends Shape {
+
+    // Resized freely: the image keeps its aspect ratio in any size (centered, see `defineImage()`).
+    // The smallest size is a step (not a part of the default size: an image can be dropped narrower).
+    get resizable(): Resizable {
+        return { minWidth: SIZE_STEP, minHeight: SIZE_STEP };
+    }
+
+    get tagPrefix(): string {
+        return 'IMG';
+    }
+
+    defaults(): dia.Element.Attributes {
+        return {
+            ...super.defaults,
+            type: 'CustomImage',
+            size: {
+                width: MAX_SIZE,
+                height: MAX_SIZE
+            },
+            attrs: {
+                image: {
+                    width: 'calc(w)',
+                    height: 'calc(h)'
+                },
+                label: {
+                    ...labelAttributes,
+                    text: 'Image'
+                }
+            }
+        };
+    }
+
+    preinitialize(): void {
+        this.markup = util.svg/* xml */`
+            <use @selector='image' />
+            <text @selector='label' />
+        `;
+    }
+
+    /** The shape of an image: as big as it can be in the default size, in the steps of the size. */
+    static fromImage(imageId: string, image: ImageEntry): CustomImage {
+        const scale = MAX_SIZE / Math.max(image.width, image.height);
+        const step = (value: number) => Math.max(SIZE_STEP, Math.round(value * scale / SIZE_STEP) * SIZE_STEP);
+        return new CustomImage({
+            size: { width: step(image.width), height: step(image.height) },
+            attrs: {
+                image: { imageId },
+                label: { text: image.name }
+            }
+        });
+    }
+
+    static attributes = {
+        // The image (its id) shown by the `<use>`: a reference to its definition in the paper.
+        // (`imageId` in the attributes: the names are looked up in the kebab case.)
+        'image-id': {
+            set(this: dia.ElementView, imageId: string, _refBBox: unknown, _node: unknown, _attrs: unknown, elementView: dia.ElementView) {
+                const { paper } = elementView;
+                if (!paper) return {};
+                const image = imageId ? findImage(elementView, imageId) : null;
+                // An image that is not in the diagram (pasted from another one, deleted): a placeholder
+                // (the element keeps its `imageId`, it shows the image again if the image comes back)
+                if (!image) return { href: `#${definePlaceholder(paper)}` };
+                return { href: `#${defineImage(paper, imageId, image)}` };
+            }
+        }
+    };
+}
