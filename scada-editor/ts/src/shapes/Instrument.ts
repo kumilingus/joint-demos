@@ -50,14 +50,14 @@ export class Instrument extends Shape {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 'calc(w / 2)',
-                    fill: '#fff',
-                    stroke: '#333',
+                    fill: 'var(--shape-face)',
+                    stroke: 'var(--shape-instrument-ink)',
                     strokeWidth: 2
                 },
                 // The line of a panel-mounted instrument
                 divider: {
                     d: 'M 0 calc(h / 2) H calc(w)',
-                    stroke: '#333',
+                    stroke: 'var(--shape-instrument-ink)',
                     strokeWidth: 2
                 },
                 tag: {
@@ -69,7 +69,7 @@ export class Instrument extends Shape {
                     fontSize: 15,
                     fontFamily: 'sans-serif',
                     fontWeight: 'bold',
-                    fill: '#131e29'
+                    fill: 'var(--shape-instrument-text)'
                 },
                 loop: {
                     text: '101',
@@ -79,7 +79,7 @@ export class Instrument extends Shape {
                     textVerticalAnchor: 'top',
                     fontSize: 13,
                     fontFamily: 'sans-serif',
-                    fill: '#131e29'
+                    fill: 'var(--shape-instrument-text)'
                 }
             }
         };

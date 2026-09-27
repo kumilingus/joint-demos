@@ -29,7 +29,7 @@ export class SignalLine extends dia.Link {
                 },
                 line: {
                     connection: true,
-                    stroke: '#555',
+                    stroke: 'var(--shape-signal-line)',
                     strokeWidth: 1.5,
                     strokeDasharray: '4 3',
                     pointerEvents: 'none'

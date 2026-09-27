@@ -66,7 +66,7 @@ export class ConveyorBelt extends Shape {
                 },
                 legs: {
                     d: 'M calc(0.15 * w) calc(h / 2) V calc(h + 16) M calc(0.85 * w) calc(h / 2) V calc(h + 16)',
-                    stroke: '#555',
+                    stroke: 'var(--shape-legs)',
                     strokeWidth: 6,
                     strokeLinecap: 'round'
                 },

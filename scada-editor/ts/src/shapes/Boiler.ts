@@ -40,7 +40,7 @@ export class Boiler extends Shape {
                     y: -16,
                     width: 20,
                     height: 20,
-                    fill: '#ddd',
+                    fill: 'var(--shape-metal-flat-2)',
                     stroke: METAL_STROKE,
                     strokeWidth: 2
                 },

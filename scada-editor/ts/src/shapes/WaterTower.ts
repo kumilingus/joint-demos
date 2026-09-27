@@ -42,7 +42,7 @@ export class WaterTower extends Shape {
                 },
                 legs: {
                     d: `M calc(0.2 * w) calc(${TANK_BOTTOM} * h) L calc(0.08 * w) calc(h + 6) M calc(0.8 * w) calc(${TANK_BOTTOM} * h) L calc(0.92 * w) calc(h + 6)`,
-                    stroke: '#555',
+                    stroke: 'var(--shape-legs)',
                     strokeWidth: 6,
                     strokeLinecap: 'round'
                 },

@@ -45,20 +45,20 @@ export class CheckValve extends Shape {
                 // The bow tie of a valve...
                 body: {
                     d: 'M 0 0 L calc(w) calc(h) V 0 L 0 calc(h) Z',
-                    fill: '#fff',
-                    stroke: '#555',
+                    fill: 'var(--shape-face)',
+                    stroke: 'var(--shape-valve-stroke)',
                     strokeWidth: 2,
                     strokeLinejoin: 'round'
                 },
                 // ...with the inlet half filled.
                 inlet: {
                     d: 'M 0 0 L calc(0.5 * w) calc(0.5 * h) L 0 calc(h) Z',
-                    fill: '#555'
+                    fill: 'var(--shape-valve-inlet)'
                 },
                 arrow: {
                     d: 'M calc(0.2 * w) -10 H calc(0.8 * w) m -6 -4 l 6 4 l -6 4',
                     fill: 'none',
-                    stroke: '#333',
+                    stroke: 'var(--shape-scale)',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round'

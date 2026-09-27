@@ -69,8 +69,8 @@ export class Thermometer extends Shape {
                     // Round ends and the bulb by the shorter side (`s`): round in any size
                     rx: 'calc(s / 2)',
                     ry: 'calc(s / 2)',
-                    fill: '#fff',
-                    stroke: METAL_STROKE,
+                    fill: 'var(--shape-face)',
+                    stroke: 'var(--shape-thermometer-stroke)',
                     strokeWidth: 2
                 },
                 bulb: {
@@ -88,7 +88,7 @@ export class Thermometer extends Shape {
                 },
                 ticks: {
                     d: TICKS,
-                    stroke: '#333',
+                    stroke: 'var(--shape-scale)',
                     strokeWidth: 1.5
                 },
                 // The temperature, next to the top of the column (see `updateColumn()`)

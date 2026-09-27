@@ -1,8 +1,8 @@
 /** The bow tie of a valve symbol, filling the element. */
 export const bowTieAttributes = {
     d: 'M 0 0 L calc(w) calc(h) V 0 L 0 calc(h) Z',
-    fill: '#fff',
-    stroke: '#555',
+    fill: 'var(--shape-face)',
+    stroke: 'var(--shape-valve-stroke)',
     strokeWidth: 2,
     strokeLinejoin: 'round'
 };

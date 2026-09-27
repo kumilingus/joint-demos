@@ -31,7 +31,7 @@ export class LiquidTank extends Shape {
                 },
                 legs: {
                     fill: 'none',
-                    stroke: '#350100',
+                    stroke: 'var(--shape-tank-legs)',
                     strokeWidth: 8,
                     strokeLinecap: 'round',
                     d: 'M 20 calc(h) l -5 10 M calc(w - 20) calc(h) l 5 10'

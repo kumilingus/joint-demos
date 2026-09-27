@@ -26,7 +26,8 @@ export const LIQUID_COLOR = '#0EAD69';
 export const MAX_LIQUID_COLOR = '#ED2637';
 export const MIN_LIQUID_COLOR = '#FFD23F';
 export const PIPE_COLOR = '#6CC59A';
-export const LABEL_COLOR = '#350100';
+// The colors of the parts of the shapes are CSS variables (`--shape-*` in `styles.css`): themed there.
+export const LABEL_COLOR = 'var(--shape-label)';
 export const SELECTION_COLOR = '#0075F2';
 /** The colors of the app (the design tokens of `styles.css` and the canvas, see `config.ts`). */
 export enum ColorScheme {

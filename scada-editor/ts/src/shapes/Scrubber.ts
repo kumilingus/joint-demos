@@ -59,7 +59,7 @@ export class Scrubber extends Shape {
                     y: -14,
                     width: 16,
                     height: 16,
-                    fill: '#ddd',
+                    fill: 'var(--shape-metal-flat-2)',
                     stroke: METAL_STROKE,
                     strokeWidth: 2
                 },

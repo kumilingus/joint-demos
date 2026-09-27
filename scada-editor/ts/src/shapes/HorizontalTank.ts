@@ -52,7 +52,7 @@ export class HorizontalTank extends Shape {
                     height: 12,
                     rx: 2,
                     ry: 2,
-                    fill: '#ddd',
+                    fill: 'var(--shape-metal-flat-2)',
                     stroke: METAL_STROKE,
                     strokeWidth: 2
                 },
@@ -61,7 +61,7 @@ export class HorizontalTank extends Shape {
                     y: -16,
                     width: 10,
                     height: 18,
-                    fill: '#ddd',
+                    fill: 'var(--shape-metal-flat-2)',
                     stroke: METAL_STROKE,
                     strokeWidth: 2
                 },

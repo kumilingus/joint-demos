@@ -76,123 +76,122 @@
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
     --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     color-scheme: dark;
-    /* The white faces of the shapes in the dark */
-    --dark-face: #10213a;
-    --dark-ink: #9fb4cf;
-    --dark-text: #dbe6f3;
 }
 
 /*
- * The steel of the shapes in blue: the stops of the metal gradients (`gradients.ts`),
- * matched by their colors, and the outline of the metal parts (`METAL_STROKE`).
+ * The colors of the parts of the shapes: the shapes use these variables in their attributes
+ * (`fill: 'var(--shape-face)'`, the stops of the gradients, ...), the dark scheme redefines them.
  */
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#737c84"] { stop-color: #3f5877; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#a3acb4"] { stop-color: #6f88a8; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#e9edf0"] { stop-color: #b9cbe0; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#ffffff"] { stop-color: #dbe6f3; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#d6dce1"] { stop-color: #9fb4cf; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#a7b0b8"] { stop-color: #6f86a4; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#6a737b"] { stop-color: #34496a; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#eef1f4"] { stop-color: #c3d3e6; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#bac2c9"] { stop-color: #7f97b6; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#7f888f"] { stop-color: #3f5877; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#f4f6f8"] { stop-color: #cfdcea; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#dde2e6"] { stop-color: #a9bcd3; }
-:root[data-color-scheme="dark"] .joint-paper stop[stop-color="#b9c1c8"] { stop-color: #7f95b1; }
-:root[data-color-scheme="dark"] .joint-paper [stroke="#6a737b"] { stroke: #5b7699; }
+:root {
+    /* The steel (the stops of the metal gradients, see `gradients.ts`): blue in the dark */
+    --shape-metal-1: #737c84;
+    --shape-metal-2: #a3acb4;
+    --shape-metal-3: #e9edf0;
+    --shape-metal-4: #ffffff;
+    --shape-metal-5: #d6dce1;
+    --shape-metal-6: #a7b0b8;
+    --shape-metal-7: #6a737b;
+    --shape-sphere-1: #ffffff;
+    --shape-sphere-2: #eef1f4;
+    --shape-sphere-3: #bac2c9;
+    --shape-sphere-4: #7f888f;
+    --shape-plate-1: #f4f6f8;
+    --shape-plate-2: #dde2e6;
+    --shape-plate-3: #b9c1c8;
 
-/* The flat light parts of the metal: the joins and the ends (flanges) of the pipe stubs */
-:root[data-color-scheme="dark"] .joint-paper [data-type="Join"] [joint-selector="body"],
-:root[data-color-scheme="dark"] .joint-paper [joint-selector="pipeEnd"] {
-    fill: #a9bcd3;
-    stroke: #5b7699;
+    /* The outline of the metal parts (`METAL_STROKE`), the flat light metal (a rotor ring, a nozzle) */
+    --shape-metal-stroke: #6a737b;
+    --shape-metal-flat: #eee;
+    --shape-metal-flat-2: #ddd;
+
+    /* A join, the ends (flanges) of the pipe stubs */
+    --shape-fitting-fill: #eee;
+    --shape-fitting-stroke: #666;
+    --shape-flange-fill: #fff;
+
+    /* The white faces (valves, gauges, zones, instruments): dark, with light strokes in the dark */
+    --shape-face: #fff;
+    --shape-valve-stroke: #555;
+    --shape-gauge-stroke: #444;
+    --shape-thermometer-stroke: #6a737b;
+    --shape-zone-stroke: #cad8e3;
+    --shape-instrument-ink: #333;
+    --shape-instrument-text: #131e29;
+
+    /* The dial of a gauge, the scale of a thermometer, the arrow of a check valve */
+    --shape-gauge-ink: #333;
+    --shape-gauge-unit: #555;
+    --shape-scale: #333;
+
+    /* The parts of the valves: the cover of a control valve, the filled half of a check valve (brighter than the steel around it) */
+    --shape-valve-cover: #fff;
+    --shape-valve-inlet: #555;
+
+    /* The rest: the legs, a signal line, the smoke (semi-transparent over a dark canvas, it would be dark too), the plume of a cooling tower, the plenum of an air cooler, the labels */
+    --shape-legs: #555;
+    --shape-tank-legs: #350100;
+    --shape-signal-line: #555;
+    --shape-smoke: #bbb;
+    --shape-smoke-opacity: 0.5;
+    --shape-plume: #ffffff;
+    --shape-plenum: #c9cfd4;
+    --shape-label: #350100;
 }
 
-/* An instrument bubble: a dark body with light strokes */
-:root[data-color-scheme="dark"] .joint-paper [data-type="Instrument"] [joint-selector="body"] {
-    fill: #10213a;
-    stroke: #9fb4cf;
-}
+:root[data-color-scheme="dark"] {
+    /* The steel (the stops of the metal gradients, see `gradients.ts`): blue in the dark */
+    --shape-metal-1: #3f5877;
+    --shape-metal-2: #6f88a8;
+    --shape-metal-3: #b9cbe0;
+    --shape-metal-4: #dbe6f3;
+    --shape-metal-5: #9fb4cf;
+    --shape-metal-6: #6f86a4;
+    --shape-metal-7: #34496a;
+    --shape-sphere-1: #dbe6f3;
+    --shape-sphere-2: #c3d3e6;
+    --shape-sphere-3: #7f97b6;
+    --shape-sphere-4: #3f5877;
+    --shape-plate-1: #cfdcea;
+    --shape-plate-2: #a9bcd3;
+    --shape-plate-3: #7f95b1;
 
-:root[data-color-scheme="dark"] .joint-paper [data-type="Instrument"] [joint-selector="divider"] {
-    stroke: #9fb4cf;
-}
+    /* The outline of the metal parts (`METAL_STROKE`), the flat light metal (a rotor ring, a nozzle) */
+    --shape-metal-stroke: #5b7699;
+    --shape-metal-flat: #7f95b1;
+    --shape-metal-flat-2: #7f95b1;
 
-:root[data-color-scheme="dark"] .joint-paper [data-type="Instrument"] text {
-    fill: #dbe6f3;
-}
+    /* A join, the ends (flanges) of the pipe stubs */
+    --shape-fitting-fill: #a9bcd3;
+    --shape-fitting-stroke: #5b7699;
+    --shape-flange-fill: #a9bcd3;
 
-/* The white faces of the shapes: dark, with light strokes (like the instrument bubble) */
-:root[data-color-scheme="dark"] .joint-paper :is(
-    [data-type="Zone"],
-    [data-type="PressureGauge"],
-    [data-type="Thermometer"],
-    [data-type="BallValve"],
-    [data-type="ButterflyValve"],
-    [data-type="SolenoidValve"],
-    [data-type="GateValve"],
-    [data-type="CheckValve"],
-    [data-type="ReliefValve"]
-) > [joint-selector="body"] {
-    fill: var(--dark-face);
-    stroke: var(--dark-ink);
-}
+    /* The white faces (valves, gauges, zones, instruments): dark, with light strokes in the dark */
+    --shape-face: #10213a;
+    --shape-valve-stroke: #9fb4cf;
+    --shape-gauge-stroke: #9fb4cf;
+    --shape-thermometer-stroke: #9fb4cf;
+    --shape-zone-stroke: #2e4a70;
+    --shape-instrument-ink: #9fb4cf;
+    --shape-instrument-text: #dbe6f3;
 
-:root[data-color-scheme="dark"] .joint-paper [data-type="Zone"] > [joint-selector="body"] {
-    stroke: #2e4a70;
-}
+    /* The dial of a gauge, the scale of a thermometer, the arrow of a check valve */
+    --shape-gauge-ink: #dbe6f3;
+    --shape-gauge-unit: #9fb4cf;
+    --shape-scale: #a1a1aa;
 
-/* The dial of a gauge */
-:root[data-color-scheme="dark"] .joint-paper [data-type="PressureGauge"] [joint-selector="ticks"] {
-    stroke: var(--dark-text);
-}
+    /* The parts of the valves: the cover of a control valve, the filled half of a check valve (brighter than the steel around it) */
+    --shape-valve-cover: #9fb4cf;
+    --shape-valve-inlet: #f1f5f9;
 
-:root[data-color-scheme="dark"] .joint-paper [data-type="PressureGauge"] [joint-selector="hub"] {
-    fill: var(--dark-text);
-}
-
-:root[data-color-scheme="dark"] .joint-paper [data-type="PressureGauge"] [joint-selector="unit"] {
-    fill: var(--dark-ink);
-}
-
-/* The cover of a control valve */
-:root[data-color-scheme="dark"] .joint-paper [data-type="ControlValve"] [joint-selector="cover"] {
-    fill: var(--dark-ink);
-}
-
-/* The filled half of a check valve: brighter than the steel around it (in the blue steel, it would blend in) */
-:root[data-color-scheme="dark"] .joint-paper [data-type="CheckValve"] [joint-selector="inlet"] {
-    fill: #f1f5f9;
-}
-
-/* The light gray metal (the rotor ring of a pump, the housing of a fan, the nozzles): blue steel */
-:root[data-color-scheme="dark"] .joint-paper :is(rect, circle, path):is([fill="#eee"], [fill="#ddd"]) {
-    fill: #7f95b1;
-}
-
-:root[data-color-scheme="dark"] .joint-paper [data-type="AirCooler"] [joint-selector="plenum"] {
-    fill: #4a6285;
-}
-
-/* The labels below the shapes (a zone has its label on its own white body),
-   and a label (a text on its own) unless the user has chosen its color */
-:root[data-color-scheme="dark"] .joint-paper [data-type="Thermometer"] > text[joint-selector="reading"],
-:root[data-color-scheme="dark"] .joint-paper [data-type]:not([data-type="Zone"], [data-type="Label"]) > text[joint-selector="label"],
-:root[data-color-scheme="dark"] .joint-paper [data-type="Label"] > text[joint-selector="label"][fill="#350100"] {
-    fill: #cfdcee;
-}
-
-:root[data-color-scheme="dark"] .joint-paper [joint-selector="legs"],
-:root[data-color-scheme="dark"] .joint-paper [data-type="Thermometer"] [joint-selector="ticks"],
-:root[data-color-scheme="dark"] .joint-paper [data-type="CheckValve"] [joint-selector="arrow"],
-:root[data-color-scheme="dark"] .joint-paper [data-type="SignalLine"] [joint-selector="line"] {
-    stroke: #a1a1aa;
-}
-
-:root[data-color-scheme="dark"] .joint-paper [data-type="Chimney"] [joint-selector="smoke"] {
-    /* Semi-transparent over a dark canvas, it would be dark too. */
-    fill: #d4d4d8;
-    fill-opacity: 0.85;
+    /* The rest: the legs, a signal line, the smoke (semi-transparent over a dark canvas, it would be dark too), the plume of a cooling tower, the plenum of an air cooler, the labels */
+    --shape-legs: #a1a1aa;
+    --shape-tank-legs: #a1a1aa;
+    --shape-signal-line: #a1a1aa;
+    --shape-smoke: #d4d4d8;
+    --shape-smoke-opacity: 0.85;
+    --shape-plume: #dbe6f3;
+    --shape-plenum: #4a6285;
+    --shape-label: #cfdcee;
 }
 
 * {

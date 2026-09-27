@@ -8,8 +8,8 @@ import { Shape } from './Shape';
 const steamGradient: dia.SVGGradientJSON = {
     type: 'linearGradient',
     stops: [
-        { offset: '0%', color: '#ffffff', opacity: 0.6 },
-        { offset: '100%', color: '#ffffff', opacity: 1 }
+        { offset: '0%', color: 'var(--shape-plume)', opacity: 0.6 },
+        { offset: '100%', color: 'var(--shape-plume)', opacity: 1 }
     ],
     attrs: {
         x1: '0%',

@@ -42,7 +42,7 @@ export class Reactor extends Shape {
                 },
                 legs: {
                     d: 'M 16 calc(h - 20) V calc(h + 10) M calc(w - 16) calc(h - 20) V calc(h + 10)',
-                    stroke: '#555',
+                    stroke: 'var(--shape-legs)',
                     strokeWidth: 6,
                     strokeLinecap: 'round'
                 },

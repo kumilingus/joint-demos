@@ -90,7 +90,7 @@ export class ControlValve extends Shape {
                     height: 24,
                     stroke: '#333',
                     strokeWidth: 2,
-                    fill: '#fff'
+                    fill: 'var(--shape-valve-cover)'
                 },
                 coverFrame: {
                     x: 'calc(w / 2 - 15)',

@@ -83,8 +83,8 @@ export class ReliefValve extends Shape {
                 // The bow tie of the valve in the bottom half
                 body: {
                     d: 'M 0 calc(0.5 * h) L calc(w) calc(h) V calc(0.5 * h) L 0 calc(h) Z',
-                    fill: '#fff',
-                    stroke: '#555',
+                    fill: 'var(--shape-face)',
+                    stroke: 'var(--shape-valve-stroke)',
                     strokeWidth: 2,
                     strokeLinejoin: 'round'
                 },

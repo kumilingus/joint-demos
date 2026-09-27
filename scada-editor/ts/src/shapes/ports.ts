@@ -41,7 +41,7 @@ function pipeStubGroup(position: dia.Element.PortGroup['position']): dia.Element
                 y: 'calc(h / -2 - 3)',
                 stroke: METAL_STROKE,
                 strokeWidth: 3,
-                fill: 'white'
+                fill: 'var(--shape-flange-fill)'
             }
         }
     };

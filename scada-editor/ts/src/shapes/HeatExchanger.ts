@@ -7,7 +7,7 @@ import { Shape } from './Shape';
 const nozzle = {
     width: 16,
     height: 14,
-    fill: '#ddd',
+    fill: 'var(--shape-metal-flat-2)',
     stroke: METAL_STROKE,
     strokeWidth: 2
 };

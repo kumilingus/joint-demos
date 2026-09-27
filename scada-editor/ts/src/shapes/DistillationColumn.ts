@@ -17,7 +17,7 @@ const nozzle = (y: string) => ({
     y,
     width: 14,
     height: 12,
-    fill: '#ddd',
+    fill: 'var(--shape-metal-flat-2)',
     stroke: METAL_STROKE,
     strokeWidth: 2
 });
@@ -62,7 +62,7 @@ export class DistillationColumn extends Shape {
                     y: -12,
                     width: 14,
                     height: 14,
-                    fill: '#ddd',
+                    fill: 'var(--shape-metal-flat-2)',
                     stroke: METAL_STROKE,
                     strokeWidth: 2
                 },

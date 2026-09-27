@@ -4,19 +4,20 @@ import type { dia } from '@joint/plus';
  * The shading of the equipment: brushed steel lit from the top left.
  * The highlight is off-center and the edges are darker, so that
  * the cylinders and the spheres read as round.
+ * The colors are CSS variables (`--shape-metal-*`, ... in `styles.css`): blue steel in the dark theme.
  */
 
 /** The outline of the metal parts: the color of the shaded edge, so the outline blends into it. */
-export const METAL_STROKE = '#6a737b';
+export const METAL_STROKE = 'var(--shape-metal-stroke)';
 
 const metalStops = [
-    { offset: '0%', color: '#737c84' },
-    { offset: '10%', color: '#a3acb4' },
-    { offset: '24%', color: '#e9edf0' },
-    { offset: '32%', color: '#ffffff' },
-    { offset: '48%', color: '#d6dce1' },
-    { offset: '78%', color: '#a7b0b8' },
-    { offset: '100%', color: '#6a737b' }
+    { offset: '0%', color: 'var(--shape-metal-1)' },
+    { offset: '10%', color: 'var(--shape-metal-2)' },
+    { offset: '24%', color: 'var(--shape-metal-3)' },
+    { offset: '32%', color: 'var(--shape-metal-4)' },
+    { offset: '48%', color: 'var(--shape-metal-5)' },
+    { offset: '78%', color: 'var(--shape-metal-6)' },
+    { offset: '100%', color: 'var(--shape-metal-7)' }
 ];
 
 /** A vertical cylinder (a tank, a stack): the shading runs from the left to the right. */
@@ -41,10 +42,10 @@ export const pipeGradient: dia.SVGGradientJSON = {
 export const sphereGradient: dia.SVGGradientJSON = {
     type: 'radialGradient',
     stops: [
-        { offset: '0%', color: '#ffffff' },
-        { offset: '40%', color: '#eef1f4' },
-        { offset: '80%', color: '#bac2c9' },
-        { offset: '100%', color: '#7f888f' }
+        { offset: '0%', color: 'var(--shape-sphere-1)' },
+        { offset: '40%', color: 'var(--shape-sphere-2)' },
+        { offset: '80%', color: 'var(--shape-sphere-3)' },
+        { offset: '100%', color: 'var(--shape-sphere-4)' }
     ],
     attrs: {
         cx: '50%',
@@ -71,9 +72,9 @@ export const coneGradient: dia.SVGGradientJSON = {
 export const plateGradient: dia.SVGGradientJSON = {
     type: 'linearGradient',
     stops: [
-        { offset: '0%', color: '#f4f6f8' },
-        { offset: '45%', color: '#dde2e6' },
-        { offset: '100%', color: '#b9c1c8' }
+        { offset: '0%', color: 'var(--shape-plate-1)' },
+        { offset: '45%', color: 'var(--shape-plate-2)' },
+        { offset: '100%', color: 'var(--shape-plate-3)' }
     ],
     attrs: {
         x1: '0%',

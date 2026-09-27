@@ -63,7 +63,7 @@ export class AirCooler extends Shape {
                 },
                 legs: {
                     d: 'M 12 calc(h) V calc(h + 10) M calc(w - 12) calc(h) V calc(h + 10)',
-                    stroke: '#555',
+                    stroke: 'var(--shape-legs)',
                     strokeWidth: 5,
                     strokeLinecap: 'round'
                 },
@@ -74,7 +74,7 @@ export class AirCooler extends Shape {
                     height: 'calc(0.5 * h)',
                     rx: 4,
                     ry: 4,
-                    fill: '#c9cfd4',
+                    fill: 'var(--shape-plenum)',
                     stroke: METAL_STROKE,
                     strokeWidth: 2
                 },

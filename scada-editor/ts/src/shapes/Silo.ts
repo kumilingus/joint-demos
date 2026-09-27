@@ -44,7 +44,7 @@ export class Silo extends Shape {
                 },
                 legs: {
                     d: `M 8 calc(${BODY_BOTTOM} * h) V calc(h + 8) M calc(w - 8) calc(${BODY_BOTTOM} * h) V calc(h + 8)`,
-                    stroke: '#555',
+                    stroke: 'var(--shape-legs)',
                     strokeWidth: 6,
                     strokeLinecap: 'round'
                 },

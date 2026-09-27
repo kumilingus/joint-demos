@@ -65,7 +65,7 @@ export class Pump extends Shape {
                 },
                 rotorFrame: {
                     r: 40,
-                    fill: '#eee',
+                    fill: 'var(--shape-metal-flat)',
                     stroke: '#666',
                     strokeWidth: 2
                 },

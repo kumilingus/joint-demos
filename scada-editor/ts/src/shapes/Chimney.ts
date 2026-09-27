@@ -61,8 +61,8 @@ export class Chimney extends Shape {
                     magnetSelector: 'body'
                 },
                 smoke: {
-                    fill: '#bbb',
-                    fillOpacity: 0.5,
+                    fill: 'var(--shape-smoke)',
+                    fillOpacity: 'var(--shape-smoke-opacity)',
                     stroke: 'none'
                 },
                 smoke1: {

@@ -40,8 +40,8 @@ export class Zone extends Shape {
             },
             attrs: {
                 body: {
-                    fill: '#ffffff',
-                    stroke: '#cad8e3',
+                    fill: 'var(--shape-face)',
+                    stroke: 'var(--shape-zone-stroke)',
                     strokeWidth: 1,
                     // The outline (see `tip-side` below), edited in the inspector
                     tipSide: 'left'

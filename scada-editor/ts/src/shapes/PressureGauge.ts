@@ -103,14 +103,14 @@ export class PressureGauge extends Shape {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 'calc(w / 2)',
-                    fill: '#fff',
-                    stroke: '#444',
+                    fill: 'var(--shape-face)',
+                    stroke: 'var(--shape-gauge-stroke)',
                     strokeWidth: 4
                 },
                 ticks: {
                     d: TICKS,
                     transform: dialTransform,
-                    stroke: '#333',
+                    stroke: 'var(--shape-gauge-ink)',
                     strokeWidth: 2,
                     strokeLinecap: 'round'
                 },
@@ -140,7 +140,7 @@ export class PressureGauge extends Shape {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 4,
-                    fill: '#333'
+                    fill: 'var(--shape-gauge-ink)'
                 },
                 unit: {
                     text: 'bar',
@@ -150,7 +150,7 @@ export class PressureGauge extends Shape {
                     textVerticalAnchor: 'middle',
                     fontSize: 9,
                     fontFamily: 'sans-serif',
-                    fill: '#555'
+                    fill: 'var(--shape-gauge-unit)'
                 },
                 label: {
                     ...labelAttributes,

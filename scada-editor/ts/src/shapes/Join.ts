@@ -33,8 +33,8 @@ export class Join extends Shape {
             },
             attrs: {
                 body: {
-                    fill: '#eee',
-                    stroke: '#666',
+                    fill: 'var(--shape-fitting-fill)',
+                    stroke: 'var(--shape-fitting-stroke)',
                     strokeWidth: 2,
                     d: 'M 10 0 H calc(w - 10) l 10 10 V calc(h - 10) l -10 10 H 10 l -10 -10 V 10 Z'
                 }

@@ -47,7 +47,7 @@ export class SphericalTank extends Shape {
                 },
                 legs: {
                     d: LEGS,
-                    stroke: '#555',
+                    stroke: 'var(--shape-legs)',
                     strokeWidth: 6,
                     strokeLinecap: 'round'
                 },

@@ -59,7 +59,7 @@ export class Fan extends Shape {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 'calc(0.45 * w)',
-                    fill: '#eee',
+                    fill: 'var(--shape-metal-flat)',
                     stroke: '#666',
                     strokeWidth: 2
                 },
