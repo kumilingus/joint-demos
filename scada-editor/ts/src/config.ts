@@ -21,8 +21,9 @@ export const paperOptions: dia.Paper.Options = {
     // A click still counts as a click if the pointer moves a little in between.
     clickThreshold: CLICK_THRESHOLD,
     async: true,
+    autoFreeze: true,
+    viewManagement: true,
     frozen: true,
-    sorting: dia.Paper.sorting.APPROX,
     defaultAnchor: { name: 'perpendicular' },
     // The anchor is on a side of the element already (see `connectionStrategy`).
     defaultConnectionPoint: { name: 'anchor' },
@@ -40,8 +41,8 @@ export const paperOptions: dia.Paper.Options = {
                 padding: 3,
                 attrs: {
                     stroke: SELECTION_COLOR,
-                    'stroke-width': 2,
-                    'stroke-linejoin': 'round'
+                    strokeWidth: 2,
+                    strokeLinejoin: 'round'
                 }
             }
         }
@@ -135,7 +136,7 @@ export const scrollerOptions: Partial<ui.PaperScroller.Options> = {
     }
 };
 
-export const fitOptions: dia.Paper.ScaleContentOptions = {
+export const fitOptions: dia.Paper.TransformToFitContentOptions = {
     useModelGeometry: true,
     padding: 40,
     minScale: ZOOM.min,
@@ -147,7 +148,7 @@ export const fitOptions: dia.Paper.ScaleContentOptions = {
  * too (the side panels are hidden and there's room for it).
  * The padding leaves room for the controls below the elements.
  */
-export const runtimeFitOptions: dia.Paper.ScaleContentOptions = {
+export const runtimeFitOptions: dia.Paper.TransformToFitContentOptions = {
     ...fitOptions,
     padding: 50,
     maxScale: 2
