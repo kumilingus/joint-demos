@@ -6,7 +6,10 @@ import { labelAttributes } from './ports';
 import { Shape, type Resizable } from './Shape';
 
 // The largest default size of an uploaded image (it keeps its aspect ratio)
-const MAX_SIZE = 100;
+// The default size of an image: as much area as a square of this side (a wide image is wider, not smaller)...
+const SIZE = 100;
+// ...with its longer side at most this long
+const MAX_SIDE = 240;
 
 // The size changes in two steps of the grid (see `Shape`).
 const SIZE_STEP = 2 * GRID_SIZE;
@@ -38,8 +41,8 @@ export class CustomImage extends Shape {
             ...super.defaults,
             type: 'CustomImage',
             size: {
-                width: MAX_SIZE,
-                height: MAX_SIZE
+                width: SIZE,
+                height: SIZE
             },
             attrs: {
                 image: {
@@ -58,9 +61,10 @@ export class CustomImage extends Shape {
         this.markup = markup;
     }
 
-    /** The shape of an image: as big as it can be in the default size, in the steps of the size. */
+    /** The shape of an image: in its aspect ratio, as much area as the default size (see `SIZE`), in the steps of the size. */
     static fromImage(imageId: string, image: ImageEntry): CustomImage {
-        const scale = MAX_SIZE / Math.max(image.width, image.height);
+        const areaScale = SIZE / Math.sqrt(image.width * image.height);
+        const scale = Math.min(areaScale, MAX_SIDE / Math.max(image.width, image.height));
         const step = (value: number) => Math.max(SIZE_STEP, Math.round(value * scale / SIZE_STEP) * SIZE_STEP);
         return new CustomImage({
             size: { width: step(image.width), height: step(image.height) },
