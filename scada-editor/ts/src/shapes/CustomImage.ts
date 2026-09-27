@@ -83,8 +83,7 @@ export class CustomImage extends Shape {
                 const { paper } = elementView;
                 if (!paper) return {};
                 const image = imageId ? findImage(elementView, imageId) : null;
-                // An image that is not in the diagram (pasted from another one, deleted): a placeholder
-                // (the element keeps its `imageId`, it shows the image again if the image comes back)
+                // An image that is not in the diagram (an element pasted from another one): a placeholder
                 if (!image) return { href: `#${definePlaceholder(paper)}` };
                 return { href: `#${defineImage(paper, imageId, image)}` };
             },

@@ -19,7 +19,6 @@ import {
     CanvasController,
     ControlsController,
     EditController,
-    ImagesController,
     KeyboardController,
     PaletteController,
     RuntimeController,
@@ -93,7 +92,6 @@ export class App {
         this.controllers = [
             new CanvasController(this),
             new ControlsController(this),
-            new ImagesController(this),
             new SelectionController(this),
             new TagsController(this)
         ];

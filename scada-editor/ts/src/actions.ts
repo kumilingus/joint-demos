@@ -162,6 +162,7 @@ export function deleteImage(app: App, imageId: string): void {
     // Not a favorite anymore (the favorites are not in the history: an undo doesn't make it one again)
     removeFavorite(graph, `CustomImage:${imageId}`);
     graph.startBatch('delete-image');
+    // The elements first: an undo brings back the image before them (they are not rendered with the placeholder).
     graph.removeCells(graph.getElements().filter(element => element.attr('image/imageId') === imageId));
     graph.set(IMAGES_ATTRIBUTE, rest);
     graph.stopBatch('delete-image');
