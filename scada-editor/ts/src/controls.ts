@@ -22,6 +22,35 @@ export function isControlEvent(evt: dia.Event): boolean {
     return evt.target instanceof Element && evt.target.closest(`.${CONTROL_CLASS}`) !== null;
 }
 
+/** The markup of the controls (parsed once, shared by all of them) */
+const pumpControlMarkup = util.svg/* xml */`
+    <foreignObject class="${CONTROL_CLASS}" width="20" height="20">
+        <div class="jj-checkbox" xmlns="http://www.w3.org/1999/xhtml">
+            <input @selector="input" class="jj-checkbox-input" type="checkbox"/>
+        </div>
+    </foreignObject>
+`;
+
+const toggleValveControlMarkup = util.svg/* xml */`
+    <foreignObject class="${CONTROL_CLASS}" width="100" height="50">
+        <div class="jj-switch" xmlns="http://www.w3.org/1999/xhtml">
+            <div @selector="label" class="jj-switch-label"></div>
+            <button @selector="buttonOn" class="jj-switch-on">open</button>
+            <button @selector="buttonOff" class="jj-switch-off">close</button>
+        </div>
+    </foreignObject>
+`;
+
+const sliderValveControlMarkup = util.svg/* xml */`
+    <foreignObject class="${CONTROL_CLASS}" width="100" height="60">
+        <div class="jj-slider" xmlns="http://www.w3.org/1999/xhtml">
+            <div @selector="label" class="jj-slider-label"></div>
+            <input @selector="slider" class="jj-slider-input" type="range" min="0" max="100" step="25"/>
+            <output @selector="value" class="jj-slider-output"></output>
+        </div>
+    </foreignObject>
+`;
+
 /** Whether the controls of the paper can be operated (in the runtime mode, see `setControlsOperable()`). */
 const operable = new WeakMap<dia.Paper, boolean>();
 
@@ -51,13 +80,7 @@ class PumpControl extends Control {
     preinitialize(): void {
         this.UPDATE_ATTRIBUTES = ['power'];
         this.tagName = 'g';
-        this.children = util.svg/* xml */`
-            <foreignObject class="${CONTROL_CLASS}" width="20" height="20">
-                <div class="jj-checkbox" xmlns="http://www.w3.org/1999/xhtml">
-                    <input @selector="input" class="jj-checkbox-input" type="checkbox"/>
-                </div>
-            </foreignObject>
-        `;
+        this.children = pumpControlMarkup;
         this.attributes = {
             transform: 'translate(5, 5)'
         };
@@ -84,15 +107,7 @@ class ToggleValveControl extends Control {
     preinitialize(): void {
         // `attrs`: the label of the valve is shown (and can be edited in the edit mode).
         this.UPDATE_ATTRIBUTES = ['open', 'attrs'];
-        this.children = util.svg/* xml */`
-            <foreignObject class="${CONTROL_CLASS}" width="100" height="50">
-                <div class="jj-switch" xmlns="http://www.w3.org/1999/xhtml">
-                    <div @selector="label" class="jj-switch-label"></div>
-                    <button @selector="buttonOn" class="jj-switch-on">open</button>
-                    <button @selector="buttonOff" class="jj-switch-off">close</button>
-                </div>
-            </foreignObject>
-        `;
+        this.children = toggleValveControlMarkup;
     }
 
     events(): mvc.EventsHash {
@@ -123,15 +138,7 @@ class SliderValveControl extends Control {
     preinitialize(): void {
         // `attrs`: the label of the valve is shown (and can be edited in the edit mode).
         this.UPDATE_ATTRIBUTES = ['open', 'attrs'];
-        this.children = util.svg/* xml */`
-            <foreignObject class="${CONTROL_CLASS}" width="100" height="60">
-                <div class="jj-slider" xmlns="http://www.w3.org/1999/xhtml">
-                    <div @selector="label" class="jj-slider-label"></div>
-                    <input @selector="slider" class="jj-slider-input" type="range" min="0" max="100" step="25"/>
-                    <output @selector="value" class="jj-slider-output"></output>
-                </div>
-            </foreignObject>
-        `;
+        this.children = sliderValveControlMarkup;
     }
 
     events(): mvc.EventsHash {

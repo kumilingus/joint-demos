@@ -15,6 +15,15 @@ const flange = (x: string) => ({
     strokeWidth: 1.5
 });
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='tab' />
+    <rect @selector='upstream' />
+    <rect @selector='downstream' />
+    <rect @selector='body' />
+    <text @selector='label' />
+`;
+
 /** A flow element: a plate with a hole between two flanges (the flow is measured by the pressure drop). */
 export class OrificePlate extends Shape {
 
@@ -78,12 +87,6 @@ export class OrificePlate extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='tab' />
-            <rect @selector='upstream' />
-            <rect @selector='downstream' />
-            <rect @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

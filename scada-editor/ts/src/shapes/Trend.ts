@@ -16,6 +16,15 @@ const chartCoordinate = (ratio: number, margin: number, variable: 'w' | 'h') => 
     return `calc(${Number(ratio.toFixed(3))} * ${variable} ${signed(margin - 2 * margin * ratio)})`;
 };
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='body' />
+    <rect @selector='screen' />
+    <path @selector='gridLine' />
+    <path @selector='line' />
+    <text @selector='label' />
+`;
+
 /** A panel showing the recent history of a value (0 - 100): the newest on the right. */
 export class Trend extends Shape {
 
@@ -88,13 +97,7 @@ export class Trend extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='body' />
-            <rect @selector='screen' />
-            <path @selector='gridLine' />
-            <path @selector='line' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

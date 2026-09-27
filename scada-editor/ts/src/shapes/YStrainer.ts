@@ -3,6 +3,15 @@ import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, cylinderGradient, pipeGradient } from './gradients';
 import { Shape, type Resizable } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='leg' />
+    <path @selector='screen' />
+    <rect @selector='cap' />
+    <rect @selector='body' />
+    <text @selector='label' />
+`;
+
 /** An inline strainer: the dirt is caught by the screen in the leg of the Y. */
 export class YStrainer extends Shape {
 
@@ -75,12 +84,6 @@ export class YStrainer extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='leg' />
-            <path @selector='screen' />
-            <rect @selector='cap' />
-            <rect @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

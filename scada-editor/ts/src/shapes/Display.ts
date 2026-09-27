@@ -4,6 +4,15 @@ import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR } from '../const';
 import { Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='body' />
+    <rect @selector='screen' />
+    <text @selector='value' />
+    <text @selector='unit' />
+    <text @selector='label' />
+`;
+
 /** A panel display showing a value with its unit. */
 export class Display extends Shape {
 
@@ -84,12 +93,6 @@ export class Display extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='body' />
-            <rect @selector='screen' />
-            <text @selector='value' />
-            <text @selector='unit' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

@@ -12,6 +12,15 @@ const nozzle = {
     strokeWidth: 2
 };
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='shellInlet' />
+    <rect @selector='shellOutlet' />
+    <rect @selector='body' />
+    <path @selector='tubes' />
+    <text @selector='label' />
+`;
+
 /** A shell-and-tube heat exchanger: the tubes run through the shell from the left to the right. */
 export class HeatExchanger extends Shape {
 
@@ -86,12 +95,6 @@ export class HeatExchanger extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='shellInlet' />
-            <rect @selector='shellOutlet' />
-            <rect @selector='body' />
-            <path @selector='tubes' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

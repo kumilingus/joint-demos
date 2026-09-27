@@ -4,6 +4,12 @@ import { METAL_STROKE, pipeGradient } from './gradients';
 
 type PortArgs = NonNullable<dia.Element.Port['position']>['args'];
 
+/** The markup of a pipe stub (parsed once) */
+const pipeStubMarkup = util.svg`
+    <rect @selector='pipeBody' />
+    <rect @selector='pipeEnd' />
+`;
+
 /**
  * The group of the pipe stubs at the `position`: each stub is drawn from there to the right
  * (turned by the `angle` of its position, see `fittingPorts()`), behind the element.
@@ -12,10 +18,7 @@ type PortArgs = NonNullable<dia.Element.Port['position']>['args'];
 function pipeStubGroup(position: dia.Element.PortGroup['position']): dia.Element.PortGroup {
     return {
         position,
-        markup: util.svg`
-            <rect @selector='pipeBody' />
-            <rect @selector='pipeEnd' />
-        `,
+        markup: pipeStubMarkup,
         size: { width: 0, height: 30 },
         attrs: {
             portRoot: {

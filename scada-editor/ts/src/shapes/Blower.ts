@@ -10,6 +10,18 @@ const SPOKES = Array.from({ length: 8 }, (_, i) => {
     return `M 0 0 L ${(22 * Math.cos(angle)).toFixed(2)} ${(22 * Math.sin(angle)).toFixed(2)}`;
 }).join(' ');
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='base' />
+    <rect @selector='outlet' />
+    <circle @selector='body' />
+    <circle @selector='impeller' />
+    <g @selector='spokesGroup'>
+        <path @selector='spokes' />
+    </g>
+    <text @selector='label' />
+`;
+
 /** A centrifugal blower: the air leaves the casing through the outlet on the top. */
 export class Blower extends Shape {
 
@@ -100,15 +112,6 @@ export class Blower extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='base' />
-            <rect @selector='outlet' />
-            <circle @selector='body' />
-            <circle @selector='impeller' />
-            <g @selector='spokesGroup'>
-                <path @selector='spokes' />
-            </g>
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

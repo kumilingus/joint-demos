@@ -5,6 +5,15 @@ import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
 import { Shape, type Resizable, type ControlKind } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='stem' />
+    <path @selector='body' />
+    <rect @selector='coil' />
+    <text @selector='coilLabel' />
+    <text @selector='label' />
+`;
+
 /** An electrically operated valve: the coil on top lights up when the valve is open. */
 export class SolenoidValve extends Shape {
 
@@ -74,13 +83,7 @@ export class SolenoidValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='stem' />
-            <path @selector='body' />
-            <rect @selector='coil' />
-            <text @selector='coilLabel' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

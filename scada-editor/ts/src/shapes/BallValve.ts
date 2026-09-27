@@ -5,6 +5,15 @@ import { sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { Shape, type Resizable, type ControlKind } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='lever' />
+    <path @selector='body' />
+    <circle @selector='ball' />
+    <path @selector='bore' />
+    <text @selector='label' />
+`;
+
 /** A quarter-turn valve with a ball: the bore is along the flow when open, across it when closed. */
 export class BallValve extends Shape {
 
@@ -63,13 +72,7 @@ export class BallValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='lever' />
-            <path @selector='body' />
-            <circle @selector='ball' />
-            <path @selector='bore' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

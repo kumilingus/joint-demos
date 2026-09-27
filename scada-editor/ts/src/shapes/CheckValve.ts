@@ -3,6 +3,14 @@ import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import type { Overflow } from './footprint';
 import { Shape, type Resizable } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='body' />
+    <path @selector='inlet' />
+    <path @selector='arrow' />
+    <text @selector='label' />
+`;
+
 /** A valve letting the liquid flow in one direction only (from left to right). */
 export class CheckValve extends Shape {
 
@@ -65,11 +73,6 @@ export class CheckValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='body' />
-            <path @selector='inlet' />
-            <path @selector='arrow' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

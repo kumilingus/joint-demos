@@ -9,6 +9,17 @@ const FINS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
     .map(x => `M calc(${x} * w) 6 V calc(h - 6)`)
     .join(' ');
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='feet' />
+    <rect @selector='shaft' />
+    <rect @selector='endCap' />
+    <rect @selector='body' />
+    <path @selector='fins' />
+    <rect @selector='terminalBox' />
+    <text @selector='label' />
+`;
+
 /** An electric motor: a finned housing on feet with the shaft on the right. */
 export class Motor extends Shape {
 
@@ -96,14 +107,6 @@ export class Motor extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='feet' />
-            <rect @selector='shaft' />
-            <rect @selector='endCap' />
-            <rect @selector='body' />
-            <path @selector='fins' />
-            <rect @selector='terminalBox' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

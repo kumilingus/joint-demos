@@ -41,6 +41,21 @@ function zone(from: number, to: number): string {
 
 const clamp = (value: unknown) => Math.max(0, Math.min(100, Number(value) || 0));
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='stem' />
+    <circle @selector='body' />
+    <path @selector='ticks' />
+    <path @selector='lowZone' />
+    <path @selector='highZone' />
+    <g @selector='needleGroup'>
+        <path @selector='needle' />
+    </g>
+    <circle @selector='hub' />
+    <text @selector='unit' />
+    <text @selector='label' />
+`;
+
 export class PressureGauge extends Shape {
 
     get graphLayer(): Layer {
@@ -147,19 +162,7 @@ export class PressureGauge extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='stem' />
-            <circle @selector='body' />
-            <path @selector='ticks' />
-            <path @selector='lowZone' />
-            <path @selector='highZone' />
-            <g @selector='needleGroup'>
-                <path @selector='needle' />
-            </g>
-            <circle @selector='hub' />
-            <text @selector='unit' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

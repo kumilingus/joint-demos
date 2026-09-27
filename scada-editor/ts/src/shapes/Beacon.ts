@@ -7,6 +7,15 @@ import { Shape, type Resizable, type ControlKind } from './Shape';
 
 const LAMP_OFF_COLOR = '#9aa3ab';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <circle @selector='glow' />
+    <path @selector='lamp' />
+    <path @selector='shine' />
+    <rect @selector='body' />
+    <text @selector='label' />
+`;
+
 /** An alarm beacon: the lamp glows while it's on. */
 export class Beacon extends Shape {
 
@@ -88,13 +97,7 @@ export class Beacon extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <circle @selector='glow' />
-            <path @selector='lamp' />
-            <path @selector='shine' />
-            <rect @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

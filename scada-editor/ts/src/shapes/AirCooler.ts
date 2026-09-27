@@ -10,6 +10,21 @@ const BLADES = [0, 120, 240].map(angle => `<path d="${BLADE}" transform="rotate(
 // The fans above the tube bundle (relative x positions)
 const FANS = [0.3, 0.7];
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <rect @selector='plenum' />
+    ${FANS.map((_, index) => /* xml */`
+        <circle @selector='fan${index + 1}' />
+        <g @selector='fan${index + 1}Hub'>
+            <g @selector='fan${index + 1}Blades'>${BLADES}</g>
+        </g>
+    `).join('')}
+    <rect @selector='body' />
+    <path @selector='fins' />
+    <text @selector='label' />
+`;
+
 /**
  * A fin-fan air cooler: the fluid runs through the tube bundle,
  * the fans on top blow air through it (they spin while the cooler is on).
@@ -107,18 +122,6 @@ export class AirCooler extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <rect @selector='plenum' />
-            ${FANS.map((_, index) => `
-                <circle @selector='fan${index + 1}' />
-                <g @selector='fan${index + 1}Hub'>
-                    <g @selector='fan${index + 1}Blades'>${BLADES}</g>
-                </g>
-            `).join('')}
-            <rect @selector='body' />
-            <path @selector='fins' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

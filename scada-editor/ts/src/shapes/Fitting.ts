@@ -7,6 +7,11 @@ import { Shape, type Resizable } from './Shape';
 // How far the pipe stubs reach out of a fitting
 export const FITTING_STUB_LENGTH = 20;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='body' />
+`;
+
 /**
  * A pipe fitting: a small metal body with pipe stubs on some of its sides (see `fittingPorts()`).
  * A fitting is rotated to turn its stubs.
@@ -63,8 +68,6 @@ export abstract class Fitting extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='body' />
-        `;
+        this.markup = markup;
     }
 }

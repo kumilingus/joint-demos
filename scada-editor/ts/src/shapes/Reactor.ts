@@ -4,6 +4,17 @@ import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { type ControlKind, Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <rect @selector='jacket' />
+    <rect @selector='body' />
+    <path @selector='shaft' />
+    <path @selector='impeller' />
+    <rect @selector='motor' />
+    <text @selector='label' />
+`;
+
 /** A jacketed reactor: a vessel with dished ends, a heating jacket and an agitator. */
 export class Reactor extends Shape {
 
@@ -89,14 +100,6 @@ export class Reactor extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <rect @selector='jacket' />
-            <rect @selector='body' />
-            <path @selector='shaft' />
-            <path @selector='impeller' />
-            <rect @selector='motor' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

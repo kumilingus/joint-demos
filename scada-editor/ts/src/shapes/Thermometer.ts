@@ -14,6 +14,16 @@ const TICKS = Array.from({ length: 6 }, (_, i) => {
     return `M calc(w + 2) calc(${y} * h) h ${i % 2 === 0 ? 8 : 5}`;
 }).join(' ');
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='body' />
+    <rect @selector='column' />
+    <circle @selector='bulb' />
+    <path @selector='ticks' />
+    <text @selector='reading' />
+    <text @selector='label' />
+`;
+
 /** A liquid-in-glass thermometer showing a temperature from 0 to 100 %. */
 export class Thermometer extends Shape {
 
@@ -100,14 +110,7 @@ export class Thermometer extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='body' />
-            <rect @selector='column' />
-            <circle @selector='bulb' />
-            <path @selector='ticks' />
-            <text @selector='reading' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

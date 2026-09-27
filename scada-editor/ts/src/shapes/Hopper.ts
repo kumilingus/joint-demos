@@ -4,6 +4,14 @@ import { METAL_STROKE, coneGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='body' />
+    <path @selector='material' />
+    <rect @selector='rim' />
+    <text @selector='label' />
+`;
+
 /** An open bin narrowing into a chute at the bottom. */
 export class Hopper extends Shape {
 
@@ -57,11 +65,6 @@ export class Hopper extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='body' />
-            <path @selector='material' />
-            <rect @selector='rim' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

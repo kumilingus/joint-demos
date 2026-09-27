@@ -9,6 +9,15 @@ const LEGS = [0.12, 0.38, 0.62, 0.88]
     .map(x => `M calc(${x} * w) calc(0.5 * h) V calc(h + 14)`)
     .join(' ');
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <ellipse @selector='body' />
+    <path @selector='equator' />
+    <ellipse @selector='manhole' />
+    <text @selector='label' />
+`;
+
 /** A pressure sphere for liquefied gas, standing on legs. */
 export class SphericalTank extends Shape {
 
@@ -76,12 +85,6 @@ export class SphericalTank extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <ellipse @selector='body' />
-            <path @selector='equator' />
-            <ellipse @selector='manhole' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

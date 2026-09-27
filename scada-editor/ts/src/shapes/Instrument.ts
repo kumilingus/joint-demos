@@ -3,6 +3,14 @@ import type { Overflow } from './footprint';
 import { Layer } from '../const';
 import { Shape, type Resizable } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <circle @selector='body' />
+    <path @selector='divider' />
+    <text @selector='tag' />
+    <text @selector='loop' />
+`;
+
 /**
  * An ISA instrument bubble: the function of the instrument on the top
  * (e.g. PT = pressure transmitter, FT = flow, LT = level, TT = temperature)
@@ -78,11 +86,6 @@ export class Instrument extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <circle @selector='body' />
-            <path @selector='divider' />
-            <text @selector='tag' />
-            <text @selector='loop' />
-        `;
+        this.markup = markup;
     }
 }

@@ -8,6 +8,19 @@ import { Shape, type Resizable, type ControlKind } from './Shape';
 // The cover slides over the frame opening (the frame is 30 wide with 3 on each side).
 const COVER_MAX_WIDTH = 24;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='stem' />
+    <path @selector='control' />
+    <ellipse @selector='body' />
+    <rect @selector='coverFrame' />
+    <path @selector='liquidOutline' />
+    <path @selector='liquid' />
+    <path @selector='flow' />
+    <rect @selector='cover' />
+    <text @selector='label' />
+`;
+
 export class ControlValve extends Shape {
 
     get resizable(): Resizable {
@@ -116,17 +129,7 @@ export class ControlValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='stem' />
-            <path @selector='control' />
-            <ellipse @selector='body' />
-            <rect @selector='coverFrame' />
-            <path @selector='liquidOutline' />
-            <path @selector='liquid' />
-            <path @selector='flow' />
-            <rect @selector='cover' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

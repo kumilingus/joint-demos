@@ -13,6 +13,14 @@ const BLADES = [0.25, 0.45, 0.65, 0.85]
     })
     .join(' ');
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='shaft' />
+    <path @selector='body' />
+    <path @selector='blades' />
+    <text @selector='label' />
+`;
+
 /** A steam turbine: the casing widens as the steam expands from the left to the right. */
 export class Turbine extends Shape {
 
@@ -70,11 +78,6 @@ export class Turbine extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='shaft' />
-            <path @selector='body' />
-            <path @selector='blades' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

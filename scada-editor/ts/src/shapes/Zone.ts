@@ -6,6 +6,12 @@ import { Shape } from './Shape';
 /** The side the tip of the zone points to: where the pipe comes from. */
 export type ZoneFacing = 'left' | 'right';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='body' />
+    <text @selector='label' />
+`;
+
 export class Zone extends Shape {
 
     get rotatable(): boolean {
@@ -48,10 +54,7 @@ export class Zone extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

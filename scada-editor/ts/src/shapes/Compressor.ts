@@ -3,6 +3,14 @@ import { centerPortPosition, labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import { Shape, type Resizable, type ControlKind } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='base' />
+    <circle @selector='body' />
+    <path @selector='symbol' />
+    <text @selector='label' />
+`;
+
 export class Compressor extends Shape {
 
     get resizable(): Resizable {
@@ -64,11 +72,6 @@ export class Compressor extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='base' />
-            <circle @selector='body' />
-            <path @selector='symbol' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

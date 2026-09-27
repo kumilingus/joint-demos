@@ -71,6 +71,18 @@ const windowAttributes = {
     height: windowHeight(1)
 };
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='panelBody' />
+    <path @selector='panelTicks' />
+    ${VALUES.map(selector => `<text @selector='${selector}' />`).join('')}
+    <rect @selector='glass' />
+    <rect @selector='liquid' />
+    <path @selector='lowMark' />
+    <path @selector='highMark' />
+    <rect @selector='frame' />
+`;
+
 /**
  * A level gauge showing how full a tank is (0 - 100).
  * It's usually embedded in a tank so that it moves with it.
@@ -156,16 +168,7 @@ export class Panel extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='panelBody' />
-            <path @selector='panelTicks' />
-            ${VALUES.map(selector => `<text @selector='${selector}' />`).join('')}
-            <rect @selector='glass' />
-            <rect @selector='liquid' />
-            <path @selector='lowMark' />
-            <path @selector='highMark' />
-            <rect @selector='frame' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

@@ -3,6 +3,12 @@ import { LABEL_COLOR, Layer } from '../const';
 import type { Overflow } from './footprint';
 import { Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='body' />
+    <text @selector='label' />
+`;
+
 /** A text on the canvas (a name of an area, a note), wrapped in its box. Nothing connects to it. */
 export class Label extends Shape {
 
@@ -54,9 +60,6 @@ export class Label extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

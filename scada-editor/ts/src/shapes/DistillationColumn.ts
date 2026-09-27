@@ -22,6 +22,16 @@ const nozzle = (y: string) => ({
     strokeWidth: 2
 });
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='feed' />
+    <rect @selector='topOutlet' />
+    <path @selector='skirt' />
+    <rect @selector='body' />
+    <path @selector='trays' />
+    <text @selector='label' />
+`;
+
 /** A tall column separating a mixture on its trays. */
 export class DistillationColumn extends Shape {
 
@@ -87,13 +97,6 @@ export class DistillationColumn extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='feed' />
-            <rect @selector='topOutlet' />
-            <path @selector='skirt' />
-            <rect @selector='body' />
-            <path @selector='trays' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

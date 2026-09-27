@@ -4,6 +4,15 @@ import { bowTieAttributes, leverAttributes } from './valveBody';
 import type { Overflow } from './footprint';
 import { Shape, type Resizable, type ControlKind } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='lever' />
+    <path @selector='body' />
+    <path @selector='disc' />
+    <circle @selector='pivot' />
+    <text @selector='label' />
+`;
+
 /** A quarter-turn valve with a disc: along the flow when open, across it when closed. */
 export class ButterflyValve extends Shape {
 
@@ -64,13 +73,7 @@ export class ButterflyValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='lever' />
-            <path @selector='body' />
-            <path @selector='disc' />
-            <circle @selector='pivot' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

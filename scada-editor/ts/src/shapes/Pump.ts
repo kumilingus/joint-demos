@@ -8,6 +8,17 @@ const r = 30;
 const d = 10;
 const l = (3 * r) / 4;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <ellipse @selector='body' />
+    <g @selector='rotorGroup'>
+        <circle @selector='rotorFrame' />
+        <circle @selector='rotorBackground' />
+        <path @selector='rotor' />
+    </g>
+    <text @selector='label' />
+`;
+
 export class Pump extends Shape {
 
     get resizable(): Resizable {
@@ -83,14 +94,6 @@ export class Pump extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <ellipse @selector='body' />
-            <g @selector='rotorGroup'>
-                <circle @selector='rotorFrame' />
-                <circle @selector='rotorBackground' />
-                <path @selector='rotor' />
-            </g>
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

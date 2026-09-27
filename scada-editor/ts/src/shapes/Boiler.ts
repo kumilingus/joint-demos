@@ -7,6 +7,16 @@ import { Shape } from './Shape';
 // The flames are drawn around the bottom center of the firebox.
 const flamesTransform = 'translate(calc(w / 2), calc(h - 18))';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='outlet' />
+    <rect @selector='body' />
+    <rect @selector='firebox' />
+    <path @selector='flameOuter' />
+    <path @selector='flameInner' />
+    <text @selector='label' />
+`;
+
 export class Boiler extends Shape {
 
     get overflow(): Overflow {
@@ -73,13 +83,6 @@ export class Boiler extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='outlet' />
-            <rect @selector='body' />
-            <rect @selector='firebox' />
-            <path @selector='flameOuter' />
-            <path @selector='flameInner' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

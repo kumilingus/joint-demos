@@ -7,6 +7,16 @@ import { Shape } from './Shape';
 // The tank on the top (relative height of its bottom)
 const TANK_BOTTOM = 0.42;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <path @selector='bracing' />
+    <path @selector='riser' />
+    <rect @selector='body' />
+    <path @selector='roof' />
+    <text @selector='label' />
+`;
+
 /** An elevated water tank: a tank on braced legs, with a conical roof. */
 export class WaterTower extends Shape {
 
@@ -80,13 +90,6 @@ export class WaterTower extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <path @selector='bracing' />
-            <path @selector='riser' />
-            <rect @selector='body' />
-            <path @selector='roof' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

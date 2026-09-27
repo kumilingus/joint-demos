@@ -24,6 +24,20 @@ function band(from: number, to: number): string {
     ].join(' ');
 }
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <g @selector='smoke'>
+        <circle @selector='smoke1' />
+        <circle @selector='smoke2' />
+        <circle @selector='smoke3' />
+    </g>
+    <path @selector='body' />
+    <path @selector='bands' />
+    <rect @selector='cap' />
+    <rect @selector='base' />
+    <text @selector='label' />
+`;
+
 export class Chimney extends Shape {
 
     get overflow(): Overflow {
@@ -109,17 +123,6 @@ export class Chimney extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <g @selector='smoke'>
-                <circle @selector='smoke1' />
-                <circle @selector='smoke2' />
-                <circle @selector='smoke3' />
-            </g>
-            <path @selector='body' />
-            <path @selector='bands' />
-            <rect @selector='cap' />
-            <rect @selector='base' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

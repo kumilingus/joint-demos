@@ -4,6 +4,14 @@ import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='body' />
+    <path @selector='mesh' />
+    <rect @selector='cap' />
+    <text @selector='label' />
+`;
+
 export class Filter extends Shape {
 
     get stubLength(): number {
@@ -64,11 +72,6 @@ export class Filter extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='body' />
-            <path @selector='mesh' />
-            <rect @selector='cap' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

@@ -4,6 +4,15 @@ import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR } from '../const';
 import { Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='body' />
+    <rect @selector='screen' />
+    <text @selector='value' />
+    <text @selector='unit' />
+    <text @selector='label' />
+`;
+
 /** An inline flow meter with a display of the current flow. */
 export class FlowMeter extends Shape {
 
@@ -86,12 +95,6 @@ export class FlowMeter extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='body' />
-            <rect @selector='screen' />
-            <text @selector='value' />
-            <text @selector='unit' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

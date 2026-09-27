@@ -8,6 +8,15 @@ import { Shape, type Resizable, type ControlKind } from './Shape';
 const HANDWHEEL_OPEN = -36;
 const HANDWHEEL_CLOSED = -16;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='stem' />
+    <rect @selector='yoke' />
+    <rect @selector='handwheel' />
+    <path @selector='body' />
+    <text @selector='label' />
+`;
+
 /** A gate valve with a rising stem: the handwheel is up while the valve is open. */
 export class GateValve extends Shape {
 
@@ -78,13 +87,7 @@ export class GateValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='stem' />
-            <rect @selector='yoke' />
-            <rect @selector='handwheel' />
-            <path @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

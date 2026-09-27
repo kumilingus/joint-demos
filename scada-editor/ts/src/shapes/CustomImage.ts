@@ -11,6 +11,12 @@ const MAX_SIZE = 100;
 // The size changes in two steps of the grid (see `Shape`).
 const SIZE_STEP = 2 * GRID_SIZE;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <use @selector='image' />
+    <text @selector='label' />
+`;
+
 /**
  * A shape of the user: an uploaded image. It refers to the image by its id (`attrs/image/imageId`):
  * the image is stored on the graph and in the DOM once per paper (see `images.ts`).
@@ -49,10 +55,7 @@ export class CustomImage extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <use @selector='image' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 
     /** The shape of an image: as big as it can be in the default size, in the steps of the size. */
@@ -80,7 +83,10 @@ export class CustomImage extends Shape {
                 // (the element keeps its `imageId`, it shows the image again if the image comes back)
                 if (!image) return { href: `#${definePlaceholder(paper)}` };
                 return { href: `#${defineImage(paper, imageId, image)}` };
-            }
+            },
+            // No image id (`attr('image/imageId', null)`): the reference set above is removed
+            // (not the `image-id` attribute, which is never in the DOM).
+            unset: 'href'
         }
     };
 }

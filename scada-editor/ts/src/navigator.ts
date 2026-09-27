@@ -45,10 +45,12 @@ const NavigatorElementView = dia.ElementView.extend({
     }
 });
 
+const navigatorLinkMarkup = util.svg`<path @selector="line" fill="none" />`;
+
 /** A pipe drawn by its `line` only (its color and width come from the model). */
 const NavigatorLinkView = dia.LinkView.extend({
     renderMarkup: function() {
-        this.renderJSONMarkup(util.svg`<path @selector="line" fill="none" />`);
+        this.renderJSONMarkup(navigatorLinkMarkup);
     }
 });
 

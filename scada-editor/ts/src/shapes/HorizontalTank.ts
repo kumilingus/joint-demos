@@ -6,6 +6,16 @@ import { Shape } from './Shape';
 
 const saddle = (x: number) => `M calc(${x} * w - 16) calc(h + 12) L calc(${x} * w - 10) calc(h - 8) H calc(${x} * w + 10) L calc(${x} * w + 16) calc(h + 12) Z`;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='saddles' />
+    <rect @selector='manhole' />
+    <rect @selector='vent' />
+    <rect @selector='body' />
+    <path @selector='welds' />
+    <text @selector='label' />
+`;
+
 /** A horizontal storage tank ("bullet") resting on two saddles. */
 export class HorizontalTank extends Shape {
 
@@ -81,13 +91,6 @@ export class HorizontalTank extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='saddles' />
-            <rect @selector='manhole' />
-            <rect @selector='vent' />
-            <rect @selector='body' />
-            <path @selector='welds' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

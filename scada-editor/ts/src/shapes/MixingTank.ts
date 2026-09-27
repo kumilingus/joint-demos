@@ -7,6 +7,17 @@ import { type ControlKind, Shape } from './Shape';
 // The impeller at the bottom of the shaft
 const impellerTransform = 'translate(calc(w / 2), calc(0.8 * h))';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <rect @selector='body' />
+    <path @selector='shaft' />
+    <path @selector='impeller' />
+    <rect @selector='motor' />
+    <text @selector='motorLabel' />
+    <text @selector='label' />
+`;
+
 /** A tank with an agitator: a motor on top turning an impeller inside. */
 export class MixingTank extends Shape {
 
@@ -96,14 +107,6 @@ export class MixingTank extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <rect @selector='body' />
-            <path @selector='shaft' />
-            <path @selector='impeller' />
-            <rect @selector='motor' />
-            <text @selector='motorLabel' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

@@ -3,6 +3,14 @@ import { labelAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import { Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <rect @selector='body' />
+    <rect @selector='top' />
+    <text @selector='label' />
+`;
+
 export class LiquidTank extends Shape {
 
     get tagPrefix(): string {
@@ -57,11 +65,6 @@ export class LiquidTank extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <rect @selector='body' />
-            <rect @selector='top' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

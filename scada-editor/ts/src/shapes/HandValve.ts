@@ -4,6 +4,14 @@ import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { Shape, type Resizable, type ControlKind } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='stem' />
+    <rect @selector='handwheel' />
+    <ellipse @selector='body' />
+    <text @selector='label' />
+`;
+
 export class HandValve extends Shape {
 
     get resizable(): Resizable {
@@ -74,11 +82,6 @@ export class HandValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='stem' />
-            <rect @selector='handwheel' />
-            <ellipse @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

@@ -9,6 +9,12 @@ import { Shape, type Resizable } from './Shape';
 // Where the outlets are along the header (relative to its width)
 const OUTLETS = ['calc(0.2 * w)', 'calc(0.5 * w)', 'calc(0.8 * w)'];
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='body' />
+    <text @selector='label' />
+`;
+
 /** A distribution header: one inlet on the left, the outlets below it. */
 export class Manifold extends Shape {
 
@@ -67,9 +73,6 @@ export class Manifold extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

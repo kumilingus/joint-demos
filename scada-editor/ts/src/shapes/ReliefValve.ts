@@ -11,6 +11,15 @@ const SPRING = Array.from({ length: 7 }, (_, i) => {
     return `${i === 0 ? 'M' : 'L'} calc(${x} * w) calc(${y.toFixed(3)} * h)`;
 }).join(' ');
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='bonnet' />
+    <path @selector='spring' />
+    <rect @selector='cap' />
+    <path @selector='body' />
+    <text @selector='label' />
+`;
+
 /** A safety valve: the spring keeps it shut until the pressure lifts the disc. */
 export class ReliefValve extends Shape {
 
@@ -93,12 +102,6 @@ export class ReliefValve extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='bonnet' />
-            <path @selector='spring' />
-            <rect @selector='cap' />
-            <path @selector='body' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

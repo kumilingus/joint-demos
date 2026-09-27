@@ -2,6 +2,12 @@ import { dia, util } from '@joint/plus';
 import { Layer } from '../const';
 import { followRouting, routingAttributes } from './routing';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='wrapper' fill='none' />
+    <path @selector='line' fill='none' />
+`;
+
 /** A signal line: an instrument (a transmitter) connected to what it measures or controls. */
 export class SignalLine extends dia.Link {
 
@@ -33,10 +39,7 @@ export class SignalLine extends dia.Link {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='wrapper' fill='none' />
-            <path @selector='line' fill='none' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Link['initialize']>): void {

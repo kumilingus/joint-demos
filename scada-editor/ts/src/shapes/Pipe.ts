@@ -2,6 +2,14 @@ import { dia, util } from '@joint/plus';
 import { followRouting, routingAttributes } from './routing';
 import { Layer, PIPE_COLOR } from '../const';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='wrapper' fill='none' />
+    <path @selector='outline' fill='none' />
+    <path @selector='line' fill='none' />
+    <path @selector='flow' fill='none' />
+`;
+
 export class Pipe extends dia.Link {
 
     defaults(): dia.Link.Attributes {
@@ -51,12 +59,7 @@ export class Pipe extends dia.Link {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='wrapper' fill='none' />
-            <path @selector='outline' fill='none' />
-            <path @selector='line' fill='none' />
-            <path @selector='flow' fill='none' />
-        `;
+        this.markup = markup;
     }
 
     initialize(...args: Parameters<dia.Link['initialize']>): void {

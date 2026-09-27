@@ -4,6 +4,14 @@ import { METAL_STROKE, coneGradient, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { Shape } from './Shape';
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='bottom' />
+    <rect @selector='body' />
+    <rect @selector='top' />
+    <text @selector='label' />
+`;
+
 export class ConicTank extends Shape {
 
     get overflow(): Overflow {
@@ -66,11 +74,6 @@ export class ConicTank extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='bottom' />
-            <rect @selector='body' />
-            <rect @selector='top' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

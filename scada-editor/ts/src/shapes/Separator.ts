@@ -7,6 +7,16 @@ import { Shape } from './Shape';
 
 const saddle = (x: number) => `M calc(${x} * w - 14) calc(h + 12) L calc(${x} * w - 8) calc(h - 6) H calc(${x} * w + 8) L calc(${x} * w + 14) calc(h + 12) Z`;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='saddles' />
+    <rect @selector='gasOutlet' />
+    <rect @selector='body' />
+    <path @selector='liquid' />
+    <rect @selector='demister' />
+    <text @selector='label' />
+`;
+
 /** A horizontal two-phase separator: the liquid settles at the bottom, the gas leaves on the top. */
 export class Separator extends Shape {
 
@@ -88,13 +98,6 @@ export class Separator extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='saddles' />
-            <rect @selector='gasOutlet' />
-            <rect @selector='body' />
-            <path @selector='liquid' />
-            <rect @selector='demister' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

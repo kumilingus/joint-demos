@@ -8,6 +8,17 @@ import { Shape } from './Shape';
 const BODY_TOP = 0.1;
 const BODY_BOTTOM = 0.72;
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <path @selector='hopper' />
+    <rect @selector='outlet' />
+    <rect @selector='body' />
+    <path @selector='ribs' />
+    <path @selector='roof' />
+    <text @selector='label' />
+`;
+
 /** A silo for bulk solids: a conical roof, a cylindrical body and a hopper on legs. */
 export class Silo extends Shape {
 
@@ -85,14 +96,6 @@ export class Silo extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <path @selector='hopper' />
-            <rect @selector='outlet' />
-            <rect @selector='body' />
-            <path @selector='ribs' />
-            <path @selector='roof' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

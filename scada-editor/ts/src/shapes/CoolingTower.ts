@@ -19,6 +19,17 @@ const steamGradient: dia.SVGGradientJSON = {
     }
 };
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='wisp' />
+    <path @selector='plume' />
+    <path @selector='plumeShade' />
+    <path @selector='body' />
+    <path @selector='inlets' />
+    <rect @selector='base' />
+    <text @selector='label' />
+`;
+
 /** A hyperboloid cooling tower with steam coming out of it. */
 export class CoolingTower extends Shape {
 
@@ -117,14 +128,6 @@ export class CoolingTower extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='wisp' />
-            <path @selector='plume' />
-            <path @selector='plumeShade' />
-            <path @selector='body' />
-            <path @selector='inlets' />
-            <rect @selector='base' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

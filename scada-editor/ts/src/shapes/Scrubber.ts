@@ -18,6 +18,19 @@ const PACKING = Array.from({ length: 5 }, (_, i) => {
 // The spray nozzles under the header
 const NOZZLES = [0.3, 0.5, 0.7].map(x => `M calc(${x} * w) calc(0.2 * h) l -5 10 h 10 Z`).join(' ');
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <rect @selector='outlet' />
+    <path @selector='skirt' />
+    <rect @selector='body' />
+    <rect @selector='sump' />
+    <rect @selector='bed' />
+    <path @selector='packing' />
+    <path @selector='header' />
+    <path @selector='nozzles' />
+    <text @selector='label' />
+`;
+
 /** A gas scrubber: the gas rises through the packing, washed by the liquid sprayed from the top. */
 export class Scrubber extends Shape {
 
@@ -111,16 +124,6 @@ export class Scrubber extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <rect @selector='outlet' />
-            <path @selector='skirt' />
-            <rect @selector='body' />
-            <rect @selector='sump' />
-            <rect @selector='bed' />
-            <path @selector='packing' />
-            <path @selector='header' />
-            <path @selector='nozzles' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

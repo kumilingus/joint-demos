@@ -10,6 +10,19 @@ const blade = (angle: number) => ({
     transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})`
 });
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <circle @selector='body' />
+    <circle @selector='guard' />
+    <g @selector='blades'>
+        <path @selector='blade1' />
+        <path @selector='blade2' />
+        <path @selector='blade3' />
+    </g>
+    <circle @selector='hub' />
+    <text @selector='label' />
+`;
+
 export class Fan extends Shape {
 
     get resizable(): Resizable {
@@ -83,16 +96,6 @@ export class Fan extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <circle @selector='body' />
-            <circle @selector='guard' />
-            <g @selector='blades'>
-                <path @selector='blade1' />
-                <path @selector='blade2' />
-                <path @selector='blade3' />
-            </g>
-            <circle @selector='hub' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }

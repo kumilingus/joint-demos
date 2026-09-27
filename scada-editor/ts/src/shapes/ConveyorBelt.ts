@@ -31,6 +31,18 @@ const box = (x: number) => ({
     strokeWidth: 1.5
 });
 
+/** The markup of the shape: parsed once, shared by all its elements. */
+const markup = util.svg/* xml */`
+    <path @selector='legs' />
+    <rect @selector='body' />
+    <circle @selector='roller1' />
+    <circle @selector='roller2' />
+    <circle @selector='roller3' />
+    <rect @selector='box1' />
+    <rect @selector='box2' />
+    <text @selector='label' />
+`;
+
 /** A belt conveyor carrying boxes from the left to the right. */
 export class ConveyorBelt extends Shape {
 
@@ -87,15 +99,6 @@ export class ConveyorBelt extends Shape {
     }
 
     preinitialize(): void {
-        this.markup = util.svg/* xml */`
-            <path @selector='legs' />
-            <rect @selector='body' />
-            <circle @selector='roller1' />
-            <circle @selector='roller2' />
-            <circle @selector='roller3' />
-            <rect @selector='box1' />
-            <rect @selector='box2' />
-            <text @selector='label' />
-        `;
+        this.markup = markup;
     }
 }
