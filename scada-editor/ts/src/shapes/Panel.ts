@@ -17,7 +17,7 @@ const signed = (value: number) => `${value < 0 ? '-' : '+'} ${Math.abs(Number(va
 /**
  * The y coordinate at the relative height `ratio` of the window (0 = top, 1 = bottom),
  * moved by `offset`.
- * `calc()` takes a single variable: `ratio * (h - WINDOW_TOP - WINDOW_BOTTOM) + WINDOW_TOP + offset`
+ * A `calc()` formula is `k * variable + constant`: `ratio * (h - WINDOW_TOP - WINDOW_BOTTOM) + WINDOW_TOP + offset`
  * is written as `ratio * h + constant`.
  */
 function windowY(ratio: number, offset = 0): string {

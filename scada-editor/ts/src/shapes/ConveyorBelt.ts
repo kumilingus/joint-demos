@@ -4,15 +4,11 @@ import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import { Shape, type ControlKind } from './Shape';
 
-/**
- * A roller of the belt, as big as the belt is tall (the shorter side, `s`), at `cx` - from the right end
- * if `fromRight` (`calc()` takes one variable: the roller is translated to the right end).
- */
-const roller = (cx: string, fromRight = false) => ({
+/** A roller of the belt at `cx`, as big as the belt is tall (the shorter side, `s`). */
+const roller = (cx: string) => ({
     cx,
     cy: 'calc(h / 2)',
     r: 'calc(s / 2 - 4)',
-    ...(fromRight ? { transform: 'translate(calc(w), 0)' } : {}),
     fill: sphereGradient,
     stroke: METAL_STROKE,
     strokeWidth: 2
@@ -86,7 +82,7 @@ export class ConveyorBelt extends Shape {
                 // The end rollers are in the rounded ends of the belt.
                 roller1: roller('calc(s / 2)'),
                 roller2: roller('calc(w / 2)'),
-                roller3: roller('calc(-0.5 * s)', true),
+                roller3: roller('calc(w - calc(s / 2))'),
                 box1: box(BOX_POSITIONS[0]),
                 box2: box(BOX_POSITIONS[1]),
                 label: {
