@@ -10,7 +10,7 @@ import {
 } from './config';
 import { addImages, clearSelection, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
-import { getImages, IMAGES_ATTRIBUTE } from './images';
+import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
 import {
     type Controller,
@@ -68,8 +68,9 @@ export class App {
             ...paperOptions,
             model: this.graph,
             cellViewNamespace: cellNamespace,
-            interactive: interactivity[this.mode]
-        });
+            interactive: interactivity[this.mode],
+            getImages: () => getImages(this.graph)
+        } as dia.Paper.Options & ImagesPaperOptions);
 
         this.scroller = new ui.PaperScroller({
             ...scrollerOptions,

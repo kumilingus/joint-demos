@@ -23,7 +23,10 @@ export type ImageLibrary = Record<string, ImageEntry>;
 /** The attribute of the graph with its images */
 export const IMAGES_ATTRIBUTE = 'images';
 
-/** The paper option for the papers whose graph has no images (the palette): where to find them. */
+/**
+ * The paper option telling where the images of its elements are: the images of the diagram,
+ * for the canvas and the palette papers alike (the graphs of the palette have no images).
+ */
 export interface ImagesPaperOptions {
     getImages?: () => ImageLibrary;
 }
@@ -32,13 +35,10 @@ export function getImages(graph: dia.Graph): ImageLibrary {
     return graph.get(IMAGES_ATTRIBUTE) || {};
 }
 
-/** The image of the element: from its graph, or from the paper (the palette shows the images of the diagram). */
+/** The image of the element, from its paper (see `ImagesPaperOptions`); `null` for a paper without images. */
 export function findImage(elementView: dia.ElementView, imageId: string): ImageEntry | null {
-    const { graph } = elementView.model;
-    const fromGraph = graph && getImages(graph)[imageId];
-    if (fromGraph) return fromGraph;
-    const { getImages: fromPaper } = elementView.paper!.options as ImagesPaperOptions;
-    return fromPaper?.()[imageId] ?? null;
+    const options = elementView.paper!.options as ImagesPaperOptions;
+    return options.getImages?.()[imageId] ?? null;
 }
 
 /** The ids of the definitions in each paper (by the image ids). */
