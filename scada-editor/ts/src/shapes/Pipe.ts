@@ -35,14 +35,18 @@ export class Pipe extends dia.Link {
                     stroke: '#444',
                     strokeWidth: 16,
                     strokeLinejoin: 'round',
-                    strokeLinecap: 'round'
+                    // Reaching under the element it connects to (the pipes are drawn under the equipment):
+                    // no gap at a slanted side (the tip of a zone) or a round one
+                    strokeLinecap: 'square'
                 },
                 line: {
                     connection: true,
                     stroke: PIPE_COLOR,
                     strokeWidth: 10,
                     strokeLinejoin: 'round',
-                    strokeLinecap: 'round'
+                    // Reaching under the element it connects to (the pipes are drawn under the equipment):
+                    // no gap at a slanted side (the tip of a zone) or a round one
+                    strokeLinecap: 'square'
                 },
                 // The dashes of the flowing liquid: hidden, shown by the animation in the runtime mode
                 flow: {
