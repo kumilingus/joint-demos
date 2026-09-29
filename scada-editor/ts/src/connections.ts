@@ -4,7 +4,7 @@ import Shape from './shapes/Shape';
 
 /*
  * Where the end of a pipe connects (when its arrowhead is dropped or snapped):
- * to a port (a pipe stub) as it is, or to a side of an element - pinned to the side,
+ * to the center of a port (a pipe stub), or to a side of an element - pinned to the side,
  * in the steps of the grid, or to the middle of the side (`Shape.anchors`).
  * The arrowhead moves the anchor too: there is no anchor tool.
  */
@@ -44,6 +44,6 @@ export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end,
     const { x, y } = pinToSide(element, coords);
     const { width, height } = element.size();
     // Relative to the size: the end stays on its side when the element is resized.
-    end.anchor = { name: 'topLeft', args: { dx: percent(x, width), dy: percent(y, height), rotate: true }};
+    end.anchor = { name: 'topLeft', args: { dx: percent(x, width), dy: percent(y, height), rotate: true, useModelGeometry: true }};
     return end;
 };

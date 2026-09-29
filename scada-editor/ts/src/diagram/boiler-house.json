@@ -29,7 +29,9 @@
         "id": "92f4d111-ba18-41fb-940a-3a2d5b32fa09",
         "anchor": {
           "name": "right",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -111,7 +113,9 @@
         "id": "907c2990-e903-4d79-b81e-6081359dbddc",
         "anchor": {
           "name": "left",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -144,7 +148,8 @@
         "anchor": {
           "name": "right",
           "args": {
-            "dy": -100
+            "dy": -100,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -185,7 +190,8 @@
         "anchor": {
           "name": "right",
           "args": {
-            "dy": 70
+            "dy": 70,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -304,7 +310,9 @@
         "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
         "anchor": {
           "name": "top",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -343,7 +351,9 @@
         "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
         "anchor": {
           "name": "bottom",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -375,7 +385,9 @@
         "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
         "anchor": {
           "name": "right",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -457,7 +469,9 @@
         "id": "d19f18ca-627c-444c-80a2-068c00525a20",
         "anchor": {
           "name": "left",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -489,7 +503,9 @@
         "id": "d19f18ca-627c-444c-80a2-068c00525a20",
         "anchor": {
           "name": "right",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -500,7 +516,8 @@
         "anchor": {
           "name": "left",
           "args": {
-            "dy": -40
+            "dy": -40,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -533,7 +550,9 @@
         "id": "d19f18ca-627c-444c-80a2-068c00525a20",
         "anchor": {
           "name": "bottom",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -544,7 +563,8 @@
         "anchor": {
           "name": "left",
           "args": {
-            "dy": 40
+            "dy": 40,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -591,7 +611,9 @@
         "id": "d2e97f11-f42a-41d0-8b87-3fd404bd0b6e",
         "anchor": {
           "name": "top",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -601,7 +623,9 @@
         "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
         "anchor": {
           "name": "bottom",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -633,7 +657,9 @@
         "id": "5eb21bfc-fc24-46dd-9eaa-7cf120239722",
         "anchor": {
           "name": "top",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -643,7 +669,9 @@
         "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
         "anchor": {
           "name": "bottom",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -675,7 +703,9 @@
         "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
         "anchor": {
           "name": "right",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -685,7 +715,9 @@
         "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
         "anchor": {
           "name": "left",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -717,7 +749,9 @@
         "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
         "anchor": {
           "name": "right",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -763,7 +797,9 @@
         "id": "640a02e9-3a97-4add-bbb9-f715328e9222",
         "anchor": {
           "name": "left",
-          "args": {}
+          "args": {
+            "useModelGeometry": true
+          }
         },
         "connectionPoint": {
           "name": "anchor"
@@ -796,7 +832,8 @@
         "anchor": {
           "name": "right",
           "args": {
-            "dy": -20
+            "dy": -20,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -808,7 +845,8 @@
         "anchor": {
           "name": "left",
           "args": {
-            "dy": 80
+            "dy": 80,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -846,7 +884,8 @@
         "anchor": {
           "name": "right",
           "args": {
-            "dy": -20
+            "dy": -20,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -858,7 +897,8 @@
         "anchor": {
           "name": "left",
           "args": {
-            "dy": 80
+            "dy": 80,
+            "useModelGeometry": true
           }
         },
         "connectionPoint": {
@@ -2575,13 +2615,19 @@
       "source": {
         "id": "d8f8f326-0a92-4347-9019-11ad27688f98",
         "anchor": {
-          "name": "bottom"
+          "name": "bottom",
+          "args": {
+            "useModelGeometry": true
+          }
         }
       },
       "target": {
         "id": "1d70ffef-d846-4dd8-a083-f8e6df47522f",
         "anchor": {
-          "name": "top"
+          "name": "top",
+          "args": {
+            "useModelGeometry": true
+          }
         }
       },
       "type": "SignalLine",
