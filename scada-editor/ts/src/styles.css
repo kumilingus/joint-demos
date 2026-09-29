@@ -693,7 +693,7 @@ body {
     font-size: 12px;
 }
 
-.joint-inspector .list-item input[type="color"] {
+.joint-inspector input[type="color"] {
     display: block;
     width: 36px;
     height: 36px;
@@ -705,16 +705,16 @@ body {
     cursor: pointer;
 }
 
-.joint-inspector .list-item input[type="color"]::-webkit-color-swatch-wrapper {
+.joint-inspector input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 
-.joint-inspector .list-item input[type="color"]::-webkit-color-swatch {
+.joint-inspector input[type="color"]::-webkit-color-swatch {
     border: none;
     border-radius: calc(var(--radius-md) - 3px);
 }
 
-.joint-inspector .list-item input[type="color"]::-moz-color-swatch {
+.joint-inspector input[type="color"]::-moz-color-swatch {
     border: none;
     border-radius: calc(var(--radius-md) - 3px);
 }

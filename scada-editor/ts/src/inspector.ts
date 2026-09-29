@@ -164,7 +164,17 @@ const linkInputs: Inputs = {
             { value: 'orthogonal', content: 'Orthogonal' },
             { value: 'smooth', content: 'Curved' }
         ],
-        group: 'link'
+        group: 'link',
+        index: 1
+    }
+};
+
+/** The color of a pipe: of the medium it carries (the flow of the runtime mode is drawn over it) */
+const pipeInputs: Inputs = {
+    attrs: {
+        line: {
+            stroke: { type: 'color', label: 'Color', group: 'link', index: 2 }
+        }
     }
 };
 
@@ -211,16 +221,55 @@ function renderLabel(options: { label?: string }, path: string): HTMLElement | u
 export function openInspector(el: HTMLElement, cell: dia.Cell): void {
     closeInspector();
     const linkName = LINK_NAMES[cell.get('type')] ?? 'Pipe';
-    ui.Inspector.create(el, {
+    const inspector = ui.Inspector.create(el, {
         cell,
         inputs: cell.isElement()
             ? { ...getInputs(cell as dia.Element), ...layerInput('general') }
-            : { ...(isRouted(cell) ? linkInputs : {}), ...layerInput('link') },
+            : {
+                ...(isRouted(cell) ? linkInputs : {}),
+                ...(cell.get('type') === 'Pipe' ? pipeInputs : {}),
+                ...layerInput('link')
+            },
         groups: { ...groups, link: { ...groups!.link, label: linkName }},
         renderLabel
+    });
+    trackPickedColors(inspector.el);
+}
+
+/**
+ * A color picked (the `input` of a color field, `change` when its picker closes) and not saved yet:
+ * the inspector saves a field on its `change` (one step of the history, not one of each move in the picker).
+ */
+const PICKED = 'picked';
+
+function onColorInput(evt: Event): void {
+    const { target } = evt;
+    if (target instanceof HTMLInputElement && target.type === 'color') target.dataset[PICKED] = 'true';
+}
+
+function onColorChange(evt: Event): void {
+    const { target } = evt;
+    if (target instanceof HTMLInputElement) delete target.dataset[PICKED];
+}
+
+/** Keep track of the colors picked in the inspector (its element), see `savePickedColors()` */
+function trackPickedColors(el: Element): void {
+    el.addEventListener('input', onColorInput);
+    el.addEventListener('change', onColorChange);
+}
+
+/**
+ * Save the colors picked in the inspector (its element) about to be removed: a click on the canvas removes it
+ * while a color picker is open - the picker closes with it, without a `change`.
+ */
+function savePickedColors(el: Element): void {
+    el.querySelectorAll<HTMLInputElement>(`input[type="color"][data-${PICKED}]`).forEach((input) => {
+        input.dispatchEvent(new Event('change', { bubbles: true }));
     });
 }
 
 export function closeInspector(): void {
+    const { instance } = ui.Inspector;
+    if (instance) savePickedColors(instance.el);
     ui.Inspector.close();
 }
