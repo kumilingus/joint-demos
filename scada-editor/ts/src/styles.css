@@ -475,7 +475,7 @@ body {
     content: none;
 }
 
-/* Text */
+/* Text and number */
 
 .joint-inspector input[type="text"],
 .joint-inspector select,
@@ -484,6 +484,7 @@ body {
     height: 36px;
     padding: 0 12px;
     border: 1px solid var(--input);
+.joint-inspector input[type="number"],
     border-radius: var(--radius-md);
     background: var(--background);
     box-shadow: var(--shadow-xs);
@@ -500,12 +501,17 @@ body {
     box-shadow: 0 0 0 3px var(--ring);
 }
 
+.joint-inspector input[type="number"]:focus,
 /* Range: the label on the left, the value on the right, the slider below. */
 
 .joint-inspector .range-field {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
+.joint-inspector input[type="number"] {
+    font-variant-numeric: tabular-nums;
+}
+
 }
 
 .joint-inspector .range-field label.with-output {
