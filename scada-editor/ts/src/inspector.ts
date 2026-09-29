@@ -203,7 +203,8 @@ const layerInput = (group: string) => ({
 
 /** What the layers are for: shown in the tooltip of the question mark next to the label of the layer */
 const LAYER_HELP = 'The layers are drawn from the bottom up: Background, Pipes, Equipment, Instruments, Foreground. '
-    + 'A cell is always drawn over the cells of the layers below its own, whatever the order of adding them.';
+    + 'Everything in a layer is drawn over everything in the layers below it. '
+    + 'Within a layer, right-click and choose Bring to Front or Send to Back.';
 
 /** The label of a field: the layer has a question mark with a tooltip (the default label for the others) */
 function renderLabel(options: { label?: string }, path: string): HTMLElement | undefined {
