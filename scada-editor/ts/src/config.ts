@@ -128,7 +128,9 @@ export const historyOptions: Partial<dia.CommandManager.Options> = {
 
 /** A moved (or resized) element aligns with the others, on the grid otherwise. */
 export const snaplinesOptions: Partial<ui.Snaplines.Options> = {
-    usePaperGrid: true
+    usePaperGrid: true,
+    // The screen (see `screen.ts`) doesn't snap to the elements; they snap to it (its sides, its center).
+    canSnap: elementView => elementView.model.get('type') !== 'Screen'
 };
 
 export const scrollerOptions: Partial<ui.PaperScroller.Options> = {
