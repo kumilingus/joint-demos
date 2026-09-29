@@ -1,11 +1,12 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { bowTieAttributes, leverAttributes } from './valve-body';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <path @selector='lever' />
     <path @selector='body' />
     <path @selector='disc' />
@@ -46,6 +47,7 @@ export default class ButterflyValve extends Shape {
             },
             open: true,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -68,7 +70,7 @@ export default class ButterflyValve extends Shape {
                     text: 'Butterfly Valve'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

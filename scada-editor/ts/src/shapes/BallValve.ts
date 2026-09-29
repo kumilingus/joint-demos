@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { bowTieAttributes, leverAttributes } from './valve-body';
 import { sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
@@ -7,6 +7,7 @@ import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <path @selector='lever' />
     <path @selector='body' />
     <circle @selector='ball' />
@@ -43,6 +44,7 @@ export default class BallValve extends Shape {
             },
             open: true,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -67,7 +69,7 @@ export default class BallValve extends Shape {
                     text: 'Ball Valve'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

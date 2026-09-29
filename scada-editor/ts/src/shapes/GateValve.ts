@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { bowTieAttributes } from './valve-body';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
@@ -10,6 +10,7 @@ const HANDWHEEL_CLOSED = -16;
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <path @selector='stem' />
     <rect @selector='yoke' />
     <rect @selector='handwheel' />
@@ -50,6 +51,7 @@ export default class GateValve extends Shape {
             },
             open: true,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -82,7 +84,7 @@ export default class GateValve extends Shape {
                     text: 'Gate Valve'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

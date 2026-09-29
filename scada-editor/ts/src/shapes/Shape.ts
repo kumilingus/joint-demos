@@ -38,7 +38,7 @@ export interface ShapeFeatures {
     anchors: Anchors;
     /** The layer of the graph the element is in (see `layers.ts`). */
     graphLayer: Layer;
-    /** How far the pipe stubs (`pipePorts()`) reach out of the element, if it has them (in grid steps: their ends stay on the grid). */
+    /** How long the pipe stubs (`pipePorts()`) are, out of the element, if it has them (in grid steps: their ends stay on the grid). */
     stubLength: number | null;
     /** How far the drawing reaches out of the bounding box (on top of the label below it, see `footprint.ts`). */
     overflow: Overflow;
@@ -98,24 +98,6 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
         super.initialize(...args);
         // In the layer of its kind (unless it says otherwise, e.g. in the JSON)
         if (!this.has('layer')) this.set('layer', this.graphLayer, { silent: true });
-        if (this.stubLength === null) return;
-        this.fitPipeStubs();
-        this.on('change:size', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.fitPipeStubs(options));
-    }
-
-    /**
-     * The pipe stubs start in the center of the element (behind it):
-     * they reach half of its width and `stubLength` out of it, whatever its size.
-     * The branches (going down from the middle of the height, see `branchPorts()`) half of its height.
-     */
-    fitPipeStubs(options?: dia.Cell.Options): void {
-        const { width, height } = this.size();
-        if (this.prop(['ports', 'groups', 'pipes'])) {
-            this.prop(['ports', 'groups', 'pipes', 'size', 'width'], width / 2 + this.stubLength!, options);
-        }
-        if (this.prop(['ports', 'groups', 'branches'])) {
-            this.prop(['ports', 'groups', 'branches', 'size', 'width'], height / 2 + this.stubLength!, options);
-        }
     }
 
     /**

@@ -1,10 +1,11 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <path @selector='base' />
     <circle @selector='body' />
     <path @selector='symbol' />
@@ -36,6 +37,7 @@ export default class Compressor extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -67,7 +69,7 @@ export default class Compressor extends Shape {
                     text: 'Compressor'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

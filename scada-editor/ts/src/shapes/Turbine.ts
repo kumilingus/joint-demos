@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, pipeGradient } from './gradients';
 import Shape, { type ControlKind } from './Shape';
 
@@ -73,7 +73,7 @@ export default class Turbine extends Shape {
                     text: 'Turbine'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

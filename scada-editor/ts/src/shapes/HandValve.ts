@@ -1,11 +1,12 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <rect @selector='stem' />
     <rect @selector='handwheel' />
     <ellipse @selector='body' />
@@ -40,6 +41,7 @@ export default class HandValve extends Shape {
             },
             open: true,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -77,7 +79,7 @@ export default class HandValve extends Shape {
                     text: 'Valve'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

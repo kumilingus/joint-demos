@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import type { Overflow } from './footprint';
 import { Layer } from '../const';
 import Shape, { type Resizable } from './Shape';
@@ -17,6 +17,7 @@ const flange = (x: string) => ({
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <rect @selector='tab' />
     <rect @selector='upstream' />
     <rect @selector='downstream' />
@@ -56,6 +57,7 @@ export default class OrificePlate extends Shape {
                 height: 60
             },
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -82,7 +84,7 @@ export default class OrificePlate extends Shape {
                     text: 'Orifice'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

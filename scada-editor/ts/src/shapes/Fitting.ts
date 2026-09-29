@@ -63,7 +63,7 @@ export default abstract class Fitting extends Shape {
                     fill: sphereGradient
                 }
             },
-            ports: fittingPorts(this.sides)
+            ports: fittingPorts(this.sides, this.stubLength)
         };
     }
 

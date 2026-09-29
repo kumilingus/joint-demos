@@ -15,7 +15,7 @@ const DEFAULT_OVERFLOW: Overflow = { bottom: 30 };
 // The half of the stroke of a pipe
 const PIPE_HALF_WIDTH = 8;
 
-// The pipe ends are a little taller than the pipe stubs (see `pipePorts()`).
+// The flanges at the ends of the pipe stubs are a little taller than the stubs (see `pipeStubGroup()`).
 const PORT_END_OVERHANG = 3;
 
 /**
@@ -50,17 +50,18 @@ export function getFootprint(cell: dia.Cell, { label = true }: FootprintOptions 
     const element = cell as dia.Element;
     let footprint = bbox.clone();
 
-    // A port (a pipe stub) may reach its width to either side of its position.
+    // A port is its pipe stub: centered on its position, turned by its angle.
     const groups: Record<string, dia.Element.PortGroup> = element.prop(['ports', 'groups']) || {};
     Object.entries(groups).forEach(([name, group]) => {
         const { width = 0, height = 0 } = group.size || {};
-        Object.values(element.getPortsPositions(name)).forEach(({ x, y }) => {
-            footprint = footprint.union(new g.Rect(
-                bbox.x + x - width,
+        Object.values(element.getPortsPositions(name)).forEach(({ x, y, angle }) => {
+            const stub = new g.Rect(
+                bbox.x + x - width / 2,
                 bbox.y + y - height / 2 - PORT_END_OVERHANG,
-                2 * width,
+                width,
                 height + 2 * PORT_END_OVERHANG
-            ));
+            );
+            footprint = footprint.union(stub.bbox(angle));
         });
     });
 

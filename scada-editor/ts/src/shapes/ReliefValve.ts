@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
@@ -13,6 +13,7 @@ const SPRING = Array.from({ length: 7 }, (_, i) => {
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <rect @selector='bonnet' />
     <path @selector='spring' />
     <rect @selector='cap' />
@@ -48,6 +49,7 @@ export default class ReliefValve extends Shape {
                 height: 80
             },
             attrs: {
+                pipe: pipeThroughAttributes(0.75),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -94,10 +96,7 @@ export default class ReliefValve extends Shape {
                 }
             },
             // The pipes enter the bottom half.
-            ports: pipePorts({
-                name: 'absolute',
-                args: { x: 'calc(w / 2)', y: 'calc(0.75 * h)' }
-            })
+            ports: pipePorts(this.stubLength, { left: 'calc(0.75 * h)', right: 'calc(0.75 * h)' })
         };
     }
 

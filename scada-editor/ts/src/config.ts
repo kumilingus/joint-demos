@@ -24,7 +24,8 @@ export const paperOptions: dia.Paper.Options = {
     autoFreeze: true,
     viewManagement: true,
     frozen: true,
-    defaultAnchor: { name: 'perpendicular' },
+    // The center of a port (its pipe stub, see `pipeStubGroup()`); a side of an element has an anchor of its own (see `connectionStrategy`).
+    defaultAnchor: { name: 'center', args: { useModelGeometry: true }},
     // The anchor is on a side of the element already (see `connectionStrategy`).
     defaultConnectionPoint: { name: 'anchor' },
     // A dragged end of a pipe snaps to the ports (or the sides of the elements without ones) nearby.

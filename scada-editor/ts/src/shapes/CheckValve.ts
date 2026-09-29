@@ -1,10 +1,11 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <path @selector='body' />
     <path @selector='inlet' />
     <path @selector='arrow' />
@@ -39,6 +40,7 @@ export default class CheckValve extends Shape {
                 height: 40
             },
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -68,7 +70,7 @@ export default class CheckValve extends Shape {
                     text: 'Check Valve'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { METAL_STROKE, pipeGradient, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
@@ -12,6 +12,7 @@ const SPOKES = Array.from({ length: 8 }, (_, i) => {
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <path @selector='base' />
     <rect @selector='outlet' />
     <circle @selector='body' />
@@ -56,6 +57,7 @@ export default class Blower extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -107,7 +109,7 @@ export default class Blower extends Shape {
                     y: 'calc(h + 14)'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

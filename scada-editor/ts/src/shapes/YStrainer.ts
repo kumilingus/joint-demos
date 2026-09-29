@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, cylinderGradient, pipeGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
@@ -79,7 +79,7 @@ export default class YStrainer extends Shape {
                     text: 'Strainer'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { PIPE_COLOR } from '../const';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
@@ -10,6 +10,7 @@ const COVER_MAX_WIDTH = 24;
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <rect @selector='stem' />
     <path @selector='control' />
     <ellipse @selector='body' />
@@ -50,6 +51,7 @@ export default class ControlValve extends Shape {
             // 0 = closed, 1 = fully open
             open: 1,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -124,7 +126,7 @@ export default class ControlValve extends Shape {
                     text: 'Valve'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

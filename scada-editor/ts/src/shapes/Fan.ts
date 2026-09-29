@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // One blade pointing up from the hub; the other two are rotated copies.
@@ -12,6 +12,7 @@ const blade = (angle: number) => ({
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <circle @selector='body' />
     <circle @selector='guard' />
     <g @selector='blades'>
@@ -52,6 +53,7 @@ export default class Fan extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -91,7 +93,7 @@ export default class Fan extends Shape {
                     text: 'Fan'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

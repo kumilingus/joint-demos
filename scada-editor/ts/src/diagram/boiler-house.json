@@ -38,12 +38,6 @@
       "target": {
         "id": "37a68821-71c8-475e-ae95-32a4ae7c75ff",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -73,12 +67,6 @@
       "source": {
         "id": "37a68821-71c8-475e-ae95-32a4ae7c75ff",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -86,12 +74,6 @@
       "target": {
         "id": "edff9a04-428d-442e-8c89-8d342499565b",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -121,12 +103,6 @@
       "source": {
         "id": "edff9a04-428d-442e-8c89-8d342499565b",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -178,12 +154,6 @@
       "target": {
         "id": "b61fa3c3-f74b-49ee-a725-05b14d4e0fb7",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -225,12 +195,6 @@
       "target": {
         "id": "19798285-91a4-4270-b36c-c2b0563f2981",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -260,12 +224,6 @@
       "source": {
         "id": "b61fa3c3-f74b-49ee-a725-05b14d4e0fb7",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -273,12 +231,6 @@
       "target": {
         "id": "7e28b6d6-e4b2-4fa7-8fb9-ad7e2da1652a",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -308,12 +260,6 @@
       "source": {
         "id": "19798285-91a4-4270-b36c-c2b0563f2981",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -321,12 +267,6 @@
       "target": {
         "id": "b21f6eac-22e3-4626-bac3-563c54fe63c3",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -356,12 +296,6 @@
       "source": {
         "id": "7e28b6d6-e4b2-4fa7-8fb9-ad7e2da1652a",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -401,12 +335,6 @@
       "source": {
         "id": "b21f6eac-22e3-4626-bac3-563c54fe63c3",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -456,12 +384,6 @@
       "target": {
         "id": "1d70ffef-d846-4dd8-a083-f8e6df47522f",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -491,12 +413,6 @@
       "source": {
         "id": "1d70ffef-d846-4dd8-a083-f8e6df47522f",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -504,12 +420,6 @@
       "target": {
         "id": "510e490b-1493-44ed-8387-aca25a40ae2c",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -539,12 +449,6 @@
       "source": {
         "id": "510e490b-1493-44ed-8387-aca25a40ae2c",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -822,12 +726,6 @@
       "target": {
         "id": "89503623-a5a4-4323-acda-a4dc59ac2293",
         "port": "left",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -857,12 +755,6 @@
       "source": {
         "id": "89503623-a5a4-4323-acda-a4dc59ac2293",
         "port": "right",
-        "anchor": {
-          "name": "right",
-          "args": {
-            "rotate": true
-          }
-        },
         "connectionPoint": {
           "name": "anchor"
         }
@@ -1047,11 +939,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)",
-                "y": "calc(h / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -1068,7 +956,7 @@
               }
             ],
             "size": {
-              "width": 50,
+              "width": 20,
               "height": 30
             },
             "attrs": {
@@ -1078,9 +966,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -1122,9 +1011,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -1137,13 +1027,16 @@
             "id": "left",
             "group": "pipes",
             "z": 0,
-            "position": {},
+            "position": {
+              "args": {
+                "x": -10,
+                "y": "calc(0.5 * h)",
+                "angle": 180
+              }
+            },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -1152,11 +1045,10 @@
             "group": "pipes",
             "z": 0,
             "position": {
-              "args": {}
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+              "args": {
+                "x": "calc(w + 10)",
+                "y": "calc(0.5 * h)",
+                "angle": 0
               }
             }
           }
@@ -1186,11 +1078,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)",
-                "y": "calc(h / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -1207,7 +1095,7 @@
               }
             ],
             "size": {
-              "width": 60,
+              "width": 30,
               "height": 30
             },
             "attrs": {
@@ -1217,9 +1105,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -1261,9 +1150,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -1276,13 +1166,16 @@
             "id": "left",
             "group": "pipes",
             "z": 0,
-            "position": {},
+            "position": {
+              "args": {
+                "x": -15,
+                "y": "calc(0.5 * h)",
+                "angle": 180
+              }
+            },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -1291,11 +1184,10 @@
             "group": "pipes",
             "z": 0,
             "position": {
-              "args": {}
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+              "args": {
+                "x": "calc(w + 15)",
+                "y": "calc(0.5 * h)",
+                "angle": 0
               }
             }
           }
@@ -1351,10 +1243,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -1371,7 +1260,7 @@
               }
             ],
             "size": {
-              "width": 80,
+              "width": 30,
               "height": 30
             },
             "attrs": {
@@ -1381,9 +1270,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -1425,9 +1315,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -1442,15 +1333,14 @@
             "z": 1,
             "position": {
               "args": {
-                "y": "calc(0.7 * h)"
+                "x": -15,
+                "y": "calc(0.7 * h)",
+                "angle": 180
               }
             },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -1460,12 +1350,9 @@
             "z": 0,
             "position": {
               "args": {
-                "y": "calc(0.3 * h)"
-              }
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+                "x": "calc(w + 15)",
+                "y": "calc(0.3 * h)",
+                "angle": 0
               }
             }
           }
@@ -1501,10 +1388,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -1521,7 +1405,7 @@
               }
             ],
             "size": {
-              "width": 80,
+              "width": 30,
               "height": 30
             },
             "attrs": {
@@ -1531,9 +1415,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -1575,9 +1460,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -1592,15 +1478,14 @@
             "z": 1,
             "position": {
               "args": {
-                "y": "calc(0.7 * h)"
+                "x": -15,
+                "y": "calc(0.7 * h)",
+                "angle": 180
               }
             },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -1610,12 +1495,9 @@
             "z": 0,
             "position": {
               "args": {
-                "y": "calc(0.3 * h)"
-              }
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+                "x": "calc(w + 15)",
+                "y": "calc(0.3 * h)",
+                "angle": 0
               }
             }
           }
@@ -1645,11 +1527,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)",
-                "y": "calc(h / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -1666,7 +1544,7 @@
               }
             ],
             "size": {
-              "width": 50,
+              "width": 20,
               "height": 30
             },
             "attrs": {
@@ -1676,9 +1554,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -1720,9 +1599,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -1735,13 +1615,16 @@
             "id": "left",
             "group": "pipes",
             "z": 0,
-            "position": {},
+            "position": {
+              "args": {
+                "x": -10,
+                "y": "calc(0.5 * h)",
+                "angle": 180
+              }
+            },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -1750,11 +1633,10 @@
             "group": "pipes",
             "z": 0,
             "position": {
-              "args": {}
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+              "args": {
+                "x": "calc(w + 10)",
+                "y": "calc(0.5 * h)",
+                "angle": 0
               }
             }
           }
@@ -1784,11 +1666,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)",
-                "y": "calc(h / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -1805,7 +1683,7 @@
               }
             ],
             "size": {
-              "width": 50,
+              "width": 20,
               "height": 30
             },
             "attrs": {
@@ -1815,9 +1693,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -1859,9 +1738,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -1874,13 +1754,16 @@
             "id": "left",
             "group": "pipes",
             "z": 0,
-            "position": {},
+            "position": {
+              "args": {
+                "x": -10,
+                "y": "calc(0.5 * h)",
+                "angle": 180
+              }
+            },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -1889,11 +1772,10 @@
             "group": "pipes",
             "z": 0,
             "position": {
-              "args": {}
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+              "args": {
+                "x": "calc(w + 10)",
+                "y": "calc(0.5 * h)",
+                "angle": 0
               }
             }
           }
@@ -1948,11 +1830,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)",
-                "y": "calc(h / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -1969,7 +1847,7 @@
               }
             ],
             "size": {
-              "width": 50,
+              "width": 20,
               "height": 30
             },
             "attrs": {
@@ -1979,9 +1857,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -2023,9 +1902,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -2038,13 +1918,16 @@
             "id": "left",
             "group": "pipes",
             "z": 0,
-            "position": {},
+            "position": {
+              "args": {
+                "x": -10,
+                "y": "calc(0.5 * h)",
+                "angle": 180
+              }
+            },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -2053,11 +1936,10 @@
             "group": "pipes",
             "z": 0,
             "position": {
-              "args": {}
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+              "args": {
+                "x": "calc(w + 10)",
+                "y": "calc(0.5 * h)",
+                "angle": 0
               }
             }
           }
@@ -2220,11 +2102,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)",
-                "y": "calc(h / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -2241,7 +2119,7 @@
               }
             ],
             "size": {
-              "width": 110,
+              "width": 30,
               "height": 30
             },
             "attrs": {
@@ -2251,9 +2129,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -2295,9 +2174,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -2310,13 +2190,16 @@
             "id": "left",
             "group": "pipes",
             "z": 0,
-            "position": {},
+            "position": {
+              "args": {
+                "x": -15,
+                "y": "calc(0.5 * h)",
+                "angle": 180
+              }
+            },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -2325,11 +2208,10 @@
             "group": "pipes",
             "z": 0,
             "position": {
-              "args": {}
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+              "args": {
+                "x": "calc(w + 15)",
+                "y": "calc(0.5 * h)",
+                "angle": 0
               }
             }
           }
@@ -2425,11 +2307,7 @@
         "groups": {
           "pipes": {
             "position": {
-              "name": "absolute",
-              "args": {
-                "x": "calc(w / 2)",
-                "y": "calc(h / 2)"
-              }
+              "name": "absolute"
             },
             "markup": [
               {
@@ -2446,7 +2324,7 @@
               }
             ],
             "size": {
-              "width": 60,
+              "width": 20,
               "height": 30
             },
             "attrs": {
@@ -2456,9 +2334,10 @@
                 "highlighterSelector": "pipeEnd"
               },
               "pipeBody": {
+                "x": "calc(-0.5 * w)",
+                "y": "calc(-0.5 * h)",
                 "width": "calc(w)",
                 "height": "calc(h)",
-                "y": "calc(h / -2)",
                 "fill": {
                   "type": "linearGradient",
                   "stops": [
@@ -2500,9 +2379,10 @@
                 }
               },
               "pipeEnd": {
+                "x": "calc(0.5 * w - 10)",
+                "y": "calc(-0.5 * h - 3)",
                 "width": 10,
-                "height": "calc(h+6)",
-                "y": "calc(h / -2 - 3)",
+                "height": "calc(h + 6)",
                 "stroke": "var(--shape-metal-stroke)",
                 "strokeWidth": 3,
                 "fill": "var(--shape-flange-fill)"
@@ -2515,13 +2395,16 @@
             "id": "left",
             "group": "pipes",
             "z": 0,
-            "position": {},
+            "position": {
+              "args": {
+                "x": -10,
+                "y": "calc(0.5 * h)",
+                "angle": 180
+              }
+            },
             "attrs": {
               "pipeBody": {
-                "x": "calc(-1 * w)"
-              },
-              "pipeEnd": {
-                "x": "calc(-1 * w)"
+                "transform": "scale(1, -1)"
               }
             }
           },
@@ -2530,11 +2413,10 @@
             "group": "pipes",
             "z": 0,
             "position": {
-              "args": {}
-            },
-            "attrs": {
-              "pipeEnd": {
-                "x": "calc(w - 10)"
+              "args": {
+                "x": "calc(w + 10)",
+                "y": "calc(0.5 * h)",
+                "angle": 0
               }
             }
           }

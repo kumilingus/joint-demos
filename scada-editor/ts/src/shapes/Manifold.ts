@@ -36,8 +36,8 @@ export default class Manifold extends Shape {
     }
 
     defaults(): dia.Element.Attributes {
-        const inlet = fittingPorts(['left'])!;
-        const outlets = branchPorts(OUTLETS)!;
+        const inlet = fittingPorts(['left'], FITTING_STUB_LENGTH)!;
+        const outlets = branchPorts(OUTLETS, FITTING_STUB_LENGTH)!;
         return {
             ...super.defaults,
             type: 'Manifold',

@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { bowTieAttributes } from './valve-body';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
@@ -7,6 +7,7 @@ import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='pipe' />
     <path @selector='stem' />
     <path @selector='body' />
     <rect @selector='coil' />
@@ -43,6 +44,7 @@ export default class SolenoidValve extends Shape {
             },
             open: true,
             attrs: {
+                pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -78,7 +80,7 @@ export default class SolenoidValve extends Shape {
                     text: 'Solenoid Valve'
                 }
             },
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

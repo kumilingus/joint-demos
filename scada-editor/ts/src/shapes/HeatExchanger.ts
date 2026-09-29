@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { centerPortPosition, labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts } from './ports';
 import { METAL_STROKE, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
@@ -90,7 +90,7 @@ export default class HeatExchanger extends Shape {
                 }
             },
             // The pipe stubs start in the middle of the shell and stick out 30 on each side.
-            ports: pipePorts(centerPortPosition)
+            ports: pipePorts(this.stubLength)
         };
     }
 

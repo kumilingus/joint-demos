@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, pipePorts } from './ports';
+import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { METAL_STROKE, sphereGradient } from './gradients';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
@@ -10,7 +10,9 @@ const l = (3 * r) / 4;
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
+    <rect @selector='outlet' />
     <ellipse @selector='body' />
+    <rect @selector='inlet' />
     <g @selector='rotorGroup'>
         <circle @selector='rotorFrame' />
         <circle @selector='rotorBackground' />
@@ -44,6 +46,9 @@ export default class Pump extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                // The pipes to the stubs: the inlet over the casing, the outlet behind it
+                inlet: pipeThroughAttributes(0.7, 'left'),
+                outlet: pipeThroughAttributes(0.3, 'right'),
                 root: {
                     magnetSelector: 'body'
                 },
@@ -83,13 +88,7 @@ export default class Pump extends Shape {
                 }
             },
             // The inlet (left) low and the outlet (right) high, both on the grid of the editor
-            ports: pipePorts({
-                name: 'absolute',
-                args: { x: 'calc(w / 2)' }
-            }, [1, 0], {
-                left: { y: 'calc(0.7 * h)' },
-                right: { y: 'calc(0.3 * h)' }
-            })
+            ports: pipePorts(this.stubLength, { left: 'calc(0.7 * h)', right: 'calc(0.3 * h)' }, [1, 0])
         };
     }
 

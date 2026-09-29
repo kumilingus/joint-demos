@@ -35,7 +35,7 @@ function pinToSide(element: dia.Element, coords: g.PlainPoint): g.Point {
 const percent = (value: number, length: number) => `${length > 0 ? Number((value / length * 100).toFixed(3)) : 0}%`;
 
 export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end, view, magnet, coords) => {
-    // A port has the anchor of its own (the end of the pipe stub).
+    // A port: the default anchor of the paper (the center of the pipe stub)
     if (view.findAttribute('port', magnet)) {
         delete end.anchor;
         return end;
