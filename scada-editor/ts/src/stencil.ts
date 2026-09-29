@@ -33,6 +33,9 @@ const MAX_GROUP_WIDTH = (STENCIL_WIDTH - 2 * STENCIL_PADDING) / STENCIL_SCALE;
 // The space around the cells of a group, and between them
 const GROUP_MARGIN = 10;
 const GAP = 20;
+// The links of a group: all of the same length, on the top rows, further from the elements below them
+const LINK_LENGTH = 180;
+const LINKS_GAP = 2 * GAP;
 
 /** The groups of the palette filled with the shapes of the others (and hidden while empty) */
 export enum DerivedGroup {
@@ -67,20 +70,29 @@ function setTooltip(cell: dia.Cell): void {
 }
 
 /**
- * Pack the cells of a group into the width of the palette (see `packing.ts`) by their footprints
- * (the pipe stubs, the actuators, ... included, the labels not), from the top left corner.
+ * Lay out the cells of a group by their footprints (the pipe stubs, the actuators, ... included, the labels not),
+ * from the top left corner: the links first, each on a row of its own (thin, they would be lost among
+ * the elements), then the elements packed into the width of the palette below them (see `packing.ts`).
  */
 function layoutGroup(graph: dia.Graph): void {
     // The palette doesn't show the labels (see `styles.css`).
-    const items = graph.getCells().map(cell => ({ data: cell, footprint: getFootprint(cell, { label: false }) }));
+    const footprintOf = (cell: dia.Cell) => getFootprint(cell, { label: false });
+    let top = GROUP_MARGIN;
+    const links = graph.getLinks();
+    links.forEach((link, index) => {
+        const footprint = footprintOf(link);
+        link.translate(GROUP_MARGIN - footprint.x, top - footprint.y);
+        top += footprint.height + (index === links.length - 1 ? LINKS_GAP : GAP);
+    });
+    const items = graph.getElements().map(element => ({ data: element, footprint: footprintOf(element) }));
     const stripWidth = MAX_GROUP_WIDTH - 2 * GROUP_MARGIN;
     const { placements } = pack(
-        items.map(({ data, footprint }) => ({ data: { cell: data, footprint }, width: footprint.width, height: footprint.height })),
+        items.map(({ data, footprint }) => ({ data: { element: data, footprint }, width: footprint.width, height: footprint.height })),
         stripWidth,
         { gap: GAP, align: 'left' }
     );
-    placements.forEach(({ data: { cell, footprint }, x, y }) => {
-        (cell as dia.Element | dia.Link).translate(GROUP_MARGIN + x - footprint.x, GROUP_MARGIN + y - footprint.y);
+    placements.forEach(({ data: { element, footprint }, x, y }) => {
+        element.translate(GROUP_MARGIN + x - footprint.x, top + y - footprint.y);
     });
 }
 
@@ -217,7 +229,7 @@ function createShapes(): Record<string, dia.Cell[]> {
             new Display(),
             new SignalLine({
                 source: { x: 0, y: 0 },
-                target: { x: 100, y: 0 }
+                target: { x: LINK_LENGTH, y: 0 }
             }),
             new Label()
         ],
@@ -249,13 +261,13 @@ function createShapes(): Record<string, dia.Cell[]> {
             new ElectricMeter(),
             new Wire({
                 source: { x: 0, y: 0 },
-                target: { x: 100, y: 0 }
+                target: { x: LINK_LENGTH, y: 0 }
             })
         ],
         piping: [
             new Pipe({
                 source: { x: 0, y: 0 },
-                target: { x: 140, y: 0 }
+                target: { x: LINK_LENGTH, y: 0 }
             }),
             new Join(),
             new Tee(),
