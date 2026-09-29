@@ -18,12 +18,12 @@
     },
     {
       "position": {
-        "x": 200,
-        "y": 260
+        "x": 1550,
+        "y": 340
       },
       "size": {
-        "width": 500,
-        "height": 140
+        "width": 340,
+        "height": 95
       },
       "angle": 0,
       "type": "CustomImage",
@@ -2672,7 +2672,7 @@
         },
         "reading": {
           "y": "calc(0.230 * h)",
-          "text": "75 °C"
+          "text": "75 \u00b0C"
         },
         "label": {
           "text": "Steam Temp."
@@ -2717,6 +2717,138 @@
       },
       "attrs": {},
       "id": "4b339ca0-8d89-4279-82d7-2c21cc136a15"
+    },
+    {
+      "position": {
+        "x": 40,
+        "y": 40
+      },
+      "size": {
+        "width": 400,
+        "height": 200
+      },
+      "angle": 0,
+      "type": "LineChart",
+      "attrs": {
+        "label": {
+          "text": "Steam Flow (t/h)"
+        }
+      },
+      "tag": "TRD-101",
+      "id": "3ad14e5b-bf70-4a16-aca0-cf7882856e8f",
+      "layer": "instruments",
+      "min": 0,
+      "max": 40,
+      "values": [
+        17.2,
+        17.8,
+        18.4,
+        18.1,
+        17.6,
+        18.3,
+        18.9,
+        18.5,
+        17.9,
+        18.2,
+        18.7,
+        18.6
+      ],
+      "thresholds": {
+        "low": 5,
+        "high": 35
+      }
+    },
+    {
+      "position": {
+        "x": 480,
+        "y": 40
+      },
+      "size": {
+        "width": 400,
+        "height": 200
+      },
+      "angle": 0,
+      "type": "BarChart",
+      "attrs": {
+        "label": {
+          "text": "Steam Output (t/h)"
+        }
+      },
+      "tag": "BAR-101",
+      "id": "de93c146-a98c-4dee-9197-3412ec8fbc71",
+      "layer": "instruments",
+      "min": 0,
+      "max": 40,
+      "values": [
+        17.5,
+        18.2,
+        17.9,
+        18.4,
+        18.1,
+        17.7,
+        18.3,
+        18.2
+      ]
+    },
+    {
+      "position": {
+        "x": 40,
+        "y": 300
+      },
+      "size": {
+        "width": 400,
+        "height": 200
+      },
+      "angle": 0,
+      "type": "DonutChart",
+      "attrs": {
+        "label": {
+          "text": "Fuel Mix"
+        }
+      },
+      "tag": "MIX-101",
+      "id": "9a0cc4e6-cd44-495b-9fcb-82c132335306",
+      "layer": "instruments",
+      "slices": [
+        {
+          "label": "Natural Gas",
+          "value": 18,
+          "color": "#60a5fa"
+        },
+        {
+          "label": "Fuel Oil",
+          "value": 0,
+          "color": "#ed2637"
+        },
+        {
+          "label": "Biomass",
+          "value": 5,
+          "color": "#0ead69"
+        }
+      ]
+    },
+    {
+      "position": {
+        "x": 580,
+        "y": 300
+      },
+      "size": {
+        "width": 200,
+        "height": 200
+      },
+      "angle": 0,
+      "type": "GaugeChart",
+      "attrs": {
+        "label": {
+          "text": "Feed Pressure"
+        }
+      },
+      "tag": "PI-101",
+      "id": "afc0ceb2-bae1-47cb-9d11-847a0200cdd9",
+      "layer": "instruments",
+      "min": 0,
+      "max": 16,
+      "value": 10.5
     }
   ],
   "images": {
