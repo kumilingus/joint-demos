@@ -20,8 +20,7 @@ export function findByTag(graph: dia.Graph, tag: string): dia.Element | undefine
 
 /** The next free tag with the prefix of the element: `P-103` after `P-101` and `P-102`. */
 export function nextTag(graph: dia.Graph, element: dia.Element): string {
-    // A shape, a chart (see `LineChart`, ...): the prefix of its kind
-    const prefix = Shape.isShape(element) || 'tagPrefix' in element ? (element as Shape).tagPrefix : 'E';
+    const prefix = Shape.isShape(element) ? element.tagPrefix : 'E';
     const numbers = graph.getElements()
         .map(getTag)
         .map(tag => tag?.match(new RegExp(`^${prefix}-(\\d+)$`)))
