@@ -6,7 +6,7 @@ import Screen from './shapes/Screen';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
- * a screen (see `screen.ts`) and its size. While they are open, the screen can be
+ * a screen (see `screen.ts`) and its size; the preferences of the editor (the snaplines). While they are open, the screen can be
  * moved (and selected, resized); it is out of the way otherwise.
  */
 
@@ -21,6 +21,11 @@ let shown: Shown | null = null;
 interface ScreenSettings {
     screen: boolean;
     size?: dia.Size;
+}
+
+/** The preferences of the editor (not saved with the diagram) */
+interface EditorSettings {
+    snaplines: boolean;
 }
 
 /** A change of the settings following the diagram (not changing it back) */
@@ -72,7 +77,8 @@ export function openSettings(app: App): void {
     app.inspectorEl.append(el);
 
     // A cell (not in the graph): the inspector unsets its properties (`removeProp()`)
-    const settings = new dia.Cell(getScreenSettings(graph));
+    const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled };
+    const settings = new dia.Cell({ ...getScreenSettings(graph), ...editorSettings });
     const listener = new mvc.Listener<[]>();
     // The settings change the diagram (the settings of the diagram are its cells)...
     listener.listenTo(settings, 'change:screen', (_cell: dia.Cell, enabled: boolean, options: SettingsOptions) => {
@@ -86,6 +92,7 @@ export function openSettings(app: App): void {
     listener.listenTo(settings, 'change:size', (_cell: dia.Cell, size: dia.Size | undefined, options: SettingsOptions) => {
         if (!options.diagram && size) getScreen(graph)?.resize(size.width, size.height);
     });
+    listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => app.setSnaplinesEnabled(enabled));
     // ... and follow it.
     listener.listenTo(graph, 'add remove reset change:size', () => {
         const { screen, size } = getScreenSettings(graph);
@@ -106,9 +113,14 @@ export function openSettings(app: App): void {
             size: {
                 width: { type: 'number', label: 'Width', min: 100, group: 'screen', index: 2, when: withScreen },
                 height: { type: 'number', label: 'Height', min: 100, group: 'screen', index: 3, when: withScreen }
-            }
+            },
+            // A moved or resized element aligns with the others
+            snaplines: { type: 'toggle', label: 'Snaplines', group: 'editor', index: 1 }
         },
-        groups: { screen: { label: 'Screen', index: 1 }}
+        groups: {
+            screen: { label: 'Screen', index: 1 },
+            editor: { label: 'Editor', index: 2 }
+        }
     });
     inspector.render();
     el.append(inspector.el);

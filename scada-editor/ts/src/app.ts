@@ -51,6 +51,8 @@ export class App {
     mode: Mode = Mode.Edit;
     colorScheme: ColorScheme = getInitialColorScheme();
     selection = new mvc.Collection<dia.Cell>();
+    /** Whether a moved or resized element aligns with the others (a preference, see the settings) */
+    snaplinesEnabled: boolean = getStoredPreference(SNAPLINES_KEY, true);
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;
 
@@ -208,8 +210,20 @@ export class App {
 
     protected createSnaplines(): void {
         this.snaplines = new ui.Snaplines({ ...snaplinesOptions, paper: this.paper });
+    /** Turn the snaplines on or off (remembered, as the color scheme). */
+    setSnaplinesEnabled(enabled: boolean): void {
+        this.snaplinesEnabled = enabled;
+        if (enabled) {
+            this.snaplines?.enable();
+        } else {
+            this.snaplines?.disable();
+        }
+        storePreference(SNAPLINES_KEY, enabled);
     }
 
+    }
+
+        if (!this.snaplinesEnabled) this.snaplines.disable();
     protected destroySnaplines(): void {
         this.snaplines?.remove();
         this.snaplines = null;
@@ -219,6 +233,26 @@ export class App {
 const COLOR_SCHEME_KEY = 'scada-editor:color-scheme';
 
 /** The color scheme chosen last time, or the one of the system. */
+const SNAPLINES_KEY = 'scada-editor:snaplines';
+
+/** A preference of the user remembered in the browser (the default without storage) */
+function getStoredPreference(key: string, defaultValue: boolean): boolean {
+    try {
+        const stored = localStorage.getItem(key);
+        if (stored === 'true' || stored === 'false') return stored === 'true';
+    } catch {
+        // No storage (a private window)
+    }
+    return defaultValue;
+}
+
+function storePreference(key: string, value: boolean): void {
+    try {
+        localStorage.setItem(key, String(value));
+    } catch {
+        // Not remembered, but set.
+    }
+}
 function getInitialColorScheme(): ColorScheme {
     try {
         const stored = localStorage.getItem(COLOR_SCHEME_KEY);

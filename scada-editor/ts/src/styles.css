@@ -671,6 +671,16 @@ body {
     background: var(--selection);
 }
 
+/* The snaplines of a moved or resized element (`ui.Snaplines`: its lines have no color outside of its own themes) */
+
+.joint-snaplines .snapline.horizontal {
+    border-bottom: 1px dashed var(--selection);
+}
+
+.joint-snaplines .snapline.vertical {
+    border-right: 1px dashed var(--selection);
+}
+
 /* The link tools of a selected pipe (see `tools.ts`) */
 
 .vertex-handle {
