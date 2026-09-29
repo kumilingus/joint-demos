@@ -76,6 +76,11 @@ import Switchgear from './Switchgear';
 import MotorControlCenter from './MotorControlCenter';
 import BatteryBank from './BatteryBank';
 import FuelTank from './FuelTank';
+import LineChart from './LineChart';
+import BarChart from './BarChart';
+import DonutChart from './DonutChart';
+import GaugeChart from './GaugeChart';
+import { chartView } from './charts';
 
 export {
     Pump, Compressor, Fan, Motor, Blower, Turbine, ConveyorBelt,
@@ -87,7 +92,8 @@ export {
     Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, CustomImage, YStrainer, OrificePlate,
     Screen,
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground, Lamp, Heater, ElectricMeter, Wire,
-    DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank
+    DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
+    LineChart, BarChart, DonutChart, GaugeChart
 };
 
 export const cellNamespace = {
@@ -168,5 +174,14 @@ export const cellNamespace = {
     Switchgear,
     MotorControlCenter,
     BatteryBank,
-    FuelTank
+    FuelTank,
+    // The charts, with the views rendering them again when their data changes (a view is looked up by the type)
+    LineChart,
+    LineChartView: chartView(['values', 'thresholds', 'min', 'max']),
+    BarChart,
+    BarChartView: chartView(['values', 'min', 'max']),
+    DonutChart,
+    DonutChartView: chartView(['slices']),
+    GaugeChart,
+    GaugeChartView: chartView(['value', 'min', 'max'])
 };

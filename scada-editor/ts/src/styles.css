@@ -33,7 +33,8 @@ body {
 .search-wrap::before,
 .stencil-upload::before,
 .group:is([data-name="favorites"], [data-name="inUse"], [data-name="custom"]) > .group-label::after,
-.group > .group-label::before {
+.group > .group-label::before,
+.joint-inspector .btn-list-del::before {
     content: '';
     display: inline-block;
     flex-shrink: 0;
@@ -606,6 +607,140 @@ body {
 
 .joint-inspector .toggle input:focus-visible + span {
     box-shadow: 0 0 0 3px var(--ring);
+}
+
+/*
+ * A list (the slices of a donut chart): a row per item - its color, its label, its value and a button removing it;
+ * the labels of the properties above the first row only. The button adding an item below the rows.
+ */
+
+.joint-inspector .list-field > label,
+.joint-inspector .list-item .object-field > label {
+    display: none;
+}
+
+.joint-inspector .list-field .field {
+    padding: 0;
+}
+
+.joint-inspector .list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.joint-inspector .list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.joint-inspector .list-item {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.joint-inspector .list-item .object-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.joint-inspector .list-item .object-properties {
+    display: grid;
+    grid-template-columns: 36px 1fr 64px;
+    gap: 6px;
+}
+
+/* The color first */
+.joint-inspector .list-item .object-property[data-property="color"] {
+    order: -1;
+}
+
+.joint-inspector .list-item:not(:first-child) .object-property label {
+    display: none;
+}
+
+.joint-inspector .list-item .object-property label {
+    color: var(--muted-foreground);
+    font-size: 12px;
+}
+
+.joint-inspector .list-item input[type="color"] {
+    display: block;
+    width: 36px;
+    height: 36px;
+    padding: 3px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    cursor: pointer;
+}
+
+.joint-inspector .list-item input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.joint-inspector .list-item input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: calc(var(--radius-md) - 3px);
+}
+
+.joint-inspector .list-item input[type="color"]::-moz-color-swatch {
+    border: none;
+    border-radius: calc(var(--radius-md) - 3px);
+}
+
+/* The button removing the item: a trash icon (instead of its text) at the end of the row */
+.joint-inspector .btn-list-del {
+    --icon: var(--icon-trash);
+    order: 1;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--muted-foreground);
+    font-size: 0;
+    cursor: pointer;
+}
+
+.joint-inspector .btn-list-del:hover {
+    background: var(--muted);
+    color: var(--foreground);
+}
+
+.joint-inspector .btn-list-add {
+    order: 1;
+    height: 32px;
+    border: 1px dashed var(--input);
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--muted-foreground);
+    font: 500 13px/1 var(--font);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.joint-inspector .btn-list-add:hover {
+    background: var(--muted);
+    color: var(--foreground);
+}
+
+.joint-inspector .btn-list-add:disabled,
+.joint-inspector .btn-list-add.disabled {
+    display: none;
 }
 
 /* Select button group: a segmented control. */

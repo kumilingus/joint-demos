@@ -2,12 +2,14 @@ import { ui, type dia } from '@joint/plus';
 import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
 import { Layer } from './const';
+import { MAX_SLICES } from './shapes/DonutChart';
 
 const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
     // Named after the kind of the link (see `LINK_NAMES`)
     link: { label: 'Pipe', index: 1 },
     values: { label: 'Values', index: 2 },
+    slices: { label: 'Slices', index: 2 },
     thresholds: { label: 'Thresholds', index: 3 },
     controls: { label: 'Controls', index: 4 }
 };
@@ -86,8 +88,14 @@ function getInputs(element: dia.Element): Inputs {
         inputs.level = { type: 'range', label: 'Level', min: 0, max: 100, step: 1, unit: '%', group: 'values', index: index++ };
     }
 
+    // The warning levels of a line chart: on its scale
+    if (element.get('type') === 'LineChart') {
+        inputs.thresholds = {
+            low: { type: 'number', label: 'Low (warn below)', group: 'thresholds', index: index++ },
+            high: { type: 'number', label: 'High (warn above)', group: 'thresholds', index: index++ }
+        };
     // The levels at which a gauge turns to the warning colors.
-    if (element.has('thresholds')) {
+    } else if (element.has('thresholds')) {
         inputs.thresholds = {
             low: { type: 'range', label: 'Low (warn below)', min: 0, max: 100, step: 1, unit: '%', group: 'thresholds', index: index++ },
             high: { type: 'range', label: 'High (warn above)', min: 0, max: 100, step: 1, unit: '%', group: 'thresholds', index: index++ }
@@ -98,6 +106,38 @@ function getInputs(element: dia.Element): Inputs {
     const scaleLabel = ({ Thermometer: 'Temperature', PressureGauge: 'Pressure' } as Record<string, string>)[element.get('type')];
     if (scaleLabel) {
         inputs.value = { type: 'range', label: scaleLabel, min: 0, max: 100, step: 1, unit: '%', group: 'values', index: index++ };
+    }
+
+    // The scale of a gauge chart and the value on it
+    if (element.get('type') === 'GaugeChart') {
+        inputs.value = { type: 'number', label: 'Value', step: 0.1, group: 'values', index: index++ };
+        inputs.min = { type: 'number', label: 'Min', group: 'values', index: index++ };
+        inputs.max = { type: 'number', label: 'Max', group: 'values', index: index++ };
+    }
+
+    // The scale of a line or a bar chart (its values come from the plant)
+    if (element.get('type') === 'LineChart' || element.get('type') === 'BarChart') {
+        inputs.min = { type: 'number', label: 'Min', group: 'values', index: index++ };
+        inputs.max = { type: 'number', label: 'Max', group: 'values', index: index++ };
+    }
+
+    // The slices of a donut chart: the parts of the whole (their shares are computed)
+    if (element.has('slices')) {
+        inputs.slices = {
+            type: 'list',
+            addButtonLabel: 'Add slice',
+            max: MAX_SLICES,
+            item: {
+                type: 'object',
+                properties: {
+                    label: { type: 'text', label: 'Label', defaultValue: 'Other', index: 1 },
+                    value: { type: 'number', label: 'Value', min: 0, defaultValue: 10, index: 2 },
+                    color: { type: 'color', label: 'Color', defaultValue: '#60a5fa', index: 3 }
+                }
+            },
+            group: 'slices',
+            index: index++
+        };
     }
 
     if (hasControl(element)) {

@@ -12,7 +12,8 @@ import {
     Trend,
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground,
     Lamp, Heater, ElectricMeter, Wire,
-    DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank
+    DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
+    LineChart, BarChart, DonutChart, GaugeChart
 } from './shapes';
 import { getFootprint } from './shapes/footprint';
 import { createGraph } from './layers';
@@ -54,7 +55,8 @@ const groups: Record<string, ui.Stencil.Group> = {
     storage: { index: 8, label: 'Storage' },
     structures: { index: 9, label: 'Structures' },
     instruments: { index: 10, label: 'Instruments' },
-    electrical: { index: 11, label: 'Electrical' }
+    electrical: { index: 11, label: 'Electrical' },
+    charts: { index: 12, label: 'Charts' }
 };
 
 /** The name of the shape of the palette (see `descriptions.ts`), shown in its tooltip */
@@ -220,6 +222,12 @@ function createShapes(): Record<string, dia.Cell[]> {
                 target: { x: 100, y: 0 }
             }),
             new Label()
+        ],
+        charts: [
+            new LineChart(),
+            new BarChart(),
+            new DonutChart(),
+            new GaugeChart()
         ],
         electrical: [
             new DieselGenerator(),

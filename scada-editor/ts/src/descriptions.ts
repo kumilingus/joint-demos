@@ -100,6 +100,12 @@ export const descriptions: Record<string, ShapeDescription> = {
     ElectricMeter: { title: 'Voltmeter', description: 'Shows the voltage of the circuit: zero while it is not energized.' },
     Wire: { title: 'Wire', description: 'Connects the terminals of the electrical shapes. Live (in color) while the circuit is energized.' },
 
+    // Charts
+    LineChart: { title: 'Line Chart', description: 'The recent history of a value with its warning thresholds: the newest on the right.' },
+    BarChart: { title: 'Bar Chart', description: 'A value of each of the recent periods (the production of the hours of a shift): the newest on the right.' },
+    DonutChart: { title: 'Donut Chart', description: 'The shares of the parts of a whole: the sources of the power.' },
+    GaugeChart: { title: 'Gauge Chart', description: 'A value on the arc of its scale (a pressure).' },
+
     // Custom
     CustomImage: { title: 'Image', description: 'An image of your own, uploaded into the diagram: it is saved with it, once, however many elements show it.' }
 };
