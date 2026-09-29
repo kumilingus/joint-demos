@@ -51,8 +51,8 @@ export class App {
 
     mode: Mode = Mode.Edit;
     colorScheme: ColorScheme = getInitialColorScheme();
-    /** Whether a moved or resized element aligns with the others (a preference, see the settings) */
-    snaplinesEnabled: boolean = getStoredPreference(SNAPLINES_KEY, true);
+    /** Whether a moved or resized element aligns with the others (see the settings) */
+    snaplinesEnabled = true;
     selection = new mvc.Collection<dia.Cell>();
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;
@@ -210,7 +210,7 @@ export class App {
         this.stencil = null;
     }
 
-    /** Turn the snaplines on or off (remembered, as the color scheme). */
+    /** Turn the snaplines on or off. */
     setSnaplinesEnabled(enabled: boolean): void {
         this.snaplinesEnabled = enabled;
         if (enabled) {
@@ -218,7 +218,6 @@ export class App {
         } else {
             this.snaplines?.disable();
         }
-        storePreference(SNAPLINES_KEY, enabled);
     }
 
     protected createSnaplines(): void {
@@ -233,27 +232,6 @@ export class App {
 }
 
 const COLOR_SCHEME_KEY = 'scada-editor:color-scheme';
-const SNAPLINES_KEY = 'scada-editor:snaplines';
-
-/** A preference of the user remembered in the browser (the default without storage) */
-function getStoredPreference(key: string, defaultValue: boolean): boolean {
-    try {
-        const stored = localStorage.getItem(key);
-        if (stored === 'true' || stored === 'false') return stored === 'true';
-    } catch {
-        // No storage (a private window)
-    }
-    return defaultValue;
-}
-
-function storePreference(key: string, value: boolean): void {
-    try {
-        localStorage.setItem(key, String(value));
-    } catch {
-        // Not remembered, but set.
-    }
-}
-
 /** The color scheme chosen last time, or the one of the system. */
 function getInitialColorScheme(): ColorScheme {
     try {

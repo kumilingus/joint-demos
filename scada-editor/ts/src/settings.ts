@@ -23,7 +23,7 @@ interface ScreenSettings {
     size?: dia.Size;
 }
 
-/** The preferences of the editor (not saved with the diagram) */
+/** The settings of the editor (not saved with the diagram) */
 interface EditorSettings {
     snaplines: boolean;
 }
