@@ -22,10 +22,11 @@ export interface Scale {
     max: number;
 }
 
+/** The scale of the chart: a max not above the min (or none) is taken as the min and one more */
 export function getScale(model: dia.Cell): Scale {
     const min = Number(model.get('min')) || 0;
-    const max = Number(model.get('max'));
-    return { min, max: Number.isFinite(max) && max !== min ? max : min + 1 };
+    const max = model.get('max') === null ? NaN : Number(model.get('max'));
+    return { min, max: Number.isFinite(max) && max > min ? max : min + 1 };
 }
 
 /** How far the value is in the scale (0 - 1, clamped) */

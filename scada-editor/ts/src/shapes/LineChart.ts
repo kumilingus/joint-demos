@@ -28,6 +28,11 @@ function seriesPath(values: number[], scale: Scale, bbox: dia.BBox, closed: bool
     return closed ? `${line} V ${plot.y + plot.height} H ${plot.x} Z` : line;
 }
 
+/** A threshold as a number: `NaN` if there is none (`null` or empty, not zero) */
+function thresholdValue(value: unknown): number {
+    return value === null || value === undefined || value === '' ? NaN : Number(value);
+}
+
 /**
  * A line chart: the recent history of a value (`values` from `min` to `max`: the newest on the right)
  * with the warning thresholds. In the runtime mode the newest value comes on the right (see `simulation.ts`).
@@ -53,10 +58,14 @@ export default class LineChart extends Shape {
                 return { d: seriesPath(this.model.get('values') || [], getScale(this.model), refBBox, kind === 'area') };
             }
         },
-        // A horizontal line at the threshold of the model (`chartLevel` in the attributes: 'low' or 'high')
+        // A horizontal line at the threshold of the model (`chartLevel` in the attributes: 'low' or 'high'),
+        // none without it (a field cleared in the inspector); the lower one of the two is the low one.
         'chart-level': {
             set(this: dia.ElementView, which: 'low' | 'high', refBBox: dia.BBox) {
-                const value = Number(this.model.prop(['thresholds', which]));
+                const [low, high] = ['low', 'high'].map(key => thresholdValue(this.model.prop(['thresholds', key])));
+                // One of them only: it is where it is.
+                const both = Number.isFinite(low) && Number.isFinite(high);
+                const value = !both ? (which === 'low' ? low : high) : which === 'low' ? Math.min(low, high) : Math.max(low, high);
                 if (!Number.isFinite(value)) return { d: 'M 0 0' };
                 const plot = plotArea(refBBox);
                 const y = plotY(plot, value, getScale(this.model));

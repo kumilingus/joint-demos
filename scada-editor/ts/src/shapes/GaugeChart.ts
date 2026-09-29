@@ -45,10 +45,6 @@ export default class GaugeChart extends Shape {
         return false;
     }
 
-    get resizable(): boolean {
-        return false;
-    }
-
     get tagPrefix(): string {
         return 'PI';
     }
@@ -80,9 +76,10 @@ export default class GaugeChart extends Shape {
                 width: 130,
                 height: 130
             },
+            // The scale (bar): the feedwater pressure of the plant fits (see `simulation.ts`)
             min: 0,
-            max: 10,
-            value: 6.5,
+            max: 16,
+            value: 10.5,
             attrs: {
                 root: {
                     magnetSelector: 'body'

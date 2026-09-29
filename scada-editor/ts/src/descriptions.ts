@@ -102,8 +102,8 @@ export const descriptions: Record<string, ShapeDescription> = {
 
     // Charts
     LineChart: { title: 'Line Chart', description: 'The recent history of a value with its warning thresholds: the newest on the right.' },
-    BarChart: { title: 'Bar Chart', description: 'A value of each of the recent periods (the production of the hours of a shift): the newest on the right.' },
-    DonutChart: { title: 'Donut Chart', description: 'The shares of the parts of a whole: the sources of the power.' },
+    BarChart: { title: 'Bar Chart', description: 'A value of each of the recent periods (the mean steam flow of a period): the newest on the right.' },
+    DonutChart: { title: 'Donut Chart', description: 'The shares of the parts of a whole: the fuels burnt in the boilers.' },
     GaugeChart: { title: 'Gauge Chart', description: 'A value on the arc of its scale (a pressure).' },
 
     // Custom

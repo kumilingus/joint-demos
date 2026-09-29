@@ -141,6 +141,7 @@ export const cellNamespace = {
     AirCooler,
     Scrubber,
     WaterTower,
+    // Not in the palette anymore (the line chart instead): a saved diagram with it still loads.
     Trend,
     Zone,
     Join,

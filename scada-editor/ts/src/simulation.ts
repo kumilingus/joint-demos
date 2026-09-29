@@ -162,9 +162,9 @@ const periodFlows = new Map<string, number>();
 const chartGenerators: Record<string, ChartGenerator> = {
     // The steam flow: the newest value on the right, the oldest one drops out on the left
     LineChart: (element, graph) => {
-        const { max } = getScale(element);
+        const { min, max } = getScale(element);
         const values: number[] = element.get('values') || [];
-        return { values: [...values, roundTo(steamFlow(graph), max)].slice(-CHART_POINTS) };
+        return { values: [...values, roundTo(steamFlow(graph), max - min)].slice(-CHART_POINTS) };
     },
     // The steam produced in the last period (the mean flow): a new bar on the right
     BarChart: (element, graph, tick) => {
@@ -174,9 +174,9 @@ const chartGenerators: Record<string, ChartGenerator> = {
             return null;
         }
         periodFlows.delete(element.id as string);
-        const { max } = getScale(element);
+        const { min, max } = getScale(element);
         const values: number[] = element.get('values') || [];
-        return { values: [...values.slice(1), roundTo(sum / BAR_PERIOD, max)] };
+        return { values: [...values.slice(1), roundTo(sum / BAR_PERIOD, max - min)] };
     },
     // The fuels burnt: the first one up to the base load, the second one above it, the others steadily
     DonutChart: (element, graph) => {
@@ -184,8 +184,10 @@ const chartGenerators: Record<string, ChartGenerator> = {
         const flow = steamFlow(graph);
         return {
             slices: slices.map((slice, index) => {
-                const value = index === 0 ? Math.min(flow, BASE_LOAD) : index === 1 ? Math.max(0, flow - BASE_LOAD) : Number(slice.value) || 0;
-                return { ...slice, value: Math.round(Math.max(0, follow(Number(slice.value) || 0, value, 0.3))) };
+                // The others as they are
+                if (index > 1) return slice;
+                const value = index === 0 ? Math.min(flow, BASE_LOAD) : Math.max(0, flow - BASE_LOAD);
+                return { ...slice, value: Number(Math.max(0, follow(Number(slice.value) || 0, value, 0.3)).toFixed(1)) };
             })
         };
     },

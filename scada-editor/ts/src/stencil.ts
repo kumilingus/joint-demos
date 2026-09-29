@@ -9,7 +9,6 @@ import {
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display,
     Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, SignalLine, Label, CustomImage,
     GateValve, YStrainer, OrificePlate, AirCooler, Scrubber, WaterTower,
-    Trend,
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground,
     Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
@@ -216,7 +215,6 @@ function createShapes(): Record<string, dia.Cell[]> {
             new FlowMeter(),
             new Beacon({ power: 1 }),
             new Display(),
-            new Trend(),
             new SignalLine({
                 source: { x: 0, y: 0 },
                 target: { x: 100, y: 0 }

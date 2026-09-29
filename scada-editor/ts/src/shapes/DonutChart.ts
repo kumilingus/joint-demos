@@ -1,7 +1,7 @@
 import { type dia, g, util, V } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { METAL_STROKE, plateGradient } from './gradients';
-import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
+import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR } from '../const';
 import Shape from './Shape';
 
 /** A slice of a donut chart: what it is, how much of it and its color */
@@ -85,7 +85,7 @@ function slicePath(slices: Slice[], index: number, bbox: dia.BBox): string {
 }
 
 /**
- * A donut chart: the shares of the parts of a whole (`slices`: the sources of the power, edited in the inspector),
+ * A donut chart: the shares of the parts of a whole (`slices`: the fuels of the boilers, edited in the inspector),
  * with a legend. In the runtime mode the shares change (see `simulation.ts`).
  */
 export default class DonutChart extends Shape {
@@ -147,10 +147,10 @@ export default class DonutChart extends Shape {
                 height: 120
             },
             slices: [
-                { label: 'Solar', value: 30, color: MIN_LIQUID_COLOR },
-                { label: 'Wind', value: 25, color: '#60a5fa' },
-                { label: 'Diesel', value: 15, color: MAX_LIQUID_COLOR },
-                { label: 'Grid', value: 30, color: LIQUID_COLOR }
+                // The fuels of the boilers (t/h of steam): the base load, the peaks, a steady one (see `simulation.ts`)
+                { label: 'Natural Gas', value: 18, color: '#60a5fa' },
+                { label: 'Fuel Oil', value: 0, color: MAX_LIQUID_COLOR },
+                { label: 'Biomass', value: 5, color: LIQUID_COLOR }
             ],
             attrs: {
                 root: {
