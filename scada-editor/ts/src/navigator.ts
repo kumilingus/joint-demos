@@ -1,4 +1,5 @@
 import { dia, ui, util } from '@joint/plus';
+import { paperOptions } from './config';
 
 /*
  * The minimap. Its views are simplified: an element is a plain rectangle,
@@ -76,3 +77,6 @@ export function createNavigator(el: HTMLElement, scroller: ui.PaperScroller): ui
     navigator.render();
     return navigator;
 }
+            // The ends of the pipes as on the canvas: from the models (the ports are not drawn here)
+            defaultAnchor: paperOptions.defaultAnchor,
+            defaultConnectionPoint: paperOptions.defaultConnectionPoint,
