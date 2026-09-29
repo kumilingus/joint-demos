@@ -6,44 +6,40 @@ import { SELECTION_COLOR } from './const';
  */
 
 /**
- * The arrowheads: translucent pills over the ends of the pipe (along it, a little wider than it).
- * Dragging one reconnects the end, or moves its anchor along the side of the same element
- * (see `connectionStrategy` in `connections.ts`) - there is no anchor tool.
+ * The arrowheads: dots at the ends of the pipe in the color of the selection, ringed with the background
+ * (see `styles.css`): they stand out on a pipe of any color. Dragging one reconnects the end, or moves
+ * its anchor along the side of the same element (see `connectionStrategy` in `connections.ts`)
+ * - there is no anchor tool.
  */
 const arrowheadAttributes = {
-    x: -12,
-    y: -10,
-    width: 24,
-    height: 20,
-    rx: 10,
-    ry: 10,
+    r: 10,
     fill: SELECTION_COLOR,
-    fillOpacity: 0.35,
-    stroke: 'none',
+    stroke: '#ffffff',
+    strokeWidth: 2.5,
     cursor: 'move'
 };
 
 export const SourceArrowhead = linkTools.SourceArrowhead.extend({
-    tagName: 'rect',
+    tagName: 'circle',
     attributes: { ...arrowheadAttributes, class: 'source-arrowhead' }
 });
 
 export const TargetArrowhead = linkTools.TargetArrowhead.extend({
-    tagName: 'rect',
+    tagName: 'circle',
     attributes: { ...arrowheadAttributes, class: 'target-arrowhead' }
 });
 
 /**
- * A vertex of the pipe (the `handleClass` of `linkTools.Vertices`): a handle as those of the frame
- * of a selected element - filled with the background (`styles.css`), outlined with the selection.
+ * A vertex of the pipe (the `handleClass` of `linkTools.Vertices`): as the arrowheads, smaller
+ * (the colors in `styles.css`) - a bend, not an end.
  */
 export const VertexHandle = linkTools.Vertices.VertexHandle.extend({
     attributes: {
         class: 'vertex-handle',
-        r: 5,
-        fill: '#ffffff',
-        stroke: SELECTION_COLOR,
-        strokeWidth: 1.5,
+        r: 7,
+        fill: SELECTION_COLOR,
+        stroke: '#ffffff',
+        strokeWidth: 2.5,
         cursor: 'move'
     }
 });
