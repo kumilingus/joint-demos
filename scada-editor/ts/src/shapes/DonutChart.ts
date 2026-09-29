@@ -85,7 +85,7 @@ function slicePath(slices: Slice[], index: number, bbox: dia.BBox): string {
 }
 
 /**
- * A donut chart: the shares of the parts of a whole (`slices`: the fuels of the boilers, edited in the inspector),
+ * A donut chart: the shares of the parts of a whole (`slices`, edited in the inspector),
  * with a legend. In the runtime mode the shares change (see `simulation.ts`).
  */
 export default class DonutChart extends Shape {
@@ -147,10 +147,10 @@ export default class DonutChart extends Shape {
                 height: 120
             },
             slices: [
-                // The fuels of the boilers (t/h of steam): the base load, the peaks, a steady one (see `simulation.ts`)
-                { label: 'Natural Gas', value: 18, color: '#60a5fa' },
-                { label: 'Fuel Oil', value: 0, color: MAX_LIQUID_COLOR },
-                { label: 'Biomass', value: 5, color: LIQUID_COLOR }
+                // Generic parts: the app (the inspector, the plant data) says what they are
+                { label: 'Part A', value: 50, color: '#60a5fa' },
+                { label: 'Part B', value: 30, color: MAX_LIQUID_COLOR },
+                { label: 'Part C', value: 20, color: LIQUID_COLOR }
             ],
             attrs: {
                 root: {
@@ -179,7 +179,7 @@ export default class DonutChart extends Shape {
                 ...parts,
                 label: {
                     ...labelAttributes,
-                    text: 'Power Mix'
+                    text: 'Donut Chart'
                 }
             }
         };
