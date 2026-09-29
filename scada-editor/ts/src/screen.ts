@@ -41,6 +41,23 @@ export function showScreen(app: App): void {
     V(paper.defs).append(clipPath);
     paper.layers.setAttribute('clip-path', `url(#${CLIP_ID})`);
     app.el.dataset.screen = 'shown';
+    revealToolbar(app.toolbar.el);
+}
+
+// How long the toolbar stays down when the pointer isn't on it (ms)
+const REVEAL_DURATION = 1500;
+
+/**
+ * The toolbar slides up (see `styles.css`) once the pointer leaves it: it is created again for the mode,
+ * under the pointer that pressed Run, but not hovered until the pointer moves.
+ */
+function revealToolbar(el: HTMLElement): void {
+    el.classList.add('revealed');
+    const conceal = () => el.classList.remove('revealed');
+    el.addEventListener('mouseleave', conceal, { once: true });
+    window.setTimeout(() => {
+        if (!el.matches(':hover')) conceal();
+    }, REVEAL_DURATION);
 }
 
 export function hideScreen(app: App): void {

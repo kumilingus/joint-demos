@@ -719,6 +719,36 @@ body {
     overflow: hidden;
 }
 
+/* The screen takes the whole window: the toolbar slides up out of the way, and down when the pointer comes to the top. */
+.app[data-screen="shown"] {
+    position: relative;
+}
+
+.app[data-screen="shown"] > .joint-toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-100%);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+/* The strip at the top of the window it is shown from (a part of the toolbar: hovered with it) */
+.app[data-screen="shown"] > .joint-toolbar::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 32px;
+}
+
+/* Down while hovered, focused from the keyboard (not a clicked button), or just shown (see `revealToolbar()`) */
+.app[data-screen="shown"] > .joint-toolbar:is(:hover, :has(:focus-visible), .revealed) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-md);
+}
+
 .app[data-screen="shown"] :is(.navigator-panel, .joint-toolbar [data-group="zoom"]) {
     display: none;
 }
