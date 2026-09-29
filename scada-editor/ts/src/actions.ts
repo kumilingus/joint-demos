@@ -112,9 +112,12 @@ const DIAGRAM_FILE_NAME = 'scada-diagram.json';
 /**
  * Download the diagram as JSON: the cells, the images and the favorites. Not the layers:
  * they are those of the app (see `layers.ts`), a cell says in which one it is.
+ * Without the attributes left empty (e.g. a gradient as the default one: the difference is an empty object).
  */
 export function saveDiagram(app: App): void {
-    const { layers: _layers, defaultLayer: _defaultLayer, ...diagram } = app.graph.toJSON();
+    const { layers: _layers, defaultLayer: _defaultLayer, ...diagram } = app.graph.toJSON({
+        cellAttributes: { ignoreEmptyAttributes: () => true }
+    });
     const json = JSON.stringify(diagram, null, 2);
     const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
     const link = document.createElement('a');
