@@ -2,11 +2,13 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, selectCell, toggleCell } from '../actions';
+import { openBlankMenu, openCellMenu } from '../context-menu';
 
 /**
  * Selecting cells on the canvas: a click selects a cell, a click with Ctrl / Cmd / Shift
  * adds it to the selection (or removes it), a drag with Shift on the blank canvas selects
- * the cells it touches (see `selection.ts`). Active in the edit mode only.
+ * the cells it touches (see `selection.ts`). The right click opens the context menu of a cell or of the blank
+ * canvas (see `context-menu.ts`). Active in the edit mode only.
  */
 export default class EditController extends Controller {
 
@@ -15,7 +17,9 @@ export default class EditController extends Controller {
 
         this.listenTo(paper, {
             'cell:pointerclick': onCellPointerclick,
-            'blank:pointerdown': onBlankPointerdown
+            'blank:pointerdown': onBlankPointerdown,
+            'cell:contextmenu': onCellContextmenu,
+            'blank:contextmenu': onBlankContextmenu
         });
     }
 }
@@ -40,4 +44,12 @@ function onBlankPointerdown(app: App, evt: dia.Event) {
         return;
     }
     app.selectionView.startSelecting(evt);
+}
+
+function onCellContextmenu(app: App, cellView: dia.CellView, evt: dia.Event, x: number, y: number) {
+    openCellMenu(app, cellView.model, evt, x, y);
+}
+
+function onBlankContextmenu(app: App, evt: dia.Event, x: number, y: number) {
+    openBlankMenu(app, evt, x, y);
 }

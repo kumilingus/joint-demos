@@ -1215,3 +1215,68 @@ body {
     border-color: #dc2626;
     background: rgb(220 38 38 / 0.08);
 }
+
+/* The context menus of the canvas (see `context-menu.ts`): a popover of items with their shortcuts */
+
+.joint-context-toolbar {
+    position: fixed;
+    z-index: 100;
+    min-width: 200px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-md);
+    font: 13px var(--font);
+}
+
+.joint-context-toolbar .tools {
+    display: flex;
+    flex-direction: column;
+}
+
+.joint-context-toolbar .tool {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 30px;
+    padding: 0 8px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--foreground);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.joint-context-toolbar .tool:hover:not(:disabled) {
+    background: var(--muted);
+}
+
+.joint-context-toolbar .tool:disabled {
+    color: var(--muted-foreground);
+    cursor: default;
+}
+
+/* A line above the item: the items in groups */
+.joint-context-toolbar .tool.separated {
+    position: relative;
+    margin-top: 9px;
+}
+
+.joint-context-toolbar .tool.separated::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -4px;
+    left: -4px;
+    border-top: 1px solid var(--border);
+}
+
+.joint-context-toolbar kbd {
+    color: var(--muted-foreground);
+    font: 12px var(--font);
+    font-variant-numeric: tabular-nums;
+}

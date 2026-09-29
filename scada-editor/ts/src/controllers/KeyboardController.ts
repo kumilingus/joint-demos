@@ -2,6 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, copySelection, cutSelection, paste, redo, removeSelection, undo } from '../actions';
+import { closeMenu } from '../context-menu';
 
 /**
  * Keyboard shortcuts of the editor. Active in the edit mode only.
@@ -36,6 +37,7 @@ function onDelete(app: App, evt: dia.Event) {
 
 function onEscape(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
+    closeMenu();
     clearSelection(app);
 }
 
