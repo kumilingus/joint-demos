@@ -131,7 +131,8 @@ export function createStencil(
     });
 
     // Every load, reload and search of a group fits its paper (see `fitToFootprints()`).
-    // `fitPaperToContent()` is a method of the stencil not in its typings.
+    // `fitPaperToContent()` is a method of the stencil not in its typings; `contentOptions` can't fit
+    // a filtered group from the models (the hidden shapes are fitted too).
     (stencil as ui.Stencil & { fitPaperToContent: (paper: dia.Paper) => void }).fitPaperToContent = fitToFootprints;
     stencil.render();
 
@@ -231,9 +232,9 @@ function createShapes(): Record<string, dia.Cell[]> {
             new Zone()
         ]
     };
-}
     Object.values(shapes).flat().forEach(setTooltip);
     return shapes;
+}
 
 /**
  * What identifies a shape of the palette (computed from the shape, so that the shapes of any diagram
@@ -257,8 +258,8 @@ export function loadDerivedGroup(stencil: ui.Stencil, group: DerivedGroup, keys:
     // Shown before loading: the paper is fitted on load (a hidden group has nothing to measure).
     const groupEl = stencil.el.querySelector<HTMLElement>(`.group[data-name="${group}"]`);
     if (groupEl) groupEl.hidden = shapes.length === 0;
-}
     stencil.loadGroup(shapes, group);
+}
 
 /** The keys of the palette shapes used in the diagram */
 export function keysInUse(graph: dia.Graph): Set<string> {
