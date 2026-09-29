@@ -254,10 +254,11 @@ function shapesByKey(images: ImageLibrary): Map<string, dia.Cell> {
 /** A group of the palette with the shapes of the keys (in the order of the palette), hidden if there are none. */
 export function loadDerivedGroup(stencil: ui.Stencil, group: DerivedGroup, keys: Set<string>, images: ImageLibrary): void {
     const shapes = [...shapesByKey(images)].filter(([key]) => keys.has(key)).map(([, cell]) => cell);
-    stencil.loadGroup(shapes, group);
+    // Shown before loading: the paper is fitted on load (a hidden group has nothing to measure).
     const groupEl = stencil.el.querySelector<HTMLElement>(`.group[data-name="${group}"]`);
     if (groupEl) groupEl.hidden = shapes.length === 0;
 }
+    stencil.loadGroup(shapes, group);
 
 /** The keys of the palette shapes used in the diagram */
 export function keysInUse(graph: dia.Graph): Set<string> {
