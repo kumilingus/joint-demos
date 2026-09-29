@@ -477,6 +477,29 @@ body {
     font-weight: 500;
 }
 
+/* A question mark next to a label: its tooltip explains the field (see `renderLabel()` in `inspector.ts`). */
+.joint-inspector .field-help {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    margin-left: 6px;
+    border: 1px solid var(--muted-foreground);
+    border-radius: 50%;
+    color: var(--muted-foreground);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    vertical-align: 1px;
+    cursor: help;
+}
+
+.joint-inspector .field-help:hover {
+    border-color: var(--foreground);
+    color: var(--foreground);
+}
+
 /* The layout of the inspector appends a colon to every label. */
 .joint-inspector label::after {
     content: none;
@@ -1094,6 +1117,8 @@ body {
 /* Tooltips (`ui.Tooltip`): a bubble in the primary color with a small arrow pointing to the target */
 
 .joint-tooltip {
+    /* A long text (the help of the inspector) wraps. */
+    max-width: 280px;
     border-radius: var(--radius-md);
     background: var(--primary);
     box-shadow: var(--shadow-xs);

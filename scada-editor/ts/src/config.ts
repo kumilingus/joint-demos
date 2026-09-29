@@ -177,7 +177,8 @@ const modeButtonTooltip: Record<Mode, string> = {
 
 /**
  * The tooltips of the app: of every element with the `data-tooltip` attribute (the toolbar buttons,
- * the shapes of the palette, ...), next to it - on the right of the palette, below the toolbar.
+ * the shapes of the palette, the help of the inspector, ...), next to it - on the right of the palette,
+ * on the left of the inspector, below the toolbar.
  */
 export const tooltipOptions: Partial<ui.Tooltip.Options> = {
     rootTarget: document.body,
@@ -186,7 +187,12 @@ export const tooltipOptions: Partial<ui.Tooltip.Options> = {
     // Shown after a while (not while the pointer passes over), fading in
     animation: { delay: '400ms', duration: '150ms', timingFunction: 'ease-out' },
     direction: 'auto' as ui.Tooltip.Options['direction'],
-    position: (element: Element) => (element.closest('.stencil-panel') ? 'right' : 'bottom') as ui.Tooltip.TooltipPosition
+    position: (element: Element) => {
+        // The side of the tooltip with its arrow (pointing to the element): the palette on the left edge
+        // has the tooltips on its right (their arrows on the left), the inspector on the right edge on its left.
+        const position = element.closest('.stencil-panel') ? 'left' : element.closest('.inspector-panel') ? 'right' : 'bottom';
+        return position as ui.Tooltip.TooltipPosition;
+    }
 };
 
 export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {

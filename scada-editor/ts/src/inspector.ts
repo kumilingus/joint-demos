@@ -191,6 +191,23 @@ const layerInput = (group: string) => ({
     }
 });
 
+/** What the layers are for: shown in the tooltip of the question mark next to the label of the layer */
+const LAYER_HELP = 'The layers are drawn from the bottom up: Background, Pipes, Equipment, Instruments, Foreground. '
+    + 'A cell is always drawn over the cells of the layers below its own, whatever the order of adding them.';
+
+/** The label of a field: the layer has a question mark with a tooltip (the default label for the others) */
+function renderLabel(options: { label?: string }, path: string): HTMLElement | undefined {
+    if (path !== 'layer') return undefined;
+    const label = document.createElement('label');
+    label.textContent = options.label ?? path;
+    const help = document.createElement('span');
+    help.className = 'field-help';
+    help.textContent = '?';
+    help.dataset.tooltip = LAYER_HELP;
+    label.append(help);
+    return label;
+}
+
 export function openInspector(el: HTMLElement, cell: dia.Cell): void {
     closeInspector();
     const linkName = LINK_NAMES[cell.get('type')] ?? 'Pipe';
@@ -199,7 +216,8 @@ export function openInspector(el: HTMLElement, cell: dia.Cell): void {
         inputs: cell.isElement()
             ? { ...getInputs(cell as dia.Element), ...layerInput('general') }
             : { ...(isRouted(cell) ? linkInputs : {}), ...layerInput('link') },
-        groups: { ...groups, link: { ...groups!.link, label: linkName }}
+        groups: { ...groups, link: { ...groups!.link, label: linkName }},
+        renderLabel
     });
 }
 
