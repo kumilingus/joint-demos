@@ -753,6 +753,28 @@ body {
     display: none;
 }
 
+/* The energized circuits in the runtime mode (see `ElectricalController`): a live wire, a lit lamp, a glowing heater */
+
+[data-type="Wire"].energized [joint-selector="line"] {
+    stroke: var(--shape-wire-live);
+}
+
+[data-type="Lamp"].energized [joint-selector="glass"] {
+    fill: var(--shape-lamp-on);
+    filter: drop-shadow(0 0 8px var(--shape-lamp-on));
+}
+
+/* The lamps of the cabinets */
+:is([data-type="Switchgear"], [data-type="MotorControlCenter"]).energized [joint-selector^="lamp"] {
+    fill: #22c55e;
+    filter: drop-shadow(0 0 3px #22c55e);
+}
+
+[data-type="Heater"].energized [joint-selector="coil"] {
+    stroke: var(--shape-heater-on);
+    filter: drop-shadow(0 0 4px var(--shape-heater-on));
+}
+
 /* Navigator: a minimap in the bottom right corner of the canvas */
 
 .navigator-panel {

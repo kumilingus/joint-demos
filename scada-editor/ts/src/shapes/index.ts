@@ -55,6 +55,27 @@ import EndCap from './EndCap';
 import Manifold from './Manifold';
 import SignalLine from './SignalLine';
 import Screen from './Screen';
+import Generator from './Generator';
+import Transformer from './Transformer';
+import Busbar from './Busbar';
+import Battery from './Battery';
+import CircuitBreaker from './CircuitBreaker';
+import Disconnector from './Disconnector';
+import Fuse from './Fuse';
+import SurgeArrester from './SurgeArrester';
+import Ground from './Ground';
+import Lamp from './Lamp';
+import Heater from './Heater';
+import ElectricMeter from './ElectricMeter';
+import Wire from './Wire';
+import DieselGenerator from './DieselGenerator';
+import WindTurbine from './WindTurbine';
+import SolarArray from './SolarArray';
+import PowerTransformer from './PowerTransformer';
+import Switchgear from './Switchgear';
+import MotorControlCenter from './MotorControlCenter';
+import BatteryBank from './BatteryBank';
+import FuelTank from './FuelTank';
 
 export {
     Pump, Compressor, Fan, Motor, Blower, Turbine, ConveyorBelt,
@@ -64,7 +85,9 @@ export {
     Chimney, CoolingTower,
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display, Trend,
     Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, CustomImage, YStrainer, OrificePlate,
-    Screen
+    Screen,
+    Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground, Lamp, Heater, ElectricMeter, Wire,
+    DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank
 };
 
 export const cellNamespace = {
@@ -124,5 +147,26 @@ export const cellNamespace = {
     Elbow,
     EndCap,
     Manifold,
-    Screen
+    Screen,
+    Generator,
+    Transformer,
+    Busbar,
+    Battery,
+    CircuitBreaker,
+    Disconnector,
+    Fuse,
+    SurgeArrester,
+    Ground,
+    Lamp,
+    Heater,
+    ElectricMeter,
+    Wire,
+    DieselGenerator,
+    WindTurbine,
+    SolarArray,
+    PowerTransformer,
+    Switchgear,
+    MotorControlCenter,
+    BatteryBank,
+    FuelTank
 };

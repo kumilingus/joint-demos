@@ -49,6 +49,47 @@ function pipeStubGroup(length: number): dia.Element.PortGroup {
     };
 }
 
+/** The markup of an electrical terminal (parsed once) */
+const terminalMarkup = util.svg`
+    <path @selector='lead' />
+    <circle @selector='terminal' />
+`;
+
+// How far a terminal reaches out of the element
+const TERMINAL_LENGTH = 12;
+
+/**
+ * The group of the electrical terminals: a lead out of the side (the model of the port, centered
+ * on its position and turned by its angle as a pipe stub) with the terminal at its end. A wire connects
+ * to the terminal (see `Wire`).
+ */
+function terminalGroup(): dia.Element.PortGroup {
+    return {
+        position: { name: 'absolute' },
+        markup: terminalMarkup,
+        size: { width: TERMINAL_LENGTH, height: 10 },
+        attrs: {
+            portRoot: {
+                magnet: 'passive',
+                magnetSelector: 'terminal',
+                highlighterSelector: 'terminal'
+            },
+            lead: {
+                d: 'M calc(-0.5 * w) 0 H calc(0.5 * w)',
+                stroke: 'var(--shape-instrument-ink)',
+                strokeWidth: 2.5
+            },
+            terminal: {
+                cx: 'calc(0.5 * w)',
+                r: 4,
+                fill: 'var(--shape-face)',
+                stroke: 'var(--shape-instrument-ink)',
+                strokeWidth: 2
+            }
+        }
+    };
+}
+
 /** A side of an element. */
 export type Side = 'left' | 'right' | 'top' | 'bottom';
 
@@ -59,7 +100,7 @@ const SIDE_ANGLES: Record<Side, number> = { right: 0, bottom: 90, left: 180, top
  * A stub `length` long sticking out of a side of the element, at the point `along` the side
  * (`calc()` of the width or the height, the middle by default): its port is in the middle of it.
  */
-function sideStub(id: string, group: string, side: Side, length: number, along?: string, z = 0): dia.Element.Port {
+function sideStub(id: string, group: string, side: Side, length: number, along?: string | number, z = 0): dia.Element.Port {
     const out = length / 2;
     const vertical = side === 'left' || side === 'right';
     const middle = vertical ? 'calc(0.5 * h)' : 'calc(0.5 * w)';
@@ -118,6 +159,33 @@ export function fittingPorts(sides: Side[], length: number): dia.Element.Attribu
             pipes: pipeStubGroup(length)
         },
         items: sides.map(side => sideStub(side, 'pipes', side, length))
+    };
+}
+
+/** An electrical terminal of an element: on a side, at a point `along` it (the middle by default). */
+export interface Terminal {
+    id: string;
+    side: Side;
+    along?: string | number;
+}
+
+/** Whether the port is an electrical terminal (a wire connects to it, a pipe doesn't) */
+export function isTerminal(port: dia.Element.Port): boolean {
+    return port.group === 'terminals';
+}
+
+/** A terminal on a side, at a point `along` it (see `terminalPorts()`): for the ports changed with the size (see `Busbar`) */
+export function terminal({ id, side, along }: Terminal): dia.Element.Port {
+    return sideStub(id, 'terminals', side, TERMINAL_LENGTH, along);
+}
+
+/** The electrical terminals of an element (see `terminalGroup()`) */
+export function terminalPorts(terminals: Terminal[]): dia.Element.Attributes['ports'] {
+    return {
+        groups: {
+            terminals: terminalGroup()
+        },
+        items: terminals.map(terminal)
     };
 }
 

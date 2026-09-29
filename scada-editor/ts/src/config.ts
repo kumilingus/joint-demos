@@ -6,6 +6,9 @@ import type { DERIVED } from './shapes/routing';
 import type { PREFERENCE } from './favorites';
 import Label from './shapes/Label';
 import SignalLine from './shapes/SignalLine';
+import Wire from './shapes/Wire';
+import Screen from './shapes/Screen';
+import { isTerminal } from './shapes/ports';
 
 export const ZOOM = { min: 0.2, max: 3 };
 
@@ -48,16 +51,21 @@ export const paperOptions: dia.Paper.Options = {
             }
         }
     },
-    // The end of a link (moved with its arrowhead) connects to an element (not to another link, nor to a label):
-    // a pipe to one of its ports if it has any (a pipe stub), a signal line to its body.
+    // The end of a link (moved with its arrowhead) connects to an element (not to another link, a label, nor the screen):
+    // a pipe to one of its pipe stubs if it has any (to its side otherwise), a wire to an electrical terminal,
+    // a signal line to its body.
     validateConnection: (sourceView, sourceMagnet, targetView, targetMagnet, end, linkView) => {
         const [view, magnet] = end === 'source' ? [sourceView, sourceMagnet] : [targetView, targetMagnet];
-        if (!view || !view.model.isElement() || view.model instanceof Label) return false;
+        if (!view || !view.model.isElement() || view.model instanceof Label || view.model instanceof Screen) return false;
         const element = view.model as dia.Element;
-        const onPort = Boolean(magnet && view.findAttribute('port', magnet));
-        if (linkView.model instanceof SignalLine) return !onPort;
-        if (element.getPorts().length === 0) return true;
-        return onPort;
+        const portId = magnet ? view.findAttribute('port', magnet) : null;
+        if (linkView.model instanceof Wire) return Boolean(portId) && isTerminal(element.getPort(portId!));
+        if (linkView.model instanceof SignalLine) return !portId;
+        // A pipe: not to an electrical element
+        const ports = element.getPorts();
+        if (ports.length === 0) return true;
+        if (ports.every(isTerminal)) return false;
+        return Boolean(portId) && !isTerminal(element.getPort(portId!));
     }
 };
 

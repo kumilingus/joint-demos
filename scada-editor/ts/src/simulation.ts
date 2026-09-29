@@ -1,6 +1,7 @@
 import type { dia } from '@joint/plus';
 import { RUNTIME } from './controls';
 import { findByTag, getTag } from './tags';
+import { isEnergized } from './energized';
 
 /*
  * A mock of the plant: in random intervals it sends random updates of the plant data,
@@ -88,6 +89,17 @@ const generators: Record<string, Generator> = {
         const last = values.length > 0 ? values[values.length - 1] : 50;
         return { values: [...values.slice(1), Math.round(drift(last, 8, 5, 95))] };
     },
+    // The electrical equipment: a breaker trips now and then, a generator stops; a meter shows the voltage.
+    CircuitBreaker: toggleOpen(0.08),
+    Generator: togglePower(0.05),
+    DieselGenerator: togglePower(0.05),
+    WindTurbine: togglePower(0.05),
+    // The charge of a battery bank, the fuel of a day tank
+    BatteryBank: element => ({ level: Math.round(drift(element.get('level') ?? 80, 3, 20, 100)) }),
+    FuelTank: element => ({ level: Math.round(drift(element.get('level') ?? 70, 3, 10, 100)) }),
+    ElectricMeter: (element, graph) => ({
+        'attrs/value/text': isEnergized(graph, element) ? driftText(element.attr('value/text'), 1.5, 225, 235) : '0.0'
+    }),
     // The alarm follows the pressure.
     Beacon: (_element, graph) => ({ power: highestPressure(graph) > HIGH_PRESSURE ? 1 : 0 })
 };

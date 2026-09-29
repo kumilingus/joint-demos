@@ -3,6 +3,7 @@ export { default as AnimationsController } from './AnimationsController';
 export { default as CanvasController } from './CanvasController';
 export { default as ControlsController } from './ControlsController';
 export { default as EditController } from './EditController';
+export { default as ElectricalController } from './ElectricalController';
 export { default as KeyboardController } from './KeyboardController';
 export { default as PaletteController } from './PaletteController';
 export { default as RuntimeController } from './RuntimeController';

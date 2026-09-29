@@ -58,6 +58,23 @@
     --shape-label: #350100;
     /* The frame of the screen (see `Screen`): a guide while editing */
     --shape-screen: #3b82f6;
+    /* The electrical shapes: a wire (live in the runtime mode), a busbar, the states of a breaker, a lit lamp, a glowing heater */
+    --shape-wire: #52525b;
+    --shape-wire-live: #ea580c;
+    --shape-busbar: #b87333;
+    --shape-breaker-closed: #dc2626;
+    --shape-breaker-open: #16a34a;
+    --shape-lamp-on: #facc15;
+    --shape-heater-on: #f97316;
+    /* Copper, porcelain and glass (a busbar, the insulators, a bulb, see `gradients.ts`) */
+    --shape-copper-1: #f0b27a;
+    --shape-copper-2: #c87533;
+    --shape-copper-3: #8a4b1c;
+    --shape-porcelain-1: #fdfaf3;
+    --shape-porcelain-2: #ece5d6;
+    --shape-porcelain-3: #b9ae98;
+    --shape-glass-1: #ffffff;
+    --shape-glass-2: #d6dde4;
 }
 
 :root[data-color-scheme="dark"] {
@@ -115,4 +132,19 @@
     --shape-plenum: #4a6285;
     --shape-label: #cfdcee;
     --shape-screen: #e879f9;
+    --shape-wire: #94a3b8;
+    --shape-wire-live: #fb923c;
+    --shape-busbar: #d4915c;
+    --shape-breaker-closed: #ef4444;
+    --shape-breaker-open: #22c55e;
+    --shape-lamp-on: #fde047;
+    --shape-heater-on: #fb923c;
+    --shape-copper-1: #f5c08e;
+    --shape-copper-2: #d08445;
+    --shape-copper-3: #93552a;
+    --shape-porcelain-1: #e6e9ef;
+    --shape-porcelain-2: #b9c3d0;
+    --shape-porcelain-3: #7d8a9c;
+    --shape-glass-1: #dbe6f3;
+    --shape-glass-2: #6f88a8;
 }

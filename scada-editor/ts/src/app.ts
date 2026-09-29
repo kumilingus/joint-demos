@@ -20,6 +20,7 @@ import {
     CanvasController,
     ControlsController,
     EditController,
+    ElectricalController,
     KeyboardController,
     PaletteController,
     RuntimeController,
@@ -50,9 +51,9 @@ export class App {
 
     mode: Mode = Mode.Edit;
     colorScheme: ColorScheme = getInitialColorScheme();
-    selection = new mvc.Collection<dia.Cell>();
     /** Whether a moved or resized element aligns with the others (a preference, see the settings) */
     snaplinesEnabled: boolean = getStoredPreference(SNAPLINES_KEY, true);
+    selection = new mvc.Collection<dia.Cell>();
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;
 
@@ -110,7 +111,8 @@ export class App {
                 new ToolbarController(this),
                 new RuntimeController(this),
                 new SimulationController(this),
-                new AnimationsController(this)
+                new AnimationsController(this),
+                new ElectricalController(this)
             ]
         };
 
@@ -208,8 +210,6 @@ export class App {
         this.stencil = null;
     }
 
-    protected createSnaplines(): void {
-        this.snaplines = new ui.Snaplines({ ...snaplinesOptions, paper: this.paper });
     /** Turn the snaplines on or off (remembered, as the color scheme). */
     setSnaplinesEnabled(enabled: boolean): void {
         this.snaplinesEnabled = enabled;
@@ -221,9 +221,11 @@ export class App {
         storePreference(SNAPLINES_KEY, enabled);
     }
 
+    protected createSnaplines(): void {
+        this.snaplines = new ui.Snaplines({ ...snaplinesOptions, paper: this.paper });
+        if (!this.snaplinesEnabled) this.snaplines.disable();
     }
 
-        if (!this.snaplinesEnabled) this.snaplines.disable();
     protected destroySnaplines(): void {
         this.snaplines?.remove();
         this.snaplines = null;
@@ -231,8 +233,6 @@ export class App {
 }
 
 const COLOR_SCHEME_KEY = 'scada-editor:color-scheme';
-
-/** The color scheme chosen last time, or the one of the system. */
 const SNAPLINES_KEY = 'scada-editor:snaplines';
 
 /** A preference of the user remembered in the browser (the default without storage) */
@@ -253,6 +253,8 @@ function storePreference(key: string, value: boolean): void {
         // Not remembered, but set.
     }
 }
+
+/** The color scheme chosen last time, or the one of the system. */
 function getInitialColorScheme(): ColorScheme {
     try {
         const stored = localStorage.getItem(COLOR_SCHEME_KEY);

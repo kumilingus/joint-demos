@@ -77,6 +77,29 @@ export const descriptions: Record<string, ShapeDescription> = {
     SignalLine: { title: 'Signal Line', description: 'Connects an instrument (a transmitter) to what it measures or controls.' },
     Label: { title: 'Label', description: 'A text on the diagram: a name of an area, a note.' },
 
+    // Electrical
+    DieselGenerator: { title: 'Diesel Generator', description: 'An engine and an alternator on a skid: a source of the power while it runs. The fuel comes in by the pipe on the left.' },
+    WindTurbine: { title: 'Wind Turbine', description: 'A source of the power while it runs: its rotor spins.' },
+    SolarArray: { title: 'Solar Array', description: 'A source of the power from the sun.' },
+    PowerTransformer: { title: 'Power Transformer', description: 'The tank with its cooling radiators, the oil conservator and the bushings: changes the voltage between its high (left) and low (right) side.' },
+    Switchgear: { title: 'Switchgear', description: 'Cabinet panels with the breakers: the power in on the sides, the feeders at the bottom. Its lamps are lit while it is energized.' },
+    MotorControlCenter: { title: 'Motor Control Center', description: 'A cabinet of the starters of the motors: fed from the left, the motors connected at the bottom. Its lamps are lit while it is energized.' },
+    BatteryBank: { title: 'Battery Bank', description: 'A storage of the energy (a UPS): a source of the power, its charge on the gauge.' },
+    FuelTank: { title: 'Fuel Tank', description: 'The day tank of a generator: the fuel level in its sight glass, the fuel out by the pipes.' },
+    Generator: { title: 'Generator', description: 'A source of the power while it runs (switched on and off in the runtime mode).' },
+    Transformer: { title: 'Transformer', description: 'Changes the voltage between its two windings.' },
+    Busbar: { title: 'Busbar', description: 'A conductor many circuits are connected to: terminals on its ends, on the top and on the bottom.' },
+    Battery: { title: 'Battery', description: 'A source of the power, always.' },
+    CircuitBreaker: { title: 'Circuit Breaker', description: 'The current passes while it is closed (red); open (green) it cuts the circuit. Opened and closed in the runtime mode.' },
+    Disconnector: { title: 'Disconnector', description: 'A switch isolating a part of the circuit: its blade lifts off the contact when open.' },
+    Fuse: { title: 'Fuse', description: 'Protects the circuit from an overcurrent.' },
+    SurgeArrester: { title: 'Surge Arrester', description: 'Leads an overvoltage (a lightning strike) to the ground.' },
+    Ground: { title: 'Ground', description: 'The earth: the reference of the voltage, where a fault current goes.' },
+    Lamp: { title: 'Lamp', description: 'A load: lit while it is energized.' },
+    Heater: { title: 'Heater', description: 'An electric heater, a load: glows while it is energized.' },
+    ElectricMeter: { title: 'Voltmeter', description: 'Shows the voltage of the circuit: zero while it is not energized.' },
+    Wire: { title: 'Wire', description: 'Connects the terminals of the electrical shapes. Live (in color) while the circuit is energized.' },
+
     // Custom
     CustomImage: { title: 'Image', description: 'An image of your own, uploaded into the diagram: it is saved with it, once, however many elements show it.' }
 };

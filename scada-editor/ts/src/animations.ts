@@ -159,6 +159,17 @@ const animators: Record<string, Animator> = {
             { ...origin, transform: 'scale(1.06, 1.12)' }
         ], { ...LOOP, duration: 2200, direction: 'alternate', easing: 'ease-in-out' })];
     },
+    // The rotor of a wind turbine (drawn around its hub, the group moved there)
+    WindTurbine: view => isOn(view.model) ? spin(node(view, 'rotor'), [0, 0], 3000) : [],
+    // The exhaust of a running diesel generator smokes.
+    DieselGenerator: view => {
+        const target = node(view, 'smoke');
+        if (!target || !isOn(view.model)) return [];
+        return [target.animate([
+            { transform: 'translateY(0)', opacity: 0.9 },
+            { transform: 'translateY(-12px)', opacity: 0.2 }
+        ], { ...LOOP, duration: 1400, easing: 'ease-out' })];
+    },
     Beacon: view => {
         const target = node(view, 'glow');
         if (!target || !isOn(view.model)) return [];

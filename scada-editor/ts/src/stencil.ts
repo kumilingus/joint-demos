@@ -9,7 +9,10 @@ import {
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display,
     Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, SignalLine, Label, CustomImage,
     GateValve, YStrainer, OrificePlate, AirCooler, Scrubber, WaterTower,
-    Trend
+    Trend,
+    Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground,
+    Lamp, Heater, ElectricMeter, Wire,
+    DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank
 } from './shapes';
 import { getFootprint } from './shapes/footprint';
 import { createGraph } from './layers';
@@ -50,7 +53,8 @@ const groups: Record<string, ui.Stencil.Group> = {
     process: { index: 7, label: 'Process' },
     storage: { index: 8, label: 'Storage' },
     structures: { index: 9, label: 'Structures' },
-    instruments: { index: 10, label: 'Instruments' }
+    instruments: { index: 10, label: 'Instruments' },
+    electrical: { index: 11, label: 'Electrical' }
 };
 
 /** The name of the shape of the palette (see `descriptions.ts`), shown in its tooltip */
@@ -195,7 +199,8 @@ function createShapes(): Record<string, dia.Cell[]> {
             new SphericalTank(),
             new Hopper(),
             new HorizontalTank(),
-            new WaterTower()
+            new WaterTower(),
+            new FuelTank()
         ],
         structures: [
             new Chimney(),
@@ -215,6 +220,31 @@ function createShapes(): Record<string, dia.Cell[]> {
                 target: { x: 100, y: 0 }
             }),
             new Label()
+        ],
+        electrical: [
+            new DieselGenerator(),
+            new WindTurbine(),
+            new SolarArray(),
+            new PowerTransformer(),
+            new Switchgear(),
+            new MotorControlCenter(),
+            new BatteryBank(),
+            new Generator(),
+            new Transformer(),
+            new Busbar(),
+            new Battery(),
+            new CircuitBreaker(),
+            new Disconnector(),
+            new Fuse(),
+            new SurgeArrester(),
+            new Ground(),
+            new Lamp(),
+            new Heater(),
+            new ElectricMeter(),
+            new Wire({
+                source: { x: 0, y: 0 },
+                target: { x: 100, y: 0 }
+            })
         ],
         piping: [
             new Pipe({

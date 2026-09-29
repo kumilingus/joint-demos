@@ -20,11 +20,14 @@ const PORT_END_OVERHANG = 3;
 
 /**
  * How far the drawing of the element reaches out of its bounding box if its label is not shown:
- * the label is the last thing below (or above) the shape - the drawing ends where the label starts.
+ * the label is the last thing below (above, or on the right of) the shape - the drawing ends where the label starts.
  */
 function withoutLabel(element: dia.Element, overflow: Required<Overflow>): Required<Overflow> {
-    const { y, text } = element.attr('label') || {};
+    const { x, y, text } = element.attr('label') || {};
     if (text === undefined) return overflow;
+    // On the right: `calc(w + 10)` (from the start of the text)
+    const right = typeof x === 'string' ? x.match(/^calc\(w\s*\+\s*(\d+(?:\.\d+)?)\)$/) : null;
+    if (right) return { ...overflow, right: Math.min(overflow.right, Number(right[1])) };
     // Below: `calc(h + 18)` (from the top of the text)
     const below = typeof y === 'string' ? y.match(/^calc\(h\s*\+\s*(\d+(?:\.\d+)?)\)$/) : null;
     if (below) return { ...overflow, bottom: Math.min(overflow.bottom, Number(below[1])) };

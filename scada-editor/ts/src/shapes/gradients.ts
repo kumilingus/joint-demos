@@ -83,3 +83,43 @@ export const plateGradient: dia.SVGGradientJSON = {
         y2: '100%'
     }
 };
+
+/** A copper bar (a busbar, a ground rod): the shading runs from the top to the bottom. */
+export const copperGradient: dia.SVGGradientJSON = {
+    type: 'linearGradient',
+    stops: [
+        { offset: '0%', color: 'var(--shape-copper-1)' },
+        { offset: '35%', color: 'var(--shape-copper-2)' },
+        { offset: '100%', color: 'var(--shape-copper-3)' }
+    ],
+    attrs: {
+        x1: '0%',
+        y1: '0%',
+        x2: '0%',
+        y2: '100%'
+    }
+};
+
+/** A porcelain insulator (a bushing, a post, an arrester): glazed, the shading from the left to the right. */
+export const porcelainGradient: dia.SVGGradientJSON = {
+    type: 'linearGradient',
+    stops: [
+        { offset: '0%', color: 'var(--shape-porcelain-1)' },
+        { offset: '35%', color: 'var(--shape-porcelain-2)' },
+        { offset: '100%', color: 'var(--shape-porcelain-3)' }
+    ]
+};
+
+/** The glass of a bulb: the highlight up and to the left. */
+export const glassGradient: dia.SVGGradientJSON = {
+    type: 'radialGradient',
+    stops: [
+        { offset: '0%', color: 'var(--shape-glass-1)' },
+        { offset: '100%', color: 'var(--shape-glass-2)' }
+    ],
+    attrs: {
+        cx: '35%',
+        cy: '35%',
+        r: '70%'
+    }
+};
