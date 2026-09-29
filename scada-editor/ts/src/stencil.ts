@@ -66,7 +66,6 @@ function setTooltip(cell: dia.Cell): void {
  * (the pipe stubs, the actuators, ... included, the labels not), from the top left corner.
  */
 function layoutGroup(graph: dia.Graph): void {
-    graph.getCells().forEach(setTooltip);
     // The palette doesn't show the labels (see `styles.css`).
     const items = graph.getCells().map(cell => ({ data: cell, footprint: getFootprint(cell, { label: false }) }));
     const stripWidth = MAX_GROUP_WIDTH - 2 * GROUP_MARGIN;
@@ -150,9 +149,9 @@ export function createStencil(
     return stencil;
 }
 
-/** The shapes of the palette by the groups (new ones each time: a shape is in one graph only) */
+/** The shapes of the palette by the groups (new ones each time: a shape is in one graph only), with their tooltips */
 function createShapes(): Record<string, dia.Cell[]> {
-    return {
+    const shapes: Record<string, dia.Cell[]> = {
         rotating: [
             new Pump(),
             new Compressor(),
@@ -233,6 +232,8 @@ function createShapes(): Record<string, dia.Cell[]> {
         ]
     };
 }
+    Object.values(shapes).flat().forEach(setTooltip);
+    return shapes;
 
 /**
  * What identifies a shape of the palette (computed from the shape, so that the shapes of any diagram
@@ -263,9 +264,11 @@ export function keysInUse(graph: dia.Graph): Set<string> {
     return new Set(graph.getCells().map(paletteKey));
 }
 
-/** A shape for each image of the diagram (the group of the custom shapes) */
+/** A shape for each image of the diagram (the group of the custom shapes), with its tooltip */
 export function customShapes(images: ImageLibrary): dia.Cell[] {
-    return Object.entries(images).map(([imageId, image]) => CustomImage.fromImage(imageId, image));
+    const shapes = Object.entries(images).map(([imageId, image]) => CustomImage.fromImage(imageId, image));
+    shapes.forEach(setTooltip);
+    return shapes;
 }
 
 /**
