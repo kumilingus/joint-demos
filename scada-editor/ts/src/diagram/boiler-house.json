@@ -482,16 +482,8 @@
         }
       },
       "target": {
-        "id": "d19f18ca-627c-444c-80a2-068c00525a20",
-        "anchor": {
-          "name": "left",
-          "args": {
-            "useModelGeometry": true
-          }
-        },
-        "connectionPoint": {
-          "name": "anchor"
-        }
+        "id": "41a02eed-c945-43eb-9488-bf7160b05068",
+        "port": "left"
       },
       "type": "Pipe",
       "layer": "pipes",
@@ -516,16 +508,8 @@
     },
     {
       "source": {
-        "id": "d19f18ca-627c-444c-80a2-068c00525a20",
-        "anchor": {
-          "name": "top",
-          "args": {
-            "useModelGeometry": true
-          }
-        },
-        "connectionPoint": {
-          "name": "anchor"
-        }
+        "id": "41a02eed-c945-43eb-9488-bf7160b05068",
+        "port": "right"
       },
       "target": {
         "id": "d2e97f11-f42a-41d0-8b87-3fd404bd0b6e",
@@ -559,30 +543,12 @@
         }
       },
       "attrs": {},
-      "id": "9ac03fad-3615-49ff-8091-67b17d9cdaee",
-      "vertices": [
-        {
-          "x": 1400,
-          "y": 640
-        },
-        {
-          "x": 980,
-          "y": 640
-        }
-      ]
+      "id": "9ac03fad-3615-49ff-8091-67b17d9cdaee"
     },
     {
       "source": {
-        "id": "d19f18ca-627c-444c-80a2-068c00525a20",
-        "anchor": {
-          "name": "top",
-          "args": {
-            "useModelGeometry": true
-          }
-        },
-        "connectionPoint": {
-          "name": "anchor"
-        }
+        "id": "41a02eed-c945-43eb-9488-bf7160b05068",
+        "port": "bottom"
       },
       "target": {
         "id": "5eb21bfc-fc24-46dd-9eaa-7cf120239722",
@@ -616,16 +582,6 @@
         }
       },
       "attrs": {},
-      "vertices": [
-        {
-          "x": 1400,
-          "y": 640
-        },
-        {
-          "x": 1280,
-          "y": 640
-        }
-      ],
       "id": "a75a17ca-614e-450a-b1f8-d98d7a39b8a1"
     },
     {
@@ -2013,24 +1969,8 @@
     },
     {
       "position": {
-        "x": 1380,
-        "y": 780
-      },
-      "size": {
-        "width": 40,
-        "height": 40
-      },
-      "angle": 0,
-      "type": "Join",
-      "attrs": {},
-      "tag": "J-102",
-      "id": "d19f18ca-627c-444c-80a2-068c00525a20",
-      "layer": "equipment"
-    },
-    {
-      "position": {
         "x": 960,
-        "y": 430
+        "y": 400
       },
       "size": {
         "width": 120,
@@ -2070,7 +2010,7 @@
     {
       "position": {
         "x": 1260,
-        "y": 430
+        "y": 400
       },
       "size": {
         "width": 120,
@@ -2668,6 +2608,20 @@
       },
       "attrs": {},
       "id": "4b339ca0-8d89-4279-82d7-2c21cc136a15"
+    },
+    {
+      "type": "Tee",
+      "position": {
+        "x": 1260,
+        "y": 620
+      },
+      "size": {
+        "width": 40,
+        "height": 40
+      },
+      "angle": 180,
+      "id": "41a02eed-c945-43eb-9488-bf7160b05068",
+      "tag": "TEE-101"
     }
   ],
   "favorites": [
