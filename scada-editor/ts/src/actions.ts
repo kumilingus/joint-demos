@@ -3,6 +3,8 @@ import type { App } from './app';
 import { GRID_SIZE, Mode } from './const';
 import { fitOptions, runtimeFitOptions } from './config';
 import { getImages, IMAGES_ATTRIBUTE, type ImageEntry } from './images';
+import { getScreen, isScreenShown } from './screen';
+import Screen from './shapes/Screen';
 import { DerivedGroup, keysInUse, loadCustomShapes, loadDerivedGroup } from './stencil';
 import { getFavorites, removeFavorite } from './favorites';
 
@@ -59,7 +61,9 @@ function detachedCopy(app: App, link: dia.Link): dia.Link {
 
 /** Copy the selected cells: the elements (with the pipes between them), or a pipe on its own. */
 export function copySelection(app: App): void {
-    const { selection, graph, clipboard } = app;
+    const { graph, clipboard } = app;
+    // A diagram has one screen.
+    const selection = app.selection.filter(cell => !(cell instanceof Screen));
     if (selection.length === 0) return;
     const elements = selection.filter(cell => cell.isElement());
     if (elements.length > 0) {
@@ -170,5 +174,11 @@ export function deleteImage(app: App, imageId: string): void {
 
 /** Show the whole diagram: on loading, entering the runtime mode (a wider canvas) and with the toolbar button. */
 export function zoomToFit(app: App): void {
+    // The runtime mode with a screen: the screen fills the canvas (see `screen.ts`).
+    const screen = isScreenShown(app) ? getScreen(app.graph) : undefined;
+    if (screen) {
+        app.scroller.zoomToRect(screen.getBBox(), { padding: 0, minScale: 0.01, maxScale: 100 });
+        return;
+    }
     app.scroller.zoomToFit(app.mode === Mode.Runtime ? runtimeFitOptions : fitOptions);
 }

@@ -2,6 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { ensureTag } from '../tags';
+import Screen from '../shapes/Screen';
 
 /**
  * Every element has a tag (an ID, see `tags.ts`): an element added without one
@@ -22,13 +23,13 @@ export default class TagsController extends Controller {
 }
 
 function onCellAdd(app: App, cell: dia.Cell, _collection: unknown, options: dia.Cell.Options) {
-    if (!cell.isElement()) return;
+    if (!cell.isElement() || cell instanceof Screen) return;
     // In the same batch as the adding (undone together)
     ensureTag(app.graph, cell, options);
 }
 
 function onGraphReset(app: App) {
-    app.graph.getElements().forEach(element => ensureTag(app.graph, element));
+    app.graph.getElements().filter(element => !(element instanceof Screen)).forEach(element => ensureTag(app.graph, element));
 }
 
 /** A tag must not be empty or taken by another element: such a change is reverted. */

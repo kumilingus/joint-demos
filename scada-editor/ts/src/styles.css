@@ -172,6 +172,12 @@ body {
 .joint-toolbar [data-type="undo"] { --icon: var(--icon-undo); }
 .joint-toolbar [data-name="open"] { --icon: var(--icon-open); }
 .joint-toolbar [data-name="save"] { --icon: var(--icon-save); }
+.joint-toolbar [data-name="settings"] { --icon: var(--icon-settings); }
+
+/* The settings are open (see `settings.ts`). */
+.joint-toolbar button.active {
+    background: var(--muted);
+}
 .joint-toolbar [data-type="redo"] { --icon: var(--icon-redo); }
 
 /* The color scheme button shows the one it switches to. */
@@ -478,13 +484,13 @@ body {
 /* Text and number */
 
 .joint-inspector input[type="text"],
+.joint-inspector input[type="number"],
 .joint-inspector select,
 .palette-shape-field input {
     width: 100%;
     height: 36px;
     padding: 0 12px;
     border: 1px solid var(--input);
-.joint-inspector input[type="number"],
     border-radius: var(--radius-md);
     background: var(--background);
     box-shadow: var(--shadow-xs);
@@ -495,23 +501,23 @@ body {
 }
 
 .joint-inspector input[type="text"]:focus,
+.joint-inspector input[type="number"]:focus,
 .joint-inspector select:focus,
 .palette-shape-field input:focus {
     border-color: var(--ring-strong);
     box-shadow: 0 0 0 3px var(--ring);
 }
 
-.joint-inspector input[type="number"]:focus,
+.joint-inspector input[type="number"] {
+    font-variant-numeric: tabular-nums;
+}
+
 /* Range: the label on the left, the value on the right, the slider below. */
 
 .joint-inspector .range-field {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-.joint-inspector input[type="number"] {
-    font-variant-numeric: tabular-nums;
-}
-
 }
 
 .joint-inspector .range-field label.with-output {
@@ -681,6 +687,32 @@ body {
     fill-opacity: 0.6;
 }
 
+/*
+ * The screen (see `Screen`): out of the way unless the settings are open (see `settings.ts`),
+ * without its frame and name in the runtime mode, where the canvas shows it only (see `screen.ts`).
+ */
+
+.screen-editable [data-type="Screen"] [joint-selector="body"] {
+    pointer-events: visiblePainted;
+    cursor: move;
+}
+
+.app[data-mode="runtime"] [data-type="Screen"] [joint-selector="body"] {
+    stroke: none;
+}
+
+.app[data-mode="runtime"] [data-type="Screen"] [joint-selector="label"] {
+    display: none;
+}
+
+.app[data-screen="shown"] .joint-paper-scroller {
+    overflow: hidden;
+}
+
+.app[data-screen="shown"] :is(.navigator-panel, .joint-toolbar [data-group="zoom"]) {
+    display: none;
+}
+
 /* Navigator: a minimap in the bottom right corner of the canvas */
 
 .navigator-panel {
@@ -826,6 +858,19 @@ body {
     border-radius: var(--radius);
     background: var(--muted);
     overflow: hidden;
+}
+
+/* The settings of the diagram in the inspector panel (see `settings.ts`): the inspectors one below the other */
+.settings .joint-inspector {
+    position: static;
+    overflow: visible;
+}
+
+.settings-title {
+    margin: 0;
+    padding: 16px 16px 4px;
+    color: var(--foreground);
+    font: 600 15px/1.3 var(--font);
 }
 
 .palette-shape-title {

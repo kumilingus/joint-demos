@@ -54,6 +54,7 @@ import Elbow from './Elbow';
 import EndCap from './EndCap';
 import Manifold from './Manifold';
 import SignalLine from './SignalLine';
+import Screen from './Screen';
 
 export {
     Pump, Compressor, Fan, Motor, Blower, Turbine, ConveyorBelt,
@@ -62,7 +63,8 @@ export {
     LiquidTank, ConicTank, MixingTank, Silo, SphericalTank, Hopper, HorizontalTank, WaterTower,
     Chimney, CoolingTower,
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display, Trend,
-    Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, CustomImage, YStrainer, OrificePlate
+    Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, CustomImage, YStrainer, OrificePlate,
+    Screen
 };
 
 export const cellNamespace = {
@@ -121,5 +123,6 @@ export const cellNamespace = {
     Cross,
     Elbow,
     EndCap,
-    Manifold
+    Manifold,
+    Screen
 };

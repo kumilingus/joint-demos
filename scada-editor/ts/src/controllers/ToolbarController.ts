@@ -2,6 +2,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { ColorScheme, Mode } from '../const';
 import { openDiagram, saveDiagram, zoomToFit } from '../actions';
+import { toggleSettings } from '../settings';
 
 /**
  * The toolbar buttons. Active in every mode.
@@ -18,6 +19,7 @@ export default class ToolbarController extends Controller {
             // In the edit mode only (the buttons are not in the toolbar of the runtime mode)
             'save:pointerclick': onSavePointerclick,
             'open:pointerclick': onOpenPointerclick,
+            'settings:pointerclick': toggleSettings,
             'colorScheme:pointerclick': onColorSchemePointerclick
         });
     }

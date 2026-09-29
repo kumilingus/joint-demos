@@ -66,6 +66,8 @@ export function createSelection(scroller: ui.PaperScroller, collection: mvc.Coll
         collection,
         // The links in a region too: tested against their route (not their bounding box)
         selectLinks: true,
+        // The screen is selected in the settings only (see `settings.ts`).
+        filter: ['Screen'],
         // A single selected cell is dragged as usual, several are moved together by the selection.
         allowCellInteraction: true,
         translateConnectedLinks: ui.Selection.ConnectedLinksTranslation.SUBGRAPH,

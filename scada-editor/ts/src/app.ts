@@ -13,6 +13,7 @@ import { addImages, clearSelection, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
+import { hideScreen, showScreen } from './screen';
 import {
     type Controller,
     AnimationsController,
@@ -164,12 +165,14 @@ export class App {
         setControlsOperable(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;
+        showScreen(this);
         // The side panels are hidden in the runtime mode only (the attribute above): the canvas changes its size.
         zoomToFit(this);
     }
 
     protected leaveMode(mode: Mode): void {
         clearSelection(this);
+        hideScreen(this);
         this.modeControllers[mode].forEach(controller => controller.stopListening());
         this.destroyStencil();
         this.destroySnaplines();

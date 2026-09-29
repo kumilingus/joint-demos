@@ -4,6 +4,8 @@ import type { App } from '../app';
 import { GRID_SIZE, SELECTION_PADDING } from '../const';
 import { closeInspector, openInspector } from '../inspector';
 import { closeShapePreview } from '../shape-preview';
+import { closeSettings, isSettingsOpen, openSettings } from '../settings';
+import Screen from '../shapes/Screen';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../tools';
 import Shape, { type ResizeOptions } from '../shapes/Shape';
 
@@ -17,30 +19,44 @@ export default class SelectionController extends Controller {
     startListening(): void {
         const { selection, graph } = this.context;
 
-        this.listenTo(selection, 'add remove reset', updateSelection);
+        this.listenTo(selection, 'add reset', (app: App) => updateSelection(app));
+        this.listenTo(selection, 'remove', onSelectionRemove);
         this.listenTo(graph, 'remove', onCellRemove);
     }
 }
 
 /** A cell selected alone is shown with its tools (and in the inspector). */
-function updateSelection(app: App) {
+function updateSelection(app: App, keepSettings = false) {
     const { selection } = app;
     hideSelected(app);
     if (selection.length === 1) showSelected(app, selection.at(0));
-    updateInspector(app);
+    updateInspector(app, keepSettings);
+}
+
+/** The screen removed while it is edited (switched off, deleted, undone): the settings stay open. */
+function onSelectionRemove(app: App, cell: dia.Cell) {
+    updateSelection(app, cell instanceof Screen && isSettingsOpen());
 }
 
 function onCellRemove(app: App, cell: dia.Cell) {
     app.selection.remove(cell);
 }
 
-/** The inspector shows a cell only when it is the only one selected. */
-function updateInspector(app: App) {
+/** The inspector shows a cell only when it is the only one selected (the screen: the settings). */
+function updateInspector(app: App, keepSettings = false) {
     const { selection, inspectorEl } = app;
     // A selection replaces the shape of the palette shown in the panel.
     closeShapePreview();
-    if (selection.length === 1) {
-        openInspector(inspectorEl, selection.at(0));
+    if (keepSettings && selection.length === 0) return;
+    const cell = selection.length === 1 ? selection.at(0) : null;
+    if (cell instanceof Screen) {
+        closeInspector();
+        openSettings(app);
+        return;
+    }
+    closeSettings(app);
+    if (cell) {
+        openInspector(inspectorEl, cell);
     } else {
         closeInspector();
     }
@@ -86,7 +102,8 @@ function resizeDirections({ minWidth, maxWidth, minHeight, maxHeight }: ResizeOp
 
 /** How the shape can be transformed: resized (down to its minimal size, keeping its aspect ratio, ...) and rotated. */
 function getTransformOptions(cell: dia.Cell): Partial<ui.FreeTransform.Options> {
-    if (!Shape.isShape(cell)) return {};
+    // The screen: any size, not rotated
+    if (!Shape.isShape(cell)) return { allowRotation: false };
     const resizeOptions = cell.resizeOptions();
     return {
         allowRotation: cell.rotatable,

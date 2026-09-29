@@ -2,7 +2,7 @@ import { dia, ui, util } from '@joint/plus';
 import { paperOptions } from './config';
 
 /*
- * The minimap. Its views are simplified: an element is a plain rectangle,
+ * The minimap. Its views are simplified: an element is a plain rectangle (the screen its outline only),
  * a pipe is a single line (no outline, no pipe stubs, no labels).
  */
 
@@ -32,7 +32,14 @@ const NavigatorElementView = dia.ElementView.extend({
     render: function() {
         const doc = util.parseDOMJSON(this.markup);
         this.body = doc.selectors.body;
-        this.body.setAttribute('fill', ELEMENT_FILL);
+        if (this.model.get('type') === 'Screen') {
+            this.body.setAttribute('fill', 'none');
+            this.body.setAttribute('stroke', ELEMENT_FILL);
+            this.body.setAttribute('stroke-width', '1');
+            this.body.setAttribute('vector-effect', 'non-scaling-stroke');
+        } else {
+            this.body.setAttribute('fill', ELEMENT_FILL);
+        }
         this.el.appendChild(doc.fragment);
         this.update();
         return this;
@@ -71,12 +78,12 @@ export function createNavigator(el: HTMLElement, scroller: ui.PaperScroller): ui
             async: true,
             elementView: NavigatorElementView,
             linkView: NavigatorLinkView,
+            // The ends of the pipes as on the canvas: from the models (the ports are not drawn here)
+            defaultAnchor: paperOptions.defaultAnchor,
+            defaultConnectionPoint: paperOptions.defaultConnectionPoint,
             background: { color: 'transparent' }
         }
     });
     navigator.render();
     return navigator;
 }
-            // The ends of the pipes as on the canvas: from the models (the ports are not drawn here)
-            defaultAnchor: paperOptions.defaultAnchor,
-            defaultConnectionPoint: paperOptions.defaultConnectionPoint,

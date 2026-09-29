@@ -194,6 +194,13 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         group: 'file',
         attrs: { button: { 'data-tooltip': 'Save the diagram (JSON)' }}
     }] : [];
+    // The settings of the diagram (see `settings.ts`): edited in the edit mode
+    const settings: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
+        type: 'button',
+        name: 'settings',
+        group: 'settings',
+        attrs: { button: { 'data-tooltip': 'Settings of the diagram (the screen)' }}
+    }] : [];
     const history: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
         type: 'undo',
         name: 'undo',
@@ -213,8 +220,9 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             file: { index: 2 },
             history: { index: 3 },
             zoom: { index: 4 },
-            colorScheme: { index: 5, align: ui.Toolbar.Align.Right },
-            mode: { index: 6, align: ui.Toolbar.Align.Right }
+            settings: { index: 5, align: ui.Toolbar.Align.Right },
+            colorScheme: { index: 6, align: ui.Toolbar.Align.Right },
+            mode: { index: 7, align: ui.Toolbar.Align.Right }
         },
         tools: [{
             type: 'label',
@@ -242,7 +250,9 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             name: 'zoomToFit',
             group: 'zoom',
             attrs: { button: { 'data-tooltip': 'Zoom to fit the diagram' }}
-        }, {
+        },
+        ...settings,
+        {
             type: 'button',
             name: 'colorScheme',
             group: 'colorScheme',

@@ -56,6 +56,8 @@
     --shape-plume: #ffffff;
     --shape-plenum: #c9cfd4;
     --shape-label: #350100;
+    /* The frame of the screen (see `Screen`): a guide while editing */
+    --shape-screen: #3b82f6;
 }
 
 :root[data-color-scheme="dark"] {
@@ -112,4 +114,5 @@
     --shape-plume: #dbe6f3;
     --shape-plenum: #4a6285;
     --shape-label: #cfdcee;
+    --shape-screen: #e879f9;
 }

@@ -13,6 +13,7 @@ An editor of a SCADA plant diagram, built with JointJS+, with a runtime mode whe
 - **Layers** - `background`, `pipes`, `equipment`, `instruments` and `foreground` (`layers.ts`): a pipe is under the equipment, a level panel over its tank; a cell is put in another layer in the inspector (the logo of the example is in the background).
 - **Inspector** - `ui.Inspector` for a single selected cell: the tag, the texts, the values and thresholds, whether the control is used, the routing of a link, the text, size and color of a label, the layer.
 - **Save / open** - JSON from `graph.toJSON()`: the cells, the images and the favorites (not the layers). A file is loaded into a scratch graph first, so an invalid one doesn't replace the diagram.
+- **Settings** - the cog in the toolbar opens the settings of the diagram in the inspector panel (`settings.ts`): a **screen** and its size. The screen (`shapes/Screen.ts`) is a frame in the background layer, saved with the diagram (and undone as any change); it can be moved, resized and selected only while the settings are open, and a region never selects it. In the runtime mode the canvas shows the screen only (`screen.ts`): fitted to the canvas (again when the window is resized), clipped, without scrolling, panning, zooming and the navigator.
 - **Runtime mode** - the palette, the history and the file buttons don't exist in it. `simulation.ts` sends random updates addressed by the element tags; `animations.ts` spins the rotors and the agitators, carries the boxes of a conveyor, moves the liquid through the pipes, the control valves and the level panels, and animates the flames, the smoke and the alarm. The controls (HTML in highlighters) are operated in this mode only; while editing they are `inert`.
 - **Light / dark** - the design tokens in `variables.css`. The shapes use CSS variables for their colors, `--shape-*` in `shapes.css` (`fill: 'var(--shape-face)'`, the stops of the metal gradients, ...): the dark scheme redefines them (blue steel, dark faces), no selectors override the shapes.
 - **Tooltips** - `ui.Tooltip` for every element with `data-tooltip`.
@@ -53,6 +54,8 @@ src/
   simulation.ts    the mock of the plant
   animations.ts    the runtime animations
   navigator.ts     the minimap
+  settings.ts      the settings of the diagram (the screen) in the inspector panel
+  screen.ts      the screen: added, shown alone in the runtime mode
   selection.ts     the selection on the canvas (`ui.Selection`): the region, the frames
   diagram/         the example: a boiler house, a JSON file as saved by the Save button (with the JointJS logo as an image)
   shapes/          the shapes (see Shape features); ports.ts the pipe stubs, footprint.ts the area a shape takes
@@ -69,7 +72,7 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | `ControlsController` | always | graph: the controls of the added elements |
 | `SelectionController` | always | the selection: free transform, link tools, the inspector |
 | `TagsController` | always | graph: a free tag for every element |
-| `ToolbarController` | each mode | toolbar: mode, color scheme, save, open |
+| `ToolbarController` | each mode | toolbar: mode, color scheme, save, open, settings |
 | `EditController` | edit | paper: cell click, blank drag (a region) |
 | `PaletteController` | edit | palette: shape click, shape drop; graph: the derived palette groups |
 | `KeyboardController` | edit | the keyboard shortcuts |
