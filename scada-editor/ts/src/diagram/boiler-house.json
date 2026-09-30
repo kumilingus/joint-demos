@@ -2894,6 +2894,45 @@
       "tag": "TXT-101",
       "id": "e7c2ecf7-7134-484b-a3ba-8b37feed12e0",
       "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 1060,
+        "y": 60
+      },
+      "size": {
+        "width": 420,
+        "height": 130
+      },
+      "angle": 0,
+      "type": "Rectangle",
+      "attrs": {},
+      "tag": "BG-101",
+      "id": "a2e46871-9c62-459e-bef6-3a19800370c1",
+      "layer": "background",
+      "z": 3
+    },
+    {
+      "position": {
+        "x": 690,
+        "y": -150
+      },
+      "size": {
+        "width": 540,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Rectangle",
+      "attrs": {
+        "body": {
+          "fill": "#3B82F6",
+          "fillOpacity": 0.18
+        }
+      },
+      "tag": "BG-102",
+      "id": "c1320b0c-731e-4beb-9797-316f1c721fda",
+      "layer": "background",
+      "z": 4
     }
   ],
   "images": {
