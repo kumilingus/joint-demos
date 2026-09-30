@@ -78,7 +78,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#93C5FD"
+        }
+      },
       "id": "0f2dbc88-648f-44b6-b7f0-6ba98a215bd8"
     },
     {
@@ -114,7 +118,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#93C5FD"
+        }
+      },
       "id": "bfafdc8b-fdfc-4ca0-8e45-ee900da520bc"
     },
     {
@@ -155,7 +163,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#93C5FD"
+        }
+      },
       "id": "013c0bfe-71a7-4e37-ba34-9818e719aebb"
     },
     {
@@ -197,7 +209,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "af8455f8-49a6-4936-aa9e-2cd6862ca7eb"
     },
     {
@@ -239,7 +255,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "89f2c0d6-9de7-4831-88dd-46511e035378"
     },
     {
@@ -275,7 +295,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "75c4fb78-f919-4e90-ae23-c9a415fce7da"
     },
     {
@@ -311,7 +335,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "3ff60656-3c53-425b-84ee-969c6058dcb0"
     },
     {
@@ -352,7 +380,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "36c7594e-97c2-48f9-ba94-00331ed3ea6e"
     },
     {
@@ -393,7 +425,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "0d72a9b0-6279-4572-82ae-1a30f3a87169"
     },
     {
@@ -434,7 +470,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "ef9cd832-e8f7-4bcf-87dc-edea86831c4f"
     },
     {
@@ -470,7 +510,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "fab80060-78de-4e3d-bfdd-938bda5eecdc"
     },
     {
@@ -503,7 +547,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "60441b5e-f1f5-4a7f-af53-e4f00721fdf6",
       "vertices": [
         {
@@ -555,7 +603,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#F87171"
+        }
+      },
       "id": "0764439f-589e-4f34-a079-56194a2bc73c"
     },
     {
@@ -601,7 +653,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#F87171"
+        }
+      },
       "id": "9128e9c1-e279-4c0f-a807-75271a9ab751"
     },
     {
@@ -647,7 +703,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#F87171"
+        }
+      },
       "id": "b49a7afd-89b0-4a53-af9c-a5476efeda48"
     },
     {
@@ -688,7 +748,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#F87171"
+        }
+      },
       "id": "290d23e4-ea74-470f-997c-9ebc28330c0d"
     },
     {
@@ -729,7 +793,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#F87171"
+        }
+      },
       "id": "02907c7a-a21c-4112-9402-a4820cec8fc9"
     },
     {
@@ -767,7 +835,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "9ac03fad-3615-49ff-8091-67b17d9cdaee",
       "vertices": [
         {
@@ -811,7 +883,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
+      "attrs": {
+        "line": {
+          "stroke": "#FDBA74"
+        }
+      },
       "id": "a75a17ca-614e-450a-b1f8-d98d7a39b8a1"
     },
     {
@@ -1230,7 +1306,7 @@
       "type": "LiquidTank",
       "attrs": {
         "label": {
-          "text": "Feedwater Tank"
+          "text": "Deaerator"
         }
       },
       "tag": "TK-101",
@@ -2570,7 +2646,7 @@
     {
       "position": {
         "x": 1090,
-        "y": 80
+        "y": 50
       },
       "size": {
         "width": 120,
@@ -2593,7 +2669,7 @@
     {
       "position": {
         "x": 1260,
-        "y": 80
+        "y": 50
       },
       "size": {
         "width": 60,
@@ -2629,7 +2705,7 @@
     {
       "position": {
         "x": 1380,
-        "y": 80
+        "y": 50
       },
       "size": {
         "width": 40,
@@ -2720,12 +2796,12 @@
     },
     {
       "position": {
-        "x": 560,
-        "y": 40
+        "x": 580,
+        "y": 30
       },
       "size": {
         "width": 340,
-        "height": 170
+        "height": 150
       },
       "angle": 0,
       "type": "LineChart",
@@ -2760,12 +2836,12 @@
     },
     {
       "position": {
-        "x": 560,
-        "y": 250
+        "x": 580,
+        "y": 280
       },
       "size": {
         "width": 340,
-        "height": 170
+        "height": 150
       },
       "angle": 0,
       "type": "BarChart",
@@ -2853,7 +2929,7 @@
     {
       "position": {
         "x": 40,
-        "y": 40
+        "y": 30
       },
       "size": {
         "width": 480,
@@ -2898,7 +2974,7 @@
     {
       "position": {
         "x": 1060,
-        "y": 60
+        "y": 30
       },
       "size": {
         "width": 420,
@@ -2933,6 +3009,62 @@
       "id": "c1320b0c-731e-4beb-9797-316f1c721fda",
       "layer": "background",
       "z": 4
+    },
+    {
+      "source": {
+        "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "useModelGeometry": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "target": {
+        "id": "907c2990-e903-4d79-b81e-6081359dbddc",
+        "anchor": {
+          "name": "top",
+          "args": {
+            "useModelGeometry": true
+          }
+        },
+        "connectionPoint": {
+          "name": "anchor"
+        }
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {
+        "line": {
+          "stroke": "#F87171"
+        }
+      },
+      "id": "3ae96479-2d90-4ec1-ad62-8c9acfb4b1d7",
+      "vertices": [
+        {
+          "x": 550,
+          "y": 230
+        }
+      ]
     }
   ],
   "images": {
