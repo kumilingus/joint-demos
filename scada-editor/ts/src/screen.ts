@@ -42,6 +42,21 @@ export function showScreen(app: App): void {
     paper.layers.setAttribute('clip-path', `url(#${CLIP_ID})`);
     app.el.dataset.screen = 'shown';
     revealToolbar(app.toolbar.el);
+    holdToolbarWhilePressed(app.toolbar.el);
+}
+
+/**
+ * The toolbar stays down while a press started on it lasts (see `styles.css`): at the top of a full screen
+ * the system takes the pointer (the menu bar, the exit of the full screen), the toolbar would not be hovered
+ * and slide up under the button being clicked. The toolbar is created again for each mode (the listener with it).
+ */
+function holdToolbarWhilePressed(el: HTMLElement): void {
+    if (el.dataset.held) return;
+    el.dataset.held = 'true';
+    el.addEventListener('pointerdown', () => {
+        el.classList.add('pressed');
+        window.addEventListener('pointerup', () => el.classList.remove('pressed'), { once: true });
+    });
 }
 
 // How long the toolbar stays down when the pointer isn't on it (ms)

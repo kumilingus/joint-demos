@@ -918,8 +918,11 @@ body {
     height: 32px;
 }
 
-/* Down while hovered, focused from the keyboard (not a clicked button), or just shown (see `revealToolbar()`) */
-.app[data-screen="shown"] > .joint-toolbar:is(:hover, :has(:focus-visible), .revealed) {
+/*
+ * Down while hovered, focused from the keyboard (not a clicked button), just shown (see `revealToolbar()`)
+ * or pressed (see `holdToolbarWhilePressed()`)
+ */
+.app[data-screen="shown"] > .joint-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
     transform: translateY(0);
     box-shadow: var(--shadow-md);
 }
