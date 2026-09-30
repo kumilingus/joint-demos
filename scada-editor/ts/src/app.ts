@@ -25,10 +25,11 @@ import {
     PaletteController,
     RuntimeController,
     SelectionController,
-    SimulationController,
     TagsController,
     ToolbarController
 } from './controllers';
+// The mock of the plant (see `simulation/`): an app with a real plant deletes it and this line
+import SimulationController from './simulation/SimulationController';
 
 export class App {
 

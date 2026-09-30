@@ -1,13 +1,14 @@
 import type { dia } from '@joint/plus';
-import { RUNTIME } from './controls';
-import { findByTag, getTag } from './tags';
-import { isEnergized } from './energized';
-import { CHART_POINTS, getScale } from './shapes/charts';
-import type { Slice } from './shapes/DonutChart';
+import { RUNTIME } from '../controls';
+import { findByTag, getTag } from '../tags';
+import { getEnergized } from './energized';
+import { CHART_POINTS, getScale } from '../shapes/charts';
+import type { Slice } from '../shapes/DonutChart';
 
 /*
  * A mock of the plant: in random intervals it sends random updates of the plant data,
- * addressed by the tags of the elements - as a SCADA server would. Some of the data follows the plant:
+ * addressed by the tags of the elements - as a SCADA server would; the energized circuits (see `energized.ts`).
+ * Some of the data follows the plant:
  * the flow and the pressure of the feedwater follow the feed pumps running, the charts (updated
  * every second) follow the flow.
  */
@@ -146,8 +147,8 @@ const generators: Record<string, Generator> = {
     // The charge of a battery bank, the fuel of a day tank
     BatteryBank: element => ({ level: Math.round(drift(element.get('level') ?? 80, 3, 20, 100)) }),
     FuelTank: element => ({ level: Math.round(drift(element.get('level') ?? 70, 3, 10, 100)) }),
-    ElectricMeter: (element, graph) => ({
-        'attrs/value/text': isEnergized(graph, element) ? driftText(element.attr('value/text'), 1.5, 225, 235) : '0.0'
+    ElectricMeter: element => ({
+        'attrs/value/text': element.get('energized') ? driftText(element.attr('value/text'), 1.5, 225, 235) : '0.0'
     }),
     // The alarm follows the pressure.
     Beacon: (_element, graph) => ({ power: highestPressure(graph) > HIGH_PRESSURE ? 1 : 0 })
@@ -241,6 +242,9 @@ export class Simulation {
 
     start(): void {
         if (this.running) return;
+        // The energized circuits: now, and again when a generator or a switch changes
+        this.updateEnergized();
+        this.graph.on('change:power change:open', this.updateEnergized, this);
         this.schedule();
         // The charts on a timer of their own: they move steadily
         this.chartTimer = window.setInterval(() => {
@@ -250,12 +254,29 @@ export class Simulation {
     }
 
     stop(): void {
+        this.graph.off('change:power change:open', this.updateEnergized, this);
+        // Not a part of the diagram: not saved with it
+        this.graph.getCells().forEach(cell => cell.removeProp('energized', RUNTIME));
         if (this.timer !== null) window.clearTimeout(this.timer);
         if (this.chartTimer !== null) window.clearInterval(this.chartTimer);
         this.timer = null;
         this.chartTimer = null;
         this.tick = 0;
         periodFlows.clear();
+    }
+
+    /** The `energized` of the cells (as a SCADA server would send it): the circuits traced from the sources */
+    protected updateEnergized(): void {
+        const energized = getEnergized(this.graph);
+        this.graph.getCells().forEach((cell) => {
+            const value = energized.has(cell);
+            if (Boolean(cell.get('energized')) === value) return;
+            if (value) {
+                cell.set('energized', true, RUNTIME);
+            } else {
+                cell.removeProp('energized', RUNTIME);
+            }
+        });
     }
 
     protected schedule(): void {

@@ -1,8 +1,9 @@
 import type { dia } from '@joint/plus';
-import Wire from './shapes/Wire';
+import Wire from '../shapes/Wire';
 
 /*
- * The electrical circuits of the diagram: which elements and wires are energized. The power comes
+ * The electrical circuits of the mock plant: which elements and wires are energized (a real plant sends it
+ * with its data, as the `energized` of the cells, see `ElectricalController`). The power comes
  * from the sources (a running generator or wind turbine, a battery, a solar array) through the wires and every element on the way,
  * but an open breaker or disconnector: it is energized itself (on its side of the source),
  * what is behind it is not.
@@ -47,9 +48,4 @@ export function getEnergized(graph: dia.Graph): Set<dia.Cell> {
         if (source && target && reached.has(source) && reached.has(target)) energized.add(link);
     });
     return energized;
-}
-
-/** Whether the element is energized (a meter shows the voltage then) */
-export function isEnergized(graph: dia.Graph, element: dia.Element): boolean {
-    return getEnergized(graph).has(element);
 }

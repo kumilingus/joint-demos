@@ -10,13 +10,13 @@ An editor of a SCADA plant diagram, built with JointJS+, with a runtime mode whe
   - **Custom** - uploaded images. They are stored on the graph (`graph.get('images')`) and an element refers to its image by id, so an image is saved once and is in the DOM once per paper (`images.ts`: a `<symbol>` in the paper defs, a `<use>` in each element). An element whose image is not in the diagram (pasted from another one) shows a placeholder.
 - **Editing** - on a grid (`GRID_SIZE`), elements resize in two grid steps; snaplines; selection by click, `Ctrl` / `Cmd` / `Shift` + click and `Shift` + drag (a region touching the cells, a pipe by its route); `ui.Selection` frames the selected cells and moves them together (`selection.ts`), `ui.FreeTransform` and link tools for a single selection; copy / cut / paste (`ui.Clipboard`); undo / redo (`dia.CommandManager`).
 - **Pipes** - dragged from the palette and connected with the arrowheads: to a pipe stub (a port) if the element has any, otherwise to its side (`connectionStrategy` in `connections.ts` pins the anchor to the side nearest to the pointer, relative to the size). A signal line connects to the body of an element, nothing connects to a label. The routing (straight, orthogonal, curved) is chosen in the inspector (`shapes/routing.ts`).
-- **Electrical** - a palette group of the electrical equipment: a diesel generator set (fed with fuel by a pipe, e.g. from the fuel tank of the storage group), a wind turbine, a solar array, a power transformer, a switchgear, a motor control center, a battery bank; the smaller parts of the circuits (a generator, a transformer, a copper busbar, a battery, a molded-case breaker, a knife disconnector, a fuse, a surge arrester, a ground rod, a lamp, a heater, a voltmeter) and a wire. A wire connects to the terminals of the electrical shapes only (`terminalPorts()` in `shapes/ports.ts`), a pipe never does. In the runtime mode the circuits energized from a running generator or wind turbine, a battery or a solar array, through the closed breakers and disconnectors (`energized.ts`), are shown live: the wires in color, the lamps of the cabinets and a lamp lit, a heater glowing, a voltmeter reading the voltage; a wind turbine spins, a diesel generator smokes, the charge of a battery bank and the fuel of a tank change.
+- **Electrical** - a palette group of the electrical equipment: a diesel generator set (fed with fuel by a pipe, e.g. from the fuel tank of the storage group), a wind turbine, a solar array, a power transformer, a switchgear, a motor control center, a battery bank; the smaller parts of the circuits (a generator, a transformer, a copper busbar, a battery, a molded-case breaker, a knife disconnector, a fuse, a surge arrester, a ground rod, a lamp, a heater, a voltmeter) and a wire. A wire connects to the terminals of the electrical shapes only (`terminalPorts()` in `shapes/ports.ts`), a pipe never does. In the runtime mode the circuits energized from a running generator or wind turbine, a battery or a solar array, through the closed breakers and disconnectors, are shown live (the `energized` of the cells, sent by the plant - traced by the mock in `simulation/energized.ts`): the wires in color, the lamps of the cabinets and a lamp lit, a heater glowing, a voltmeter reading the voltage; a wind turbine spins, a diesel generator smokes, the charge of a battery bank and the fuel of a tank change.
 - **Charts** - a line chart, a bar chart, a donut chart and a gauge chart (`shapes/charts.ts`): shapes of their own (not the legacy chart shapes), their data on the model (`values`, `slices`, `value`) and their paths computed from it by special attributes when they are rendered (their views render them again when the data changes), configured in the inspector (the scale, the thresholds, the slices). The runtime mode feeds them new data every second.
 - **Layers** - `background`, `pipes`, `equipment`, `instruments` and `foreground` (`layers.ts`): a pipe is under the equipment, a level panel over its tank; a cell is put in another layer in the inspector (the JointJS badge of the example is in the background).
 - **Inspector** - `ui.Inspector` for a single selected cell: the tag, the texts, the values and thresholds, whether the control is used, the routing of a link, the text, size and color of a label, the layer.
 - **Save / open** - JSON from `graph.toJSON()`: the cells, the images and the favorites (not the layers). A file is loaded into a scratch graph first, so an invalid one doesn't replace the diagram.
 - **Settings** - the cog in the toolbar opens the settings in the inspector panel (`settings.ts`): of the diagram, a **screen** and its size; of the editor, the snaplines (on or off). The screen (`shapes/Screen.ts`) is a frame in the background layer, saved with the diagram (and undone as any change); it can be moved, resized and selected only while the settings are open, and a region never selects it. In the runtime mode the canvas shows the screen only (`screen.ts`): in the whole window (the toolbar slides down when the pointer comes to the top 32 pixels), fitted (again when the window is resized), clipped, without scrolling, panning, zooming and the navigator.
-- **Runtime mode** - the palette, the history and the file buttons don't exist in it. `simulation.ts` sends random updates addressed by the element tags, some of them following the plant (the feedwater flow and pressure follow the feed pumps running, the charts follow the flow); `animations.ts` spins the rotors and the agitators, carries the boxes of a conveyor, moves the liquid through the pipes, the control valves and the level panels, and animates the flames, the smoke and the alarm. The controls (HTML in highlighters) are operated in this mode only; while editing they are `inert`.
+- **Runtime mode** - the palette, the history and the file buttons don't exist in it. `simulation/` (the mock of the plant: an app with a real plant deletes the folder and its controller in `app.ts`) sends random updates addressed by the element tags, some of them following the plant (the feedwater flow and pressure follow the feed pumps running, the charts follow the flow); `animations.ts` spins the rotors and the agitators, carries the boxes of a conveyor, moves the liquid through the pipes, the control valves and the level panels, and animates the flames, the smoke and the alarm. The controls (HTML in highlighters) are operated in this mode only; while editing they are `inert`.
 - **Light / dark** - the design tokens in `variables.css`. The shapes use CSS variables for their colors, `--shape-*` in `shapes.css` (`fill: 'var(--shape-face)'`, the stops of the metal gradients, ...): the dark scheme redefines them (blue steel, dark faces), no selectors override the shapes.
 - **Tooltips** - `ui.Tooltip` for every element with `data-tooltip`.
 
@@ -53,16 +53,15 @@ src/
   tools.ts         the link tools
   controls.ts      the controls of the equipment
   tags.ts          the IDs of the elements
-  simulation.ts    the mock of the plant
   animations.ts    the runtime animations
-  energized.ts     the energized elements and wires of the electrical circuits
   navigator.ts     the minimap
   settings.ts      the settings of the diagram (the screen) in the inspector panel
   screen.ts      the screen: added, shown alone in the runtime mode
   selection.ts     the selection on the canvas (`ui.Selection`): the region, the frames
-  diagram/         the example: a boiler house, a JSON file as saved by the Save button (with the JointJS logo as an image)
+  diagram/         the example: a boiler house, a JSON file as saved by the Save button (with the JointJS badge and a photo as images)
   shapes/          the shapes (see Shape features); ports.ts the pipe stubs and the terminals, footprint.ts the area a shape takes
   controllers/     the event handling
+  simulation/      the mock of the plant (simulation.ts, the energized circuits in energized.ts) and its controller: delete it for a real plant
 ```
 
 ## How It Works
@@ -80,9 +79,9 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | `PaletteController` | edit | palette: shape click, shape drop; graph: the derived palette groups |
 | `KeyboardController` | edit | the keyboard shortcuts |
 | `RuntimeController` | runtime | paper: a cell drag pans the canvas |
-| `SimulationController` | runtime | the mock of the plant |
+| `SimulationController` | runtime | the mock of the plant (in `simulation/`) |
 | `AnimationsController` | runtime | graph: `power`, `open`, `level` |
-| `ElectricalController` | runtime | graph: `power`, `open` (the energized circuits) |
+| `ElectricalController` | runtime | graph: `energized` (the live circuits) |
 
 ### Shape features
 

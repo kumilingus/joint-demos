@@ -16,7 +16,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-/** An electric heater: a panel radiator, a load; its heating element glows while it is energized (see `energized.ts`). */
+/** An electric heater: a panel radiator, a load; its heating element glows while it is energized (see `ElectricalController`). */
 export default class Heater extends Shape {
 
     get resizable(): Resizable {

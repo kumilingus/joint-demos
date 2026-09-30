@@ -1,9 +1,10 @@
-import Controller from './Controller';
+import Controller from '../controllers/Controller';
 import type { App } from '../app';
-import { Simulation } from '../simulation';
+import { Simulation } from './simulation';
 
 /**
  * Runs the plant (a mock sending random updates, see `simulation.ts`). Active in the runtime mode only.
+ * The mock is all in this folder: an app with a real plant deletes it, and the controller from `app.ts`.
  */
 export default class SimulationController extends Controller {
 

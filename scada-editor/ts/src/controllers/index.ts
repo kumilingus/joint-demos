@@ -8,6 +8,5 @@ export { default as KeyboardController } from './KeyboardController';
 export { default as PaletteController } from './PaletteController';
 export { default as RuntimeController } from './RuntimeController';
 export { default as SelectionController } from './SelectionController';
-export { default as SimulationController } from './SimulationController';
 export { default as TagsController } from './TagsController';
 export { default as ToolbarController } from './ToolbarController';

@@ -12,7 +12,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-/** A lamp: a load, a bulb hanging from its base, lit while it is energized (in the runtime mode, see `energized.ts`). */
+/** A lamp: a load, a bulb hanging from its base, lit while it is energized (in the runtime mode, see `ElectricalController`). */
 export default class Lamp extends Shape {
 
     get resizable(): Resizable {
