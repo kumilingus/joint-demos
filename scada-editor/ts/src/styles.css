@@ -851,10 +851,10 @@ body {
 .source-arrowhead,
 .target-arrowhead,
 .vertex-handle {
-    /* In the blue of the selection frame (\`SELECTION_COLOR\`, set in \`tools.ts\`), ringed with the background, lifted a little from the pipe */
+    /* In the blue of the selection frame (`SELECTION_COLOR`, set in `tools.ts`), ringed with the background, lifted a little from the pipe */
     stroke: var(--background);
     filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.35));
-    /* Not a transform: the tool places the dot with its \`transform\` attribute. */
+    /* Not a transform: the tool places the dot with its `transform` attribute. */
     transition: r 0.12s ease-out;
 }
 
@@ -871,6 +871,18 @@ body {
 
 .vertex-handle:hover {
     r: 9px;
+}
+
+/*
+ * The cursor on the canvas: the blank canvas is panned (`grab` of the paper scroller, see `config.ts`),
+ * a cell is moved in the edit mode; in the runtime mode it is not (its controls have their own cursors).
+ */
+.app[data-mode="edit"] .joint-paper-scroller .joint-cell {
+    cursor: move;
+}
+
+.app[data-mode="runtime"] .joint-paper-scroller .joint-cell {
+    cursor: default;
 }
 
 /*

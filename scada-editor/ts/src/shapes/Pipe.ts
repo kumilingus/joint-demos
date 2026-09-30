@@ -27,8 +27,7 @@ export default class Pipe extends dia.Link {
                     stroke: 'transparent',
                     strokeWidth: 40,
                     strokeLinejoin: 'round',
-                    strokeLinecap: 'round',
-                    cursor: 'move'
+                    strokeLinecap: 'round'
                 },
                 outline: {
                     connection: true,

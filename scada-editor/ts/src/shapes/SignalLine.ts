@@ -24,8 +24,7 @@ export default class SignalLine extends dia.Link {
                     connection: true,
                     stroke: 'transparent',
                     strokeWidth: 20,
-                    strokeLinecap: 'round',
-                    cursor: 'move'
+                    strokeLinecap: 'round'
                 },
                 line: {
                     connection: true,

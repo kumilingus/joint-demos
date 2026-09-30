@@ -28,8 +28,7 @@ export default class Wire extends dia.Link {
                     stroke: 'transparent',
                     strokeWidth: 20,
                     strokeLinejoin: 'round',
-                    strokeLinecap: 'round',
-                    cursor: 'move'
+                    strokeLinecap: 'round'
                 },
                 line: {
                     connection: true,
