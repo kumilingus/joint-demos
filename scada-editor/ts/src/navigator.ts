@@ -2,7 +2,7 @@ import { dia, ui, util } from '@joint/plus';
 import { paperOptions } from './config';
 
 /*
- * The minimap. Its views are simplified: an element is a plain rectangle (the screen its outline only),
+ * The minimap. Its views are simplified: an element is a plain rectangle (the screen a tinted frame),
  * a pipe is a single line (no outline, no pipe stubs, no labels).
  */
 
@@ -33,10 +33,8 @@ const NavigatorElementView = dia.ElementView.extend({
         const doc = util.parseDOMJSON(this.markup);
         this.body = doc.selectors.body;
         if (this.model.get('type') === 'Screen') {
-            this.body.setAttribute('fill', 'none');
-            this.body.setAttribute('stroke', ELEMENT_FILL);
-            this.body.setAttribute('stroke-width', '1');
-            this.body.setAttribute('vector-effect', 'non-scaling-stroke');
+            // In the color of the screen on the canvas, tinted (see `styles.css`): what the runtime mode shows
+            this.body.setAttribute('class', 'navigator-screen');
         } else {
             this.body.setAttribute('fill', ELEMENT_FILL);
         }

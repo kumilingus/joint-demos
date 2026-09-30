@@ -985,6 +985,15 @@ body {
     box-shadow: var(--shadow-md);
 }
 
+/* The screen in the minimap (see `navigator.ts`): its frame as on the canvas, its area tinted */
+.joint-navigator .navigator-screen {
+    fill: color-mix(in srgb, var(--shape-screen) 12%, transparent);
+    stroke: var(--shape-screen);
+    /* Solid: dashes would scale down with the minimap; the width not (a CSS rule overrides the attribute) */
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
 .joint-navigator .current-view {
     border: 1.5px solid var(--selection);
     border-radius: var(--radius-sm);
