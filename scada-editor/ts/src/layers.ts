@@ -8,6 +8,15 @@ import { Layer } from './const';
  * A shape says in which layer it is (`Shape.graphLayer`), a pipe is in the pipes layer.
  */
 
+/** What the user calls the layers (the inspector, the context menu), from the top one down */
+export const LAYER_NAMES: Record<Layer, string> = {
+    [Layer.Foreground]: 'Foreground',
+    [Layer.Instruments]: 'Instruments',
+    [Layer.Equipment]: 'Equipment',
+    [Layer.Pipes]: 'Pipes',
+    [Layer.Background]: 'Background'
+};
+
 /** An empty graph with the layers (the equipment layer by default). */
 export function createGraph(): dia.Graph {
     const graph = new dia.Graph({}, { cellNamespace });

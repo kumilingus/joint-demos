@@ -3,6 +3,8 @@ import type { App } from './app';
 import {
     bringToFront, copySelection, cutSelection, pasteAt, removeSelection, selectCell, sendToBack, splitLink, insertJoin
 } from './actions';
+import { LAYER_NAMES } from './layers';
+import type { Layer } from './const';
 
 /*
  * The context menus of the canvas (`ui.ContextToolbar`, in the edit mode): of a cell - the clipboard,
@@ -17,6 +19,8 @@ interface MenuItem {
     action: string;
     label: string;
     shortcut?: string;
+    /** A note on the right instead of a shortcut (the layer the order is within) */
+    hint?: string;
     disabled?: boolean;
     /** A line above the item: the items in groups */
     separated?: boolean;
@@ -33,7 +37,7 @@ function openMenu(app: App, evt: dia.Event, items: MenuItem[]): void {
         padding: 0,
         tools: items.map(item => ({
             action: item.action,
-            content: `<span>${item.label}</span>${item.shortcut ? `<kbd>${item.shortcut}</kbd>` : ''}`,
+            content: `<span>${item.label}</span>${item.shortcut ? `<kbd>${item.shortcut}</kbd>` : ''}${item.hint ? `<span class="hint">${item.hint}</span>` : ''}`,
             attrs: {
                 class: item.separated ? 'tool separated' : 'tool',
                 ...(item.disabled ? { disabled: 'disabled' } : {})
@@ -52,6 +56,10 @@ function openMenu(app: App, evt: dia.Event, items: MenuItem[]): void {
 /** The menu of a cell: it acts on the selection (the cell only, unless it is selected), a split on the link */
 export function openCellMenu(app: App, cell: dia.Cell, evt: dia.Event, x: number, y: number): void {
     if (!app.selection.has(cell)) selectCell(app, cell);
+    // The front and the back are those of the layer of the cell (see `layers.ts`): named in the menu
+    const layers = new Set(app.selection.map(selected => app.graph.getCellLayerId(selected)));
+    const [layer] = layers;
+    const layerHint = layers.size === 1 ? LAYER_NAMES[layer as Layer] ?? layer : 'their layers';
     openMenu(app, evt, [
         { action: 'cut', label: 'Cut', shortcut: `${MOD}X`, run: () => cutSelection(app) },
         { action: 'copy', label: 'Copy', shortcut: `${MOD}C`, run: () => copySelection(app) },
@@ -62,8 +70,8 @@ export function openCellMenu(app: App, cell: dia.Cell, evt: dia.Event, x: number
         ...(cell.get('type') === 'Pipe'
             ? [{ action: 'join', label: 'Insert Join', run: () => insertJoin(app, cell as dia.Link, { x, y }) }]
             : []),
-        { action: 'front', label: 'Bring to Front', separated: true, run: () => bringToFront(app) },
-        { action: 'back', label: 'Send to Back', run: () => sendToBack(app) },
+        { action: 'front', label: 'Bring to Front', hint: layerHint, separated: true, run: () => bringToFront(app) },
+        { action: 'back', label: 'Send to Back', hint: layerHint, run: () => sendToBack(app) },
         { action: 'delete', label: 'Delete', shortcut: 'Del', separated: true, run: () => removeSelection(app) }
     ]);
 }

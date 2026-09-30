@@ -1,7 +1,7 @@
 import { ui, type dia } from '@joint/plus';
 import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
-import { Layer } from './const';
+import { LAYER_NAMES } from './layers';
 import { MAX_SLICES } from './shapes/DonutChart';
 
 const groups: ui.Inspector.Options['groups'] = {
@@ -189,13 +189,7 @@ const layerInput = (group: string) => ({
     layer: {
         type: 'select',
         label: 'Layer',
-        options: [
-            { value: Layer.Foreground, content: 'Foreground' },
-            { value: Layer.Instruments, content: 'Instruments' },
-            { value: Layer.Equipment, content: 'Equipment' },
-            { value: Layer.Pipes, content: 'Pipes' },
-            { value: Layer.Background, content: 'Background' }
-        ],
+        options: Object.entries(LAYER_NAMES).map(([value, content]) => ({ value, content })),
         group,
         index: 100
     }

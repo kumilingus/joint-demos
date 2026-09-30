@@ -1308,7 +1308,7 @@ body {
     border-top: 1px solid var(--border);
 }
 
-.joint-context-toolbar kbd {
+.joint-context-toolbar :is(kbd, .hint) {
     color: var(--muted-foreground);
     font: 12px var(--font);
     font-variant-numeric: tabular-nums;
