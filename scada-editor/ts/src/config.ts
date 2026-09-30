@@ -236,8 +236,9 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             file: { index: 2 },
             history: { index: 3 },
             zoom: { index: 4 },
-            settings: { index: 5, align: ui.Toolbar.Align.Right },
-            colorScheme: { index: 6, align: ui.Toolbar.Align.Right },
+            // The settings of the diagram: with the editing (on the left); the view of the app on the right
+            settings: { index: 5 },
+            view: { index: 6, align: ui.Toolbar.Align.Right },
             mode: { index: 7, align: ui.Toolbar.Align.Right }
         },
         tools: [{
@@ -269,9 +270,16 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         },
         ...settings,
         {
+            // The whole page (hidden by the tool itself in an iframe, where the page can't be full screen)
+            type: 'fullscreen',
+            name: 'fullscreen',
+            group: 'view',
+            target: document.documentElement,
+            attrs: { button: { 'data-tooltip': 'Full screen' }}
+        }, {
             type: 'button',
             name: 'colorScheme',
-            group: 'colorScheme',
+            group: 'view',
             attrs: { button: { 'data-tooltip': 'Light / dark' }}
         }, {
             type: 'button',

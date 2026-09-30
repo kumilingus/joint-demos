@@ -143,27 +143,27 @@ body {
     cursor: default;
 }
 
-/* The history and the zoom buttons: groups of square icon buttons. */
-.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button {
+/* The file, history, zoom and view buttons (and the settings): groups of square icon buttons. */
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="view"]) button {
     width: 36px;
     padding: 0;
     border-radius: 0;
     color: var(--muted-foreground);
 }
 
-.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="colorScheme"]) button:hover:not(:disabled) {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="view"]) button:hover:not(:disabled) {
     color: var(--foreground);
 }
 
-.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"]) button + button {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="view"]) button + button {
     margin-left: -1px;
 }
 
-.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"]) button:first-child {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="view"]) button:first-child {
     border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
 
-.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"]) button:last-child {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="view"]) button:last-child {
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 
@@ -185,12 +185,16 @@ body {
 .joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-moon); }
 :root[data-color-scheme="dark"] .joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-sun); }
 
-.joint-toolbar-group[data-group="colorScheme"] {
+.joint-toolbar-group[data-group="view"] {
     margin-right: 8px;
 }
 
+/* The full screen button shows what it does: into the full screen, out of it. */
+.joint-toolbar [data-name="fullscreen"] { --icon: var(--icon-maximize); }
+:root:fullscreen .joint-toolbar [data-name="fullscreen"] { --icon: var(--icon-minimize); }
+
 /* A group of one button: rounded on both sides */
-.joint-toolbar [data-group="colorScheme"] button {
+.joint-toolbar [data-group="settings"] button {
     border-radius: var(--radius-md);
 }
 
