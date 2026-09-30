@@ -52,6 +52,18 @@ function getInputs(element: dia.Element): Inputs {
         };
     }
 
+    // A shape of the background: its color and its opacity
+    if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
+        const attrs = (inputs.attrs || {}) as Record<string, Inputs>;
+        inputs.attrs = {
+            ...attrs,
+            body: {
+                fill: { type: 'color', label: 'Color', group: 'general', index: index++ },
+                fillOpacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, group: 'general', index: index++ }
+            }
+        };
+    }
+
     // A zone points to the side its pipe comes from (the outline of its body, see `Zone`).
     if (element.attr('body/tipSide') !== undefined) {
         const attrs = (inputs.attrs || {}) as Record<string, Inputs>;

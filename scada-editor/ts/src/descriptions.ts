@@ -106,6 +106,10 @@ export const descriptions: Record<string, ShapeDescription> = {
     DonutChart: { title: 'Donut Chart', description: 'The shares of the parts of a whole, with a legend.' },
     GaugeChart: { title: 'Gauge Chart', description: 'A value on the arc of its scale (a pressure).' },
 
+    // Background
+    Rectangle: { title: 'Rectangle', description: 'A shape of the background (an area, a zone): its color and opacity in the inspector, resized and rotated freely.' },
+    Ellipse: { title: 'Ellipse', description: 'A shape of the background (an area, a highlight): its color and opacity in the inspector, resized and rotated freely.' },
+
     // Custom
     CustomImage: { title: 'Image', description: 'An image of your own, uploaded into the diagram: it is saved with it, once, however many elements show it.' }
 };

@@ -12,7 +12,8 @@ import {
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground,
     Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
-    LineChart, BarChart, DonutChart, GaugeChart
+    LineChart, BarChart, DonutChart, GaugeChart,
+    Rectangle, Ellipse
 } from './shapes';
 import { getFootprint } from './shapes/footprint';
 import { createGraph } from './layers';
@@ -59,7 +60,8 @@ const groups: Record<string, ui.Stencil.Group> = {
     structures: { index: 9, label: 'Structures' },
     instruments: { index: 10, label: 'Instruments' },
     electrical: { index: 11, label: 'Electrical' },
-    charts: { index: 12, label: 'Charts' }
+    charts: { index: 12, label: 'Charts' },
+    background: { index: 13, label: 'Background' }
 };
 
 /**
@@ -263,6 +265,10 @@ function createShapes(): Record<string, dia.Cell[]> {
                 target: { x: LINK_LENGTH, y: 0 }
             }),
             new Label()
+        ],
+        background: [
+            new Rectangle(),
+            new Ellipse()
         ],
         charts: [
             new LineChart(),

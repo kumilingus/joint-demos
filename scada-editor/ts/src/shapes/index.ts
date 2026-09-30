@@ -81,6 +81,8 @@ import BarChart from './BarChart';
 import DonutChart from './DonutChart';
 import GaugeChart from './GaugeChart';
 import { chartView } from './charts';
+import Rectangle from './Rectangle';
+import Ellipse from './Ellipse';
 
 export {
     Pump, Compressor, Fan, Motor, Blower, Turbine, ConveyorBelt,
@@ -93,7 +95,8 @@ export {
     Screen,
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground, Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
-    LineChart, BarChart, DonutChart, GaugeChart
+    LineChart, BarChart, DonutChart, GaugeChart,
+    Rectangle, Ellipse
 };
 
 export const cellNamespace = {
@@ -184,5 +187,7 @@ export const cellNamespace = {
     DonutChart,
     DonutChartView: chartView(['slices']),
     GaugeChart,
-    GaugeChartView: chartView(['value', 'min', 'max'])
+    GaugeChartView: chartView(['value', 'min', 'max']),
+    Rectangle,
+    Ellipse
 };

@@ -28,6 +28,9 @@ export const MIN_LIQUID_COLOR = '#FFD23F';
 export const PIPE_COLOR = '#6CC59A';
 // The colors of the parts of the shapes are CSS variables (`--shape-*` in `shapes.css`): themed there.
 export const LABEL_COLOR = 'var(--shape-label)';
+
+/** The default color of a shape of the background (see `Rectangle`, `Ellipse`): translucent, in both schemes */
+export const BACKGROUND_FILL = '#64748B';
 export const SELECTION_COLOR = '#0075F2';
 
 /** How far the frame of a selected element is around it (`ui.FreeTransform` and the frames of `ui.Selection`) */

@@ -57,6 +57,8 @@ export const paperOptions: dia.Paper.Options = {
     validateConnection: (sourceView, sourceMagnet, targetView, targetMagnet, end, linkView) => {
         const [view, magnet] = end === 'source' ? [sourceView, sourceMagnet] : [targetView, targetMagnet];
         if (!view || !view.model.isElement() || view.model instanceof Label || view.model instanceof Screen) return false;
+        // Nor to a shape of the background
+        if (['Rectangle', 'Ellipse'].includes(view.model.get('type'))) return false;
         const element = view.model as dia.Element;
         const portId = magnet ? view.findAttribute('port', magnet) : null;
         if (linkView.model instanceof Wire) return Boolean(portId) && isTerminal(element.getPort(portId!));
