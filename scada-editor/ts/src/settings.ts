@@ -3,6 +3,7 @@ import type { App } from './app';
 import { clearSelection, selectCell } from './actions';
 import { addScreen, getScreen } from './screen';
 import Screen from './shapes/Screen';
+import { renderLabel } from './help';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
@@ -120,7 +121,9 @@ export function openSettings(app: App): void {
         groups: {
             screen: { label: 'Screen', index: 1 },
             editor: { label: 'Editor', index: 2 }
-        }
+        },
+        // The help of the screen (see `help.ts`)
+        renderLabel
     });
     inspector.render();
     el.append(inspector.el);

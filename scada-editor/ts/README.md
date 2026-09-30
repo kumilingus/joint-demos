@@ -50,6 +50,7 @@ src/
   images.ts        the images of the user
   favorites.ts     the favorite shapes
   inspector.ts     the inputs of the inspector
+  help.ts          the help of the fields of the inspectors (a question mark with a tooltip)
   tools.ts         the link tools
   controls.ts      the controls of the equipment
   tags.ts          the IDs of the elements

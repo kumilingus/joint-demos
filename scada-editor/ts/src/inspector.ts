@@ -2,6 +2,7 @@ import { ui, type dia } from '@joint/plus';
 import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
 import { LAYER_NAMES } from './layers';
+import { renderLabel } from './help';
 import { MAX_SLICES } from './shapes/DonutChart';
 
 const groups: ui.Inspector.Options['groups'] = {
@@ -194,24 +195,6 @@ const layerInput = (group: string) => ({
         index: 100
     }
 });
-
-/** What the layers are for: shown in the tooltip of the question mark next to the label of the layer */
-const LAYER_HELP = 'The layers are drawn from the bottom up: Background, Pipes, Equipment, Instruments, Foreground. '
-    + 'Everything in a layer is drawn over everything in the layers below it. '
-    + 'Within a layer, right-click and choose Bring to Front or Send to Back.';
-
-/** The label of a field: the layer has a question mark with a tooltip (the default label for the others) */
-function renderLabel(options: { label?: string }, path: string): HTMLElement | undefined {
-    if (path !== 'layer') return undefined;
-    const label = document.createElement('label');
-    label.textContent = options.label ?? path;
-    const help = document.createElement('span');
-    help.className = 'field-help';
-    help.textContent = '?';
-    help.dataset.tooltip = LAYER_HELP;
-    label.append(help);
-    return label;
-}
 
 export function openInspector(el: HTMLElement, cell: dia.Cell): void {
     closeInspector();

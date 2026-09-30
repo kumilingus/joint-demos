@@ -482,7 +482,7 @@ body {
     font-weight: 500;
 }
 
-/* A question mark next to a label: its tooltip explains the field (see `renderLabel()` in `inspector.ts`). */
+/* A question mark next to a label: its tooltip explains the field (see `help.ts`). */
 .joint-inspector .field-help {
     display: inline-flex;
     align-items: center;
@@ -1161,6 +1161,17 @@ body {
 
 .joint-tooltip .tooltip-content {
     padding: 6px 10px;
+}
+
+/* A richer tooltip (the help of the inspectors, see `help.ts`): a list, a heading of a part */
+.joint-tooltip .tooltip-list {
+    margin: 4px 0 6px;
+    padding-left: 20px;
+}
+
+.joint-tooltip .tooltip-heading {
+    display: block;
+    margin-top: 8px;
 }
 
 .joint-tooltip .tooltip-arrow {
