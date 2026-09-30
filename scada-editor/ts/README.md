@@ -52,6 +52,7 @@ src/
   favorites.ts     the favorite shapes
   inspector.ts     the inputs of the inspector
   help.ts          the help of the fields of the inspectors (a question mark with a tooltip)
+  color-field.ts   the color fields of the inspector: the native input and the colors to pick again
   tools.ts         the link tools
   controls.ts      the controls of the equipment
   tags.ts          the IDs of the elements

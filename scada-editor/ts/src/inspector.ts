@@ -3,6 +3,7 @@ import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
 import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
+import { getColorFieldValue, rememberColor, renderColorField } from './color-field';
 import { MAX_SLICES } from './shapes/DonutChart';
 
 const groups: ui.Inspector.Options['groups'] = {
@@ -221,7 +222,10 @@ export function openInspector(el: HTMLElement, cell: dia.Cell): void {
                 ...layerInput('link')
             },
         groups: { ...groups, link: { ...groups!.link, label: linkName }},
-        renderLabel
+        renderLabel,
+        // The color fields with the swatches of the colors to pick again (see `color-field.ts`)
+        renderFieldContent: renderColorField,
+        getFieldValue: getColorFieldValue
     });
     trackPickedColors(inspector.el);
 }
@@ -239,7 +243,10 @@ function onColorInput(evt: Event): void {
 
 function onColorChange(evt: Event): void {
     const { target } = evt;
-    if (target instanceof HTMLInputElement) delete target.dataset[PICKED];
+    if (!(target instanceof HTMLInputElement)) return;
+    delete target.dataset[PICKED];
+    // To be picked again (see `color-field.ts`)
+    if (target.type === 'color') rememberColor(target.value);
 }
 
 /** Keep track of the colors picked in the inspector (its element), see `savePickedColors()` */
