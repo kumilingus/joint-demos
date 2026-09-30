@@ -737,6 +737,20 @@ body {
     transform: scale(1.12);
 }
 
+/* The color of the theme (a CSS variable): marked as such - half of it in the other scheme's tone */
+.joint-inspector .color-swatch.theme {
+    position: relative;
+    overflow: hidden;
+}
+
+.joint-inspector .color-swatch.theme::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 50%, var(--background) 50%);
+    opacity: 0.85;
+}
+
 .joint-inspector .color-swatch:focus-visible {
     outline: 2px solid var(--ring-strong);
     outline-offset: 1px;

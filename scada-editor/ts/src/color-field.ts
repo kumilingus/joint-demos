@@ -1,14 +1,15 @@
-import type { dia, ui } from '@joint/plus';
+import { type dia, type ui, util } from '@joint/plus';
 
 /*
  * The color fields of the inspector: the native color input (with its eyedropper), and the colors
  * to pick again - the recent ones and the ones of the diagram - as swatches under it (the eyedropper picks
- * a translucent color as drawn, not as it was set). The fields of a list (the slices of a donut) are
- * the native input only (their rows are narrow).
+ * a translucent color as drawn, not as it was set). The first swatch is the default of the field: a color
+ * of the theme (a CSS variable, different in the light and the dark scheme) can't be picked otherwise.
+ * The fields of a list (the slices of a donut) are the native input only (their rows are narrow).
  */
 
-/** How many swatches a field shows, how many recent colors are kept */
-const MAX_SWATCHES = 8;
+/** How many swatches a field shows (one row next to the input), how many recent colors are kept */
+const MAX_SWATCHES = 7;
 const MAX_RECENT = 5;
 
 /** The colors picked lately (in this session), the latest first */
@@ -23,6 +24,31 @@ const COLOR_PATHS: Record<string, string[]> = {
 };
 
 const isHexColor = (value: unknown): value is string => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
+
+/** A color of the theme: a CSS variable (see `shapes.css`) */
+const isThemeColor = (value: unknown): value is string => typeof value === 'string' && value.startsWith('var(');
+
+/** The color as drawn now (a CSS variable resolved in the current scheme), as a hex (for the native input) */
+function resolveColor(value: string): string {
+    if (isHexColor(value)) return value;
+    const probe = document.createElement('span');
+    probe.style.color = value;
+    document.body.append(probe);
+    const rgb = getComputedStyle(probe).color.match(/\d+/g) || [];
+    probe.remove();
+    return '#' + rgb.slice(0, 3).map(channel => Number(channel).toString(16).padStart(2, '0')).join('');
+}
+
+/** A swatch of a color */
+function createSwatch(color: string, tooltip: string, onClick: () => void): HTMLButtonElement {
+    const swatch = document.createElement('button');
+    swatch.type = 'button';
+    swatch.className = 'color-swatch';
+    swatch.style.background = color;
+    swatch.dataset.tooltip = tooltip;
+    swatch.addEventListener('click', onClick);
+    return swatch;
+}
 
 /** The colors used in the diagram (set by the user: see `COLOR_PATHS`, the slices of the donuts) */
 function diagramColors(graph: dia.Graph): string[] {
@@ -65,33 +91,39 @@ export function renderColorField(options: { type?: string; label?: string }, pat
     input.className = 'color';
     input.dataset.attribute = path;
     input.dataset.type = 'color';
-    if (isHexColor(value)) input.value = value;
+    if (isHexColor(value) || isThemeColor(value)) input.value = resolveColor(value);
     // The input and the swatches on a row
     const row = document.createElement('div');
     row.className = 'color-field-row';
     row.append(input);
     el.append(row);
 
-    const graph = (inspector.options.cell as dia.Cell).graph;
-    const colors = [...new Set([...recentColors, ...(graph ? diagramColors(graph) : [])])].slice(0, MAX_SWATCHES);
-    if (colors.length > 0) {
-        const swatches = document.createElement('div');
-        swatches.className = 'color-swatches';
-        colors.forEach((color) => {
-            const swatch = document.createElement('button');
-            swatch.type = 'button';
-            swatch.className = 'color-swatch';
-            swatch.style.background = color;
-            swatch.dataset.tooltip = color;
-            swatch.addEventListener('click', () => {
-                input.value = color;
-                // As a picked color: the inspector saves it (one step of the history)
-                input.dispatchEvent(new Event('change', { bubbles: true }));
-            });
-            swatches.append(swatch);
+    const cell = inspector.options.cell as dia.Cell;
+    // As a picked color: the inspector saves it (one step of the history)
+    const pick = (color: string) => {
+        input.value = color;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    const swatches = document.createElement('div');
+    swatches.className = 'color-swatches';
+    // The default of the field (of the shape): a color of the theme is set on the model (the input takes a hex only)
+    const defaultColor = util.getByPath(util.result(cell, 'defaults') || {}, path, '/');
+    if (isHexColor(defaultColor)) {
+        swatches.append(createSwatch(defaultColor, `Default ${defaultColor}`, () => pick(defaultColor)));
+    } else if (isThemeColor(defaultColor)) {
+        const swatch = createSwatch(defaultColor, 'Default: the color of the theme (light / dark)', () => {
+            cell.prop(path.split('/'), defaultColor);
+            input.value = resolveColor(defaultColor);
         });
-        row.append(swatches);
+        swatch.classList.add('theme');
+        swatches.append(swatch);
     }
+    const graph = cell.graph;
+    [...new Set([...recentColors, ...(graph ? diagramColors(graph) : [])])]
+        .filter(color => color !== String(defaultColor).toLowerCase())
+        .slice(0, MAX_SWATCHES - swatches.childElementCount)
+        .forEach(color => swatches.append(createSwatch(color, color, () => pick(color))));
+    if (swatches.childElementCount > 0) row.append(swatches);
     return el;
 }
 
