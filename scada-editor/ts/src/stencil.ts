@@ -19,6 +19,7 @@ import { createGraph } from './layers';
 import { pack } from './packing';
 import { descriptions } from './descriptions';
 import { CLICK_THRESHOLD } from './config';
+import { LABEL_COLOR } from './const';
 import { type ImageEntry, type ImageLibrary, readImageFile } from './images';
 
 // The shapes are shown in the palette smaller than on the canvas.
@@ -61,12 +62,39 @@ const groups: Record<string, ui.Stencil.Group> = {
     charts: { index: 12, label: 'Charts' }
 };
 
-/** The name of the shape of the palette (see `descriptions.ts`), shown in its tooltip */
+/**
+ * The name of the shape of the palette (see `descriptions.ts`), shown in its tooltip; a link has it
+ * as its label too, on the right of it (a line is hard to tell apart without it). Not on the dragged
+ * and the dropped shape (see `dragStartClone`).
+ */
 function setTooltip(cell: dia.Cell): void {
     const { title } = descriptions[cell.get('type')] ?? { title: cell.get('type') };
     // An image of the user: its name
     const name = cell.get('type') === 'CustomImage' ? cell.attr('label/text') : title;
     cell.attr('root/data-tooltip', name);
+    if (cell.isLink()) cell.labels([nameLabel(name)]);
+}
+
+/**
+ * The label of a link of the palette: its name after its end (in the size of the palette, see `STENCIL_SCALE`),
+ * a part of the link - the link can be dragged by it too.
+ */
+function nameLabel(name: string): dia.Link.Label {
+    return {
+        markup: [{ tagName: 'text', selector: 'name' }],
+        position: { distance: 1, offset: { x: 16, y: 0 }},
+        attrs: {
+            name: {
+                text: name,
+                fill: LABEL_COLOR,
+                fontSize: 13 / STENCIL_SCALE,
+                fontFamily: 'sans-serif',
+                fontStyle: 'italic',
+                textAnchor: 'start',
+                textVerticalAnchor: 'middle'
+            }
+        }
+    };
 }
 
 /**
@@ -117,15 +145,18 @@ export function createStencil(
         groups,
         layout: layoutGroup,
         dropAnimation: true,
-        // The shape dropped on the canvas has no tooltip (see `setTooltip()`).
-        dragEndClone: (cell: dia.Cell) => {
+        // The dragged shape (and the dropped one, cloned from it) has no tooltip, a link no name (see `setTooltip()`).
+        dragStartClone: (cell: dia.Cell) => {
             const clone = cell.clone();
             clone.removeAttr('root/data-tooltip');
+            if (clone.isLink()) clone.labels([]);
             return clone;
         },
         // A click shows the shape in the inspector panel (see `PaletteController`): the dragging starts
         // with a move, where a click ends (the same threshold as on the canvas).
         dragThreshold: CLICK_THRESHOLD,
+        // Over the shapes and the names of the links (the links fixed in `styles.css`)
+        cellCursor: 'grab',
         scaleClones: true,
         // A shape dragged from the palette aligns with the others too.
         snaplines,

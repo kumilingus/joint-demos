@@ -422,11 +422,12 @@ body {
 }
 
 /*
- * Not the stencil `cellCursor` option: it sets `pointer-events: bounding-box`,
- * and the bounding box of a straight pipe has no height, so it can't be grabbed.
+ * The `cellCursor` option of the stencil (see `stencil.ts`) also sets `pointer-events: bounding-box` on every part
+ * of the cells: the bounding box of a straight link has no height (its stroke doesn't count), so it couldn't be
+ * grabbed. The links hit-tested by their strokes again (the cursor stays).
  */
-.stencil-panel .joint-cell {
-    cursor: grab;
+.joint-stencil.has-cell-cursor .joint-cell.joint-link * {
+    pointer-events: visiblePainted;
 }
 
 /* Inspector */
