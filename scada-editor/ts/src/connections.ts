@@ -1,5 +1,5 @@
 import { type dia, g } from '@joint/plus';
-import { GRID_SIZE } from './const';
+import { GRID_SIZE, PIPE_COLOR } from './const';
 import Shape from './shapes/Shape';
 
 /*
@@ -47,3 +47,14 @@ export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end,
     end.anchor = { name: 'topLeft', args: { dx: percent(x, width), dy: percent(y, height), rotate: true, useModelGeometry: true }};
     return end;
 };
+
+/**
+ * The color of the pipe an element sits on (the pipe seen through the window of a control valve):
+ * of the pipe coming in, else of the one going out, else the default one.
+ */
+export function pipeColorAt(graph: dia.Graph, element: dia.Element): string {
+    const pipes = graph.getConnectedLinks(element).filter(link => link.get('type') === 'Pipe');
+    const incoming = pipes.find(pipe => pipe.target().id === element.id);
+    const pipe = incoming ?? pipes.find(pipe => pipe.source().id === element.id);
+    return pipe ? String(pipe.attr('line/stroke') ?? PIPE_COLOR) : PIPE_COLOR;
+}

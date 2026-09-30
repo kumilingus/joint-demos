@@ -77,6 +77,7 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | `ControlsController` | always | graph: the controls of the added elements |
 | `SelectionController` | always | the selection: free transform, link tools, the inspector |
 | `TagsController` | always | graph: a free tag for every element |
+| `PipeColorController` | always | graph: the pipes (their colors, their ends) - a control valve shows the color of its pipe |
 | `ToolbarController` | each mode | toolbar: mode, color scheme, save, open, settings |
 | `EditController` | edit | paper: cell click, blank drag (a region) |
 | `PaletteController` | edit | palette: shape click, shape drop; graph: the derived palette groups |

@@ -26,6 +26,7 @@ import {
     RuntimeController,
     SelectionController,
     TagsController,
+    PipeColorController,
     ToolbarController
 } from './controllers';
 // The mock of the plant (see `simulation/`): an app with a real plant deletes it and this line
@@ -98,7 +99,8 @@ export class App {
             new CanvasController(this),
             new ControlsController(this),
             new SelectionController(this),
-            new TagsController(this)
+            new TagsController(this),
+            new PipeColorController(this)
         ];
         this.modeControllers = {
             // Each listens to the toolbar of its mode.
