@@ -1,7 +1,7 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from './app';
 import {
-    bringToFront, copySelection, cutSelection, pasteAt, removeSelection, selectCell, sendToBack, splitLink, insertJoin
+    bringToFront, copySelection, cutSelection, elementBelow, menuCell, pasteAt, removeSelection, selectCell, sendToBack, splitLink, insertJoin
 } from './actions';
 import { LAYER_NAMES } from './layers';
 import type { Layer } from './const';
@@ -9,7 +9,8 @@ import type { Layer } from './const';
 /*
  * The context menus of the canvas (`ui.ContextToolbar`, in the edit mode): of a cell - the clipboard,
  * the order in its layer and the removal of the selection (the cell selected first if it is not), the split
- * of a link at the pointer (a join inserted into a pipe there); of the blank canvas - the paste at the pointer.
+ * of a link at the pointer (a join inserted into a pipe there), the selection of the element below at the pointer;
+ * of the blank canvas - the paste at the pointer.
  */
 
 /** A shortcut shown next to the item: the one of the platform */
@@ -54,12 +55,15 @@ function openMenu(app: App, evt: dia.Event, items: MenuItem[]): void {
 }
 
 /** The menu of a cell: it acts on the selection (the cell only, unless it is selected), a split on the link */
-export function openCellMenu(app: App, cell: dia.Cell, evt: dia.Event, x: number, y: number): void {
+export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: number, y: number): void {
+    // The element selected below the clicked one keeps the menu (going on down, see `menuCell()`).
+    const cell = menuCell(app, clicked, { x, y });
     if (!app.selection.has(cell)) selectCell(app, cell);
     // The front and the back are those of the layer of the cell (see `layers.ts`): named in the menu
     const layers = new Set(app.selection.map(selected => app.graph.getCellLayerId(selected)));
     const [layer] = layers;
     const layerHint = layers.size === 1 ? LAYER_NAMES[layer as Layer] ?? layer : 'their layers';
+    const below = elementBelow(app, cell, { x, y });
     openMenu(app, evt, [
         { action: 'cut', label: 'Cut', shortcut: `${MOD}X`, run: () => cutSelection(app) },
         { action: 'copy', label: 'Copy', shortcut: `${MOD}C`, run: () => copySelection(app) },
@@ -70,6 +74,15 @@ export function openCellMenu(app: App, cell: dia.Cell, evt: dia.Event, x: number
         ...(cell.get('type') === 'Pipe'
             ? [{ action: 'join', label: 'Insert Join', run: () => insertJoin(app, cell as dia.Link, { x, y }) }]
             : []),
+        // The element under this one at the pointer (hard to click otherwise): named by its ID
+        {
+            action: 'below',
+            label: 'Select Below',
+            hint: below ? String(below.get('tag') ?? '') : undefined,
+            disabled: !below,
+            separated: true,
+            run: () => below && selectCell(app, below)
+        },
         { action: 'front', label: 'Bring to Front', hint: layerHint, separated: true, run: () => bringToFront(app) },
         { action: 'back', label: 'Send to Back', hint: layerHint, run: () => sendToBack(app) },
         { action: 'delete', label: 'Delete', shortcut: 'Del', separated: true, run: () => removeSelection(app) }

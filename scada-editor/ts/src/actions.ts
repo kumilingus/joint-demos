@@ -1,6 +1,6 @@
 import { type dia, g, util } from '@joint/plus';
 import type { App } from './app';
-import { GRID_SIZE, Mode } from './const';
+import { GRID_SIZE, Layer, Mode } from './const';
 import { fitOptions, runtimeFitOptions } from './config';
 import { getImages, IMAGES_ATTRIBUTE, type ImageEntry } from './images';
 import { getScreen, isScreenShown } from './screen';
@@ -204,6 +204,46 @@ export function insertJoin(app: App, link: dia.Link, point: dia.Point): void {
     graph.addCells([join, first, second]);
     graph.stopBatch('insert-join');
     selectCell(app, join);
+}
+
+/** Where the cell is drawn: its layer (from the bottom one up, see `Layer`), then its place in the layer (by z) */
+function drawingOrder(graph: dia.Graph, cell: dia.Cell): [number, number] {
+    const layerId = graph.getCellLayerId(cell);
+    return [Object.values(Layer).indexOf(layerId as Layer), graph.getLayer(layerId).cellCollection.toArray().indexOf(cell)];
+}
+
+/** Whether the cell is drawn below the other one */
+function isDrawnBelow(graph: dia.Graph, cell: dia.Cell, other: dia.Cell): boolean {
+    const [layer, index] = drawingOrder(graph, cell);
+    const [otherLayer, otherIndex] = drawingOrder(graph, other);
+    return layer < otherLayer || (layer === otherLayer && index < otherIndex);
+}
+
+/**
+ * The cell the context menu at the point is for: the clicked one, or the selected element under it there
+ * (selected with the menu, see `elementBelow()`) - the next menu goes on down from it.
+ */
+export function menuCell(app: App, clicked: dia.Cell, point: dia.Point): dia.Cell {
+    const { graph, selection } = app;
+    const [selected] = selection.length === 1 ? selection.toArray() : [];
+    if (!selected || selected === clicked || !selected.isElement()) return clicked;
+    const atPoint = graph.findElementsAtPoint(point).includes(selected as dia.Element);
+    return atPoint && isDrawnBelow(graph, selected, clicked) ? selected : clicked;
+}
+
+/**
+ * The element under the cell at the point: of the elements there drawn below it, the top one
+ * (a panel of the background under the instruments, ...); `null` if there is none. Not the screen
+ * (a frame edited in the settings, see `settings.ts`).
+ */
+export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.Element | null {
+    const { graph } = app;
+    const below = graph.findElementsAtPoint(point)
+        .filter(element => element !== cell && !(element instanceof Screen) && isDrawnBelow(graph, element, cell))
+        .map(element => ({ element, order: drawingOrder(graph, element) }));
+    if (below.length === 0) return null;
+    below.sort((a, b) => (b.order[0] - a.order[0]) || (b.order[1] - a.order[1]));
+    return below[0].element;
 }
 
 /** Add the uploaded images to the diagram (they are saved with it, shown in the palette; an undo removes them). */
