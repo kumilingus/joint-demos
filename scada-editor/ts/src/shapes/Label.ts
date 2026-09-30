@@ -50,7 +50,7 @@ export default class Label extends Shape {
                         height: 'calc(h)',
                         ellipsis: true
                     },
-                    fontSize: 16,
+                    fontSize: 20,
                     fontFamily: 'sans-serif',
                     fontWeight: 600,
                     fill: LABEL_COLOR
