@@ -12,7 +12,7 @@ import { isTerminal } from './shapes/ports';
 
 export const ZOOM = { min: 0.2, max: 3 };
 
-/** The pointer moves after which a press is not a click (a drag): on the canvas and in the palette */
+/** The pointer moves (events, not pixels) after which a press is not a click but a drag: on the canvas and in the palette */
 export const CLICK_THRESHOLD = 10;
 
 export const paperOptions: dia.Paper.Options = {
@@ -21,8 +21,10 @@ export const paperOptions: dia.Paper.Options = {
     gridSize: GRID_SIZE,
     // A line every other grid step: every step would be too dense to read.
     drawGridSize: 2 * GRID_SIZE,
-    // A click still counts as a click if the pointer moves a little in between.
+    // A click still counts as a click if the pointer moves a little in between - and moves nothing:
+    // the dragging starts after as many moves (the element catches up with the pointer then).
     clickThreshold: CLICK_THRESHOLD,
+    moveThreshold: CLICK_THRESHOLD,
     async: true,
     autoFreeze: true,
     viewManagement: true,
