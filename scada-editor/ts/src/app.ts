@@ -32,6 +32,7 @@ import {
 } from './controllers';
 // The mock of the plant (see `simulation/`): an app with a real plant deletes it and this line
 import SimulationController from './simulation/SimulationController';
+import Snaplines from './Snaplines';
 
 export class App {
 
@@ -239,7 +240,8 @@ export class App {
     }
 
     protected createSnaplines(): void {
-        this.snaplines = new ui.Snaplines({ ...snaplinesOptions, paper: this.paper });
+        // With a fix of the library for the dragged groups (see `Snaplines`)
+        this.snaplines = new Snaplines({ ...snaplinesOptions, paper: this.paper });
         if (!this.snaplinesEnabled) this.snaplines.disable();
     }
 
