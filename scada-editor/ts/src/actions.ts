@@ -193,7 +193,7 @@ export function insertJoin(app: App, link: dia.Link, point: dia.Point): void {
     join.position(center.x - join.size().width / 2, center.y - join.size().height / 2);
     const end = (side: string) => ({
         id: join.id,
-        anchor: { name: side, args: { useModelGeometry: true }},
+        anchor: { name: side, args: { useModelGeometry: true, rotate: true }},
         connectionPoint: { name: 'anchor' }
     });
     // The first half comes in against the direction of the route, the second one goes on in it.
