@@ -2,7 +2,7 @@ import { dia, ui } from '@joint/plus';
 import { ColorScheme, GRID_SIZE, Mode, SELECTION_COLOR } from './const';
 import type { RUNTIME } from './controls';
 import { connectionStrategy } from './connections';
-import type { DERIVED } from './shapes/routing';
+import { type DERIVED, routerNamespace } from './shapes/routing';
 import type { PREFERENCE } from './favorites';
 import Label from './shapes/Label';
 import SignalLine from './shapes/SignalLine';
@@ -32,6 +32,8 @@ export const paperOptions: dia.Paper.Options = {
     // The center of a port (its pipe stub, see `pipeStubGroup()`), rotated with the element; a side of an element
     // has an anchor of its own (see `connectionStrategy`).
     defaultAnchor: { name: 'center', args: { useModelGeometry: true, rotate: true }},
+    // The right angles leave the stubs of the rotated elements along them (see `routing.ts`).
+    routerNamespace,
     // The anchor is on a side of the element already (see `connectionStrategy`).
     defaultConnectionPoint: { name: 'anchor' },
     // A dragged end of a pipe snaps to the ports (or the sides of the elements without ones) nearby.

@@ -79,6 +79,7 @@ export function createNavigator(el: HTMLElement, scroller: ui.PaperScroller): ui
             // The ends of the pipes as on the canvas: from the models (the ports are not drawn here)
             defaultAnchor: paperOptions.defaultAnchor,
             defaultConnectionPoint: paperOptions.defaultConnectionPoint,
+            routerNamespace: paperOptions.routerNamespace,
             background: { color: 'transparent' }
         }
     });
