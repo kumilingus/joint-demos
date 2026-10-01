@@ -1321,6 +1321,9 @@
       "angle": 0,
       "type": "LiquidTank",
       "attrs": {
+        "legs": {
+          "class": "test"
+        },
         "label": {
           "text": "Deaerator"
         }
@@ -2680,7 +2683,8 @@
       },
       "tag": "DI-101",
       "id": "21ce6895-5426-442f-8d93-16e340013c60",
-      "layer": "instruments"
+      "layer": "instruments",
+      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30"
     },
     {
       "position": {
@@ -2716,7 +2720,8 @@
       },
       "tag": "PG-101",
       "id": "b6830c2e-7065-41bd-bdcb-265849d8b909",
-      "layer": "instruments"
+      "layer": "instruments",
+      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30"
     },
     {
       "position": {
@@ -2743,7 +2748,8 @@
       },
       "tag": "AL-101",
       "id": "726dd0a3-f351-4851-9fe7-24a2a0bb0a96",
-      "layer": "instruments"
+      "layer": "instruments",
+      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30"
     },
     {
       "position": {
@@ -3004,7 +3010,8 @@
       "tag": "BG-101",
       "id": "a2e46871-9c62-459e-bef6-3a19800370c1",
       "layer": "background",
-      "z": 3
+      "z": 3,
+      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30"
     },
     {
       "position": {
@@ -3084,6 +3091,28 @@
           "x": 550,
           "y": 230
         }
+      ]
+    },
+    {
+      "position": {
+        "x": 1060,
+        "y": 30
+      },
+      "size": {
+        "width": 420,
+        "height": 130
+      },
+      "angle": 0,
+      "type": "Group",
+      "id": "f1d4c5e8-513b-42fb-991a-21bc814c0c30",
+      "layer": "background",
+      "z": 5,
+      "tag": "GRP-101",
+      "embeds": [
+        "a2e46871-9c62-459e-bef6-3a19800370c1",
+        "21ce6895-5426-442f-8d93-16e340013c60",
+        "b6830c2e-7065-41bd-bdcb-265849d8b909",
+        "726dd0a3-f351-4851-9fe7-24a2a0bb0a96"
       ]
     }
   ],
