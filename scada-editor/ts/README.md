@@ -13,6 +13,7 @@ An editor of a SCADA plant diagram, built with JointJS+, with a runtime mode whe
 - **Electrical** - a palette group of the electrical equipment: a diesel generator set (fed with fuel by a pipe, e.g. from the fuel tank of the storage group), a wind turbine, a solar array, a power transformer, a switchgear, a motor control center, a battery bank; the smaller parts of the circuits (a generator, a transformer, a copper busbar, a battery, a molded-case breaker, a knife disconnector, a fuse, a surge arrester, a ground rod, a lamp, a heater, a voltmeter) and a wire. A wire connects to the terminals of the electrical shapes only (`terminalPorts()` in `shapes/ports.ts`), a pipe never does. In the runtime mode the circuits energized from a running generator or wind turbine, a battery or a solar array, through the closed breakers and disconnectors, are shown live (the `energized` of the cells, sent by the plant - traced by the mock in `simulation/energized.ts`): the wires in color, the lamps of the cabinets and a lamp lit, a heater glowing, a voltmeter reading the voltage; a wind turbine spins, a diesel generator smokes, the charge of a battery bank and the fuel of a tank change.
 - **Charts** - a line chart, a bar chart, a donut chart and a gauge chart (`shapes/charts.ts`): shapes of their own (not the legacy chart shapes), their data on the model (`values`, `slices`, `value`) and their paths computed from it by special attributes when they are rendered (their views render them again when the data changes), configured in the inspector (the scale, the thresholds, the slices). The runtime mode feeds them new data every second.
 - **Background** - a palette group of the shapes under the plant: a rectangle and an ellipse (`shapes/Rectangle.ts`, `shapes/Ellipse.ts`), resized and rotated freely, their color and opacity set in the inspector; nothing connects to them.
+- **Groups** - several selected elements grouped from the context menu (Group, `Ctrl`/`Cmd` + `G`) into an invisible element they are embedded in (`shapes/Group.ts`), with the links between them; selected, it has a dashed frame and a badge (its ID, how many members), a hovered member outlines its group. A click on a member selects the group, a click again goes one level in (the member, a group in it) - `Escape` one level up; a drag moves the selected level, the groups refit (`GroupController`). Cherry-picking adds the elements of the same level only; grouping them in a group nests the new group; a group left with one member is dissolved. Copied, pasted, deleted, brought to the front as a whole; Ungroup (`Ctrl`/`Cmd` + `Shift` + `G`) moves the members to the group above. A group is not resized nor rotated; its inspector shows its ID and members.
 - **Layers** - `background`, `pipes`, `equipment`, `instruments` and `foreground` (`layers.ts`): a pipe is under the equipment, a level panel over its tank; a cell is put in another layer in the inspector (the JointJS badge of the example is in the background).
 - **Inspector** - `ui.Inspector` for a single selected cell: the tag, the texts, the values and thresholds, whether the control is used, the routing of a link, the text, size and color of a label, the layer.
 - **Save / open** - JSON from `graph.toJSON()`: the cells, the images and the favorites (not the layers). A file is loaded into a scratch graph first, so an invalid one doesn't replace the diagram.
@@ -60,7 +61,7 @@ src/
   navigator.ts     the minimap
   settings.ts      the settings of the diagram (the screen) in the inspector panel
   screen.ts      the screen: added, shown alone in the runtime mode
-  selection.ts     the selection on the canvas (`ui.Selection`): the region, the frames
+  selection.ts     the selection on the canvas (`ui.Selection`): the region, the frames, the hover frame, the badges of the groups
   diagram/         the example: a boiler house, a JSON file as saved by the Save button (with the JointJS badge and a photo as images)
   shapes/          the shapes (see Shape features); ports.ts the pipe stubs and the terminals, footprint.ts the area a shape takes
   controllers/     the event handling
@@ -78,6 +79,7 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | `SelectionController` | always | the selection: free transform, link tools, the inspector |
 | `TagsController` | always | graph: a free tag for every element |
 | `PipeColorController` | always | graph: the pipes (their colors, their ends) - a control valve shows the color of its pipe |
+| `GroupController` | always | graph: a member moved, resized, rotated - its groups refit |
 | `ToolbarController` | each mode | toolbar: mode, color scheme, save, open, settings |
 | `EditController` | edit | paper: cell click, blank drag (a region) |
 | `PaletteController` | edit | palette: shape click, shape drop; graph: the derived palette groups |

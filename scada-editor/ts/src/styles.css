@@ -710,6 +710,40 @@ body {
     cursor: pointer;
 }
 
+/* The members of a group in the inspector (see `inspector.ts`) */
+.joint-inspector .group-members ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+}
+
+.joint-inspector .group-members li {
+    margin: 0 -8px;
+}
+
+/* A member: clicked, it is selected */
+.joint-inspector .group-member {
+    width: 100%;
+    padding: 5px 8px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--foreground);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.joint-inspector .group-member:hover {
+    background: var(--muted);
+}
+
+.joint-inspector .group-member-tag {
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
+}
+
 /* A color field (see `color-field.ts`): the input, and the colors to pick again under it */
 .joint-inspector .color-field-row {
     display: flex;

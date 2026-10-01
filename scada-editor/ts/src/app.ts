@@ -27,6 +27,7 @@ import {
     SelectionController,
     TagsController,
     PipeColorController,
+    GroupController,
     ToolbarController
 } from './controllers';
 // The mock of the plant (see `simulation/`): an app with a real plant deletes it and this line
@@ -76,7 +77,7 @@ export class App {
             ...paperOptions,
             model: this.graph,
             cellViewNamespace: cellNamespace,
-            interactive: interactivity[this.mode],
+            interactive: this.interactivityOf(this.mode),
             getImages: () => getImages(this.graph)
         } as dia.Paper.Options & ImagesPaperOptions);
 
@@ -100,7 +101,8 @@ export class App {
             new ControlsController(this),
             new SelectionController(this),
             new TagsController(this),
-            new PipeColorController(this)
+            new PipeColorController(this),
+            new GroupController(this)
         ];
         this.modeControllers = {
             // Each listens to the toolbar of its mode.
@@ -168,7 +170,7 @@ export class App {
             this.createStencil(this.snaplines!);
         }
         this.modeControllers[mode].forEach(controller => controller.startListening());
-        this.paper.setInteractivity(interactivity[mode]);
+        this.paper.setInteractivity(this.interactivityOf(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;
@@ -184,6 +186,19 @@ export class App {
         this.destroyStencil();
         this.destroySnaplines();
         this.toolbar.remove();
+    }
+
+    /**
+     * The interactivity of the mode (see `config.ts`) and the drag of a member of a group (see `Group`):
+     * a selected one moves on its own, any other one moves the group it is in.
+     */
+    protected interactivityOf(mode: Mode): dia.Paper.Options['interactive'] {
+        const base = interactivity[mode];
+        if (!base) return false;
+        return (cellView: dia.CellView) => {
+            const options = base(cellView);
+            return typeof options === 'object' ? { ...options, stopDelegation: this.selection.has(cellView.model) } : options;
+        };
     }
 
     protected createToolbar(mode: Mode): void {

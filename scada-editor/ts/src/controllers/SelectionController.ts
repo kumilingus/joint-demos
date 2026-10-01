@@ -3,11 +3,14 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { GRID_SIZE, SELECTION_PADDING } from '../const';
 import { closeInspector, openInspector } from '../inspector';
+import { selectCell } from '../actions';
 import { closeShapePreview } from '../shape-preview';
 import { closeSettings, isSettingsOpen, openSettings } from '../settings';
 import Screen from '../shapes/Screen';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../tools';
 import Shape, { type ResizeOptions } from '../shapes/Shape';
+import { isGroup } from '../shapes/Group';
+import { showGroupBadges, showHover, updateGroupBadge } from '../selection';
 
 /**
  * Shows the selected cells in the inspector and a single selected cell with its tools: an element
@@ -22,6 +25,7 @@ export default class SelectionController extends Controller {
         this.listenTo(selection, 'add reset', (app: App) => updateSelection(app));
         this.listenTo(selection, 'remove', onSelectionRemove);
         this.listenTo(graph, 'remove', onCellRemove);
+        this.listenTo(graph, 'add remove change:parent', onMembersChange);
     }
 }
 
@@ -29,6 +33,9 @@ export default class SelectionController extends Controller {
 function updateSelection(app: App, keepSettings = false) {
     const { selection } = app;
     hideSelected(app);
+    // A selected group has a badge (see `selection.ts`); a hover frame is out of date.
+    showGroupBadges(app.paper, selection);
+    showHover(app.paper, null);
     if (selection.length === 1) showSelected(app, selection.at(0));
     updateInspector(app, keepSettings);
 }
@@ -40,6 +47,19 @@ function onSelectionRemove(app: App, cell: dia.Cell) {
 
 function onCellRemove(app: App, cell: dia.Cell) {
     app.selection.remove(cell);
+}
+
+/**
+ * A cell added to a selected group or removed from it (an undo, a redo, ...): its badge counts the members
+ * again, its inspector lists them again.
+ */
+function onMembersChange(app: App, cell: dia.Cell) {
+    const { selection } = app;
+    const parents = [cell.get('parent'), cell.previous('parent')];
+    const groups = selection.filter(selected => isGroup(selected) && parents.includes(String(selected.id)));
+    if (groups.length === 0) return;
+    groups.forEach(group => updateGroupBadge(app.paper, group));
+    if (selection.length === 1) updateInspector(app);
 }
 
 /** The inspector shows a cell only when it is the only one selected (the screen: the settings). */
@@ -56,7 +76,7 @@ function updateInspector(app: App, keepSettings = false) {
     }
     closeSettings(app);
     if (cell) {
-        openInspector(inspectorEl, cell);
+        openInspector(inspectorEl, cell, member => selectCell(app, member));
     } else {
         closeInspector();
     }
@@ -64,7 +84,8 @@ function updateInspector(app: App, keepSettings = false) {
 
 function showSelected(app: App, cell: dia.Cell) {
     const cellView = cell.findView(app.paper);
-    if (!cellView) return;
+    // A group is moved only (by its members), its frame is the one of the selection.
+    if (!cellView || isGroup(cell)) return;
     if (cell.isElement()) {
         // An element can be resized and rotated.
         new ui.FreeTransform({

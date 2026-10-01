@@ -6,6 +6,8 @@ import { getImages, IMAGES_ATTRIBUTE, type ImageEntry } from './images';
 import { getScreen, isScreenShown } from './screen';
 import Screen from './shapes/Screen';
 import Join from './shapes/Join';
+import Group, { isGroup } from './shapes/Group';
+import { DERIVED } from './shapes/routing';
 import { DerivedGroup, keysInUse, loadCustomShapes, loadDerivedGroup } from './stencil';
 import { getFavorites, removeFavorite } from './favorites';
 
@@ -27,14 +29,92 @@ export function toggleCell(app: App, cell: dia.Cell): void {
     }
 }
 
+/** The cell and its groups (see `Group`), from the cell up */
+function withGroups(cell: dia.Cell): dia.Cell[] {
+    return [cell, ...cell.getAncestors()];
+}
+
+const parentId = (cell: dia.Cell) => cell.getParentCell()?.id ?? null;
+
+/**
+ * A click on a cell: the top group it is in, or one level further in when that group (or a group
+ * in it, or the cell itself) is selected - the member of the selected group the cell is in; with
+ * a member of a group selected, the cell (or its group) at the same level in that group.
+ */
+export function selectAtLevel(app: App, clicked: dia.Cell): void {
+    const target = clickTarget(app, clicked);
+    if (target) selectCell(app, target);
+}
+
+/**
+ * What a click on the cell selects (see `selectAtLevel()`): its top group, or one level further in; `null`
+ * if it is selected already (the frame on hover shows it, see `EditController`).
+ */
+export function clickTarget(app: App, clicked: dia.Cell): dia.Cell | null {
+    const levels = withGroups(clicked);
+    const [selected] = app.selection.length === 1 ? app.selection.toArray() : [];
+    const index = selected ? levels.indexOf(selected) : -1;
+    if (index === 0) return null;
+    const target = index > 0
+        ? levels[index - 1]
+        // A sibling of the selected cell (another member of its group), else the top group
+        : (selected && levels.find(level => parentId(level) === parentId(selected))) || topGroup(clicked);
+    return app.selection.has(target) ? null : target;
+}
+
+/**
+ * A click with Shift / Ctrl / Cmd: the cell of the level of the selection (a sibling of the selected cells:
+ * the cell, or the group of it in the same group as them) toggled - not one of another level. A click
+ * in the only selected group keeps it (it would leave nothing selected; `Escape` does that).
+ */
+export function toggleAtLevel(app: App, clicked: dia.Cell): void {
+    const { selection } = app;
+    if (selection.length === 0) {
+        toggleCell(app, topGroup(clicked));
+        return;
+    }
+    const level = parentId(selection.at(0));
+    const sibling = withGroups(clicked).find(cell => parentId(cell) === level);
+    if (!sibling) return;
+    if (sibling !== clicked && selection.length === 1 && selection.has(sibling)) return;
+    toggleCell(app, sibling);
+}
+
+/** Escape: the group of the selected member (one level up), or nothing selected */
+export function selectUp(app: App): void {
+    const [selected] = app.selection.length === 1 ? app.selection.toArray() : [];
+    const parent = selected?.getParentCell();
+    if (parent) {
+        selectCell(app, parent);
+    } else {
+        clearSelection(app);
+    }
+}
+
 export function clearSelection(app: App): void {
     app.selection.reset();
 }
 
 export function removeSelection(app: App): void {
-    const { selection, graph } = app;
+    const { selection } = app;
     if (selection.length === 0) return;
-    graph.removeCells(selection.toArray());
+    removeCells(app, selection.toArray());
+}
+
+/**
+ * Remove the cells (one step of the history): a group they were in is fitted to the members left, and
+ * dissolved if one is left only (see `dissolveLoneGroup()`).
+ */
+function removeCells(app: App, cells: dia.Cell[]): void {
+    const { graph } = app;
+    const parents = new Set(cells.map(cell => cell.getParentCell()).filter((parent): parent is dia.Cell => Boolean(parent)));
+    graph.startBatch('remove');
+    graph.removeCells(cells);
+    parents.forEach((parent) => {
+        if (!parent.graph) return;
+        if (!dissolveLoneGroup(parent)) fitGroups(parent, { recorded: true });
+    });
+    graph.stopBatch('remove');
 }
 
 export function undo(app: App): void {
@@ -68,7 +148,8 @@ export function copySelection(app: App): void {
     if (selection.length === 0) return;
     const elements = selection.filter(cell => cell.isElement());
     if (elements.length > 0) {
-        clipboard.copyElements(elements, graph);
+        // A group with its members (and the links between them)
+        clipboard.copyElements(elements, graph, { deep: true });
     } else {
         // Free copies (not in the graph): nothing else is copied with them.
         clipboard.copyElements(selection.map(link => detachedCopy(app, link as dia.Link)), graph);
@@ -81,7 +162,7 @@ export function cutSelection(app: App): void {
     if (selection.length === 0) return;
     copySelection(app);
     graph.startBatch('cut');
-    graph.removeCells(selection.toArray());
+    removeCells(app, selection.toArray());
     graph.stopBatch('cut');
 }
 
@@ -95,7 +176,8 @@ export function paste(app: App): void {
     graph.startBatch('paste');
     const cells = clipboard.pasteCells(graph, { translate: PASTE_OFFSET });
     graph.stopBatch('paste');
-    selectCells(app, cells);
+    // A pasted group, not its members (see `Group`)
+    selectCells(app, cells.filter(cell => !cell.isEmbedded()));
 }
 
 /**
@@ -108,7 +190,13 @@ export function pasteAt(app: App, point: dia.Point): void {
     graph.startBatch('paste');
     const cells = clipboard.pasteCellsAtPoint(graph, new g.Point(point).snapToGrid(GRID_SIZE));
     graph.stopBatch('paste');
-    selectCells(app, cells);
+    // A pasted group, not its members (see `Group`)
+    selectCells(app, cells.filter(cell => !cell.isEmbedded()));
+}
+
+/** The cells drawn: a group as its members (it has no z of its own to speak of, see `Group`) */
+function drawnCells(cells: dia.Cell[]): dia.Cell[] {
+    return cells.flatMap(cell => (isGroup(cell) ? cell.getEmbeddedCells({ deep: true }).filter(member => !isGroup(member)) : [cell]));
 }
 
 /**
@@ -117,7 +205,7 @@ export function pasteAt(app: App, point: dia.Point): void {
  */
 export function bringToFront(app: App): void {
     const { graph } = app;
-    const cells = util.sortBy(app.selection.toArray(), cell => cell.z());
+    const cells = util.sortBy(drawnCells(app.selection.toArray()), cell => cell.z());
     if (cells.length === 0) return;
     graph.startBatch('to-front');
     cells.forEach(cell => cell.toFront());
@@ -127,7 +215,7 @@ export function bringToFront(app: App): void {
 /** Send the selected cells to the back of their layers, in their order: one step of the history. */
 export function sendToBack(app: App): void {
     const { graph } = app;
-    const cells = util.sortBy(app.selection.toArray(), cell => -cell.z());
+    const cells = util.sortBy(drawnCells(app.selection.toArray()), cell => -cell.z());
     if (cells.length === 0) return;
     graph.startBatch('to-back');
     cells.forEach(cell => cell.toBack());
@@ -219,31 +307,132 @@ function isDrawnBelow(graph: dia.Graph, cell: dia.Cell, other: dia.Cell): boolea
     return layer < otherLayer || (layer === otherLayer && index < otherIndex);
 }
 
+/** The group the cell is in (the outermost one, see `Group`), or the cell itself */
+export function topGroup(cell: dia.Cell): dia.Cell {
+    const ancestors = cell.getAncestors();
+    return ancestors.length > 0 ? ancestors[ancestors.length - 1] : cell;
+}
+
 /**
- * The cell the context menu at the point is for: the clicked one, or the selected element under it there
- * (selected with the menu, see `elementBelow()`) - the next menu goes on down from it.
+ * The element drawn for the cell at the point: the cell itself, or for a group the top one of its members
+ * there (a group draws nothing); `null` if none of its members is there.
+ */
+function drawnAt(graph: dia.Graph, cell: dia.Cell, point: dia.Point): dia.Cell | null {
+    if (!isGroup(cell)) return cell;
+    const members = graph.findElementsAtPoint(point).filter(element => !isGroup(element) && element.isEmbeddedIn(cell, { deep: true }));
+    if (members.length === 0) return null;
+    return members.reduce((top, member) => (isDrawnBelow(graph, top, member) ? member : top));
+}
+
+/**
+ * The cell the context menu at the point is for: the clicked one (its group), or the selected element
+ * under it there (selected with the menu, see `elementBelow()`) - the next menu goes on down from it.
  */
 export function menuCell(app: App, clicked: dia.Cell, point: dia.Point): dia.Cell {
     const { graph, selection } = app;
+    // The selected one of the clicked cell and its groups, else the top group
+    const cell = withGroups(clicked).find(level => selection.has(level)) ?? topGroup(clicked);
     const [selected] = selection.length === 1 ? selection.toArray() : [];
-    if (!selected || selected === clicked || !selected.isElement()) return clicked;
-    const atPoint = graph.findElementsAtPoint(point).includes(selected as dia.Element);
-    return atPoint && isDrawnBelow(graph, selected, clicked) ? selected : clicked;
+    if (!selected || selected === cell || !selected.isElement()) return cell;
+    const drawn = drawnAt(graph, selected, point);
+    const atPoint = drawn !== null && graph.findElementsAtPoint(point).includes(drawn as dia.Element);
+    return atPoint && isDrawnBelow(graph, drawn, clicked) ? selected : cell;
 }
 
 /**
  * The element under the cell at the point: of the elements there drawn below it, the top one
- * (a panel of the background under the instruments, ...); `null` if there is none. Not the screen
- * (a frame edited in the settings, see `settings.ts`).
+ * (a panel of the background under the instruments, ...); `null` if there is none. Never a member of
+ * a group: of the cell's own group skipped, of another one that group. Not the screen (a frame edited
+ * in the settings, see `settings.ts`).
  */
 export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.Element | null {
     const { graph } = app;
+    const reference = drawnAt(graph, cell, point) ?? cell;
     const below = graph.findElementsAtPoint(point)
-        .filter(element => element !== cell && !(element instanceof Screen) && isDrawnBelow(graph, element, cell))
+        .filter(element => element !== cell && !isGroup(element) && !(element instanceof Screen))
+        .filter(element => !element.isEmbeddedIn(cell, { deep: true }) && isDrawnBelow(graph, element, reference))
         .map(element => ({ element, order: drawingOrder(graph, element) }));
     if (below.length === 0) return null;
     below.sort((a, b) => (b.order[0] - a.order[0]) || (b.order[1] - a.order[1]));
-    return below[0].element;
+    return topGroup(below[0].element) as dia.Element;
+}
+
+/** The elements of the selection that can be grouped (not the screen; the siblings, see `toggleAtLevel()`) */
+export function groupable(app: App): dia.Element[] {
+    const elements = app.selection.filter(cell => cell.isElement() && !(cell instanceof Screen)) as dia.Element[];
+    const level = elements.length > 0 ? parentId(elements[0]) : null;
+    return elements.filter(element => parentId(element) === level);
+}
+
+/**
+ * Fit the group of the cell and the groups above it to their members: derived (not in the history) by default,
+ * `recorded` in a step of the history that changes the members (an undo of it gets the size back).
+ */
+export function fitGroups(cell: dia.Cell, { recorded = false } = {}): void {
+    const options = (recorded ? {} : { ...DERIVED }) as dia.Element.FitToChildrenOptions;
+    withGroups(cell).filter(isGroup).forEach(group => group.fitEmbeds(options));
+}
+
+/**
+ * A group with one element (or none) left is dissolved: its cells go to the group it is in (if any),
+ * it is removed. `true` if it was.
+ */
+function dissolveLoneGroup(group: dia.Cell): boolean {
+    if (!isGroup(group) || group.getEmbeddedCells().filter(cell => cell.isElement()).length > 1) return false;
+    const parent = group.getParentCell();
+    const embeds = group.getEmbeddedCells();
+    group.unembed(embeds);
+    if (parent) parent.embed(embeds);
+    group.remove();
+    if (parent) fitGroups(parent, { recorded: true });
+    return true;
+}
+
+/**
+ * Group the selected elements (2 at least): they are embedded in a new group (see `Group`) with the links
+ * between them (moved with it, their vertices too), the group fitted around them and selected.
+ * A selected group nests in the new one. One step of the history.
+ */
+export function groupSelection(app: App): void {
+    const { graph } = app;
+    const elements = groupable(app);
+    if (elements.length < 2) return;
+    const members = new Set<dia.Cell>(elements.flatMap(element => [element, ...element.getEmbeddedCells({ deep: true })]));
+    // The group they are in (the new group goes in it)
+    const parent = elements[0].getParentCell();
+    const links = graph.getLinks().filter((link) => {
+        const [source, target] = [link.getSourceCell(), link.getTargetCell()];
+        return parentId(link) === (parent?.id ?? null) && source && target && members.has(source) && members.has(target);
+    });
+    graph.startBatch('group');
+    if (parent) parent.unembed([...elements, ...links]);
+    const group = new Group();
+    graph.addCell(group);
+    group.embed([...elements, ...links]);
+    group.fitEmbeds();
+    if (parent) {
+        parent.embed(group);
+        // All of its members grouped: the new group in its place
+        dissolveLoneGroup(parent);
+    }
+    graph.stopBatch('group');
+    selectCell(app, group);
+}
+
+/** Ungroup the selected group: its members free again (and selected), the group removed. One step of the history. */
+export function ungroupSelection(app: App): void {
+    const { graph } = app;
+    const [group] = app.selection.toArray();
+    if (app.selection.length !== 1 || !isGroup(group)) return;
+    const embeds = group.getEmbeddedCells();
+    // The members go to the group it is in (if any).
+    const parent = group.getParentCell();
+    graph.startBatch('ungroup');
+    group.unembed(embeds);
+    if (parent) parent.embed(embeds);
+    group.remove();
+    graph.stopBatch('ungroup');
+    selectCells(app, embeds.filter(cell => cell.isElement()));
 }
 
 /** Add the uploaded images to the diagram (they are saved with it, shown in the palette; an undo removes them). */

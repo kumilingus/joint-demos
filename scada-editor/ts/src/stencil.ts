@@ -348,7 +348,8 @@ export function loadDerivedGroup(stencil: ui.Stencil, group: DerivedGroup, keys:
 
 /** The keys of the palette shapes used in the diagram */
 export function keysInUse(graph: dia.Graph): Set<string> {
-    return new Set(graph.getCells().map(paletteKey));
+    // A group is not a shape of the palette (see `Group`).
+    return new Set(graph.getCells().filter(cell => cell.get('type') !== 'Group').map(paletteKey));
 }
 
 /** A shape for each image of the diagram (the group of the custom shapes), with its tooltip */

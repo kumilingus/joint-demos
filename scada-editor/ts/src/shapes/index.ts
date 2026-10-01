@@ -83,6 +83,7 @@ import GaugeChart from './GaugeChart';
 import { chartView } from './charts';
 import Rectangle from './Rectangle';
 import Ellipse from './Ellipse';
+import Group from './Group';
 
 export {
     Pump, Compressor, Fan, Motor, Blower, Turbine, ConveyorBelt,
@@ -96,7 +97,7 @@ export {
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground, Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
     LineChart, BarChart, DonutChart, GaugeChart,
-    Rectangle, Ellipse
+    Rectangle, Ellipse, Group
 };
 
 export const cellNamespace = {
@@ -189,5 +190,6 @@ export const cellNamespace = {
     GaugeChart,
     GaugeChartView: chartView(['value', 'min', 'max']),
     Rectangle,
-    Ellipse
+    Ellipse,
+    Group
 };

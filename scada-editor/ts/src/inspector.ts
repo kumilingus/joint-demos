@@ -4,6 +4,8 @@ import { isRouted } from './shapes/routing';
 import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
 import { getColorFieldValue, rememberColor, renderColorField } from './color-field';
+import { isGroup } from './shapes/Group';
+import { descriptions } from './descriptions';
 import { MAX_SLICES } from './shapes/DonutChart';
 
 const groups: ui.Inspector.Options['groups'] = {
@@ -210,23 +212,79 @@ const layerInput = (group: string) => ({
     }
 });
 
-export function openInspector(el: HTMLElement, cell: dia.Cell): void {
+/** The inputs of a group: its ID and its members (no layer: nothing of it is drawn, see `Group`) */
+const groupInputs: Inputs = {
+    tag: { type: 'text', label: 'ID', group: 'general', index: 0 },
+    members: { type: 'group-members', label: 'Members', group: 'general', index: 1 }
+};
+
+/** What a click on a member of a group in the inspector does (see `openInspector()`) */
+let selectMember: ((cell: dia.Cell) => void) | null = null;
+
+/**
+ * The members of a group (the `renderFieldContent` of the inspector): the elements by their IDs and names,
+ * a click on one selects it.
+ */
+function renderMembersField(options: { type?: string; label?: string }, _path: string, _value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
+    if (options.type !== 'group-members') return undefined;
+    const el = document.createElement('div');
+    el.className = 'group-members';
+    const label = document.createElement('label');
+    label.textContent = options.label ?? '';
+    const list = document.createElement('ul');
+    (inspector.options.cell as dia.Cell).getEmbeddedCells().filter(cell => cell.isElement()).forEach((member) => {
+        const item = document.createElement('li');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'group-member';
+        const tag = document.createElement('span');
+        tag.className = 'group-member-tag';
+        tag.textContent = String(member.get('tag') ?? '');
+        const name = isGroup(member) ? 'Group' : member.attr('label/text') || descriptions[member.get('type')]?.title || member.get('type');
+        button.append(tag, ` ${name}`);
+        button.addEventListener('click', () => selectMember?.(member));
+        item.append(button);
+        list.append(item);
+    });
+    el.append(label, list);
+    return el;
+}
+
+/** The custom contents of the fields: the colors (see `color-field.ts`), the members of a group */
+function renderFieldContent(...args: Parameters<typeof renderColorField>): HTMLElement | undefined {
+    return renderColorField(...args) ?? renderMembersField(...args);
+}
+
+/** The value of a custom field: of a color one (the members of a group are read-only, no value) */
+function getFieldValue(attribute: HTMLElement): { value: unknown } | undefined {
+    if (attribute.classList.contains('group-members')) return { value: undefined };
+    return getColorFieldValue(attribute);
+}
+
+/** The inputs of the cell: of a group, of an element, of a link */
+function inspectorInputs(cell: dia.Cell): Inputs {
+    if (isGroup(cell)) return groupInputs;
+    if (cell.isElement()) return { ...getInputs(cell), ...layerInput('general') };
+    return {
+        ...(isRouted(cell) ? linkInputs : {}),
+        ...(['Pipe', 'Wire', 'SignalLine'].includes(cell.get('type')) ? linkColorInputs : {}),
+        ...layerInput('link')
+    };
+}
+
+/** Open the inspector of the cell; a click on a member of a group selects it (`onMemberSelect`). */
+export function openInspector(el: HTMLElement, cell: dia.Cell, onMemberSelect?: (member: dia.Cell) => void): void {
     closeInspector();
+    selectMember = onMemberSelect ?? null;
     const linkName = LINK_NAMES[cell.get('type')] ?? 'Pipe';
     const inspector = ui.Inspector.create(el, {
         cell,
-        inputs: cell.isElement()
-            ? { ...getInputs(cell as dia.Element), ...layerInput('general') }
-            : {
-                ...(isRouted(cell) ? linkInputs : {}),
-                ...(['Pipe', 'Wire', 'SignalLine'].includes(cell.get('type')) ? linkColorInputs : {}),
-                ...layerInput('link')
-            },
+        inputs: inspectorInputs(cell),
         groups: { ...groups, link: { ...groups!.link, label: linkName }},
         renderLabel,
-        // The color fields with the swatches of the colors to pick again (see `color-field.ts`)
-        renderFieldContent: renderColorField,
-        getFieldValue: getColorFieldValue
+        // The color fields with the swatches of the colors to pick again (see `color-field.ts`), the members of a group
+        renderFieldContent,
+        getFieldValue
     });
     trackPickedColors(inspector.el);
 }

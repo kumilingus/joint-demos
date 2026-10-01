@@ -1,11 +1,12 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { clearSelection, copySelection, cutSelection, paste, redo, removeSelection, undo } from '../actions';
+import { copySelection, cutSelection, groupSelection, paste, redo, removeSelection, selectUp, undo, ungroupSelection } from '../actions';
 import { closeMenu } from '../context-menu';
 
 /**
- * Keyboard shortcuts of the editor. Active in the edit mode only.
+ * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, group / ungroup, `Escape` one level
+ * up (the group of the selected member, then nothing). Active in the edit mode only.
  */
 export default class KeyboardController extends Controller {
 
@@ -19,7 +20,9 @@ export default class KeyboardController extends Controller {
             'ctrl+y meta+y ctrl+shift+z meta+shift+z': onRedo,
             'ctrl+c meta+c': onCopy,
             'ctrl+x meta+x': onCut,
-            'ctrl+v meta+v': onPaste
+            'ctrl+v meta+v': onPaste,
+            'ctrl+g meta+g': onGroup,
+            'ctrl+shift+g meta+shift+g': onUngroup
         });
     }
 }
@@ -38,7 +41,8 @@ function onDelete(app: App, evt: dia.Event) {
 function onEscape(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
     closeMenu();
-    clearSelection(app);
+    // One level up: the group of the selected member (see `Group`)
+    selectUp(app);
 }
 
 function onUndo(app: App, evt: dia.Event) {
@@ -71,4 +75,18 @@ function onPaste(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
     evt.preventDefault();
     paste(app);
+}
+
+// A group of the selected elements, its members back (see `Group`)
+
+function onGroup(app: App, evt: dia.Event) {
+    if (isTyping(evt)) return;
+    evt.preventDefault();
+    groupSelection(app);
+}
+
+function onUngroup(app: App, evt: dia.Event) {
+    if (isTyping(evt)) return;
+    evt.preventDefault();
+    ungroupSelection(app);
 }

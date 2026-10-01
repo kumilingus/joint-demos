@@ -1,9 +1,10 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from './app';
 import {
-    bringToFront, copySelection, cutSelection, elementBelow, menuCell, pasteAt, removeSelection, selectCell, sendToBack, splitLink, insertJoin
+    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, menuCell, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin
 } from './actions';
 import { LAYER_NAMES } from './layers';
+import { isGroup } from './shapes/Group';
 import type { Layer } from './const';
 
 /*
@@ -67,6 +68,17 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
     openMenu(app, evt, [
         { action: 'cut', label: 'Cut', shortcut: `${MOD}X`, run: () => cutSelection(app) },
         { action: 'copy', label: 'Copy', shortcut: `${MOD}C`, run: () => copySelection(app) },
+        // Several elements (groups too) into a group, a single group back into its members (see `Group`)
+        ...(isGroup(cell) && app.selection.length === 1
+            ? [{ action: 'ungroup', label: 'Ungroup', shortcut: `${MOD}⇧G`, separated: true, run: () => ungroupSelection(app) }]
+            : [{
+                action: 'group',
+                label: 'Group',
+                shortcut: `${MOD}G`,
+                disabled: groupable(app).length < 2,
+                separated: true,
+                run: () => groupSelection(app)
+            }]),
         ...(cell.isLink()
             ? [{ action: 'split', label: 'Split Here', separated: true, run: () => splitLink(app, cell, { x, y }) }]
             : []),
