@@ -9,6 +9,7 @@ import type { App } from './app';
 import { deleteImage, refreshPalette } from './actions';
 import { isFavorite, toggleFavorite } from './favorites';
 import { paletteKey } from './stencil';
+import { Animations } from './animations';
 
 /*
  * A shape of the palette clicked (not dragged): shown in the inspector panel with what it is,
@@ -25,6 +26,7 @@ interface Shown {
     el: HTMLElement;
     paper: dia.Paper;
     cellView: dia.CellView;
+    animations: Animations;
 }
 
 let shown: Shown | null = null;
@@ -64,30 +66,41 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         getImages: () => getImages(app.graph)
     } as dia.Paper.Options & ImagesPaperOptions);
     const copy = cell.clone();
+    // A link without its name (the label of the palette, see `setTooltip()` in `stencil.ts`): the title says it.
+    if (copy.isLink()) copy.labels([]);
+    // Shown running (see `animations.ts`): switched on, open
+    if (copy.has('power')) copy.set('power', 1);
+    const open = copy.get('open');
+    if (typeof open === 'boolean') copy.set('open', true);
+    if (typeof open === 'number') copy.set('open', 1);
     paper.model.addCell(copy);
+    // The paper renders the shape at once (not async): its view is there to be animated.
+    const animations = new Animations(paper);
+    animations.start();
 
     // An image of the user: named after it, the name can be changed (the label of the elements dropped from now on).
     const imageId: string | undefined = cell.attr('image/imageId');
     if (imageId) {
         titleEl.textContent = getImages(app.graph)[imageId]?.name ?? title;
         el.insertBefore(createNameField(app, imageId, (name) => {
+            // The title (the label of the shape is not shown here)
             titleEl.textContent = name;
-            copy.attr('label/text', name);
         }), actionsEl);
         actionsEl.append(createDeleteButton(app, imageId));
     }
-    // Fitted to what the shape draws (its label, its pipe stubs, ...), from the model
-    paper.transformToFitContent({ contentArea: getFootprint(copy), padding: PREVIEW_PADDING, maxScale: 1.5, verticalAlign: 'middle', horizontalAlign: 'middle' });
+    // Fitted to what the shape draws (its pipe stubs, ...; not its label, hidden as in the palette), from the model
+    paper.transformToFitContent({ contentArea: getFootprint(copy, { label: false }), padding: PREVIEW_PADDING, maxScale: 1.5, verticalAlign: 'middle', horizontalAlign: 'middle' });
 
     highlighters.mask.add(cellView, 'root', PALETTE_HIGHLIGHTER_ID, {
         padding: 4,
         attrs: { stroke: SELECTION_COLOR, strokeWidth: 2, strokeLinejoin: 'round' }
     });
-    shown = { el, paper, cellView };
+    shown = { el, paper, cellView, animations };
 }
 
 export function closeShapePreview(): void {
     if (!shown) return;
+    shown.animations.stop();
     highlighters.mask.remove(shown.cellView, PALETTE_HIGHLIGHTER_ID);
     shown.paper.remove();
     shown.el.remove();
