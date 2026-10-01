@@ -7,7 +7,7 @@ import {
     LiquidTank, ConicTank, MixingTank, Silo, SphericalTank, Hopper, HorizontalTank,
     Chimney, CoolingTower,
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display,
-    Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, SignalLine, Label, CustomImage,
+    Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, SignalLine, Arrow, Label, CustomImage,
     GateValve, YStrainer, OrificePlate, AirCooler, Scrubber, WaterTower,
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground,
     Lamp, Heater, ElectricMeter, Wire,
@@ -264,7 +264,11 @@ function createShapes(): Record<string, dia.Cell[]> {
                 source: { x: 0, y: 0 },
                 target: { x: LINK_LENGTH, y: 0 }
             }),
-            new Label()
+            new Label(),
+            new Arrow({
+                source: { x: 0, y: 0 },
+                target: { x: LINK_LENGTH, y: 0 }
+            })
         ],
         background: [
             new Rectangle(),

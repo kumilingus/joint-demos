@@ -22,6 +22,7 @@ const COLOR_PATHS: Record<string, string[]> = {
     Pipe: ['attrs', 'line', 'stroke'],
     Wire: ['attrs', 'line', 'stroke'],
     SignalLine: ['attrs', 'line', 'stroke'],
+    Arrow: ['attrs', 'line', 'stroke'],
     Label: ['attrs', 'label', 'fill']
 };
 

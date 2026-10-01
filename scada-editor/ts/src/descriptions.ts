@@ -76,6 +76,7 @@ export const descriptions: Record<string, ShapeDescription> = {
     Trend: { title: 'Trend', description: 'Shows the recent history of a value: the newest on the right.' },
     SignalLine: { title: 'Signal Line', description: 'Connects an instrument (a transmitter) to what it measures or controls.' },
     Label: { title: 'Label', description: 'A text on the diagram: a name of an area, a note.' },
+    Arrow: { title: 'Arrow', description: 'Points at a part of the plant (from a note, ...): an arrowhead at either end and its color set in the inspector.' },
 
     // Electrical
     DieselGenerator: { title: 'Diesel Generator', description: 'An engine and an alternator on a skid: a source of the power while it runs. The fuel comes in by the pipe on the left.' },

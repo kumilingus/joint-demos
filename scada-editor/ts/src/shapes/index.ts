@@ -54,6 +54,7 @@ import Elbow from './Elbow';
 import EndCap from './EndCap';
 import Manifold from './Manifold';
 import SignalLine from './SignalLine';
+import Arrow from './Arrow';
 import Screen from './Screen';
 import Generator from './Generator';
 import Transformer from './Transformer';
@@ -92,7 +93,7 @@ export {
     LiquidTank, ConicTank, MixingTank, Silo, SphericalTank, Hopper, HorizontalTank, WaterTower,
     Chimney, CoolingTower,
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display, Trend,
-    Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, CustomImage, YStrainer, OrificePlate,
+    Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, Arrow, CustomImage, YStrainer, OrificePlate,
     Screen,
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground, Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
@@ -152,6 +153,7 @@ export const cellNamespace = {
     Label,
     Pipe,
     SignalLine,
+    Arrow,
     CustomImage,
     Tee,
     Cross,

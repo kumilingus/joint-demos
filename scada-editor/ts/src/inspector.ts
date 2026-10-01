@@ -5,6 +5,7 @@ import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
 import { getColorFieldValue, rememberColor, renderColorField } from './color-field';
 import { isGroup } from './shapes/Group';
+import { type Arrowhead, arrowheadMarker } from './shapes/Arrow';
 import { descriptions } from './descriptions';
 import { MAX_SLICES } from './shapes/DonutChart';
 
@@ -194,11 +195,40 @@ const linkColorInputs: Inputs = {
     }
 };
 
-/** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power. */
+/** An arrowhead as a button: a short line ending with it (pointing outwards: left at the start, right at the end) */
+function arrowheadIcon(arrowhead: Arrowhead, end: 'source' | 'target'): string {
+    const marker = arrowheadMarker(arrowhead);
+    const head = marker
+        ? (marker.type === 'circle'
+            ? `<circle cx="20" cy="7" r="${marker.r}" />`
+            : `<path d="${marker.d}" transform="translate(20 7) rotate(180)" fill="${marker.fill ?? 'currentColor'}" stroke-width="${marker['stroke-width']}" stroke-linejoin="round" />`)
+        : '';
+    const flip = end === 'source' ? ' transform="matrix(-1 0 0 1 26 0)"' : '';
+    return `<svg width="26" height="14" viewBox="0 0 26 14" fill="currentColor" stroke="currentColor" aria-label="${arrowhead}"><title>${ARROWHEAD_NAMES[arrowhead]}</title><g${flip}><path d="M 2 7 H 20" stroke-width="2" stroke-linecap="round" />${head}</g></svg>`;
+}
+
+const ARROWHEAD_NAMES: Record<Arrowhead, string> = { none: 'None', arrow: 'Arrow', open: 'Open arrow', circle: 'Circle', diamond: 'Diamond' };
+
+const arrowheadInput = (end: 'source' | 'target', label: string, index: number) => ({
+    type: 'select-button-group',
+    label,
+    options: (Object.keys(ARROWHEAD_NAMES) as Arrowhead[]).map(value => ({ value, content: arrowheadIcon(value, end) })),
+    group: 'link',
+    index
+});
+
+/** The arrowheads of an arrow at its ends (see `Arrow`) */
+const arrowheadInputs: Inputs = {
+    sourceArrowhead: arrowheadInput('source', 'Start', 3),
+    targetArrowhead: arrowheadInput('target', 'End', 4)
+};
+
+/** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow points. */
 const LINK_NAMES: Record<string, string> = {
     Pipe: 'Pipe',
     SignalLine: 'Signal line',
-    Wire: 'Wire'
+    Wire: 'Wire',
+    Arrow: 'Arrow'
 };
 
 /** The layer of the graph the cell is in (moved between them when changed, see `layers.ts`). */
@@ -267,7 +297,8 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     if (cell.isElement()) return { ...getInputs(cell), ...layerInput('general') };
     return {
         ...(isRouted(cell) ? linkInputs : {}),
-        ...(['Pipe', 'Wire', 'SignalLine'].includes(cell.get('type')) ? linkColorInputs : {}),
+        ...(['Pipe', 'Wire', 'SignalLine', 'Arrow'].includes(cell.get('type')) ? linkColorInputs : {}),
+        ...(cell.get('type') === 'Arrow' ? arrowheadInputs : {}),
         ...layerInput('link')
     };
 }
