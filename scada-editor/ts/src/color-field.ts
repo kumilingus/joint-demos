@@ -20,6 +20,8 @@ const COLOR_PATHS: Record<string, string[]> = {
     Rectangle: ['attrs', 'body', 'fill'],
     Ellipse: ['attrs', 'body', 'fill'],
     Pipe: ['attrs', 'line', 'stroke'],
+    Wire: ['attrs', 'line', 'stroke'],
+    SignalLine: ['attrs', 'line', 'stroke'],
     Label: ['attrs', 'label', 'fill']
 };
 

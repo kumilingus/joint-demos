@@ -183,8 +183,8 @@ const linkInputs: Inputs = {
     }
 };
 
-/** The color of a pipe: of the medium it carries (the flow of the runtime mode is drawn over it) */
-const pipeInputs: Inputs = {
+/** The color of a link: of the medium a pipe carries, of a wire, of a signal line (the flow of the runtime mode is drawn over a pipe) */
+const linkColorInputs: Inputs = {
     attrs: {
         line: {
             stroke: { type: 'color', label: 'Color', group: 'link', index: 2 }
@@ -192,10 +192,11 @@ const pipeInputs: Inputs = {
     }
 };
 
-/** What the user calls the links: a pipe carries the medium, a signal line the measurement. */
+/** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power. */
 const LINK_NAMES: Record<string, string> = {
     Pipe: 'Pipe',
-    SignalLine: 'Signal line'
+    SignalLine: 'Signal line',
+    Wire: 'Wire'
 };
 
 /** The layer of the graph the cell is in (moved between them when changed, see `layers.ts`). */
@@ -218,7 +219,7 @@ export function openInspector(el: HTMLElement, cell: dia.Cell): void {
             ? { ...getInputs(cell as dia.Element), ...layerInput('general') }
             : {
                 ...(isRouted(cell) ? linkInputs : {}),
-                ...(cell.get('type') === 'Pipe' ? pipeInputs : {}),
+                ...(['Pipe', 'Wire', 'SignalLine'].includes(cell.get('type')) ? linkColorInputs : {}),
                 ...layerInput('link')
             },
         groups: { ...groups, link: { ...groups!.link, label: linkName }},
