@@ -2997,6 +2997,72 @@
     },
     {
       "position": {
+        "x": 880,
+        "y": 950
+      },
+      "size": {
+        "width": 100,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Label",
+      "attrs": {
+        "label": {
+          "text": "Standby",
+          "fill": "#ec4899"
+        }
+      },
+      "tag": "TXT-102",
+      "id": "3d2239e9-69a3-4565-b6f2-cd51ae3baf74",
+      "layer": "instruments"
+    },
+    {
+      "source": {
+        "id": "3d2239e9-69a3-4565-b6f2-cd51ae3baf74",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "useModelGeometry": true,
+            "rotate": true
+          }
+        }
+      },
+      "target": {
+        "id": "19798285-91a4-4270-b36c-c2b0563f2981",
+        "anchor": {
+          "name": "topLeft",
+          "args": {
+            "dx": "82%",
+            "dy": "82%",
+            "rotate": true,
+            "useModelGeometry": true
+          }
+        }
+      },
+      "type": "Arrow",
+      "layer": "instruments",
+      "routing": "smooth",
+      "router": {
+        "name": "normal"
+      },
+      "connector": {
+        "name": "curve",
+        "args": {
+          "sourceDirection": "outwards",
+          "targetDirection": "outwards"
+        }
+      },
+      "sourceArrowhead": "none",
+      "targetArrowhead": "arrow",
+      "attrs": {
+        "line": {
+          "stroke": "#ec4899"
+        }
+      },
+      "id": "95c6e637-0493-456b-95b9-b41974f95531"
+    },
+    {
+      "position": {
         "x": 1060,
         "y": 30
       },
