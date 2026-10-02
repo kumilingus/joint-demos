@@ -1,5 +1,6 @@
 import type { dia } from '@joint/plus';
 import boilerHouse from './diagram/boiler-house.json';
+import cementPlant from './diagram/cement-plant.json';
 import microgrid from './diagram/microgrid.json';
 
 /*
@@ -22,5 +23,10 @@ export const EXAMPLES: Example[] = [
         name: 'Microgrid',
         description: 'Power: the wind, the sun, a diesel backup and a battery on a bus',
         json: microgrid as dia.Graph.JSON
+    },
+    {
+        name: 'Cement Plant',
+        description: 'Solids: the limestone up a belt, the raw meal through the preheater, the gas to the stack',
+        json: cementPlant as dia.Graph.JSON
     }
 ];

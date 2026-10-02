@@ -56,7 +56,9 @@ function driftText(text: string, step: number, min: number, max: number): string
 const DISPLAY_RANGES: Record<string, { step: number; min: number; max: number }> = {
     bar: { step: 0.4, min: 0, max: 14 },
     Hz: { step: 0.05, min: 49.8, max: 50.2 },
-    '%': { step: 0.5, min: 20, max: 100 }
+    '%': { step: 0.5, min: 20, max: 100 },
+    't/h': { step: 1.5, min: 150, max: 175 },
+    '°C': { step: 2, min: 320, max: 360 }
 };
 
 /** The value rounded to two digits of the span (a whole number on a scale of 100, one decimal on a scale of 10) */
