@@ -2,7 +2,6 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
 import Shape, { type ColorField, type Resizable } from './Shape';
-import { SURFACE_COLOR } from './gradients';
 import type { Thresholds } from './Panel';
 import { Layer, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 
@@ -57,11 +56,18 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
+// The default color of the round frame
+const GAUGE_FRAME = 'var(--shape-gauge-stroke)';
+
 export default class PressureGauge extends Shape {
 
-    // The round frame of the dial: an outline only (no surface), wide enough to show the color
+    // Its color is the color of its round frame: the outline of the frame (in full), no Outline of its own
     get colorField(): ColorField {
-        return { path: ['color'], defaultValue: SURFACE_COLOR };
+        return { path: ['outline'], defaultValue: GAUGE_FRAME };
+    }
+
+    get outlineField(): null {
+        return null;
     }
 
     get graphLayer(): Layer {
@@ -110,8 +116,8 @@ export default class PressureGauge extends Shape {
                     cy: 'calc(h / 2)',
                     r: 'calc(w / 2)',
                     fill: 'var(--shape-face)',
-                    // The frame in the color of the gauge (see `colorField`)
-                    surfaceStroke: 'var(--shape-gauge-stroke)',
+                    // The frame: in the color of the gauge (see `colorField`)
+                    surfaceStroke: GAUGE_FRAME,
                     strokeWidth: 4
                 },
                 ticks: {

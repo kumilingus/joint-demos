@@ -2,7 +2,10 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import Shape, { type Resizable } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
+
+// The default color of the outline of the thermometer (the tube and the bulb)
+const THERMOMETER_FRAME = 'var(--shape-thermometer-stroke)';
 
 // The width of the tube
 const WIDTH = 20;
@@ -25,6 +28,21 @@ const markup = util.svg/* xml */`
 
 /** A liquid-in-glass thermometer showing a temperature from 0 to 100 %. */
 export default class Thermometer extends Shape {
+
+    // Its color is the color of the liquid (the column, the bulb follows it); its Outline of the tube and the bulb
+    get colorField(): ColorField {
+        return { path: ['attrs', 'column', 'fill'] };
+    }
+
+    static attributes = {
+        ...Shape.attributes,
+        // The bulb in the color of the liquid (`liquidFill` in the attributes): of the column
+        'liquid-fill': {
+            set(this: dia.ElementView) {
+                return { fill: this.model.attr(['column', 'fill']) ?? MAX_LIQUID_COLOR };
+            }
+        }
+    };
 
     get graphLayer(): Layer {
         return Layer.Instruments;
@@ -69,15 +87,16 @@ export default class Thermometer extends Shape {
                     rx: 'calc(s / 2)',
                     ry: 'calc(s / 2)',
                     fill: 'var(--shape-face)',
-                    stroke: 'var(--shape-thermometer-stroke)',
+                    // The outline of the thermometer (its Outline, see `surfaceAttributes`), with the bulb
+                    surfaceStroke: THERMOMETER_FRAME,
                     strokeWidth: 2
                 },
                 bulb: {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h - 8)',
                     r: 'calc(0.75 * s)',
-                    fill: MAX_LIQUID_COLOR,
-                    surfaceStroke: 'edge',
+                    liquidFill: true,
+                    surfaceStroke: THERMOMETER_FRAME,
                     strokeWidth: 2
                 },
                 column: {
