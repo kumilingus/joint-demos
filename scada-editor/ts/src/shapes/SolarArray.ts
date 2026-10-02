@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 // The cells of the panel: 6 columns, 3 rows
@@ -50,7 +49,7 @@ export default class SolarArray extends Shape {
                     rx: 3,
                     ry: 3,
                     fill: '#1e3a5f',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3
                 },
                 cells: {

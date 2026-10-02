@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -39,7 +38,7 @@ export default class MotorControlCenter extends Shape {
         const attrs: Record<string, object> = {};
         const height = `calc(${(0.88 / DRAWERS).toFixed(3)} * h - 6)`;
         range.forEach((i) => {
-            attrs[`drawer${i}`] = { x: 8, y: drawerY(i, 3), width: 'calc(w - 16)', height, rx: 2, ry: 2, fill: 'var(--shape-metal-flat)', stroke: METAL_STROKE, strokeWidth: 1.5 };
+            attrs[`drawer${i}`] = { x: 8, y: drawerY(i, 3), width: 'calc(w - 16)', height, rx: 2, ry: 2, surfaceFill: 'flat', surfaceStroke: 'edge', strokeWidth: 1.5 };
             attrs[`lamp${i}`] = { cx: 22, cy: drawerY(i + 0.5), r: 4, fill: '#666', stroke: '#333', strokeWidth: 1 };
             attrs[`handle${i}`] = { x: 'calc(w - 34)', y: drawerY(i + 0.5, -3), width: 18, height: 6, rx: 2, ry: 2, fill: '#555' };
         });
@@ -59,8 +58,8 @@ export default class MotorControlCenter extends Shape {
                     height: 'calc(h)',
                     rx: 3,
                     ry: 3,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 3
                 },
                 ...attrs,

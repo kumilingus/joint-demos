@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
-import { METAL_STROKE, sphereGradient } from './gradients';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // Rotor metrics
@@ -57,9 +56,9 @@ export default class Pump extends Shape {
                     ry: 'calc(h / 2)',
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: sphereGradient
+                    surfaceFill: 'sphere'
                 },
                 label: {
                     ...labelAttributes,
@@ -70,7 +69,7 @@ export default class Pump extends Shape {
                 },
                 rotorFrame: {
                     r: 40,
-                    fill: 'var(--shape-metal-flat)',
+                    surfaceFill: 'flat',
                     stroke: '#666',
                     strokeWidth: 2
                 },

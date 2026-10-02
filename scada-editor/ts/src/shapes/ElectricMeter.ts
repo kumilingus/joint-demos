@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR } from '../const';
 import Shape, { type Resizable } from './Shape';
 
@@ -49,9 +48,9 @@ export default class ElectricMeter extends Shape {
                     height: 'calc(h)',
                     rx: 6,
                     ry: 6,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: plateGradient
+                    surfaceFill: 'plate'
                 },
                 screen: {
                     x: 6,

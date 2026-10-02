@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { LABEL_COLOR } from '../const';
-import { METAL_STROKE, pipeGradient } from './gradients';
 
 /** The markup of a pipe stub (parsed once) */
 const pipeStubMarkup = util.svg`
@@ -10,6 +9,9 @@ const pipeStubMarkup = util.svg`
 
 // The thickness of a pipe stub (its flange is a little taller, see `pipeEnd`)
 const STUB_THICKNESS = 30;
+
+// How far a pipe stub reaches under the element (its body: no gap at a round side)
+const STUB_TUCK = 20;
 
 /**
  * The group of the pipe stubs of a shape, `length` long (`Shape.stubLength`). The model of a port is
@@ -29,19 +31,20 @@ function pipeStubGroup(length: number): dia.Element.PortGroup {
                 magnetSelector: 'pipeEnd',
                 highlighterSelector: 'pipeEnd'
             },
+            // In the color of the element (see `surfaceAttributes`), tucked under it
             pipeBody: {
-                x: 'calc(-0.5 * w)',
+                x: `calc(-0.5 * w - ${STUB_TUCK})`,
                 y: 'calc(-0.5 * h)',
-                width: 'calc(w)',
+                width: `calc(w + ${STUB_TUCK})`,
                 height: 'calc(h)',
-                fill: pipeGradient
+                surfaceFill: 'pipe'
             },
             pipeEnd: {
                 x: 'calc(0.5 * w - 10)',
                 y: 'calc(-0.5 * h - 3)',
                 width: 10,
                 height: 'calc(h + 6)',
-                stroke: METAL_STROKE,
+                surfaceStroke: 'edge',
                 strokeWidth: 3,
                 fill: 'var(--shape-flange-fill)'
             }
@@ -124,7 +127,7 @@ export function pipeThroughAttributes(ratio = 0.5, half?: 'left' | 'right') {
         width: half ? 'calc(0.5 * w)' : 'calc(w)',
         y: `calc(${ratio} * h - ${STUB_THICKNESS / 2})`,
         height: STUB_THICKNESS,
-        fill: pipeGradient
+        surfaceFill: 'pipe'
     };
 }
 

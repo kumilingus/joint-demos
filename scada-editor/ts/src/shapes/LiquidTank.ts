@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -37,7 +36,7 @@ export default class LiquidTank extends Shape {
                     d: 'M 20 calc(h) l -5 10 M calc(w - 20) calc(h) l 5 10'
                 },
                 body: {
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 4,
                     x: 0,
                     y: 0,
@@ -45,7 +44,7 @@ export default class LiquidTank extends Shape {
                     height: 'calc(h)',
                     rx: 120,
                     ry: 10,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 top: {
                     x: 0,
@@ -53,7 +52,7 @@ export default class LiquidTank extends Shape {
                     width: 'calc(w)',
                     height: 20,
                     fill: 'none',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 label: {

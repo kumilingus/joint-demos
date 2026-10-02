@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
-import { METAL_STROKE, pipeGradient, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
@@ -73,17 +72,17 @@ export default class Blower extends Shape {
                     y: -14,
                     width: 'calc(0.42 * w)',
                     height: 'calc(0.5 * h)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 body: {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 'calc(0.48 * h)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: sphereGradient
+                    surfaceFill: 'sphere'
                 },
                 impeller: {
                     cx: 'calc(w / 2)',

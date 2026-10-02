@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, pipeGradient, plateGradient } from './gradients';
 import Shape, { type ControlKind, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -56,14 +55,14 @@ export default class Generator extends Shape {
                     height: 'calc(0.66 * h)',
                     rx: 6,
                     ry: 6,
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 // The cooling ribs
                 ribs: {
                     d: [0.22, 0.32, 0.42, 0.52, 0.62, 0.72].map(x => `M calc(${x} * w) calc(0.24 * h) V calc(0.82 * h)`).join(' '),
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.55,
                     strokeWidth: 2
                 },
@@ -74,16 +73,16 @@ export default class Generator extends Shape {
                     height: 'calc(0.5 * h)',
                     rx: 4,
                     ry: 4,
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 shaft: {
                     y: 'calc(0.47 * h)',
                     width: 'calc(0.1 * w)',
                     height: 'calc(0.12 * h)',
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 terminalBox: {
@@ -93,8 +92,8 @@ export default class Generator extends Shape {
                     height: 'calc(0.22 * h)',
                     rx: 2,
                     ry: 2,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 label: {

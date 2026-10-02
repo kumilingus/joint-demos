@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { LABEL_COLOR, Layer } from '../const';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -18,6 +18,11 @@ export default class Label extends Shape {
 
     get graphLayer(): Layer {
         return Layer.Instruments;
+    }
+
+    // The color of the text
+    get colorField(): ColorField {
+        return { path: ['attrs', 'label', 'fill'] };
     }
 
     get tagPrefix(): string {

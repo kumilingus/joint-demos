@@ -1,6 +1,5 @@
 import { type dia, g, util, V } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR } from '../const';
 import { arcPath, getScale, scaleFraction } from './charts';
 import Shape from './Shape';
@@ -50,6 +49,7 @@ export default class GaugeChart extends Shape {
     }
 
     static attributes = {
+        ...Shape.attributes,
         // The arc of the scale (`chartArc` in the attributes: 'track' all of it, 'value' as much as the value)
         'chart-arc': {
             set(this: dia.ElementView, kind: 'track' | 'value', refBBox: dia.BBox) {
@@ -89,9 +89,9 @@ export default class GaugeChart extends Shape {
                     height: 'calc(h)',
                     rx: 6,
                     ry: 6,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: plateGradient
+                    surfaceFill: 'plate'
                 },
                 screen: {
                     x: 6,

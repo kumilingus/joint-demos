@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -52,8 +51,8 @@ export default class HorizontalTank extends Shape {
                     height: 12,
                     rx: 2,
                     ry: 2,
-                    fill: 'var(--shape-metal-flat-2)',
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'flat-2',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 vent: {
@@ -61,8 +60,8 @@ export default class HorizontalTank extends Shape {
                     y: -16,
                     width: 10,
                     height: 18,
-                    fill: 'var(--shape-metal-flat-2)',
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'flat-2',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 body: {
@@ -70,14 +69,14 @@ export default class HorizontalTank extends Shape {
                     height: 'calc(h)',
                     rx: 'calc(0.4 * h)',
                     ry: 'calc(0.5 * h)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 // The welds between the shell rings
                 welds: {
                     d: 'M calc(0.35 * w) 2 V calc(h - 2) M calc(0.65 * w) 2 V calc(h - 2)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.5,
                     strokeWidth: 1.5
                 },

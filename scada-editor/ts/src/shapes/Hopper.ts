@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, coneGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -33,10 +32,10 @@ export default class Hopper extends Shape {
                 },
                 body: {
                     d: 'M 0 0 H calc(w) L calc(0.62 * w) calc(0.75 * h) V calc(h) H calc(0.38 * w) V calc(0.75 * h) Z',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: coneGradient
+                    surfaceFill: 'cone'
                 },
                 // The material in the bin
                 material: {

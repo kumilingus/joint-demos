@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -82,10 +81,10 @@ export default class Chimney extends Shape {
                 },
                 body: {
                     d: `M 0 calc(h) L calc(${TAPER} * w) 0 H calc(${1 - TAPER} * w) L calc(w) calc(h) Z`,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 bands: {
                     d: `${band(0.06, 0.12)} ${band(0.18, 0.24)}`,

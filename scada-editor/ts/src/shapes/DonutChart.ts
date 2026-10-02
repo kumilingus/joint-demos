@@ -1,6 +1,5 @@
 import { type dia, g, util, V } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR } from '../const';
 import Shape from './Shape';
 
@@ -103,6 +102,7 @@ export default class DonutChart extends Shape {
     }
 
     static attributes = {
+        ...Shape.attributes,
         // The slice of the model at the index (`chartSlice` in the attributes): in its color
         'chart-slice': {
             set(this: dia.ElementView, index: number, refBBox: dia.BBox) {
@@ -161,9 +161,9 @@ export default class DonutChart extends Shape {
                     height: 'calc(h)',
                     rx: 6,
                     ry: 6,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: plateGradient
+                    surfaceFill: 'plate'
                 },
                 screen: {
                     x: 6,

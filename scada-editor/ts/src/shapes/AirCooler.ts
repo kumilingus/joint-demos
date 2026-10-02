@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import { METAL_STROKE, pipeGradient, sphereGradient } from './gradients';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // A small blade of a fan, pointing up from its hub; the other two are rotated copies.
@@ -75,7 +74,7 @@ export default class AirCooler extends Shape {
                     rx: 4,
                     ry: 4,
                     fill: 'var(--shape-plenum)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 ...Object.fromEntries(FANS.flatMap((x, index) => [
@@ -83,8 +82,8 @@ export default class AirCooler extends Shape {
                         cx: `calc(${x} * w)`,
                         cy: 'calc(0.25 * h)',
                         r: 18,
-                        fill: sphereGradient,
-                        stroke: METAL_STROKE,
+                        surfaceFill: 'sphere',
+                        surfaceStroke: 'edge',
                         strokeWidth: 2
                     }],
                     [`fan${index + 1}Hub`, { transform: `translate(calc(${x} * w), calc(0.25 * h))` }],
@@ -97,13 +96,13 @@ export default class AirCooler extends Shape {
                     height: 'calc(0.5 * h)',
                     rx: 4,
                     ry: 4,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 fins: {
                     d: Array.from({ length: 13 }, (_, i) => `M calc(${((i + 1) / 14).toFixed(3)} * w) calc(0.5 * h + 3) V calc(h - 3)`).join(' '),
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.6,
                     strokeWidth: 1.5
                 },

@@ -10,6 +10,7 @@ import Wire from './shapes/Wire';
 import Arrow from './shapes/Arrow';
 import Screen from './shapes/Screen';
 import { isTerminal } from './shapes/ports';
+import ShapeView from './shapes/ShapeView';
 
 export const ZOOM = { min: 0.2, max: 3 };
 
@@ -17,6 +18,8 @@ export const ZOOM = { min: 0.2, max: 3 };
 export const CLICK_THRESHOLD = 10;
 
 export const paperOptions: dia.Paper.Options = {
+    // A shape without a view of its own (a chart has one): rendered again when its color changes (see `ShapeView`)
+    elementView: (_element, namespaceView) => namespaceView ?? ShapeView,
     width: 1,
     height: 1,
     gridSize: GRID_SIZE,

@@ -1,14 +1,13 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import { METAL_STROKE, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
 const nozzle = {
     width: 16,
     height: 14,
-    fill: 'var(--shape-metal-flat-2)',
-    stroke: METAL_STROKE,
+    surfaceFill: 'flat-2',
+    surfaceStroke: 'edge',
     strokeWidth: 2
 };
 
@@ -64,9 +63,9 @@ export default class HeatExchanger extends Shape {
                     height: 'calc(h)',
                     rx: 'calc(0.5 * h)',
                     ry: 'calc(0.5 * h)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 tubes: {
                     d: [

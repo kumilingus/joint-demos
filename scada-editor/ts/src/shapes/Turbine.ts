@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import { METAL_STROKE, pipeGradient } from './gradients';
 import Shape, { type ControlKind } from './Shape';
 
 // The stages of blades, growing with the casing (relative x positions)
@@ -57,10 +56,10 @@ export default class Turbine extends Shape {
                 },
                 body: {
                     d: 'M 0 calc(0.3 * h) L calc(w) 0 V calc(h) L 0 calc(0.7 * h) Z',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 blades: {
                     d: BLADES,

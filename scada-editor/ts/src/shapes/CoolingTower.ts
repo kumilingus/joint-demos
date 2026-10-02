@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -97,10 +96,10 @@ export default class CoolingTower extends Shape {
                         'C calc(0.75 * w) calc(0.3 * h) calc(0.75 * w) calc(0.55 * h) calc(w) calc(h)',
                         'Z'
                     ].join(' '),
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
                     strokeLinejoin: 'round',
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 // The air inlets around the bottom
                 inlets: {

@@ -1,9 +1,9 @@
-import { ui, type dia } from '@joint/plus';
+import { ui, util, type dia } from '@joint/plus';
 import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
 import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
-import { getColorFieldValue, rememberColor, renderColorField } from './color-field';
+import { colorFieldOf, getColorFieldValue, rememberColor, renderColorField } from './color-field';
 import { isGroup } from './shapes/Group';
 import { type Arrowhead, arrowheadMarker } from './shapes/Arrow';
 import { descriptions } from './descriptions';
@@ -50,22 +50,19 @@ function getInputs(element: dia.Element): Inputs {
             ...(inputs.attrs as Inputs),
             label: {
                 ...(inputs.attrs as Record<string, Inputs>).label,
-                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'general', index: index++ },
-                fill: { type: 'color', label: 'Color', group: 'general', index: index++ }
+                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'general', index: index++ }
             }
         };
     }
 
-    // A shape of the background: its color and its opacity
+    // The color the user sets (see `ColorField`)
+    util.merge(inputs, colorInputs(element, 'general', index++));
+
+    // A shape of the background: its opacity
     if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
-        const attrs = (inputs.attrs || {}) as Record<string, Inputs>;
-        inputs.attrs = {
-            ...attrs,
-            body: {
-                fill: { type: 'color', label: 'Color', group: 'general', index: index++ },
-                fillOpacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, group: 'general', index: index++ }
-            }
-        };
+        util.merge(inputs, {
+            attrs: { body: { fillOpacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, group: 'general', index: index++ }}}
+        });
     }
 
     // A zone points to the side its pipe comes from (the outline of its body, see `Zone`).
@@ -186,14 +183,17 @@ const linkInputs: Inputs = {
     }
 };
 
-/** The color of a link: of the medium a pipe carries, of a wire, of a signal line (the flow of the runtime mode is drawn over a pipe) */
-const linkColorInputs: Inputs = {
-    attrs: {
-        line: {
-            stroke: { type: 'color', label: 'Color', group: 'link', index: 2 }
-        }
-    }
-};
+/**
+ * The Color field of the cell, at the path of its color (see `ColorField`): the surfaces of the equipment, the fill
+ * of a background shape, the text of a label, the medium of a pipe, a wire, ...; nothing if it has none.
+ */
+function colorInputs(cell: dia.Cell, group: string, index: number): Inputs {
+    const field = colorFieldOf(cell);
+    if (!field) return {};
+    const { path, defaultValue } = field;
+    const input = { type: 'color', label: 'Color', group, index, ...(defaultValue ? { defaultValue } : {}) };
+    return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
+}
 
 /** An arrowhead as a button: a short line ending with it (pointing outwards: left at the start, right at the end) */
 function arrowheadIcon(arrowhead: Arrowhead, end: 'source' | 'target'): string {
@@ -297,7 +297,7 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     if (cell.isElement()) return { ...getInputs(cell), ...layerInput('general') };
     return {
         ...(isRouted(cell) ? linkInputs : {}),
-        ...(['Pipe', 'Wire', 'SignalLine', 'Arrow'].includes(cell.get('type')) ? linkColorInputs : {}),
+        ...colorInputs(cell, 'link', 2),
         ...(cell.get('type') === 'Arrow' ? arrowheadInputs : {}),
         ...layerInput('link')
     };

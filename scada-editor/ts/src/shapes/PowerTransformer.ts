@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, pipeGradient, plateGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -51,7 +50,7 @@ export default class PowerTransformer extends Shape {
                 },
                 radiators: {
                     d: `${fins(0.02, 0.16)} ${fins(0.84, 0.98)}`,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 4,
                     strokeLinecap: 'round'
                 },
@@ -63,13 +62,13 @@ export default class PowerTransformer extends Shape {
                     height: 'calc(0.14 * h)',
                     rx: 'calc(0.07 * h)',
                     ry: 'calc(0.07 * h)',
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 pipe: {
                     d: 'M calc(0.62 * w) calc(0.16 * h) V calc(0.22 * h)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 4
                 },
                 bushings: {
@@ -86,13 +85,13 @@ export default class PowerTransformer extends Shape {
                     height: 'calc(0.78 * h)',
                     rx: 3,
                     ry: 3,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 3
                 },
                 seams: {
                     d: 'M calc(0.16 * w) calc(0.34 * h) H calc(0.84 * w) M calc(0.16 * w) calc(0.9 * h) H calc(0.84 * w)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.5,
                     strokeWidth: 1.5
                 },

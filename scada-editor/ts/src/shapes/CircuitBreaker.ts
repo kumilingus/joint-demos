@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import Shape, { type ControlKind, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -50,8 +49,8 @@ export default class CircuitBreaker extends Shape {
                     height: 'calc(h)',
                     rx: 4,
                     ry: 4,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 front: {

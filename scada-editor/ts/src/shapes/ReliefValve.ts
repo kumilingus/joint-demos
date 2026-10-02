@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -60,8 +59,8 @@ export default class ReliefValve extends Shape {
                     height: 'calc(0.5 * h)',
                     rx: 4,
                     ry: 4,
-                    fill: cylinderGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'cylinder',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 spring: {

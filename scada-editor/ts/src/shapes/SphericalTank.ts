@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -56,14 +55,14 @@ export default class SphericalTank extends Shape {
                     cy: 'calc(h / 2)',
                     rx: 'calc(w / 2)',
                     ry: 'calc(h / 2)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: sphereGradient
+                    surfaceFill: 'sphere'
                 },
                 equator: {
                     d: 'M 0 calc(0.5 * h) Q calc(0.5 * w) calc(0.62 * h) calc(w) calc(0.5 * h)',
                     fill: 'none',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 manhole: {

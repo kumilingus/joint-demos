@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type ControlKind } from './Shape';
 
@@ -76,13 +75,13 @@ export default class Motor extends Shape {
                     height: 'calc(h)',
                     rx: 8,
                     ry: 8,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 fins: {
                     d: FINS,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.6,
                     strokeWidth: 2
                 },

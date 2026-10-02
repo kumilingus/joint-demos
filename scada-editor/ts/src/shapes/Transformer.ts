@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { cylinderGradient, METAL_STROKE, porcelainGradient } from './gradients';
+import { porcelainGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -67,7 +67,7 @@ export default class Transformer extends Shape {
                 // The cooling fins on the sides of the tank
                 fins: {
                     d: [0.2, 0.35, 0.5, 0.65, 0.8].map(y => `M 0 calc(${y} * h) H calc(0.12 * w) M calc(0.88 * w) calc(${y} * h) H calc(w)`).join(' '),
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 4,
                     strokeLinecap: 'round'
                 },
@@ -78,8 +78,8 @@ export default class Transformer extends Shape {
                     height: 'calc(h - 4)',
                     rx: 'calc(0.1 * w)',
                     ry: 6,
-                    fill: cylinderGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'cylinder',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 lid: {
@@ -88,8 +88,8 @@ export default class Transformer extends Shape {
                     height: 8,
                     rx: 3,
                     ry: 3,
-                    fill: cylinderGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'cylinder',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 label: {

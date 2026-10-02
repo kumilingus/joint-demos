@@ -1,7 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { PIPE_COLOR } from '../const';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
-import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
@@ -60,9 +59,9 @@ export default class ControlValve extends Shape {
                     ry: 'calc(h / 2)',
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: sphereGradient
+                    surfaceFill: 'sphere'
                 },
                 // The pipe seen through the window: as tall as the pipes, with their outline (see `Pipe`)
                 liquidOutline: {

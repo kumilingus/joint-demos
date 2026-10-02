@@ -1,5 +1,4 @@
 import { type dia, util } from '@joint/plus';
-import { METAL_STROKE, sphereGradient } from './gradients';
 import { fittingPorts, type Side } from './ports';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
@@ -58,9 +57,9 @@ export default abstract class Fitting extends Shape {
                 },
                 body: {
                     d: this.bodyPath,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: sphereGradient
+                    surfaceFill: 'sphere'
                 }
             },
             ports: fittingPorts(this.sides, this.stubLength)

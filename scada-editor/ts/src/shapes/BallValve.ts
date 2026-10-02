@@ -1,7 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { bowTieAttributes, leverAttributes } from './valve-body';
-import { sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
@@ -54,7 +53,7 @@ export default class BallValve extends Shape {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 11,
-                    fill: sphereGradient,
+                    surfaceFill: 'sphere',
                     stroke: '#333',
                     strokeWidth: 2
                 },

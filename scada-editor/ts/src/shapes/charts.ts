@@ -1,10 +1,10 @@
-import { dia, g, V } from '@joint/plus';
+import { type dia, g, V } from '@joint/plus';
 
 /*
  * What the charts (see `LineChart`, `BarChart`, `DonutChart`, `GaugeChart`) have in common. A chart is
  * a shape: its data is on the model (`values`, `slices`, `value`, the scale `min` and `max`), its paths are computed from the data
  * and the size by its special attributes when it is rendered (not stored in the attributes).
- * Its view renders it again when the data changes (see `chartView()`).
+ * Its view renders it again when the data changes (see `shapeView()` in `ShapeView.ts`).
  */
 
 /** The margins of the plot in the screen of a line or a bar chart (the scale on the left) */
@@ -110,11 +110,3 @@ export function arcPath(center: g.Point, radius: number, from: number, to: numbe
 /** How many values a line chart keeps (the newest on the right) */
 export const CHART_POINTS = 12;
 
-/** A view rendering the chart again when its data (the attributes of the model) changes */
-export function chartView(dataAttributes: string[]): typeof dia.ElementView {
-    return dia.ElementView.extend({
-        presentationAttributes: dia.ElementView.addPresentationAttributes(
-            Object.fromEntries(dataAttributes.map(attribute => [attribute, dia.ElementView.Flags.UPDATE]))
-        )
-    });
-}

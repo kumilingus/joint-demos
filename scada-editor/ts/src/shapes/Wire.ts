@@ -1,6 +1,7 @@
 import { dia, util } from '@joint/plus';
 import { Layer } from '../const';
 import { followRouting, routingAttributes } from './routing';
+import { type ColorField, LINE_COLOR_FIELD } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -13,6 +14,11 @@ const markup = util.svg/* xml */`
  * In the runtime mode it shows whether it is live (see `electrical.ts`).
  */
 export default class Wire extends dia.Link {
+
+    // The color of its line (see `ColorField`)
+    get colorField(): ColorField {
+        return LINE_COLOR_FIELD;
+    }
 
     defaults(): dia.Link.Attributes {
         return {

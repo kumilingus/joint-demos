@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
-import { METAL_STROKE, sphereGradient } from './gradients';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -52,9 +51,9 @@ export default class Compressor extends Shape {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 'calc(0.45 * w)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: sphereGradient
+                    surfaceFill: 'sphere'
                 },
                 // The ISA symbol of a compressor: a trapezoid narrowing in the direction of the flow.
                 symbol: {

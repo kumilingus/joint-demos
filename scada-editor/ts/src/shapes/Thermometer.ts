@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE } from './gradients';
 import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
@@ -78,7 +77,7 @@ export default class Thermometer extends Shape {
                     cy: 'calc(h - 8)',
                     r: 'calc(0.75 * s)',
                     fill: MAX_LIQUID_COLOR,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 column: {

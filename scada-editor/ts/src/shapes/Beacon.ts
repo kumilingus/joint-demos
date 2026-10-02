@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, MAX_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
@@ -84,9 +83,9 @@ export default class Beacon extends Shape {
                     height: 'calc(0.3 * h)',
                     rx: 3,
                     ry: 3,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: plateGradient
+                    surfaceFill: 'plate'
                 },
                 label: {
                     ...labelAttributes,

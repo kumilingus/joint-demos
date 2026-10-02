@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type ControlKind } from './Shape';
 
@@ -9,8 +8,8 @@ const roller = (cx: string) => ({
     cx,
     cy: 'calc(h / 2)',
     r: 'calc(s / 2 - 4)',
-    fill: sphereGradient,
-    stroke: METAL_STROKE,
+    surfaceFill: 'sphere',
+    surfaceStroke: 'edge',
     strokeWidth: 2
 });
 

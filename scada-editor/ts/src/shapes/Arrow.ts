@@ -1,6 +1,7 @@
 import { dia, util } from '@joint/plus';
 import { Layer, LABEL_COLOR } from '../const';
 import { DERIVED, followRouting, routingAttributes } from './routing';
+import { type ColorField, LINE_COLOR_FIELD } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -32,6 +33,11 @@ export const arrowheadMarker = (arrowhead: Arrowhead): dia.SVGSimpleMarkerJSON |
  * (`sourceArrowhead`, `targetArrowhead`, set in the inspector), free or connected to an element.
  */
 export default class Arrow extends dia.Link {
+
+    // The color of its line (see `ColorField`)
+    get colorField(): ColorField {
+        return LINE_COLOR_FIELD;
+    }
 
     defaults(): dia.Link.Attributes {
         return {

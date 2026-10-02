@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
@@ -59,8 +58,8 @@ export default class Scrubber extends Shape {
                     y: -14,
                     width: 16,
                     height: 16,
-                    fill: 'var(--shape-metal-flat-2)',
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'flat-2',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 skirt: {
@@ -74,9 +73,9 @@ export default class Scrubber extends Shape {
                     height: 'calc(h)',
                     rx: 'calc(0.5 * w)',
                     ry: 16,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 // The liquid collected at the bottom
                 sump: {
@@ -95,12 +94,12 @@ export default class Scrubber extends Shape {
                     width: 'calc(w - 8)',
                     height: `calc(${(BED_BOTTOM - BED_TOP).toFixed(2)} * h)`,
                     fill: 'none',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 packing: {
                     d: PACKING,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.6,
                     strokeWidth: 1.5
                 },

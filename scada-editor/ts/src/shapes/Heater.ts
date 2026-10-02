@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 // The columns of the radiator
@@ -44,13 +43,13 @@ export default class Heater extends Shape {
                     height: 'calc(0.9 * h)',
                     rx: 5,
                     ry: 5,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 columns: {
                     d: COLUMNS.map(x => `M calc(${x} * w) 6 V calc(0.9 * h - 6)`).join(' '),
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.45,
                     strokeWidth: 6,
                     strokeLinecap: 'round'

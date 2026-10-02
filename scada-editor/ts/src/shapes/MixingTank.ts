@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type ControlKind } from './Shape';
 
@@ -59,9 +58,9 @@ export default class MixingTank extends Shape {
                     height: 'calc(h)',
                     rx: 120,
                     ry: 10,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 4,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 shaft: {
                     d: 'M calc(w / 2) -6 V calc(0.8 * h)',

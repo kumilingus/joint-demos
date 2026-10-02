@@ -1,6 +1,7 @@
 import { dia, util } from '@joint/plus';
 import { followRouting, routingAttributes } from './routing';
 import { Layer, PIPE_COLOR } from '../const';
+import { type ColorField, LINE_COLOR_FIELD } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -11,6 +12,11 @@ const markup = util.svg/* xml */`
 `;
 
 export default class Pipe extends dia.Link {
+
+    // The color of its line (see `ColorField`)
+    get colorField(): ColorField {
+        return LINE_COLOR_FIELD;
+    }
 
     defaults(): dia.Link.Attributes {
         return {

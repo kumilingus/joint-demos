@@ -1,4 +1,5 @@
 import { type dia, type ui, util } from '@joint/plus';
+import type { ColorField } from './shapes/Shape';
 
 /*
  * The color fields of the inspector: the native color input (with its eyedropper), and the colors
@@ -15,16 +16,10 @@ const MAX_RECENT = 5;
 /** The colors picked lately (in this session), the latest first */
 const recentColors: string[] = [];
 
-/** The colors the user sets (the color fields of the inspector, see `inspector.ts`): the paths by the types */
-const COLOR_PATHS: Record<string, string[]> = {
-    Rectangle: ['attrs', 'body', 'fill'],
-    Ellipse: ['attrs', 'body', 'fill'],
-    Pipe: ['attrs', 'line', 'stroke'],
-    Wire: ['attrs', 'line', 'stroke'],
-    SignalLine: ['attrs', 'line', 'stroke'],
-    Arrow: ['attrs', 'line', 'stroke'],
-    Label: ['attrs', 'label', 'fill']
-};
+/** The color the user sets on the cell (a shape, a link of ours), if any: see `ColorField` */
+export function colorFieldOf(cell: dia.Cell): ColorField | null {
+    return (cell as dia.Cell & { colorField?: ColorField | null }).colorField ?? null;
+}
 
 const isHexColor = (value: unknown): value is string => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 
@@ -53,12 +48,12 @@ function createSwatch(color: string, tooltip: string, onClick: () => void): HTML
     return swatch;
 }
 
-/** The colors used in the diagram (set by the user: see `COLOR_PATHS`, the slices of the donuts) */
+/** The colors used in the diagram (set by the user: see `colorFieldOf()`, the slices of the donuts) */
 function diagramColors(graph: dia.Graph): string[] {
     const colors = new Set<string>();
     graph.getCells().forEach((cell) => {
-        const path = COLOR_PATHS[cell.get('type')];
-        const value = path && cell.prop(path);
+        const field = colorFieldOf(cell);
+        const value = field && cell.prop(field.path);
         if (isHexColor(value)) colors.add(value.toLowerCase());
         const slices = cell.get('slices');
         if (Array.isArray(slices)) slices.forEach(slice => isHexColor(slice?.color) && colors.add(slice.color.toLowerCase()));
@@ -81,7 +76,7 @@ export function rememberColor(color: string): void {
  * by the inspector as its own (it has the attribute and the type), and the swatches setting it.
  * `undefined` for the other fields and the colors of a list (the default content).
  */
-export function renderColorField(options: { type?: string; label?: string }, path: string, value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
+export function renderColorField(options: { type?: string; label?: string; defaultValue?: unknown }, path: string, value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
     if (options.type !== 'color' || /\/\d+\//.test(path)) return undefined;
     const el = document.createElement('div');
     el.className = 'color-field-content';
@@ -110,7 +105,7 @@ export function renderColorField(options: { type?: string; label?: string }, pat
     const swatches = document.createElement('div');
     swatches.className = 'color-swatches';
     // The default of the field (of the shape): a color of the theme is set on the model (the input takes a hex only)
-    const defaultColor = util.getByPath(util.result(cell, 'defaults') || {}, path, '/');
+    const defaultColor = options.defaultValue ?? util.getByPath(util.result(cell, 'defaults') || {}, path, '/');
     if (isHexColor(defaultColor)) {
         swatches.append(createSwatch(defaultColor, `Default ${defaultColor}`, () => pick(defaultColor)));
     } else if (isThemeColor(defaultColor)) {

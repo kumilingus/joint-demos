@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 import { CHART_POINTS, getScale, GRID, plotArea, plotAttributes, plotY, type Scale, scaleAttributes, scaleMarkup } from './charts';
 import Shape from './Shape';
@@ -52,6 +51,7 @@ export default class LineChart extends Shape {
     }
 
     static attributes = {
+        ...Shape.attributes,
         // The line through the values of the model (`chartSeries` in the attributes: 'line' or 'area')
         'chart-series': {
             set(this: dia.ElementView, kind: 'line' | 'area', refBBox: dia.BBox) {
@@ -101,9 +101,9 @@ export default class LineChart extends Shape {
                     height: 'calc(h)',
                     rx: 6,
                     ry: 6,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: plateGradient
+                    surfaceFill: 'plate'
                 },
                 screen: {
                     x: 6,

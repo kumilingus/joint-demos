@@ -1,4 +1,4 @@
-import type { dia } from '@joint/plus';
+import { type dia, util } from '@joint/plus';
 
 /*
  * The shading of the equipment: brushed steel lit from the top left.
@@ -123,3 +123,90 @@ export const glassGradient: dia.SVGGradientJSON = {
         r: '70%'
     }
 };
+
+/*
+ * The surface of an element in its own color (the `color` of the model, set in the inspector): each stop of the
+ * shading mixed with it - the highlight stays light, the edges dark - in the colors of the theme still.
+ * Its gradient is defined once for each color (the paper defines a gradient by its JSON). The default
+ * color (a CSS variable) leaves the surface as the metal of the theme.
+ */
+
+/** The default color of a surface: the metal as it is (see `surfaceAttributes`) */
+export const SURFACE_COLOR = 'var(--shape-metal-3)';
+
+// How much of the color there is in the surface (%): more flattens the shading.
+const TINT = 55;
+
+const tint = (color: string, base: string) => `color-mix(in oklab, ${color} ${TINT}%, ${base})`;
+
+/** Whether the surface is tinted with the color (not the default one) */
+const isTint = (color: unknown): color is string => typeof color === 'string' && !color.startsWith('var(');
+
+// The shadings of the surfaces: of the metal
+const SURFACE_GRADIENTS = {
+    cylinder: cylinderGradient,
+    pipe: pipeGradient,
+    sphere: sphereGradient,
+    cone: coneGradient,
+    plate: plateGradient
+};
+
+/** The fill of a surface: a shading (by the form of the part), or flat (`--shape-metal-flat`, `--shape-metal-flat-2`) */
+export type SurfaceFill = keyof typeof SURFACE_GRADIENTS | 'flat' | 'flat-2';
+
+// The outlines of the surfaces
+const SURFACE_STROKES = {
+    // The shaded edge of the metal: the outline blends into it
+    edge: METAL_STROKE
+};
+
+/** The outline of a surface */
+export type SurfaceStroke = keyof typeof SURFACE_STROKES;
+
+/** The gradient tinted with the color */
+function tintGradient(gradient: dia.SVGGradientJSON, color: string): dia.SVGGradientJSON {
+    return { ...gradient, stops: gradient.stops.map(stop => ({ ...stop, color: tint(color, stop.color) })) };
+}
+
+/**
+ * The special attributes of the surfaces of an element, in its color: `surfaceFill` (the shading of the part),
+ * `surfaceStroke` (its outline). The view renders them again when the color changes (see `ShapeView`).
+ */
+export const surfaceAttributes = {
+    // `surfaceFill` in the attributes
+    'surface-fill': {
+        set(this: dia.ElementView, fill: SurfaceFill) {
+            const color = this.model.get('color');
+            if (fill === 'flat' || fill === 'flat-2') {
+                const base = `var(--shape-metal-${fill})`;
+                return { fill: isTint(color) ? tint(color, base) : base };
+            }
+            const gradient = SURFACE_GRADIENTS[fill];
+            return { fill: `url(#${this.paper!.defineGradient(isTint(color) ? tintGradient(gradient, color) : gradient)})` };
+        }
+    },
+    // `surfaceStroke` in the attributes
+    'surface-stroke': {
+        set(this: dia.ElementView, stroke: SurfaceStroke) {
+            const color = this.model.get('color');
+            const base = SURFACE_STROKES[stroke];
+            return { stroke: isTint(color) ? tint(color, base) : base };
+        }
+    }
+};
+
+/** The types with surfaces (see `hasSurface()`) by whether they have them */
+const surfaceTypes = new Map<string, boolean>();
+
+/**
+ * Whether the element has surfaces (its color can be set): `surfaceFill` in the attributes of its type
+ * (an outline alone, `surfaceStroke`, would show the color hardly)
+ */
+export function hasSurface(element: dia.Element): boolean {
+    const type = element.get('type');
+    if (!surfaceTypes.has(type)) {
+        const { attrs = {}} = util.result(element, 'defaults') as dia.Element.Attributes;
+        surfaceTypes.set(type, Object.values(attrs).some(node => node && 'surfaceFill' in node));
+    }
+    return surfaceTypes.get(type)!;
+}

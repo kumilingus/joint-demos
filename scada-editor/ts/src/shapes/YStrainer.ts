@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import { METAL_STROKE, cylinderGradient, pipeGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -42,10 +41,10 @@ export default class YStrainer extends Shape {
                 // The leg of the Y, down to the right
                 leg: {
                     d: 'M calc(0.3 * w) calc(0.5 * h) H calc(0.6 * w) L calc(0.85 * w) calc(h - 8) H calc(0.55 * w) Z',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 screen: {
                     d: 'M calc(0.47 * w) calc(0.55 * h) L calc(0.7 * w) calc(h - 12)',
@@ -70,9 +69,9 @@ export default class YStrainer extends Shape {
                     height: 28,
                     rx: 6,
                     ry: 6,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 label: {
                     ...labelAttributes,

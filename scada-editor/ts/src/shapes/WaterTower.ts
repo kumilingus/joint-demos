@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, coneGradient, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -60,7 +59,7 @@ export default class WaterTower extends Shape {
                 // The riser pipe down the middle
                 riser: {
                     d: `M calc(0.5 * w) calc(${TANK_BOTTOM} * h) V calc(h + 6)`,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 8
                 },
                 body: {
@@ -69,16 +68,16 @@ export default class WaterTower extends Shape {
                     height: `calc(${(TANK_BOTTOM - 0.08).toFixed(2)} * h)`,
                     rx: 10,
                     ry: 10,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 roof: {
                     d: 'M -4 calc(0.08 * h) L calc(0.5 * w) -16 L calc(w + 4) calc(0.08 * h) Z',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: coneGradient
+                    surfaceFill: 'cone'
                 },
                 label: {
                     ...labelAttributes,

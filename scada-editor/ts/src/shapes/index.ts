@@ -81,7 +81,7 @@ import LineChart from './LineChart';
 import BarChart from './BarChart';
 import DonutChart from './DonutChart';
 import GaugeChart from './GaugeChart';
-import { chartView } from './charts';
+import { shapeView } from './ShapeView';
 import Rectangle from './Rectangle';
 import Ellipse from './Ellipse';
 import Group from './Group';
@@ -184,13 +184,13 @@ export const cellNamespace = {
     FuelTank,
     // The charts, with the views rendering them again when their data changes (a view is looked up by the type)
     LineChart,
-    LineChartView: chartView(['values', 'thresholds', 'min', 'max']),
+    LineChartView: shapeView(['values', 'thresholds', 'min', 'max']),
     BarChart,
-    BarChartView: chartView(['values', 'min', 'max']),
+    BarChartView: shapeView(['values', 'min', 'max']),
     DonutChart,
-    DonutChartView: chartView(['slices']),
+    DonutChartView: shapeView(['slices']),
     GaugeChart,
-    GaugeChartView: chartView(['value', 'min', 'max']),
+    GaugeChartView: shapeView(['value', 'min', 'max']),
     Rectangle,
     Ellipse,
     Group

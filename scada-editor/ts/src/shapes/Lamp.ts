@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { cylinderGradient, glassGradient, METAL_STROKE } from './gradients';
+import { glassGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -40,7 +40,7 @@ export default class Lamp extends Shape {
                     cy: 'calc(h - calc(0.5 * w))',
                     r: 'calc(0.5 * w)',
                     fill: glassGradient,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 filament: {
@@ -57,13 +57,13 @@ export default class Lamp extends Shape {
                     height: 22,
                     rx: 3,
                     ry: 3,
-                    fill: cylinderGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'cylinder',
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 threads: {
                     d: 'M calc(0.3 * w) 6 H calc(0.7 * w) M calc(0.3 * w) 11 H calc(0.7 * w) M calc(0.3 * w) 16 H calc(0.7 * w)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 label: {

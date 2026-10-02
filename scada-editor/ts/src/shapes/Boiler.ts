@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -40,8 +39,8 @@ export default class Boiler extends Shape {
                     y: -16,
                     width: 20,
                     height: 20,
-                    fill: 'var(--shape-metal-flat-2)',
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'flat-2',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 body: {
@@ -49,9 +48,9 @@ export default class Boiler extends Shape {
                     height: 'calc(h)',
                     rx: 'calc(0.5 * w)',
                     ry: 20,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 4,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 firebox: {
                     x: 'calc(0.2 * w)',

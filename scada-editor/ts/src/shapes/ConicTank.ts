@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, coneGradient, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -35,7 +34,7 @@ export default class ConicTank extends Shape {
                     magnetSelector: 'body'
                 },
                 body: {
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 4,
                     x: 0,
                     y: 0,
@@ -43,7 +42,7 @@ export default class ConicTank extends Shape {
                     height: 'calc(h)',
                     rx: 120,
                     ry: 10,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 top: {
                     x: 0,
@@ -51,16 +50,16 @@ export default class ConicTank extends Shape {
                     width: 'calc(w)',
                     height: 20,
                     fill: 'none',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 bottom: {
                     d: 'M 0 0 L calc(w) 0 L calc(w / 2 + 10) 70 h -20 Z',
                     transform: 'translate(0, calc(h - 10))',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeLinejoin: 'round',
                     strokeWidth: 2,
-                    fill: coneGradient
+                    surfaceFill: 'cone'
                 },
                 label: {
                     ...labelAttributes,

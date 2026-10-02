@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import { METAL_STROKE, pipeGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -55,8 +54,8 @@ export default class FuelTank extends Shape {
                     height: 'calc(0.9 * h)',
                     rx: 'calc(0.15 * h)',
                     ry: 'calc(0.15 * h)',
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 3
                 },
                 glass: {
@@ -67,7 +66,7 @@ export default class FuelTank extends Shape {
                     rx: 3,
                     ry: 3,
                     fill: '#1e272e',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 fuel: {

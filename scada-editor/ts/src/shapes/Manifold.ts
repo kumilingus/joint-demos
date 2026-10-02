@@ -1,5 +1,4 @@
 import { type dia, util } from '@joint/plus';
-import { METAL_STROKE, pipeGradient } from './gradients';
 import { branchPorts, fittingPorts } from './ports';
 import { FITTING_STUB_LENGTH } from './Fitting';
 import type { Overflow } from './footprint';
@@ -54,9 +53,9 @@ export default class Manifold extends Shape {
                     height: 'calc(h)',
                     rx: 12,
                     ry: 12,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 label: {
                     ...labelAttributes,

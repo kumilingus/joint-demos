@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import { LIQUID_COLOR } from '../const';
 import Shape, { type Resizable } from './Shape';
 
@@ -35,7 +34,7 @@ export default class BatteryBank extends Shape {
     defaults(): dia.Element.Attributes {
         const attrs: Record<string, object> = {};
         cells.forEach(({ column, row }, i) => {
-            attrs[`cell${i}`] = { x: cellX(column), y: cellY(row), width: 'calc(0.14 * w)', height: 'calc(0.26 * h)', rx: 2, ry: 2, fill: 'var(--shape-metal-flat)', stroke: METAL_STROKE, strokeWidth: 1.5 };
+            attrs[`cell${i}`] = { x: cellX(column), y: cellY(row), width: 'calc(0.14 * w)', height: 'calc(0.26 * h)', rx: 2, ry: 2, surfaceFill: 'flat', surfaceStroke: 'edge', strokeWidth: 1.5 };
             attrs[`pole${i}`] = { x: `calc(${(0.06 + column * 0.18 + 0.05).toFixed(3)} * w)`, y: cellY(row), width: 'calc(0.04 * w)', height: 4, fill: '#555' };
         });
         return {
@@ -56,8 +55,8 @@ export default class BatteryBank extends Shape {
                     height: 'calc(h)',
                     rx: 4,
                     ry: 4,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 3
                 },
                 ...attrs,

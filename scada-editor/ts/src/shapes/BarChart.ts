@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import { Layer, LIQUID_COLOR } from '../const';
 import { getScale, GRID, plotArea, plotAttributes, plotY, type Scale, scaleAttributes, scaleMarkup } from './charts';
 import Shape from './Shape';
@@ -51,6 +50,7 @@ export default class BarChart extends Shape {
     }
 
     static attributes = {
+        ...Shape.attributes,
         // The bars of the values of the model (`chartBars` in the attributes)
         'chart-bars': {
             set(this: dia.ElementView, _value: unknown, refBBox: dia.BBox) {
@@ -82,9 +82,9 @@ export default class BarChart extends Shape {
                     height: 'calc(h)',
                     rx: 6,
                     ry: 6,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: plateGradient
+                    surfaceFill: 'plate'
                 },
                 screen: {
                     x: 6,

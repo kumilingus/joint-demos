@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type ControlKind } from './Shape';
 
@@ -55,7 +54,7 @@ export default class Reactor extends Shape {
                     rx: 10,
                     ry: 10,
                     fill: '#9aa3ab',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 body: {
@@ -63,9 +62,9 @@ export default class Reactor extends Shape {
                     height: 'calc(h)',
                     rx: 'calc(0.5 * w)',
                     ry: 24,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 shaft: {
                     d: 'M calc(w / 2) -6 V calc(0.75 * h)',

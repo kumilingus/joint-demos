@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -17,8 +16,8 @@ const nozzle = (y: string) => ({
     y,
     width: 14,
     height: 12,
-    fill: 'var(--shape-metal-flat-2)',
-    stroke: METAL_STROKE,
+    surfaceFill: 'flat-2',
+    surfaceStroke: 'edge',
     strokeWidth: 2
 });
 
@@ -62,8 +61,8 @@ export default class DistillationColumn extends Shape {
                     y: -12,
                     width: 14,
                     height: 14,
-                    fill: 'var(--shape-metal-flat-2)',
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'flat-2',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 skirt: {
@@ -77,13 +76,13 @@ export default class DistillationColumn extends Shape {
                     height: 'calc(h)',
                     rx: 'calc(0.5 * w)',
                     ry: 16,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 trays: {
                     d: TRAYS,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeDasharray: '4,2'
                 },

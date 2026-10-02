@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, coneGradient, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -50,10 +49,10 @@ export default class Silo extends Shape {
                 },
                 hopper: {
                     d: `M 0 calc(${BODY_BOTTOM} * h) H calc(w) L calc(0.6 * w) calc(h - 8) H calc(0.4 * w) Z`,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: coneGradient
+                    surfaceFill: 'cone'
                 },
                 outlet: {
                     x: 'calc(0.42 * w)',
@@ -68,23 +67,23 @@ export default class Silo extends Shape {
                     y: `calc(${BODY_TOP} * h)`,
                     width: 'calc(w)',
                     height: `calc(${BODY_BOTTOM - BODY_TOP} * h)`,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 // The ribs of the corrugated sheets
                 ribs: {
                     d: [0.25, 0.4, 0.55].map(y => `M 0 calc(${y} * h) H calc(w)`).join(' '),
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.5,
                     strokeWidth: 1.5
                 },
                 roof: {
                     d: `M -4 calc(${BODY_TOP} * h) L calc(0.5 * w) 0 L calc(w + 4) calc(${BODY_TOP} * h) Z`,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: coneGradient
+                    surfaceFill: 'cone'
                 },
                 label: {
                     ...labelAttributes,

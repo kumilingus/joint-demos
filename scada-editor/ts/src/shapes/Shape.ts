@@ -1,6 +1,7 @@
 import { dia } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { GRID_SIZE, Layer } from '../const';
+import { hasSurface, SURFACE_COLOR, surfaceAttributes } from './gradients';
 
 /** The size constraints of resizing. */
 export interface ResizeOptions {
@@ -26,6 +27,18 @@ export type Anchors = 'sides' | 'middles';
 /** The control operating the element in the runtime mode (see `controls.ts`). */
 export type ControlKind = 'power' | 'toggle' | 'slider';
 
+/**
+ * The color the user sets (the Color field of the inspector, the swatches of the colors of the diagram,
+ * see `color-field.ts`): its path in the model, and its default if the defaults of the shape don't have it.
+ */
+export interface ColorField {
+    path: string[];
+    defaultValue?: string;
+}
+
+/** The color of a link: of its line (a pipe, a wire, a signal line, an arrow) */
+export const LINE_COLOR_FIELD: ColorField = { path: ['attrs', 'line', 'stroke'] };
+
 /** What the editor needs to know about a shape. */
 export interface ShapeFeatures {
     /** Whether (and how) the element can be resized. */
@@ -44,6 +57,8 @@ export interface ShapeFeatures {
     overflow: Overflow;
     /** The start of the generated tags (the IDs of the elements, see `tags.ts`): `P` for `P-101`. */
     tagPrefix: string;
+    /** The color the user sets, if any. */
+    colorField: ColorField | null;
 }
 
 // An element can be made this much smaller than its default size (unless the shape says otherwise).
@@ -60,6 +75,10 @@ const minSize = (size: number) => Math.max(SIZE_STEP, Math.round(size * MIN_SIZE
  * (as getters): a shape overrides only those that differ from the defaults below.
  */
 export default abstract class Shape extends dia.Element implements ShapeFeatures {
+
+    // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`; a shape with attributes
+    // of its own adds them to these)
+    static attributes: typeof dia.Element.attributes = surfaceAttributes;
 
     get resizable(): Resizable {
         return true;
@@ -92,6 +111,11 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     /** The initials of the type by default: `CV` for a `ControlValve`. */
     get tagPrefix(): string {
         return String(this.get('type')).replace(/[^A-Z]/g, '');
+    }
+
+    /** The color of the surfaces of the element, if it has any (see `surfaceAttributes`): the metal of the theme by default */
+    get colorField(): ColorField | null {
+        return hasSurface(this) ? { path: ['color'], defaultValue: SURFACE_COLOR } : null;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

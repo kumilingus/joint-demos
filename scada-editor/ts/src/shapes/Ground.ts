@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { copperGradient, METAL_STROKE, pipeGradient } from './gradients';
+import { copperGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -67,8 +67,8 @@ export default class Ground extends Shape {
                     height: 10,
                     rx: 2,
                     ry: 2,
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 label: {

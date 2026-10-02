@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, pipeGradient, porcelainGradient } from './gradients';
+import { porcelainGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -27,7 +27,7 @@ export default class Fuse extends Shape {
     }
 
     defaults(): dia.Element.Attributes {
-        const cap = { width: CAP, height: 'calc(h)', rx: 3, ry: 3, fill: pipeGradient, stroke: METAL_STROKE, strokeWidth: 1.5 };
+        const cap = { width: CAP, height: 'calc(h)', rx: 3, ry: 3, surfaceFill: 'pipe', surfaceStroke: 'edge', strokeWidth: 1.5 };
         return {
             ...super.defaults,
             type: 'Fuse',

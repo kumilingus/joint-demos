@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import { METAL_STROKE, cylinderGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -39,9 +38,9 @@ export default class Filter extends Shape {
                     height: 'calc(h)',
                     rx: 8,
                     ry: 8,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 3,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 // The filter element across the housing
                 mesh: {

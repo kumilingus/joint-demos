@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { METAL_STROKE, plateGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -41,7 +40,7 @@ export default class Switchgear extends Shape {
         range.forEach((i) => {
             attrs[`door${i}`] = {
                 x: panelX(i, 8), y: 'calc(0.3 * h)', width: `calc(${(1 / PANELS).toFixed(3)} * w - 16)`, height: 'calc(0.5 * h)',
-                rx: 2, ry: 2, fill: 'var(--shape-metal-flat)', stroke: METAL_STROKE, strokeWidth: 1.5
+                rx: 2, ry: 2, surfaceFill: 'flat', surfaceStroke: 'edge', strokeWidth: 1.5
             };
             attrs[`lamp${i}`] = { cx: panelX(i + 0.5), cy: 'calc(0.15 * h)', r: 5, fill: '#666', stroke: '#333', strokeWidth: 1 };
             attrs[`handle${i}`] = { x: panelX(i + 0.5, -3), y: 'calc(0.5 * h)', width: 6, height: 'calc(0.12 * h)', rx: 2, ry: 2, fill: '#555' };
@@ -62,13 +61,13 @@ export default class Switchgear extends Shape {
                     height: 'calc(h)',
                     rx: 3,
                     ry: 3,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 3
                 },
                 panels: {
                     d: range.slice(1).map(i => `M ${panelX(i)} 0 V calc(h)`).join(' '),
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 ...attrs,

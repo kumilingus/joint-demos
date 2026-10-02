@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { cylinderGradient, METAL_STROKE, pipeGradient, sphereGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type ControlKind, type Resizable } from './Shape';
 
@@ -47,7 +46,7 @@ export default class WindTurbine extends Shape {
     }
 
     defaults(): dia.Element.Attributes {
-        const bladeAttributes = { fill: 'var(--shape-metal-flat)', stroke: METAL_STROKE, strokeWidth: 1.5 };
+        const bladeAttributes = { surfaceFill: 'flat', surfaceStroke: 'edge', strokeWidth: 1.5 };
         return {
             ...super.defaults,
             type: 'WindTurbine',
@@ -62,8 +61,8 @@ export default class WindTurbine extends Shape {
                 },
                 tower: {
                     d: 'M calc(0.47 * w) calc(0.3 * h) H calc(0.53 * w) L calc(0.57 * w) calc(h) H calc(0.43 * w) Z',
-                    fill: cylinderGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'cylinder',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 nacelle: {
@@ -73,8 +72,8 @@ export default class WindTurbine extends Shape {
                     height: 16,
                     rx: 6,
                     ry: 6,
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 // The rotor is drawn around the hub (the group moved there) and turned around it (see `animations.ts`).
@@ -86,8 +85,8 @@ export default class WindTurbine extends Shape {
                 blade240: bladeAttributes,
                 hub: {
                     r: 8,
-                    fill: sphereGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'sphere',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 // Beside the base of the tower (the wire leaves it down)

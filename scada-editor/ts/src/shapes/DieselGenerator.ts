@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, terminalPorts } from './ports';
-import { cylinderGradient, METAL_STROKE, pipeGradient, plateGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type ControlKind, type Resizable } from './Shape';
 
@@ -73,8 +72,8 @@ export default class DieselGenerator extends Shape {
                     y: -22,
                     width: 12,
                     height: 'calc(0.2 * h + 22)',
-                    fill: cylinderGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'cylinder',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 skid: {
@@ -94,14 +93,14 @@ export default class DieselGenerator extends Shape {
                     height: 'calc(0.68 * h)',
                     rx: 4,
                     ry: 4,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 // The cooling grille of the radiator
                 grille: {
                     d: 'M calc(0.08 * w) calc(0.32 * h) H calc(0.26 * w) M calc(0.08 * w) calc(0.44 * h) H calc(0.26 * w) M calc(0.08 * w) calc(0.56 * h) H calc(0.26 * w) M calc(0.08 * w) calc(0.68 * h) H calc(0.26 * w)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinecap: 'round'
                 },
@@ -113,13 +112,13 @@ export default class DieselGenerator extends Shape {
                     height: 'calc(0.6 * h)',
                     rx: 'calc(0.06 * w)',
                     ry: 'calc(0.3 * h)',
-                    fill: pipeGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'pipe',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 ribs: {
                     d: 'M calc(0.66 * w) calc(0.3 * h) V calc(0.86 * h) M calc(0.77 * w) calc(0.3 * h) V calc(0.86 * h) M calc(0.88 * w) calc(0.3 * h) V calc(0.86 * h)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeOpacity: 0.5,
                     strokeWidth: 1.5
                 },

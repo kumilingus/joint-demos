@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { cylinderGradient, METAL_STROKE, plateGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -57,8 +56,8 @@ export default class Battery extends Shape {
                     height: 'calc(h)',
                     rx: 4,
                     ry: 4,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
                 lid: {
@@ -77,8 +76,8 @@ export default class Battery extends Shape {
                     height: 'calc(0.36 * h)',
                     rx: 2,
                     ry: 2,
-                    fill: cylinderGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'cylinder',
+                    surfaceStroke: 'edge',
                     strokeWidth: 1
                 },
                 minus: { ...sign, text: '−', x: `calc(${MINUS_X} * w)` },

@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
-import { METAL_STROKE, coneGradient, cylinderGradient, pipeGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -43,32 +42,32 @@ export default class Cyclone extends Shape {
                     y: 8,
                     width: 30,
                     height: 20,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: pipeGradient
+                    surfaceFill: 'pipe'
                 },
                 outlet: {
                     x: 'calc(0.3 * w)',
                     y: -18,
                     width: 'calc(0.4 * w)',
                     height: 22,
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 cone: {
                     d: 'M 0 calc(0.4 * h) H calc(w) L calc(0.6 * w) calc(h - 10) H calc(0.4 * w) Z',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
-                    fill: coneGradient
+                    surfaceFill: 'cone'
                 },
                 body: {
                     width: 'calc(w)',
                     height: 'calc(0.4 * h)',
-                    stroke: METAL_STROKE,
+                    surfaceStroke: 'edge',
                     strokeWidth: 2,
-                    fill: cylinderGradient
+                    surfaceFill: 'cylinder'
                 },
                 dustOutlet: {
                     x: 'calc(0.4 * w)',

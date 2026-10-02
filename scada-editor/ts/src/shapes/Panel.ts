@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
-import { METAL_STROKE, plateGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -127,8 +126,8 @@ export default class Panel extends Shape {
                     height: 'calc(h)',
                     rx: 1,
                     ry: 1,
-                    fill: plateGradient,
-                    stroke: METAL_STROKE,
+                    surfaceFill: 'plate',
+                    surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
                 panelTicks: {
