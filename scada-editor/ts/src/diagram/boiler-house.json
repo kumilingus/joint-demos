@@ -1192,7 +1192,8 @@
       "attrs": {},
       "tag": "J-101",
       "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
-      "layer": "equipment"
+      "layer": "equipment",
+      "color": "#FDBA74"
     },
     {
       "position": {
@@ -1312,7 +1313,8 @@
       "attrs": {},
       "tag": "J-103",
       "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
-      "layer": "equipment"
+      "layer": "equipment",
+      "color": "#F87171"
     },
     {
       "position": {
@@ -1328,7 +1330,8 @@
       "attrs": {},
       "tag": "J-104",
       "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
-      "layer": "equipment"
+      "layer": "equipment",
+      "color": "#F87171"
     },
     {
       "position": {
@@ -1384,7 +1387,8 @@
       "type": "Tee",
       "id": "41a02eed-c945-43eb-9488-bf7160b05068",
       "tag": "TEE-101",
-      "layer": "equipment"
+      "layer": "equipment",
+      "color": "#FDBA74"
     },
     {
       "position": {
