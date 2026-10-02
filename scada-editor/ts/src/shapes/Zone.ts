@@ -4,15 +4,26 @@ import type { Overflow } from './footprint';
 import Shape, { type ColorField } from './Shape';
 
 /** The side the tip of the zone points to: where the pipe comes from. */
-export type TipSide = 'left' | 'right';
+export type TipSide = 'left' | 'right' | 'top' | 'bottom';
 
-/** The outline of a zone of the size, with the tip at the middle of the side. */
+/** How far the tip reaches out of the zone: half of its height */
+const tipDepth = (height: number) => height / 2;
+
+/**
+ * The outline of a zone of the size: its box, and the tip out of it at the middle of the side
+ * (not in its bounding box: the box is the text's, the pipe ends at its side under the tip).
+ */
 function zoneOutline(side: TipSide, width: number, height: number): string {
-    const tip = height / 2;
-    return side === 'right'
-        ? `M ${width} ${tip} L ${width - tip} 0 H 0 V ${height} H ${width - tip} Z`
-        : `M 0 ${tip} L ${tip} 0 H ${width} V ${height} H ${tip} Z`;
+    const tip = tipDepth(height);
+    switch (side) {
+        case 'right': return `M 0 0 H ${width} L ${width + tip} ${height / 2} L ${width} ${height} H 0 Z`;
+        case 'top': return `M 0 0 L ${width / 2} ${-tip} L ${width} 0 V ${height} H 0 Z`;
+        case 'bottom': return `M 0 0 H ${width} V ${height} L ${width / 2} ${height + tip} L 0 ${height} Z`;
+        default: return `M 0 0 H ${width} V ${height} H 0 L ${-tip} ${height / 2} Z`;
+    }
 }
+
+const TIP_SIDES: TipSide[] = ['left', 'right', 'top', 'bottom'];
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -26,8 +37,10 @@ export default class Zone extends Shape {
         return false;
     }
 
+    // The tip out of the box on its side
     get overflow(): Overflow {
-        return { bottom: 0 };
+        const side: TipSide = this.attr('body/tipSide') ?? 'left';
+        return { bottom: 0, [side]: tipDepth(this.size().height) };
     }
 
     // Its color: the fill; its outline: the border; its accent: the text (of the medium of the pipe it stands for)
@@ -48,7 +61,7 @@ export default class Zone extends Shape {
             ...super.defaults,
             type: 'Zone',
             size: {
-                width: 120,
+                width: 100,
                 height: 40
             },
             attrs: {
@@ -60,14 +73,14 @@ export default class Zone extends Shape {
                     tipSide: 'left'
                 },
                 label: {
-                    // On one line in the zone (clear of its tip), cut with an ellipsis; the font growing with the height
+                    // On one line in the zone, cut with an ellipsis; its size set in the inspector
                     text: 'Zone',
                     textWrap: {
-                        width: 'calc(w - 30)',
+                        width: 'calc(w - 6)',
                         maxLineCount: 1,
                         ellipsis: true
                     },
-                    fontSize: 'calc(0.35 * h)',
+                    fontSize: 14,
                     fontFamily: 'sans-serif',
                     fontWeight: 'bold',
                     fill: LIQUID_COLOR,
@@ -89,7 +102,7 @@ export default class Zone extends Shape {
         // the names are looked up in the kebab case).
         'tip-side': {
             set(this: dia.ElementView, side: TipSide, refBBox: dia.BBox) {
-                return { d: zoneOutline(side === 'right' ? 'right' : 'left', refBBox.width, refBBox.height) };
+                return { d: zoneOutline(TIP_SIDES.includes(side) ? side : 'left', refBBox.width, refBBox.height) };
             },
             unset: 'd'
         }

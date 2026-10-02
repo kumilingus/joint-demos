@@ -49,8 +49,8 @@ function getInputs(element: dia.Element): Inputs {
     });
     if (Object.keys(attrs).length > 0) inputs.attrs = attrs;
 
-    // A label (a text on its own) has a size and a color of the text too.
-    if (element.get('type') === 'Label') {
+    // A label (a text on its own) and a zone have a size of the text too.
+    if (['Label', 'Zone'].includes(element.get('type'))) {
         inputs.attrs = {
             ...(inputs.attrs as Inputs),
             label: {
@@ -103,7 +103,9 @@ function getInputs(element: dia.Element): Inputs {
                     label: 'Tip',
                     options: [
                         { value: 'left', content: 'Left' },
-                        { value: 'right', content: 'Right' }
+                        { value: 'right', content: 'Right' },
+                        { value: 'top', content: 'Top' },
+                        { value: 'bottom', content: 'Bottom' }
                     ],
                     group: 'general',
                     index: index++
