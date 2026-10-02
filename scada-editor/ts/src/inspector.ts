@@ -387,7 +387,12 @@ export function openInspector(el: HTMLElement, cell: dia.Cell, onMemberSelect?: 
     const inspector = ui.Inspector.create(el, {
         cell,
         inputs: inspectorInputs(cell),
-        groups: { ...groups, link: { ...groups!.link, label: linkName }},
+        // The first group named after the kind of the shape (as in the palette, see `descriptions.ts`)
+        groups: {
+            ...groups,
+            general: { ...groups!.general, label: descriptions[cell.get('type')]?.title ?? groups!.general.label },
+            link: { ...groups!.link, label: linkName }
+        },
         renderLabel,
         // The color fields with the swatches of the colors to pick again (see `color-field.ts`), the members of a group
         renderFieldContent,
