@@ -14,10 +14,12 @@ const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
     // Named after the kind of the link (see `LINK_NAMES`)
     link: { label: 'Pipe', index: 1 },
-    values: { label: 'Values', index: 2 },
-    slices: { label: 'Slices', index: 2 },
-    thresholds: { label: 'Thresholds', index: 3 },
-    controls: { label: 'Controls', index: 4 }
+    // How the element looks: its color, its finish, the size of a text, ...
+    appearance: { label: 'Appearance', index: 2 },
+    values: { label: 'Values', index: 3 },
+    slices: { label: 'Slices', index: 3 },
+    thresholds: { label: 'Thresholds', index: 4 },
+    controls: { label: 'Controls', index: 5 }
 };
 
 type Inputs = Record<string, unknown>;
@@ -51,7 +53,7 @@ function getInputs(element: dia.Element): Inputs {
             ...(inputs.attrs as Inputs),
             label: {
                 ...(inputs.attrs as Record<string, Inputs>).label,
-                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'general', index: index++ }
+                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'appearance', index: index++ }
             }
         };
     }
@@ -69,7 +71,7 @@ function getInputs(element: dia.Element): Inputs {
                 { value: 'flat', content: 'Flat' }
             ],
             defaultValue: 'shaded',
-            group: 'general',
+            group: 'appearance',
             index: index++
         };
     }
@@ -77,7 +79,7 @@ function getInputs(element: dia.Element): Inputs {
     // A shape of the background: its opacity
     if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
         util.merge(inputs, {
-            attrs: { body: { fillOpacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, group: 'general', index: index++ }}}
+            attrs: { body: { fillOpacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, group: 'appearance', index: index++ }}}
         });
     }
 
