@@ -3,13 +3,23 @@ import type { ColorField } from './shapes/Shape';
 
 /*
  * The color fields of the inspector: the native color input (with its eyedropper), and the colors
- * to pick again - the recent ones and the ones of the diagram - as swatches under it (the eyedropper picks
- * a translucent color as drawn, not as it was set). The first swatch is the default of the field: a color
- * of the theme (a CSS variable, different in the light and the dark scheme) can't be picked otherwise.
+ * to pick - as swatches next to it: the default of the field, the colors of the theme (CSS variables, a tone in
+ * the light and one in the dark scheme: they can't be picked with the input), then the recent colors and the ones
+ * of the diagram (the eyedropper picks a translucent color as drawn, not as it was set).
  * The fields of a list (the slices of a donut) are the native input only (their rows are narrow).
  */
 
-/** How many swatches a field shows (one row next to the input), how many recent colors are kept */
+/** The colors of the theme to pick (see `--color-*` in `shapes.css`) */
+const THEME_COLORS: [string, string][] = [
+    ['Blue', 'var(--color-blue)'],
+    ['Green', 'var(--color-green)'],
+    ['Violet', 'var(--color-violet)'],
+    ['Slate', 'var(--color-slate)'],
+    ['Amber', 'var(--color-amber)'],
+    ['Red', 'var(--color-red)']
+];
+
+/** How many recent and diagram colors a field shows (a row next to the input), how many recent colors are kept */
 const MAX_SWATCHES = 7;
 const MAX_RECENT = 5;
 
@@ -128,23 +138,35 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
     };
     const swatches = document.createElement('div');
     swatches.className = 'color-swatches';
-    // The default of the field (of the shape): a color of the theme is set on the model (the input takes a hex only)
+    // A color of the theme: set on the model (the input takes a hex only), shown as it is now
+    const pickThemeColor = (color: string) => {
+        cell.prop(path.split('/'), color);
+        input.value = resolveColor(color);
+        unmix();
+    };
+    const themeSwatch = (color: string, tooltip: string) => {
+        const swatch = createSwatch(color, tooltip, () => pickThemeColor(color));
+        swatch.classList.add('theme');
+        return swatch;
+    };
+    // The default of the field (of the shape)
     const defaultColor = options.defaultValue ?? util.getByPath(util.result(cell, 'defaults') || {}, path, '/');
     if (isHexColor(defaultColor)) {
         swatches.append(createSwatch(defaultColor, `Default ${defaultColor}`, () => pick(defaultColor)));
     } else if (isThemeColor(defaultColor)) {
-        const swatch = createSwatch(defaultColor, 'Default: the color of the theme (light / dark)', () => {
-            cell.prop(path.split('/'), defaultColor);
-            input.value = resolveColor(defaultColor);
-            unmix();
-        });
-        swatch.classList.add('theme');
-        swatches.append(swatch);
+        swatches.append(themeSwatch(defaultColor, 'Default: the color of the theme (light / dark)'));
     }
+    THEME_COLORS
+        .filter(([, color]) => color !== defaultColor)
+        .forEach(([name, color]) => swatches.append(themeSwatch(color, `${name} (light / dark)`)));
+    // The recent colors and the ones of the diagram on a row of their own
+    const others = document.createElement('span');
+    others.className = 'color-swatches-break';
+    swatches.append(others);
     const graph = cell.graph ?? options.graph;
     [...new Set([...recentColors, ...(graph ? diagramColors(graph) : [])])]
         .filter(color => color !== String(defaultColor).toLowerCase())
-        .slice(0, MAX_SWATCHES - swatches.childElementCount)
+        .slice(0, MAX_SWATCHES)
         .forEach(color => swatches.append(createSwatch(color, color, () => pick(color))));
     if (swatches.childElementCount > 0) row.append(swatches);
     return el;

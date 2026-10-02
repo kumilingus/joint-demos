@@ -139,8 +139,8 @@ const TINT = 55;
 
 const tint = (color: string, base: string) => `color-mix(in oklab, ${color} ${TINT}%, ${base})`;
 
-/** Whether the surface is tinted with the color (not the default one) */
-const isTint = (color: unknown): color is string => typeof color === 'string' && !color.startsWith('var(');
+/** Whether the surface is tinted with the color: any but the default one (a hex, a color of the theme) */
+const isTint = (color: unknown): color is string => typeof color === 'string' && color !== '' && color !== SURFACE_COLOR;
 
 // The shadings of the surfaces: of the metal
 const SURFACE_GRADIENTS = {

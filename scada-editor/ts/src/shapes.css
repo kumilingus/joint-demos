@@ -75,6 +75,14 @@
     --shape-porcelain-3: #b9ae98;
     --shape-glass-1: #ffffff;
     --shape-glass-2: #d6dde4;
+
+    /* The colors to pick in the color fields (see `color-field.ts`): in each scheme its own tone */
+    --color-blue: #2563eb;
+    --color-green: #16a34a;
+    --color-violet: #7c3aed;
+    --color-slate: #475569;
+    --color-amber: #d97706;
+    --color-red: #dc2626;
 }
 
 :root[data-color-scheme="dark"] {
@@ -147,4 +155,12 @@
     --shape-porcelain-3: #7d8a9c;
     --shape-glass-1: #dbe6f3;
     --shape-glass-2: #6f88a8;
+
+    /* Lighter, softer on the dark canvas */
+    --color-blue: #60a5fa;
+    --color-green: #4ade80;
+    --color-violet: #a78bfa;
+    --color-slate: #94a3b8;
+    --color-amber: #fbbf24;
+    --color-red: #f87171;
 }
