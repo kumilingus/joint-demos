@@ -52,6 +52,13 @@ function driftText(text: string, step: number, min: number, max: number): string
     return drift(Number.isNaN(value) ? min : value, step, min, max).toFixed(1);
 }
 
+/** How a display of the unit drifts (a pressure without a unit) */
+const DISPLAY_RANGES: Record<string, { step: number; min: number; max: number }> = {
+    bar: { step: 0.4, min: 0, max: 14 },
+    Hz: { step: 0.05, min: 49.8, max: 50.2 },
+    '%': { step: 0.5, min: 20, max: 100 }
+};
+
 /** The value rounded to two digits of the span (a whole number on a scale of 100, one decimal on a scale of 10) */
 function roundTo(value: number, span: number): number {
     const digits = Math.max(0, 2 - Math.floor(Math.log10(Math.abs(span) || 1)));
@@ -111,7 +118,10 @@ const generators: Record<string, Generator> = {
         const flow = Number.parseFloat(element.attr('value/text')) || 0;
         return { 'attrs/value/text': Math.max(0, follow(flow, withPumps(graph, PUMP_FLOW), 0.5)).toFixed(1) };
     },
-    Display: element => ({ 'attrs/value/text': driftText(element.attr('value/text'), 0.4, 0, 14) }),
+    Display: (element) => {
+        const { step, min, max } = DISPLAY_RANGES[element.attr('unit/text')] ?? DISPLAY_RANGES.bar;
+        return { 'attrs/value/text': driftText(element.attr('value/text'), step, min, max) };
+    },
     ControlValve: element => {
         const open = element.get('open') ?? 0;
         const step = chance(0.5) ? 0.25 : -0.25;
