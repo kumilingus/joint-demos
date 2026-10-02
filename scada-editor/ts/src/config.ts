@@ -103,8 +103,9 @@ export const interactivity: Record<Mode, Interactivity | false> = {
 
 /** The canvas in each color scheme: its background and the dots of its grid. */
 export const canvasColors: Record<ColorScheme, { background: string; grid: string; majorGrid: string }> = {
-    [ColorScheme.Light]: { background: '#F3F7F6', grid: '#e1e8e6', majorGrid: '#c9d4d1' },
-    [ColorScheme.Dark]: { background: '#0a1628', grid: '#12223a', majorGrid: '#1d3354' }
+    // The background: of the theme (`--shape-canvas`, the surfaces of the finish `none` are of it too)
+    [ColorScheme.Light]: { background: 'var(--shape-canvas)', grid: '#e1e8e6', majorGrid: '#c9d4d1' },
+    [ColorScheme.Dark]: { background: 'var(--shape-canvas)', grid: '#12223a', majorGrid: '#1d3354' }
 };
 
 // A thick line every this many thin ones

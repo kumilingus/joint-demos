@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import { Layer, LIQUID_COLOR } from '../const';
+import { Layer, LIQUID_COLOR, SURFACE_INK } from '../const';
 import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -82,7 +82,7 @@ export default class FlowMeter extends Shape {
                     textVerticalAnchor: 'middle',
                     fontSize: 'calc(0.22 * h)',
                     fontFamily: 'sans-serif',
-                    fill: '#333'
+                    fill: SURFACE_INK
                 },
                 label: {
                     ...labelAttributes,

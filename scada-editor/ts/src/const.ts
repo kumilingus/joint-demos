@@ -29,6 +29,12 @@ export const PIPE_COLOR = '#6CC59A';
 // The colors of the parts of the shapes are CSS variables (`--shape-*` in `shapes.css`): themed there.
 export const LABEL_COLOR = 'var(--shape-label)';
 
+/** The color of the canvas (in each scheme): a color of a shape too - drawn as a line drawing (see `shapes.css`) */
+export const CANVAS_COLOR = 'var(--shape-canvas)';
+
+/** The ink on a surface (a scale, a unit, a mark): as the labels on a surface in the color of the canvas (see `shapes.css`) */
+export const SURFACE_INK = 'var(--shape-surface-ink)';
+
 /** The default color of a shape of the background (see `Rectangle`, `Ellipse`): translucent, in both schemes */
 export const BACKGROUND_FILL = '#64748B';
 export const SELECTION_COLOR = '#0075F2';

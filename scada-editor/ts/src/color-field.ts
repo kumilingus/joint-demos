@@ -19,6 +19,9 @@ const THEME_COLORS: [string, string][] = [
     ['Red', 'var(--color-red)']
 ];
 
+/** The color of the canvas: light in the light scheme, dark in the dark one - flat, a line drawing */
+const CANVAS_SWATCH: [string, string] = ['Canvas', 'var(--shape-canvas)'];
+
 /** How many recent and diagram colors a field shows (a row next to the input), how many recent colors are kept */
 const MAX_SWATCHES = 7;
 const MAX_RECENT = 5;
@@ -88,7 +91,8 @@ export function rememberColor(color: string): void {
  */
 /**
  * The options of a color field: `mixed` - the cells it is for (see `selection-inspector.ts`) have different
- * colors (none is shown); `graph` - the diagram of the colors to pick, for a cell not in it (a stand-in).
+ * colors (none is shown); `graph` - the diagram of the colors to pick, for a cell not in it (a stand-in);
+ * `auto` - the color can be none of the cell's own (an Auto swatch removes it, e.g. the outline of a shape).
  */
 interface ColorFieldOptions {
     type?: string;
@@ -96,6 +100,7 @@ interface ColorFieldOptions {
     defaultValue?: unknown;
     mixed?: boolean;
     graph?: dia.Graph;
+    auto?: boolean;
 }
 
 export function renderColorField(options: ColorFieldOptions, path: string, value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
@@ -117,10 +122,12 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
         input.title = 'Mixed: the colors differ';
     } else if (isHexColor(value) || isThemeColor(value)) {
         input.value = resolveColor(value);
+    } else if (options.auto) {
+        el.classList.add('auto');
     }
-    // A color picked: the one of them all now
+    // A color picked: the one of them all now (not mixed, not auto)
     const unmix = () => {
-        el.classList.remove('mixed');
+        el.classList.remove('mixed', 'auto');
         input.removeAttribute('title');
     };
     input.addEventListener('change', unmix);
@@ -149,6 +156,17 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
         swatch.classList.add('theme');
         return swatch;
     };
+    // None of its own: the shape's (an outline as the shape draws it)
+    if (options.auto) {
+        const swatch = createSwatch('transparent', 'Auto: as the shape draws it', () => {
+            // The path as a string: `removeProp()` doesn't unset a top-level property given as an array
+            cell.removeProp(path);
+            unmix();
+            el.classList.add('auto');
+        });
+        swatch.classList.add('auto');
+        swatches.append(swatch);
+    }
     // The default of the field (of the shape)
     const defaultColor = options.defaultValue ?? util.getByPath(util.result(cell, 'defaults') || {}, path, '/');
     if (isHexColor(defaultColor)) {
@@ -159,14 +177,18 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
     THEME_COLORS
         .filter(([, color]) => color !== defaultColor)
         .forEach(([name, color]) => swatches.append(themeSwatch(color, `${name} (light / dark)`)));
-    // The recent colors and the ones of the diagram on a row of their own
+    // On a row of their own: the canvas, the recent colors and the ones of the diagram
     const others = document.createElement('span');
     others.className = 'color-swatches-break';
     swatches.append(others);
+    const [canvasName, canvasColor] = CANVAS_SWATCH;
+    // Not of an outline (an outline in the color of the canvas is none)
+    const withCanvas = !options.auto && canvasColor !== defaultColor;
+    if (withCanvas) swatches.append(themeSwatch(canvasColor, `${canvasName} (light / dark)`));
     const graph = cell.graph ?? options.graph;
     [...new Set([...recentColors, ...(graph ? diagramColors(graph) : [])])]
         .filter(color => color !== String(defaultColor).toLowerCase())
-        .slice(0, MAX_SWATCHES)
+        .slice(0, MAX_SWATCHES - (withCanvas ? 1 : 0))
         .forEach(color => swatches.append(createSwatch(color, color, () => pick(color))));
     if (swatches.childElementCount > 0) row.append(swatches);
     return el;

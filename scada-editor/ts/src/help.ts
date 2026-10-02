@@ -29,7 +29,12 @@ const FIELD_HELP: Record<string, string> = {
         <strong class="tooltip-heading">Shaded</strong>
         Lit metal: a 3D look, close to the real equipment.
         <strong class="tooltip-heading">Flat</strong>
-        One tone, as the <em>high-performance HMI</em> style (ISA-101) draws the equipment.`,
+        Its color as it is, every part outlined, as the <em>high-performance HMI</em> style (ISA-101) draws the
+        equipment. In the color <em>Canvas</em>: a line drawing, as a P&amp;ID.`,
+    outline: `
+        <strong>Outline</strong> - the outline of the surfaces of the element: one color, one width for all of them.
+        <strong class="tooltip-heading">Auto</strong>
+        As the shape draws it (in the finish <em>Flat</em>: the edge of the metal).`,
     paletteFinish: `
         <strong>Palette finish</strong> - the finish of the shapes in the palette, and of the shapes dropped
         from it from now on. The diagram stays as it is (an element's own finish is set in its inspector).

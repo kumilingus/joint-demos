@@ -76,6 +76,11 @@
     --shape-glass-1: #ffffff;
     --shape-glass-2: #d6dde4;
 
+    /* The canvas (the background of the paper; a color of the shapes too) */
+    --shape-canvas: #F3F7F6;
+    /* The ink on a surface (a scale, a unit): as the labels on a surface in the color of the canvas (see below) */
+    --shape-surface-ink: #222;
+
     /* The colors to pick in the color fields (see `color-field.ts`): in each scheme its own tone */
     --color-blue: #2563eb;
     --color-green: #16a34a;
@@ -156,6 +161,8 @@
     --shape-glass-1: #dbe6f3;
     --shape-glass-2: #6f88a8;
 
+    --shape-canvas: #0a1628;
+
     /* Lighter, softer on the dark canvas */
     --color-blue: #60a5fa;
     --color-green: #4ade80;
@@ -163,4 +170,9 @@
     --color-slate: #94a3b8;
     --color-amber: #fbbf24;
     --color-red: #f87171;
+}
+
+/* An element in the color of the canvas (see `ShapeView`): its ink as the labels, readable on the canvas */
+[data-canvas] {
+    --shape-surface-ink: var(--shape-label);
 }

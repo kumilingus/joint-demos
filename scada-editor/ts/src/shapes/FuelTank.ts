@@ -1,6 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import Shape, { type Resizable } from './Shape';
+import { SURFACE_INK } from '../const';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -85,7 +86,7 @@ export default class FuelTank extends Shape {
                     fontSize: 12,
                     fontFamily: 'sans-serif',
                     fontWeight: 'bold',
-                    fill: '#555'
+                    fill: SURFACE_INK
                 },
                 label: {
                     ...labelAttributes,

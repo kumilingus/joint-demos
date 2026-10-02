@@ -855,6 +855,16 @@ body {
     height: 0;
 }
 
+/* No color of the cell's own (Auto, see `color-field.ts`): a slashed swatch and input */
+.joint-inspector .color-swatch.auto,
+.joint-inspector .color-field-content.auto input[type="color"]::-webkit-color-swatch {
+    background: linear-gradient(135deg, transparent calc(50% - 1px), var(--muted-foreground) calc(50% - 1px), var(--muted-foreground) calc(50% + 1px), transparent calc(50% + 1px)) !important;
+}
+
+.joint-inspector .color-field-content.auto input[type="color"]::-moz-color-swatch {
+    background: linear-gradient(135deg, transparent calc(50% - 1px), var(--muted-foreground) calc(50% - 1px), var(--muted-foreground) calc(50% + 1px), transparent calc(50% + 1px)) !important;
+}
+
 /* The colors of the cells differ (see `selection-inspector.ts`): none shown, a striped input */
 .joint-inspector .color-field-content.mixed input[type="color"]::-webkit-color-swatch {
     background: repeating-linear-gradient(135deg, var(--muted) 0 6px, var(--background) 6px 12px) !important;

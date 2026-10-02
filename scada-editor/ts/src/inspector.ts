@@ -6,7 +6,7 @@ import { renderLabel } from './help';
 import { colorFieldOf, getColorFieldValue, rememberColor, renderColorField } from './color-field';
 import { isGroup } from './shapes/Group';
 import { appearanceTargets, createAppearanceInspector } from './selection-inspector';
-import { hasShading } from './shapes/gradients';
+import { hasOutline, hasSurface } from './shapes/gradients';
 import { type Arrowhead, arrowheadMarker } from './shapes/Arrow';
 import { descriptions } from './descriptions';
 import { MAX_SLICES } from './shapes/DonutChart';
@@ -59,11 +59,8 @@ function getInputs(element: dia.Element): Inputs {
         };
     }
 
-    // The color the user sets (see `ColorField`)
-    util.merge(inputs, colorInputs(element, 'appearance', index++));
-
-    // The finish of the shaded surfaces (see `SurfaceFinish`)
-    if (hasShading(element)) {
+    // The finish of the surfaces (see `SurfaceFinish`): first, it decides how their color is drawn
+    if (hasSurface(element)) {
         inputs.finish = {
             type: 'select-button-group',
             label: 'Finish',
@@ -75,6 +72,14 @@ function getInputs(element: dia.Element): Inputs {
             group: 'appearance',
             index: index++
         };
+    }
+
+    // The color the user sets (see `ColorField`): of the fills of the surfaces
+    util.merge(inputs, colorInputs(element, 'appearance', index++));
+
+    // Their outline (none of its own: as the shape draws it)
+    if (hasOutline(element)) {
+        inputs.outline = { type: 'color', label: 'Outline', auto: true, group: 'appearance', index: index++ };
     }
 
     // A shape of the background: its opacity

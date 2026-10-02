@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
+import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR, SURFACE_INK } from '../const';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
 
@@ -40,7 +40,8 @@ const valueAttributes = (i: number) => ({
     textAnchor: 'middle',
     textVerticalAnchor: 'middle',
     fontSize: 14,
-    fontFamily: 'sans-serif'
+    fontFamily: 'sans-serif',
+    fill: SURFACE_INK
 });
 
 /** The levels (0 - 100) at which the color of the liquid warns that the tank is almost empty or full. */
@@ -133,7 +134,7 @@ export default class Panel extends Shape {
                 panelTicks: {
                     d: TICKS,
                     fill: 'none',
-                    stroke: 'black',
+                    stroke: SURFACE_INK,
                     strokeWidth: 2,
                     strokeLinecap: 'round'
                 },
@@ -157,7 +158,7 @@ export default class Panel extends Shape {
                     rx: 1,
                     ry: 1,
                     fill: 'none',
-                    stroke: 'black',
+                    stroke: SURFACE_INK,
                     strokeWidth: 3
                 },
                 lowMark: thresholdLineAttributes(MIN_LIQUID_COLOR),

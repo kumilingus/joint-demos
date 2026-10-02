@@ -1,12 +1,12 @@
 import { dia, ui, util } from '@joint/plus';
 import { colorFieldOf, getColorFieldValue, renderColorField } from './color-field';
-import { hasShading, type SurfaceFinish } from './shapes/gradients';
+import { hasOutline, hasSurface, type SurfaceFinish } from './shapes/gradients';
 import { isGroup } from './shapes/Group';
 
 /*
  * The appearance of several cells at once (a selection of them, the members of a group): an inspector
  * of a cell standing in for them all, with the fields they share - the color (of each its own: the metal
- * of a pump, the line of a pipe, the text of a label, see `ColorField`) and the finish (of those with shaded surfaces).
+ * of a pump, the line of a pipe, the text of a label, see `ColorField`), the finish and the outline (of those with surfaces).
  * A field shows the value they all have, or none ("mixed") if they differ; a change sets it on all of them,
  * one step of the history.
  */
@@ -52,14 +52,17 @@ function changeAll(cells: dia.Cell[], change: (cell: dia.Cell) => void): void {
  */
 export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.Inspector | null {
     const colored = cells.filter(cell => colorFieldOf(cell));
-    const surfaced = cells.filter(cell => cell.isElement() && hasShading(cell));
-    if (colored.length === 0 && surfaced.length === 0) return null;
-    const graph = (colored[0] ?? surfaced[0]).graph;
+    const surfaced = cells.filter(cell => cell.isElement() && hasSurface(cell));
+    const outlined = cells.filter(cell => cell.isElement() && hasOutline(cell));
+    if (colored.length === 0 && outlined.length === 0) return null;
+    const graph = (colored[0] ?? outlined[0]).graph;
 
     const colors = colored.map(colorOf);
+    const outlines = outlined.map(cell => cell.get('outline'));
     const standIn = new dia.Cell({
         color: common(colors),
-        finish: common(surfaced.map(finishOf))
+        finish: common(surfaced.map(finishOf)),
+        outline: common(outlines)
     });
     const inputs: Record<string, unknown> = {};
     if (colored.length > 0) {
@@ -73,7 +76,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
             // The colors of the diagram to pick (the stand-in is not in it)
             graph,
             group: 'appearance',
-            index: 1
+            index: 2
         };
     }
     if (surfaced.length > 0) {
@@ -85,7 +88,20 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
                 { value: 'flat', content: 'Flat' }
             ],
             group: 'appearance',
-            index: 2
+            // First: it decides how their color is drawn
+            index: 1
+        };
+    }
+    if (outlined.length > 0) {
+        inputs.outline = {
+            type: 'color',
+            label: 'Outline',
+            // None of their own (as the shapes draw them), or mixed
+            auto: true,
+            mixed: common(outlines.map(outline => outline ?? 'auto')) === undefined,
+            graph,
+            group: 'appearance',
+            index: 3
         };
     }
     standIn.on('change:color', (_cell: dia.Cell, color: string) => {
@@ -93,6 +109,10 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     });
     standIn.on('change:finish', (_cell: dia.Cell, finish: SurfaceFinish) => {
         changeAll(surfaced, cell => cell.set('finish', finish));
+    });
+    // A color, or none (Auto): removed
+    standIn.on('change:outline', (_cell: dia.Cell, outline: string | undefined) => {
+        changeAll(outlined, cell => (outline ? cell.set('outline', outline) : cell.unset('outline')));
     });
     return new ui.Inspector({
         cell: standIn,

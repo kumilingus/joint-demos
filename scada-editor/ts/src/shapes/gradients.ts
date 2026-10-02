@@ -151,9 +151,6 @@ const SURFACE_GRADIENTS = {
     plate: plateGradient
 };
 
-// The forms with a shading the finish can make flat (a plate is nearly flat already)
-const SHADED_FORMS = new Set(['cylinder', 'pipe', 'sphere', 'cone']);
-
 // The flat surfaces of the metal
 const FLAT_SURFACES = {
     'flat': 'var(--shape-metal-flat)',
@@ -169,10 +166,25 @@ const isSurfaceColor = (value: string): value is SurfaceColor => value.startsWit
 export type SurfaceFill = keyof typeof SURFACE_GRADIENTS | keyof typeof FLAT_SURFACES | SurfaceColor;
 
 /**
- * The finish of the surfaces of an element (its `finish`, set in the inspector): shaded (their gradients),
- * or flat - one tone, as the high-performance HMI (ISA-101) style draws the equipment.
+ * The finish of the surfaces of an element (its `finish`, set in the inspector): shaded (their gradients, the color
+ * mixed into them), or flat - the color as it is, every surface outlined, as the high-performance HMI (ISA-101)
+ * style draws the equipment (in the color of the canvas: a line drawing, as a P&ID).
  */
 export type SurfaceFinish = 'shaded' | 'flat';
+
+// The width of the outlines of an element outlined (its `outline`, the flat finish): one for all its surfaces
+const OUTLINE_WIDTH = 2;
+
+/**
+ * The outline of the surfaces of the element, if it is outlined: its own (`outline`, a color set in the inspector),
+ * or in the flat finish the edge of the metal; `null` - the surfaces' own outlines (shaded: in the color mixed).
+ * The color of the element is of the fills.
+ */
+function outlineOf(model: dia.Cell): string | null {
+    const outline = model.get('outline');
+    if (typeof outline === 'string' && outline !== '') return outline;
+    return model.get('finish') === 'flat' ? METAL_STROKE : null;
+}
 
 // A shaded surface made flat: the middle tone of its shading
 const FLAT_SHADING = 'var(--shape-metal-5)';
@@ -200,20 +212,17 @@ export const surfaceAttributes = {
     // `surfaceFill` in the attributes
     'surface-fill': {
         set(this: dia.ElementView, fill: SurfaceFill) {
-            const color = this.model.get('color');
-            // A flat one (a color of the shape, the flat metal), or a shaded one made flat
-            const flat = isSurfaceColor(fill) ? fill : FLAT_SURFACES[fill as keyof typeof FLAT_SURFACES];
-            if (flat || this.model.get('finish') === 'flat') {
-                const base = flat ?? FLAT_SHADING;
-                return { fill: isTint(color) ? tint(color, base) : base };
-            }
-            const gradient = SURFACE_GRADIENTS[fill as keyof typeof SURFACE_GRADIENTS];
-            return { fill: `url(#${this.paper!.defineGradient(isTint(color) ? tintGradient(gradient, color) : gradient)})` };
+            // Outlined: every surface (one without an outline of its own too)
+            const outline = outlineOf(this.model);
+            const outlined = outline ? { stroke: outline, 'stroke-width': OUTLINE_WIDTH } : {};
+            return { fill: surfaceFillOf(this, fill), ...outlined };
         }
     },
     // `surfaceStroke` in the attributes
     'surface-stroke': {
         set(this: dia.ElementView, stroke: SurfaceStroke) {
+            const outline = outlineOf(this.model);
+            if (outline) return { stroke: outline, 'stroke-width': OUTLINE_WIDTH };
             const color = this.model.get('color');
             const base = isSurfaceColor(stroke) ? stroke : SURFACE_STROKES[stroke];
             return { stroke: isTint(color) ? tint(color, base) : base };
@@ -221,18 +230,45 @@ export const surfaceAttributes = {
     }
 };
 
-/** The fills of the surfaces of the types (see `surfaceFills()`) */
-const surfaceTypes = new Map<string, Set<SurfaceFill>>();
+/** The fill of the surface of the element view: in its finish and its color */
+function surfaceFillOf(view: dia.ElementView, fill: SurfaceFill): string {
+    const { model } = view;
+    const color = model.get('color');
+    // Flat: the color as it is (nothing to shade)
+    if (model.get('finish') === 'flat' && isTint(color)) return color;
+    // A flat one (a color of the shape, the flat metal), or a shaded one made flat
+    const flat = isSurfaceColor(fill) ? fill : FLAT_SURFACES[fill as keyof typeof FLAT_SURFACES];
+    if (flat || model.get('finish') === 'flat') {
+        const base = flat ?? FLAT_SHADING;
+        return isTint(color) ? tint(color, base) : base;
+    }
+    const gradient = SURFACE_GRADIENTS[fill as keyof typeof SURFACE_GRADIENTS];
+    return `url(#${view.paper!.defineGradient(isTint(color) ? tintGradient(gradient, color) : gradient)})`;
+}
 
-/** The fills of the surfaces of the element: `surfaceFill` in the attributes of its type */
-function surfaceFills(element: dia.Element): Set<SurfaceFill> {
+/** The surfaces of the types (see `surfacesOf()`) */
+const surfaceTypes = new Map<string, { fills: Set<SurfaceFill>; outlined: boolean }>();
+
+/** The surfaces of the element: the fills (`surfaceFill`) in the attributes of its type, whether it has outlines (`surfaceStroke`) */
+function surfacesOf(element: dia.Element): { fills: Set<SurfaceFill>; outlined: boolean } {
     const type = element.get('type');
     if (!surfaceTypes.has(type)) {
         const { attrs = {}} = util.result(element, 'defaults') as dia.Element.Attributes;
-        const fills = Object.values(attrs).map(node => node?.surfaceFill).filter(Boolean) as SurfaceFill[];
-        surfaceTypes.set(type, new Set(fills));
+        const nodes = Object.values(attrs).filter(Boolean) as Record<string, unknown>[];
+        surfaceTypes.set(type, {
+            fills: new Set(nodes.map(node => node.surfaceFill).filter(Boolean) as SurfaceFill[]),
+            outlined: nodes.some(node => 'surfaceStroke' in node)
+        });
     }
     return surfaceTypes.get(type)!;
+}
+
+const surfaceFills = (element: dia.Element) => surfacesOf(element).fills;
+
+/** Whether the element can be outlined (its `outline`): it has surfaces, or outlines of them */
+export function hasOutline(element: dia.Element): boolean {
+    const { fills, outlined } = surfacesOf(element);
+    return fills.size > 0 || outlined;
 }
 
 /**
@@ -241,9 +277,4 @@ function surfaceFills(element: dia.Element): Set<SurfaceFill> {
  */
 export function hasSurface(element: dia.Element): boolean {
     return surfaceFills(element).size > 0;
-}
-
-/** Whether the element has shaded surfaces (its finish can be set): of a round form (see `SHADED_FORMS`) */
-export function hasShading(element: dia.Element): boolean {
-    return [...surfaceFills(element)].some(fill => SHADED_FORMS.has(fill));
 }

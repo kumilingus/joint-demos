@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
+import { SURFACE_INK } from '../const';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -45,7 +46,7 @@ export default class Filter extends Shape {
                 // The filter element across the housing
                 mesh: {
                     d: 'M calc(0.15 * w) calc(0.85 * h) L calc(0.85 * w) calc(0.15 * h)',
-                    stroke: '#333',
+                    stroke: SURFACE_INK,
                     strokeWidth: 3,
                     strokeDasharray: '6,4',
                     strokeLinecap: 'round'
