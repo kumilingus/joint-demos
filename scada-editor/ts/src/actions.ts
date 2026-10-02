@@ -347,8 +347,8 @@ export function menuCell(app: App, clicked: dia.Cell, point: dia.Point): dia.Cel
 /**
  * The element under the cell at the point: of the elements there drawn below it, the top one
  * (a panel of the background under the instruments, ...); `null` if there is none. Never a member of
- * a group: of the cell's own group skipped, of another one that group. Not the screen (a frame edited
- * in the settings, see `settings.ts`).
+ * a group: of the cell's own group skipped, of another one that group - not a group the cell is in itself
+ * (a member: its sibling below it, see `levelBelow()`). Not the screen (a frame edited in the settings, see `settings.ts`).
  */
 export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.Element | null {
     const { graph } = app;
@@ -359,7 +359,14 @@ export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.El
         .map(element => ({ element, order: drawingOrder(graph, element) }));
     if (below.length === 0) return null;
     below.sort((a, b) => (b.order[0] - a.order[0]) || (b.order[1] - a.order[1]));
-    return topGroup(below[0].element) as dia.Element;
+    return levelBelow(below[0].element, cell) as dia.Element;
+}
+
+/** The element as seen from the cell: its top group that the cell is not in (the element itself if none) */
+function levelBelow(element: dia.Element, cell: dia.Cell): dia.Cell {
+    const groupsOfCell = new Set(cell.getAncestors());
+    const levels = withGroups(element).filter(level => !groupsOfCell.has(level));
+    return levels[levels.length - 1];
 }
 
 /** The elements of the selection that can be grouped (not the screen; the siblings, see `toggleAtLevel()`) */
