@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type Resizable, type ControlKind } from './Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 // The spokes of the impeller, around the center of the casing
 const SPOKES = Array.from({ length: 8 }, (_, i) => {
@@ -24,6 +24,11 @@ const markup = util.svg/* xml */`
 
 /** A centrifugal blower: the air leaves the casing through the outlet on the top. */
 export default class Blower extends Shape {
+
+    // The accent: the base
+    get accentField(): ColorField {
+        return { path: ['attrs', 'base', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return false;
@@ -62,7 +67,7 @@ export default class Blower extends Shape {
                 },
                 base: {
                     d: 'M calc(0.15 * w) calc(h + 6) L calc(0.3 * w) calc(0.8 * h) H calc(0.7 * w) L calc(0.85 * w) calc(h + 6) Z',
-                    fill: '#777',
+                    fill: 'var(--shape-support)',
                     stroke: '#333',
                     strokeWidth: 2,
                     strokeLinejoin: 'round'

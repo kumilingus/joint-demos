@@ -1,7 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { copperGradient } from './gradients';
-import Shape, { type Resizable } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -14,6 +13,11 @@ const markup = util.svg/* xml */`
 
 /** The ground (the earth): a copper rod driven into the soil, the reference of the voltage. */
 export default class Ground extends Shape {
+
+    // The accent: the soil
+    get accentField(): ColorField {
+        return { path: ['attrs', 'soil', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return false;
@@ -41,7 +45,7 @@ export default class Ground extends Shape {
                     height: 'calc(0.55 * h)',
                     rx: 3,
                     ry: 3,
-                    fill: '#8b6b4a',
+                    fill: 'var(--shape-soil)',
                     fillOpacity: 0.55
                 },
                 grass: {
@@ -56,7 +60,7 @@ export default class Ground extends Shape {
                     height: 'calc(0.95 * h)',
                     rx: 3,
                     ry: 3,
-                    fill: copperGradient,
+                    materialFill: 'copper',
                     stroke: 'var(--shape-copper-3)',
                     strokeWidth: 1
                 },

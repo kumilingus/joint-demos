@@ -3,7 +3,7 @@ import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { bowTieAttributes } from './valve-body';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import Shape, { type Resizable, type ControlKind } from './Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -17,6 +17,11 @@ const markup = util.svg/* xml */`
 
 /** An electrically operated valve: the coil on top lights up when the valve is open. */
 export default class SolenoidValve extends Shape {
+
+    // The accent: the coil
+    get accentField(): ColorField {
+        return { path: ['attrs', 'coil', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -61,7 +66,7 @@ export default class SolenoidValve extends Shape {
                     height: 24,
                     rx: 3,
                     ry: 3,
-                    fill: '#555',
+                    fill: 'var(--shape-coil)',
                     stroke: '#222',
                     strokeWidth: 2
                 },

@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import Shape, { type Resizable } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
 import { SURFACE_INK } from '../const';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -19,6 +19,11 @@ const GLASS_HEIGHT = 0.6;
 
 /** A fuel tank (the day tank of a generator): the fuel level in its sight glass, the fuel out by the pipes. */
 export default class FuelTank extends Shape {
+
+    // The accent: the fuel in the sight glass (its level is the plant's)
+    get accentField(): ColorField {
+        return { path: ['attrs', 'fuel', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -75,7 +80,7 @@ export default class FuelTank extends Shape {
                     width: 'calc(0.12 * w - 4)',
                     rx: 2,
                     ry: 2,
-                    fill: '#d97706'
+                    fill: 'var(--shape-fuel)'
                 },
                 mark: {
                     text: 'FUEL',

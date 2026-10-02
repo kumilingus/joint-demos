@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 // The flames are drawn around the bottom center of the firebox.
 const flamesTransform = 'translate(calc(w / 2), calc(h - 18))';
@@ -17,6 +17,22 @@ const markup = util.svg/* xml */`
 `;
 
 export default class Boiler extends Shape {
+
+    // The accent: the flames (the inner one a darker tone of it)
+    get accentField(): ColorField {
+        return { path: ['attrs', 'flameOuter', 'fill'] };
+    }
+
+    static attributes = {
+        ...Shape.attributes,
+        // The inner flame (`innerFlame` in the attributes): the color of the outer one, darker
+        'inner-flame': {
+            set(this: dia.ElementView) {
+                const outer = this.model.attr(['flameOuter', 'fill']) ?? 'var(--shape-flame)';
+                return { fill: `color-mix(in oklab, ${outer} 78%, #8b1e1e)` };
+            }
+        }
+    };
 
     get overflow(): Overflow {
         return { top: 16 };
@@ -66,12 +82,13 @@ export default class Boiler extends Shape {
                 flameOuter: {
                     d: 'M -22 10 C -28 -8 -12 -14 -14 -30 C -4 -20 0 -28 2 -42 C 12 -26 26 -18 22 10 Z',
                     transform: flamesTransform,
-                    fill: '#F4A261'
+                    fill: 'var(--shape-flame)'
                 },
                 flameInner: {
                     d: 'M -10 10 C -14 -2 -4 -6 -4 -16 C 2 -10 4 -16 6 -24 C 12 -14 16 -6 12 10 Z',
                     transform: flamesTransform,
-                    fill: '#E76F51'
+                    // Darker than the outer one: of its color
+                    innerFlame: true
                 },
                 label: {
                     ...labelAttributes,

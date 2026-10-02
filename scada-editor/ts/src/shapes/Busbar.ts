@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminal, terminalPorts } from './ports';
-import { copperGradient } from './gradients';
 import { DERIVED } from './routing';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
@@ -65,7 +64,7 @@ export default class Busbar extends Shape {
                     height: 'calc(h)',
                     rx: 2,
                     ry: 2,
-                    fill: copperGradient,
+                    materialFill: 'copper',
                     stroke: 'var(--shape-copper-3)',
                     strokeWidth: 1.5
                 },

@@ -1,12 +1,12 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 // The stack narrows from the full width at the bottom to 60% of it at the top.
 const TAPER = 0.2;
 
-const BAND_COLOR = '#ED2637';
+const BAND_COLOR = 'var(--shape-chimney-band)';
 
 /**
  * A band across the stack between the relative heights `from` and `to` (0 = top, 1 = bottom).
@@ -38,6 +38,11 @@ const markup = util.svg/* xml */`
 `;
 
 export default class Chimney extends Shape {
+
+    // The accent: the warning bands
+    get accentField(): ColorField {
+        return { path: ['attrs', 'bands', 'fill'] };
+    }
 
     get overflow(): Overflow {
         return { top: 78, right: 16, bottom: 36, left: 8 };
@@ -99,8 +104,8 @@ export default class Chimney extends Shape {
                     height: 10,
                     rx: 2,
                     ry: 2,
-                    fill: '#666',
-                    stroke: '#333',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 2
                 },
                 base: {
@@ -108,8 +113,8 @@ export default class Chimney extends Shape {
                     y: 'calc(h - 4)',
                     width: 'calc(w + 16)',
                     height: 12,
-                    fill: '#999',
-                    stroke: '#555',
+                    surfaceFill: 'pale',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 2
                 },
                 label: {

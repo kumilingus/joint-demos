@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 import { SURFACE_INK } from '../const';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -13,6 +13,11 @@ const markup = util.svg/* xml */`
 `;
 
 export default class Filter extends Shape {
+
+    // The accent: the cap
+    get accentField(): ColorField {
+        return { path: ['attrs', 'cap', 'fill'] };
+    }
 
     get stubLength(): number {
         return 30;
@@ -58,7 +63,7 @@ export default class Filter extends Shape {
                     height: 10,
                     rx: 2,
                     ry: 2,
-                    fill: '#666',
+                    fill: 'var(--shape-cap)',
                     stroke: '#333',
                     strokeWidth: 2
                 },

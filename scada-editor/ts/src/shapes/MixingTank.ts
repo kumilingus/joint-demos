@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type ControlKind } from './Shape';
+import Shape, { type ColorField, type ControlKind } from './Shape';
 
 // The impeller at the bottom of the shaft
 const impellerTransform = 'translate(calc(w / 2), calc(0.8 * h))';
@@ -19,6 +19,11 @@ const markup = util.svg/* xml */`
 
 /** A tank with an agitator: a motor on top turning an impeller inside. */
 export default class MixingTank extends Shape {
+
+    // The accent: the agitator motor
+    get accentField(): ColorField {
+        return { path: ['attrs', 'motor', 'fill'] };
+    }
 
     // The agitator is switched on and off (it stirs while on, see `animations.ts`).
     get control(): ControlKind {
@@ -82,7 +87,7 @@ export default class MixingTank extends Shape {
                     height: 28,
                     rx: 4,
                     ry: 4,
-                    fill: '#555',
+                    fill: 'var(--shape-motor)',
                     stroke: '#222',
                     strokeWidth: 2
                 },

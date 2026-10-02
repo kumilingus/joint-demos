@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import Shape, { type Resizable } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -13,6 +13,11 @@ const markup = util.svg/* xml */`
 
 /** An inline strainer: the dirt is caught by the screen in the leg of the Y. */
 export default class YStrainer extends Shape {
+
+    // The accent: the cap
+    get accentField(): ColorField {
+        return { path: ['attrs', 'cap', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -59,7 +64,7 @@ export default class YStrainer extends Shape {
                     height: 10,
                     rx: 2,
                     ry: 2,
-                    fill: '#666',
+                    fill: 'var(--shape-cap)',
                     stroke: '#333',
                     strokeWidth: 1.5
                 },

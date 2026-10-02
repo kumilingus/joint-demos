@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 import { CHART_POINTS, getScale, GRID, plotArea, plotAttributes, plotY, type Scale, scaleAttributes, scaleMarkup } from './charts';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -37,6 +37,11 @@ function thresholdValue(value: unknown): number {
  * with the warning thresholds. In the runtime mode the newest value comes on the right (see `simulation.ts`).
  */
 export default class LineChart extends Shape {
+
+    // The accent: the series (its line, the area under it)
+    get accentField(): ColorField {
+        return { path: ['attrs', 'line', 'stroke'] };
+    }
 
     get graphLayer(): Layer {
         return Layer.Instruments;
@@ -123,7 +128,8 @@ export default class LineChart extends Shape {
                 },
                 area: {
                     chartSeries: 'area',
-                    fill: LIQUID_COLOR,
+                    // Of the color of the line (the accent)
+                    fillFrom: ['line', 'stroke'],
                     fillOpacity: 0.2
                 },
                 line: {

@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 // The packing bed in the middle of the column (relative heights)
 const BED_TOP = 0.35;
@@ -32,6 +32,11 @@ const markup = util.svg/* xml */`
 
 /** A gas scrubber: the gas rises through the packing, washed by the liquid sprayed from the top. */
 export default class Scrubber extends Shape {
+
+    // The accent: the skirt
+    get accentField(): ColorField {
+        return { path: ['attrs', 'skirt', 'fill'] };
+    }
 
     get overflow(): Overflow {
         return { top: 14, bottom: 36 };
@@ -64,7 +69,7 @@ export default class Scrubber extends Shape {
                 },
                 skirt: {
                     d: 'M calc(0.1 * w) calc(h - 10) L 0 calc(h + 12) H calc(w) L calc(0.9 * w) calc(h - 10) Z',
-                    fill: '#999',
+                    fill: 'var(--shape-skirt)',
                     stroke: '#555',
                     strokeWidth: 2
                 },
@@ -111,7 +116,7 @@ export default class Scrubber extends Shape {
                 },
                 nozzles: {
                     d: NOZZLES,
-                    fill: '#555'
+                    surfaceFill: 'dark'
                 },
                 label: {
                     ...labelAttributes,

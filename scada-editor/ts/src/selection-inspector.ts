@@ -1,6 +1,6 @@
 import { dia, ui, util } from '@joint/plus';
-import { colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, renderColorField } from './color-field';
-import { hasSurface, type SurfaceFinish } from './shapes/gradients';
+import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, renderColorField } from './color-field';
+import { hasFinish, type SurfaceFinish } from './shapes/gradients';
 import { isGroup } from './shapes/Group';
 
 /*
@@ -41,6 +41,12 @@ function outlineOf(cell: dia.Cell): string | undefined {
     return cell.prop(field.path) ?? fieldDefault(cell, field);
 }
 
+/** The accent color of the cell: its own, or the default of its shape */
+function accentOf(cell: dia.Cell): string | undefined {
+    const field = accentFieldOf(cell)!;
+    return cell.prop(field.path) ?? fieldDefault(cell, field);
+}
+
 /** Set the outline color of the cell, or none (`undefined`, Auto): back to the default of its shape, if it has one */
 function setOutline(cell: dia.Cell, outline: string | undefined): void {
     const field = outlineFieldOf(cell)!;
@@ -72,10 +78,11 @@ function changeAll(cells: dia.Cell[], change: (cell: dia.Cell) => void): void {
  */
 export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.Inspector | null {
     const colored = cells.filter(cell => colorFieldOf(cell));
-    const surfaced = cells.filter(cell => cell.isElement() && hasSurface(cell));
+    const surfaced = cells.filter(cell => cell.isElement() && hasFinish(cell));
     const outlined = cells.filter(cell => outlineFieldOf(cell));
-    if (colored.length === 0 && outlined.length === 0) return null;
-    const graph = (colored[0] ?? outlined[0]).graph;
+    const accented = cells.filter(cell => accentFieldOf(cell));
+    if (colored.length === 0 && outlined.length === 0 && accented.length === 0) return null;
+    const graph = (colored[0] ?? outlined[0] ?? accented[0]).graph;
 
     const colors = colored.map(colorOf);
     // Of each its own (a pipe: its default), or none (Auto)
@@ -83,7 +90,8 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     const standIn = new dia.Cell({
         color: common(colors),
         finish: common(surfaced.map(finishOf)),
-        outline: common(outlines)
+        outline: common(outlines),
+        accent: common(accented.map(accentOf))
     });
     const inputs: Record<string, unknown> = {};
     if (colored.length > 0) {
@@ -132,6 +140,20 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         changeAll(surfaced, cell => cell.set('finish', finish));
     });
     // A color, or none (Auto): removed
+    if (accented.length > 0) {
+        inputs.accent = {
+            type: 'color',
+            label: 'Accent',
+            defaultValue: common(accented.map(cell => fieldDefault(cell, accentFieldOf(cell)!))),
+            mixed: common(accented.map(accentOf)) === undefined,
+            graph,
+            group: 'appearance',
+            index: 4
+        };
+    }
+    standIn.on('change:accent', (_cell: dia.Cell, accent: string) => {
+        changeAll(accented, cell => cell.prop(accentFieldOf(cell)!.path, accent));
+    });
     standIn.on('change:outline', (_cell: dia.Cell, outline: string | undefined) => {
         changeAll(outlined, cell => setOutline(cell, outline));
     });

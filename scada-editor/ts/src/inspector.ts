@@ -3,10 +3,11 @@ import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
 import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
-import { colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, rememberColor, renderColorField } from './color-field';
+import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, rememberColor, renderColorField } from './color-field';
+import type { ColorField } from './shapes/Shape';
 import { isGroup } from './shapes/Group';
 import { appearanceTargets, createAppearanceInspector } from './selection-inspector';
-import { hasSurface } from './shapes/gradients';
+import { hasFinish } from './shapes/gradients';
 import { type Arrowhead, arrowheadMarker } from './shapes/Arrow';
 import { descriptions } from './descriptions';
 import { MAX_SLICES } from './shapes/DonutChart';
@@ -60,7 +61,7 @@ function getInputs(element: dia.Element): Inputs {
     }
 
     // The finish of the surfaces (see `SurfaceFinish`): first, it decides how their color is drawn
-    if (hasSurface(element)) {
+    if (hasFinish(element)) {
         inputs.finish = {
             type: 'select-button-group',
             label: 'Finish',
@@ -79,6 +80,7 @@ function getInputs(element: dia.Element): Inputs {
 
     // Their outline (none of its own: as the shape draws it)
     util.merge(inputs, outlineInputs(element, 'appearance', index++));
+    util.merge(inputs, accentInputs(element, 'appearance', index++));
 
     // A shape of the background: its opacity
     if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
@@ -222,9 +224,18 @@ function colorInputs(cell: dia.Cell, group: string, index: number): Inputs {
  * the equipment (Auto - as the shape draws them), of a pipe (its default the dark of the theme); nothing if none.
  */
 function outlineInputs(cell: dia.Cell, group: string, index: number): Inputs {
-    const field = outlineFieldOf(cell);
+    return fieldInputs(cell, outlineFieldOf(cell), 'Outline', group, index);
+}
+
+/** The Accent field of the cell (a marking of it: the bands of a chimney, a handwheel, see `accentField`); nothing if none */
+function accentInputs(cell: dia.Cell, group: string, index: number): Inputs {
+    return fieldInputs(cell, accentFieldOf(cell), 'Accent', group, index);
+}
+
+/** A color field at the path of the field (Auto if it has no default: none of the cell's own) */
+function fieldInputs(cell: dia.Cell, field: ColorField | null, label: string, group: string, index: number): Inputs {
     if (!field) return {};
-    const input = { type: 'color', label: 'Outline', group, index, ...(fieldDefault(cell, field) === undefined ? { auto: true } : {}) };
+    const input = { type: 'color', label, group, index, ...(fieldDefault(cell, field) === undefined ? { auto: true } : {}) };
     return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
 }
 

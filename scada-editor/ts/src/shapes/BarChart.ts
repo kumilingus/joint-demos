@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { Layer, LIQUID_COLOR } from '../const';
 import { getScale, GRID, plotArea, plotAttributes, plotY, type Scale, scaleAttributes, scaleMarkup } from './charts';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 // The bar takes this part of its slot of the plot
 const BAR_WIDTH = 0.6;
@@ -36,6 +36,11 @@ function barsPath(values: number[], scale: Scale, bbox: dia.BBox): string {
  * of a period). In the runtime mode the newest period comes on the right (see `simulation.ts`).
  */
 export default class BarChart extends Shape {
+
+    // The accent: the bars
+    get accentField(): ColorField {
+        return { path: ['attrs', 'bars', 'fill'] };
+    }
 
     get graphLayer(): Layer {
         return Layer.Instruments;

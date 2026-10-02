@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
-import Shape, { type Resizable, type ControlKind } from './Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -12,6 +12,11 @@ const markup = util.svg/* xml */`
 `;
 
 export default class Compressor extends Shape {
+
+    // The accent: the base
+    get accentField(): ColorField {
+        return { path: ['attrs', 'base', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -42,7 +47,7 @@ export default class Compressor extends Shape {
                 },
                 base: {
                     d: 'M calc(0.15 * w) calc(h) L calc(0.3 * w) calc(0.8 * h) H calc(0.7 * w) L calc(0.85 * w) calc(h) Z',
-                    fill: '#777',
+                    fill: 'var(--shape-support)',
                     stroke: '#333',
                     strokeWidth: 2,
                     strokeLinejoin: 'round'

@@ -76,6 +76,34 @@
     --shape-glass-1: #ffffff;
     --shape-glass-2: #d6dde4;
 
+    /* The liquid and its warning colors (see `LIQUID_COLOR`), a shape of the background */
+    --shape-liquid: #0EAD69;
+    --shape-liquid-max: #ED2637;
+    --shape-liquid-min: #FFD23F;
+    --shape-background-fill: #64748B;
+
+    /* The accents of the shapes (see `accentField`): the bands of a chimney, the operators of the valves, a terminal box */
+    --shape-chimney-band: #ED2637;
+    --shape-valve-operator: #666666;
+    --shape-terminal-box: #555555;
+    --shape-motor: #555555;
+
+    /* The metal of the details (see `FLAT_SURFACES`): a stem, a shaft, the feet; their edge */
+    --shape-metal-dark: #555555;
+    --shape-metal-mid: #777777;
+    --shape-metal-pale: #999999;
+    --shape-metal-dark-edge: #333333;
+    --shape-fuel: #d97706;
+    --shape-hopper-material: #8d7a62;
+    --shape-flame: #F4A261;
+    --shape-soil: #8b6b4a;
+    --shape-coil: #555555;
+    --shape-cap: #666666;
+    --shape-skid: #555555;
+    --shape-support: #777777;
+    --shape-skirt: #999999;
+    --shape-pivot: #333333;
+
     /* A pipe: its default color (the medium), its outline */
     --shape-pipe: #6CC59A;
     --shape-pipe-outline: #444444;

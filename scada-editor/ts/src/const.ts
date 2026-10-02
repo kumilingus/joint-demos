@@ -22,9 +22,10 @@ export enum Layer {
 /** The grid: the elements move and resize, and the anchors of the pipes snap, in its steps. */
 export const GRID_SIZE = 10;
 
-export const LIQUID_COLOR = '#0EAD69';
-export const MAX_LIQUID_COLOR = '#ED2637';
-export const MIN_LIQUID_COLOR = '#FFD23F';
+/** The liquid (a level, a temperature, a zone), and its warning colors above and below the thresholds: of the theme */
+export const LIQUID_COLOR = 'var(--shape-liquid)';
+export const MAX_LIQUID_COLOR = 'var(--shape-liquid-max)';
+export const MIN_LIQUID_COLOR = 'var(--shape-liquid-min)';
 /** The default color of a pipe (its medium, see `Pipe`): of the theme */
 export const PIPE_COLOR = 'var(--shape-pipe)';
 
@@ -41,7 +42,7 @@ export const CANVAS_COLOR = 'var(--shape-canvas)';
 export const SURFACE_INK = 'var(--shape-surface-ink)';
 
 /** The default color of a shape of the background (see `Rectangle`, `Ellipse`): translucent, in both schemes */
-export const BACKGROUND_FILL = '#64748B';
+export const BACKGROUND_FILL = 'var(--shape-background-fill)';
 export const SELECTION_COLOR = '#0075F2';
 
 /** How far the frame of a selected element is around it (`ui.FreeTransform` and the frames of `ui.Selection`) */

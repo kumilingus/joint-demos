@@ -113,8 +113,8 @@ export default class CoolingTower extends Shape {
                     y: 'calc(h - 4)',
                     width: 'calc(w + 16)',
                     height: 12,
-                    fill: '#999',
-                    stroke: '#555',
+                    surfaceFill: 'pale',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 2
                 },
                 label: {

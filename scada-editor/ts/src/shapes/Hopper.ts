@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -13,6 +13,11 @@ const markup = util.svg/* xml */`
 
 /** An open bin narrowing into a chute at the bottom. */
 export default class Hopper extends Shape {
+
+    // The accent: the material in it
+    get accentField(): ColorField {
+        return { path: ['attrs', 'material', 'fill'] };
+    }
 
     get overflow(): Overflow {
         return { top: 4, right: 4, left: 4 };
@@ -40,7 +45,7 @@ export default class Hopper extends Shape {
                 // The material in the bin
                 material: {
                     d: 'M calc(0.12 * w) calc(0.2 * h) Q calc(0.5 * w) 2 calc(0.88 * w) calc(0.2 * h) Z',
-                    fill: '#8d7a62',
+                    fill: 'var(--shape-hopper-material)',
                     stroke: '#5e4f3d',
                     strokeWidth: 1
                 },
@@ -51,8 +56,8 @@ export default class Hopper extends Shape {
                     height: 8,
                     rx: 2,
                     ry: 2,
-                    fill: '#777',
-                    stroke: '#333',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 label: {

@@ -1,7 +1,7 @@
 import { dia } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { GRID_SIZE, Layer } from '../const';
-import { hasOutline, hasSurface, SURFACE_COLOR, surfaceAttributes } from './gradients';
+import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttributes } from './gradients';
 import { pipeAttributes } from './ports';
 
 /** The size constraints of resizing. */
@@ -63,6 +63,8 @@ export interface ShapeFeatures {
     colorField: ColorField | null;
     /** The color of the outline the user sets, if any. */
     outlineField: ColorField | null;
+    /** The color of the accent the user sets (a marking: the bands of a chimney, a handwheel), if any. */
+    accentField: ColorField | null;
 }
 
 // An element can be made this much smaller than its default size (unless the shape says otherwise).
@@ -82,7 +84,7 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
 
     // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`), the outlines of its pipes
     // (`pipeOutline`); a shape with attributes of its own adds them to these
-    static attributes: typeof dia.Element.attributes = { ...surfaceAttributes, ...pipeAttributes };
+    static attributes: typeof dia.Element.attributes = { ...surfaceAttributes, ...materialAttributes, ...pipeAttributes };
 
     get resizable(): Resizable {
         return true;
@@ -125,6 +127,11 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     /** The color of the outlines of its surfaces, if it has any: none of its own by default (Auto - as the shape draws them) */
     get outlineField(): ColorField | null {
         return hasOutline(this) ? { path: ['outline'] } : null;
+    }
+
+    /** The color of the accent of the element (a marking of it), if it has one: none by default */
+    get accentField(): ColorField | null {
+        return null;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

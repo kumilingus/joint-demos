@@ -39,6 +39,11 @@ export function outlineFieldOf(cell: dia.Cell): ColorField | null {
     return (cell as dia.Cell & { outlineField?: ColorField | null }).outlineField ?? null;
 }
 
+/** The color of the accent the user sets on the cell, if any (see `ColorField`) */
+export function accentFieldOf(cell: dia.Cell): ColorField | null {
+    return (cell as dia.Cell & { accentField?: ColorField | null }).accentField ?? null;
+}
+
 /** The default of the color field of the cell: its own, or of the defaults of its shape; none - Auto */
 export function fieldDefault(cell: dia.Cell, field: ColorField): string | undefined {
     return field.defaultValue ?? util.getByPath(util.result(cell, 'defaults') || {}, field.path.join('/'), '/');
@@ -71,13 +76,14 @@ function createSwatch(color: string, tooltip: string, onClick: () => void): HTML
     return swatch;
 }
 
-/** The colors used in the diagram (set by the user: see `colorFieldOf()`, the slices of the donuts) */
+/** The colors used in the diagram (set by the user: the colors, the outlines, the accents of the cells, the slices of the donuts) */
 function diagramColors(graph: dia.Graph): string[] {
     const colors = new Set<string>();
     graph.getCells().forEach((cell) => {
-        const field = colorFieldOf(cell);
-        const value = field && cell.prop(field.path);
-        if (isHexColor(value)) colors.add(value.toLowerCase());
+        [colorFieldOf(cell), outlineFieldOf(cell), accentFieldOf(cell)].forEach((field) => {
+            const value = field && cell.prop(field.path);
+            if (isHexColor(value)) colors.add(value.toLowerCase());
+        });
         const slices = cell.get('slices');
         if (Array.isArray(slices)) slices.forEach(slice => isHexColor(slice?.color) && colors.add(slice.color.toLowerCase()));
     });

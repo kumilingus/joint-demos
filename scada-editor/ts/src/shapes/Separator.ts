@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 const saddle = (x: number) => `M calc(${x} * w - 14) calc(h + 12) L calc(${x} * w - 8) calc(h - 6) H calc(${x} * w + 8) L calc(${x} * w + 14) calc(h + 12) Z`;
 
@@ -18,6 +18,11 @@ const markup = util.svg/* xml */`
 
 /** A horizontal two-phase separator: the liquid settles at the bottom, the gas leaves on the top. */
 export default class Separator extends Shape {
+
+    // The accent: the saddles
+    get accentField(): ColorField {
+        return { path: ['attrs', 'saddles', 'fill'] };
+    }
 
     get stubLength(): number {
         return 30;
@@ -45,7 +50,7 @@ export default class Separator extends Shape {
                 },
                 saddles: {
                     d: `${saddle(0.25)} ${saddle(0.75)}`,
-                    fill: '#777',
+                    fill: 'var(--shape-support)',
                     stroke: '#333',
                     strokeWidth: 1.5
                 },

@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { PIPE_COLOR } from '../const';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type Resizable, type ControlKind } from './Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 // The cover slides over the frame opening (the frame is 30 wide with 3 on each side).
 const COVER_MAX_WIDTH = 24;
@@ -22,6 +22,11 @@ const markup = util.svg/* xml */`
 `;
 
 export default class ControlValve extends Shape {
+
+    // The accent: the actuator
+    get accentField(): ColorField {
+        return { path: ['attrs', 'control', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return false;
@@ -109,16 +114,16 @@ export default class ControlValve extends Shape {
                     height: 30,
                     x: 'calc(w / 2 - 5)',
                     y: -30,
-                    stroke: '#333',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 2,
-                    fill: '#555'
+                    surfaceFill: 'dark'
                 },
                 control: {
                     d: 'M 0 0 C 0 -30 60 -30 60 0 Z',
                     transform: 'translate(calc(w / 2 - 30), -20)',
                     stroke: '#333',
                     strokeWidth: 2,
-                    fill: '#666'
+                    fill: 'var(--shape-valve-operator)'
                 },
                 label: {
                     ...labelAttributes,

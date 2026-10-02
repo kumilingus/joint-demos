@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { porcelainGradient } from './gradients';
 import Shape, { type ControlKind, type Resizable } from './Shape';
 
 // An insulator post standing on the base, at a part of the width
@@ -11,7 +10,7 @@ const post = (x: number) => ({
     height: 'calc(0.5 * h)',
     rx: 3,
     ry: 3,
-    fill: porcelainGradient,
+    materialFill: 'porcelain',
     stroke: 'var(--shape-porcelain-3)',
     strokeWidth: 1.5
 });
@@ -67,8 +66,8 @@ export default class Disconnector extends Shape {
                     height: 'calc(0.15 * h)',
                     rx: 2,
                     ry: 2,
-                    fill: '#5b646d',
-                    stroke: '#333',
+                    surfaceFill: 'dark',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 hingePost: post(0.2),

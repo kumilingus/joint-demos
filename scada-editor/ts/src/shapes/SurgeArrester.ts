@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { porcelainGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -35,7 +34,7 @@ export default class SurgeArrester extends Shape {
     defaults(): dia.Element.Attributes {
         const sheds: Record<string, object> = {};
         SHEDS.forEach((y, i) => {
-            sheds[`shed${i}`] = { y: `calc(${y} * h)`, width: 'calc(w)', height: 6, rx: 3, ry: 3, fill: porcelainGradient, stroke: 'var(--shape-porcelain-3)', strokeWidth: 1 };
+            sheds[`shed${i}`] = { y: `calc(${y} * h)`, width: 'calc(w)', height: 6, rx: 3, ry: 3, materialFill: 'porcelain', stroke: 'var(--shape-porcelain-3)', strokeWidth: 1 };
         });
         const cap = { x: 'calc(0.15 * w)', width: 'calc(0.7 * w)', height: 'calc(0.12 * h)', rx: 2, ry: 2, surfaceFill: 'pipe', surfaceStroke: 'edge', strokeWidth: 1.5 };
         return {
@@ -54,7 +53,7 @@ export default class SurgeArrester extends Shape {
                     y: 'calc(0.1 * h)',
                     width: 'calc(0.5 * w)',
                     height: 'calc(0.8 * h)',
-                    fill: porcelainGradient,
+                    materialFill: 'porcelain',
                     stroke: 'var(--shape-porcelain-3)',
                     strokeWidth: 1.5
                 },

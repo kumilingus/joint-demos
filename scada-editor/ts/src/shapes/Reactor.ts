@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type ControlKind } from './Shape';
+import Shape, { type ColorField, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -16,6 +16,11 @@ const markup = util.svg/* xml */`
 
 /** A jacketed reactor: a vessel with dished ends, a heating jacket and an agitator. */
 export default class Reactor extends Shape {
+
+    // The accent: the agitator motor
+    get accentField(): ColorField {
+        return { path: ['attrs', 'motor', 'fill'] };
+    }
 
     // The agitator is switched on and off (it stirs while on, see `animations.ts`).
     get control(): ControlKind {
@@ -85,7 +90,7 @@ export default class Reactor extends Shape {
                     height: 24,
                     rx: 4,
                     ry: 4,
-                    fill: '#555',
+                    fill: 'var(--shape-motor)',
                     stroke: '#222',
                     strokeWidth: 2
                 },

@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type ControlKind } from './Shape';
+import Shape, { type ColorField, type ControlKind } from './Shape';
 
 // The cooling fins across the housing (relative x positions)
 const FINS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
@@ -21,6 +21,11 @@ const markup = util.svg/* xml */`
 
 /** An electric motor: a finned housing on feet with the shaft on the right. */
 export default class Motor extends Shape {
+
+    // The accent: the terminal box
+    get accentField(): ColorField {
+        return { path: ['attrs', 'terminalBox', 'fill'] };
+    }
 
     get control(): ControlKind {
         return 'power';
@@ -46,8 +51,8 @@ export default class Motor extends Shape {
                 },
                 feet: {
                     d: 'M calc(0.1 * w) calc(h) h calc(0.25 * w) l 4 8 h calc(-0.25 * w - 8) Z M calc(0.65 * w) calc(h) h calc(0.25 * w) l 4 8 h calc(-0.25 * w - 8) Z',
-                    fill: '#555',
-                    stroke: '#333',
+                    surfaceFill: 'dark',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 shaft: {
@@ -55,8 +60,8 @@ export default class Motor extends Shape {
                     y: 'calc(h / 2 - 5)',
                     width: 22,
                     height: 10,
-                    fill: '#999',
-                    stroke: '#555',
+                    surfaceFill: 'pale',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 endCap: {
@@ -66,8 +71,8 @@ export default class Motor extends Shape {
                     height: 'calc(h - 16)',
                     rx: 3,
                     ry: 3,
-                    fill: '#777',
-                    stroke: '#333',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 body: {
@@ -92,7 +97,7 @@ export default class Motor extends Shape {
                     height: 14,
                     rx: 2,
                     ry: 2,
-                    fill: '#555',
+                    fill: 'var(--shape-terminal-box)',
                     stroke: '#333',
                     strokeWidth: 1.5
                 },

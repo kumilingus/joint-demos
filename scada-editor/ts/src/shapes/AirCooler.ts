@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
-import Shape, { type Resizable, type ControlKind } from './Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 // A small blade of a fan, pointing up from its hub; the other two are rotated copies.
 const BLADE = 'M 0 0 C 2 -5 10 -12 4 -17 C -1 -15 -5 -8 0 0 Z';
@@ -29,6 +29,11 @@ const markup = util.svg/* xml */`
  * the fans on top blow air through it (they spin while the cooler is on).
  */
 export default class AirCooler extends Shape {
+
+    // The accent: the fan plenum
+    get accentField(): ColorField {
+        return { path: ['attrs', 'plenum', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return false;

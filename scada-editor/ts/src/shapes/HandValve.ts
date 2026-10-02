@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type Resizable, type ControlKind } from './Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -13,6 +13,11 @@ const markup = util.svg/* xml */`
 `;
 
 export default class HandValve extends Shape {
+
+    // The accent: the handwheel
+    get accentField(): ColorField {
+        return { path: ['attrs', 'handwheel', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return false;
@@ -58,9 +63,9 @@ export default class HandValve extends Shape {
                     height: 30,
                     x: 'calc(w / 2 - 5)',
                     y: -30,
-                    stroke: '#333',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 2,
-                    fill: '#555'
+                    surfaceFill: 'dark'
                 },
                 handwheel: {
                     width: 60,
@@ -71,7 +76,7 @@ export default class HandValve extends Shape {
                     strokeWidth: 2,
                     rx: 5,
                     ry: 5,
-                    fill: '#666'
+                    fill: 'var(--shape-valve-operator)'
                 },
                 label: {
                     ...labelAttributes,

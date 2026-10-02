@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { Layer, LIQUID_COLOR } from '../const';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 // The margins of the chart in the screen (the screen is 6 inside the bezel)
 const CHART_X = 12;
@@ -26,6 +26,11 @@ const markup = util.svg/* xml */`
 
 /** A panel showing the recent history of a value (0 - 100): the newest on the right. */
 export default class Trend extends Shape {
+
+    // The accent: the line
+    get accentField(): ColorField {
+        return { path: ['attrs', 'line', 'stroke'] };
+    }
 
     get graphLayer(): Layer {
         return Layer.Instruments;

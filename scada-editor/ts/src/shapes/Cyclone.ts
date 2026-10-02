@@ -74,8 +74,8 @@ export default class Cyclone extends Shape {
                     y: 'calc(h - 12)',
                     width: 'calc(0.2 * w)',
                     height: 12,
-                    fill: '#777',
-                    stroke: '#333',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 label: {

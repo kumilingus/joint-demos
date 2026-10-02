@@ -2,7 +2,7 @@ import { type dia, g, util, V } from '@joint/plus';
 import { labelAttributes } from './ports';
 import { Layer, LIQUID_COLOR } from '../const';
 import { arcPath, getScale, scaleFraction } from './charts';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 // The arc of the scale: from the bottom left, clockwise, to the bottom right (degrees, clockwise from the right)
 const START = 135;
@@ -35,6 +35,11 @@ function fraction(model: dia.Cell): number {
  * In the runtime mode the value changes (see `simulation.ts`).
  */
 export default class GaugeChart extends Shape {
+
+    // The accent: the arc of the value (and the number)
+    get accentField(): ColorField {
+        return { path: ['attrs', 'arc', 'stroke'] };
+    }
 
     get graphLayer(): Layer {
         return Layer.Instruments;
@@ -114,7 +119,8 @@ export default class GaugeChart extends Shape {
                     fontSize: 24,
                     fontFamily: 'monospace',
                     fontWeight: 'bold',
-                    fill: LIQUID_COLOR
+                    // Of the color of the arc (the accent)
+                    fillFrom: ['arc', 'stroke']
                 },
                 unit: {
                     text: 'bar',

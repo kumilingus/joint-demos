@@ -70,8 +70,8 @@ export default class SphericalTank extends Shape {
                     cy: 4,
                     rx: 12,
                     ry: 5,
-                    fill: '#777',
-                    stroke: '#333',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 label: {

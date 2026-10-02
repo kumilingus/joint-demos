@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type Resizable } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
 
 // The spring inside the bonnet: a zig-zag between the relative heights 0.08 and 0.42
 const SPRING = Array.from({ length: 7 }, (_, i) => {
@@ -22,6 +22,11 @@ const markup = util.svg/* xml */`
 
 /** A safety valve: the spring keeps it shut until the pressure lifts the disc. */
 export default class ReliefValve extends Shape {
+
+    // The accent: the cap
+    get accentField(): ColorField {
+        return { path: ['attrs', 'cap', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -77,7 +82,7 @@ export default class ReliefValve extends Shape {
                     height: 10,
                     rx: 2,
                     ry: 2,
-                    fill: '#666',
+                    fill: 'var(--shape-cap)',
                     stroke: '#333',
                     strokeWidth: 1.5
                 },

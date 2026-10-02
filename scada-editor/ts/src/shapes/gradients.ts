@@ -151,11 +151,17 @@ const SURFACE_GRADIENTS = {
     plate: plateGradient
 };
 
-// The flat surfaces of the metal
+// The flat surfaces of the metal: the light ones (`flat`), the details (`dark` - a stem, a shaft, feet; `mid`; `pale`)
 const FLAT_SURFACES = {
     'flat': 'var(--shape-metal-flat)',
-    'flat-2': 'var(--shape-metal-flat-2)'
+    'flat-2': 'var(--shape-metal-flat-2)',
+    'dark': 'var(--shape-metal-dark)',
+    'mid': 'var(--shape-metal-mid)',
+    'pale': 'var(--shape-metal-pale)'
 };
+
+// The details of the metal: in a darker tone of the color of the element (see `surfaceFillOf()`)
+const DETAILS = new Set<string>(['dark', 'mid', 'pale']);
 
 /** A color of a shape of its own (a CSS variable of the theme, a hex) a surface can have instead of a kind of the metal */
 export type SurfaceColor = `var(${string})` | `#${string}`;
@@ -234,8 +240,8 @@ export const surfaceAttributes = {
 function surfaceFillOf(view: dia.ElementView, fill: SurfaceFill): string {
     const { model } = view;
     const color = model.get('color');
-    // Flat: the color as it is (nothing to shade)
-    if (model.get('finish') === 'flat' && isTint(color)) return color;
+    // Flat: the color as it is (nothing to shade) - a detail keeps its darker tone of it
+    if (model.get('finish') === 'flat' && isTint(color) && !DETAILS.has(fill)) return color;
     // A flat one (a color of the shape, the flat metal), or a shaded one made flat
     const flat = isSurfaceColor(fill) ? fill : FLAT_SURFACES[fill as keyof typeof FLAT_SURFACES];
     if (flat || model.get('finish') === 'flat') {
@@ -246,24 +252,53 @@ function surfaceFillOf(view: dia.ElementView, fill: SurfaceFill): string {
     return `url(#${view.paper!.defineGradient(isTint(color) ? tintGradient(gradient, color) : gradient)})`;
 }
 
+// The materials other than the metal (their own colors, not tinted with the color of the element)
+const MATERIAL_GRADIENTS = {
+    porcelain: porcelainGradient,
+    copper: copperGradient,
+    glass: glassGradient
+};
+
+/** A material of a part: shaded by its gradient, or flat (its middle tone) in the flat finish */
+export type MaterialFill = keyof typeof MATERIAL_GRADIENTS;
+
+/** The special attribute of a part of a material (`materialFill`): in the finish of the element, in its own colors */
+export const materialAttributes = {
+    // `materialFill` in the attributes
+    'material-fill': {
+        set(this: dia.ElementView, material: MaterialFill) {
+            const gradient = MATERIAL_GRADIENTS[material];
+            if (this.model.get('finish') === 'flat') return { fill: gradient.stops[1]?.color ?? gradient.stops[0].color };
+            return { fill: `url(#${this.paper!.defineGradient(gradient)})` };
+        }
+    }
+};
+
 /** The surfaces of the types (see `surfacesOf()`) */
-const surfaceTypes = new Map<string, { fills: Set<SurfaceFill>; outlined: boolean }>();
+const surfaceTypes = new Map<string, { fills: Set<SurfaceFill>; outlined: boolean; materials: boolean }>();
 
 /** The surfaces of the element: the fills (`surfaceFill`) in the attributes of its type, whether it has outlines (`surfaceStroke`) */
-function surfacesOf(element: dia.Element): { fills: Set<SurfaceFill>; outlined: boolean } {
+function surfacesOf(element: dia.Element): { fills: Set<SurfaceFill>; outlined: boolean; materials: boolean } {
     const type = element.get('type');
     if (!surfaceTypes.has(type)) {
         const { attrs = {}} = util.result(element, 'defaults') as dia.Element.Attributes;
         const nodes = Object.values(attrs).filter(Boolean) as Record<string, unknown>[];
         surfaceTypes.set(type, {
             fills: new Set(nodes.map(node => node.surfaceFill).filter(Boolean) as SurfaceFill[]),
-            outlined: nodes.some(node => 'surfaceStroke' in node)
+            outlined: nodes.some(node => 'surfaceStroke' in node),
+            materials: nodes.some(node => 'materialFill' in node)
         });
     }
     return surfaceTypes.get(type)!;
 }
 
 const surfaceFills = (element: dia.Element) => surfacesOf(element).fills;
+
+/** Whether the element has a finish (shaded or flat): surfaces of the metal or parts of a material */
+export function hasFinish(element: dia.Element): boolean {
+    const { fills, materials } = surfacesOf(element);
+    return fills.size > 0 || materials;
+}
 
 /** Whether the element can be outlined (its `outline`): it has surfaces, or outlines of them */
 export function hasOutline(element: dia.Element): boolean {

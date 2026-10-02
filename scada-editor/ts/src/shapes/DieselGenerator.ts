@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, terminalPorts } from './ports';
 import type { Overflow } from './footprint';
-import Shape, { type ControlKind, type Resizable } from './Shape';
+import Shape, { type ColorField, type ControlKind, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -23,6 +23,11 @@ const markup = util.svg/* xml */`
  * (switched in the runtime mode, the exhaust smokes). The fuel comes in by the pipe on the left.
  */
 export default class DieselGenerator extends Shape {
+
+    // The accent: the skid
+    get accentField(): ColorField {
+        return { path: ['attrs', 'skid', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -82,7 +87,7 @@ export default class DieselGenerator extends Shape {
                     height: 12,
                     rx: 2,
                     ry: 2,
-                    fill: '#555',
+                    fill: 'var(--shape-skid)',
                     stroke: '#333',
                     strokeWidth: 1.5
                 },

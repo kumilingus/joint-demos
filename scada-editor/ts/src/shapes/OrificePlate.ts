@@ -67,15 +67,15 @@ export default class OrificePlate extends Shape {
                     y: -14,
                     width: 6,
                     height: 16,
-                    fill: '#555',
-                    stroke: '#333',
+                    surfaceFill: 'dark',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1
                 },
                 body: {
                     x: 'calc(w / 2 - 3)',
                     width: 6,
                     height: 'calc(h)',
-                    fill: '#333'
+                    surfaceFill: 'dark'
                 },
                 upstream: flange('calc(w / 2 - 11)'),
                 downstream: flange('calc(w / 2 + 3)'),

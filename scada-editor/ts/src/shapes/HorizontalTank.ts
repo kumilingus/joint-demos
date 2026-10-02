@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 const saddle = (x: number) => `M calc(${x} * w - 16) calc(h + 12) L calc(${x} * w - 10) calc(h - 8) H calc(${x} * w + 10) L calc(${x} * w + 16) calc(h + 12) Z`;
 
@@ -17,6 +17,11 @@ const markup = util.svg/* xml */`
 
 /** A horizontal storage tank ("bullet") resting on two saddles. */
 export default class HorizontalTank extends Shape {
+
+    // The accent: the saddles
+    get accentField(): ColorField {
+        return { path: ['attrs', 'saddles', 'fill'] };
+    }
 
     get overflow(): Overflow {
         return { top: 16, bottom: 36 };
@@ -40,7 +45,7 @@ export default class HorizontalTank extends Shape {
                 },
                 saddles: {
                     d: `${saddle(0.22)} ${saddle(0.78)}`,
-                    fill: '#777',
+                    fill: 'var(--shape-support)',
                     stroke: '#333',
                     strokeWidth: 1.5
                 },

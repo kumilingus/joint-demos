@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './ports';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 // The trays inside the column, alternating from the left and the right wall
 const TRAYS = Array.from({ length: 8 }, (_, i) => {
@@ -33,6 +33,11 @@ const markup = util.svg/* xml */`
 
 /** A tall column separating a mixture on its trays. */
 export default class DistillationColumn extends Shape {
+
+    // The accent: the skirt
+    get accentField(): ColorField {
+        return { path: ['attrs', 'skirt', 'fill'] };
+    }
 
     get overflow(): Overflow {
         return { top: 12, bottom: 36, left: 12 };
@@ -67,7 +72,7 @@ export default class DistillationColumn extends Shape {
                 },
                 skirt: {
                     d: 'M calc(0.1 * w) calc(h - 10) L 0 calc(h + 12) H calc(w) L calc(0.9 * w) calc(h - 10) Z',
-                    fill: '#999',
+                    fill: 'var(--shape-skirt)',
                     stroke: '#555',
                     strokeWidth: 2
                 },

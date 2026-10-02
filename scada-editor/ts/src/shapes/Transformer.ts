@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { porcelainGradient } from './gradients';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
 
@@ -12,7 +11,7 @@ const bushing = (x: number) => ({
     height: 24,
     rx: 3,
     ry: 3,
-    fill: porcelainGradient,
+    materialFill: 'porcelain',
     stroke: 'var(--shape-porcelain-3)',
     strokeWidth: 1.5
 });

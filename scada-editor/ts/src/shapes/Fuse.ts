@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { porcelainGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -44,7 +43,7 @@ export default class Fuse extends Shape {
                     y: 3,
                     width: `calc(w - ${2 * (CAP - 2)})`,
                     height: 'calc(h - 6)',
-                    fill: porcelainGradient,
+                    materialFill: 'porcelain',
                     stroke: 'var(--shape-porcelain-3)',
                     strokeWidth: 1.5
                 },

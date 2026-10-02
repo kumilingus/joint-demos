@@ -59,8 +59,8 @@ export default class Silo extends Shape {
                     y: 'calc(h - 10)',
                     width: 'calc(0.16 * w)',
                     height: 12,
-                    fill: '#777',
-                    stroke: '#333',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 body: {

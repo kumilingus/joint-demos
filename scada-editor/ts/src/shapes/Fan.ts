@@ -69,8 +69,8 @@ export default class Fan extends Shape {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 34,
-                    fill: '#777',
-                    stroke: '#222',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1
                 },
                 blades: {

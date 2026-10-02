@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
 import { bowTieAttributes } from './valve-body';
 import type { Overflow } from './footprint';
-import Shape, { type Resizable, type ControlKind } from './Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 // How high the handwheel is above the valve: the stem rises when the valve opens.
 const HANDWHEEL_OPEN = -36;
@@ -20,6 +20,11 @@ const markup = util.svg/* xml */`
 
 /** A gate valve with a rising stem: the handwheel is up while the valve is open. */
 export default class GateValve extends Shape {
+
+    // The accent: the handwheel
+    get accentField(): ColorField {
+        return { path: ['attrs', 'handwheel', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -64,8 +69,8 @@ export default class GateValve extends Shape {
                     y: -8,
                     width: 16,
                     height: 10,
-                    fill: '#777',
-                    stroke: '#333',
+                    surfaceFill: 'mid',
+                    surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
                 },
                 handwheel: {
@@ -74,7 +79,7 @@ export default class GateValve extends Shape {
                     height: 8,
                     rx: 4,
                     ry: 4,
-                    fill: '#666',
+                    fill: 'var(--shape-valve-operator)',
                     stroke: '#333',
                     strokeWidth: 2
                 },

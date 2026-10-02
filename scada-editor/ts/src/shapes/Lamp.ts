@@ -1,6 +1,5 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
-import { glassGradient } from './gradients';
 import Shape, { type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -39,7 +38,7 @@ export default class Lamp extends Shape {
                     cx: 'calc(0.5 * w)',
                     cy: 'calc(h - calc(0.5 * w))',
                     r: 'calc(0.5 * w)',
-                    fill: glassGradient,
+                    materialFill: 'glass',
                     surfaceStroke: 'edge',
                     strokeWidth: 1.5
                 },
