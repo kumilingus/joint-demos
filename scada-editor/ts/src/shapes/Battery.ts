@@ -42,7 +42,7 @@ export default class Battery extends Shape {
             ...super.defaults,
             type: 'Battery',
             size: {
-                width: 90,
+                width: 80,
                 height: 60
             },
             attrs: {

@@ -42,7 +42,7 @@ export default class BatteryBank extends Shape {
             type: 'BatteryBank',
             size: {
                 width: 160,
-                height: 110
+                height: 100
             },
             // The charge (0 - 100)
             level: 80,

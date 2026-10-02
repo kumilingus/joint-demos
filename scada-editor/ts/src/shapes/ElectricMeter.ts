@@ -37,7 +37,7 @@ export default class ElectricMeter extends Shape {
             type: 'ElectricMeter',
             size: {
                 width: 120,
-                height: 50
+                height: 60
             },
             attrs: {
                 root: {

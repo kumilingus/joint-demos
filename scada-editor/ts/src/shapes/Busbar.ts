@@ -28,7 +28,7 @@ export default class Busbar extends Shape {
 
     // As long as needed (not shorter than its connected taps take), as thick as it is
     get resizable(): Resizable {
-        return { minWidth: Math.max(120, this.connectedTaps() * TAP_SPACING), minHeight: 16, maxHeight: 16 };
+        return { minWidth: Math.max(120, this.connectedTaps() * TAP_SPACING), minHeight: 20, maxHeight: 20 };
     }
 
     // The label above it, over the top taps (not below)
@@ -47,7 +47,7 @@ export default class Busbar extends Shape {
             type: 'Busbar',
             size: {
                 width: 240,
-                height: 16
+                height: 20
             },
             attrs: {
                 root: {

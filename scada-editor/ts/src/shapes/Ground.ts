@@ -32,7 +32,7 @@ export default class Ground extends Shape {
             ...super.defaults,
             type: 'Ground',
             size: {
-                width: 50,
+                width: 60,
                 height: 60
             },
             attrs: {

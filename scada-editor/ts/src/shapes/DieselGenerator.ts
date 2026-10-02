@@ -52,7 +52,7 @@ export default class DieselGenerator extends Shape {
 
     defaults(): dia.Element.Attributes {
         const fuel = pipePorts(this.stubLength, { left: 'calc(0.6 * h)' })!;
-        const power = terminalPorts([{ id: 'out', side: 'right', along: 'calc(0.55 * h)' }])!;
+        const power = terminalPorts([{ id: 'out', side: 'right', along: 'calc(0.6 * h)' }])!;
         return {
             ...super.defaults,
             type: 'DieselGenerator',

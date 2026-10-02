@@ -86,7 +86,7 @@ export default class Generator extends Shape {
                     strokeWidth: 1.5
                 },
                 terminalBox: {
-                    x: 'calc(0.35 * w)',
+                    x: 'calc(0.375 * w)',
                     y: 0,
                     width: 'calc(0.25 * w)',
                     height: 'calc(0.22 * h)',
@@ -102,7 +102,7 @@ export default class Generator extends Shape {
                 }
             },
             // The cables out of the terminal box on the top
-            ports: terminalPorts([{ id: 'out', side: 'top', along: 'calc(0.475 * w)' }])
+            ports: terminalPorts([{ id: 'out', side: 'top' }])
         };
     }
 

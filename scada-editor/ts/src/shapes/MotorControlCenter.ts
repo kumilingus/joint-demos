@@ -46,8 +46,8 @@ export default class MotorControlCenter extends Shape {
             ...super.defaults,
             type: 'MotorControlCenter',
             size: {
-                width: 110,
-                height: 180
+                width: 120,
+                height: 200
             },
             attrs: {
                 root: {
@@ -72,7 +72,7 @@ export default class MotorControlCenter extends Shape {
                 }
             },
             ports: terminalPorts([
-                { id: 'in', side: 'left', along: 'calc(0.12 * h)' },
+                { id: 'in', side: 'left', along: 'calc(0.1 * h)' },
                 { id: 'out1', side: 'bottom', along: 'calc(0.25 * w)' },
                 { id: 'out2', side: 'bottom', along: 'calc(0.5 * w)' },
                 { id: 'out3', side: 'bottom', along: 'calc(0.75 * w)' }

@@ -63,7 +63,7 @@ export default class SolarArray extends Shape {
                     text: 'Solar Array'
                 }
             },
-            ports: terminalPorts([{ id: 'out', side: 'right', along: 'calc(0.32 * h)' }])
+            ports: terminalPorts([{ id: 'out', side: 'right', along: 'calc(0.3 * h)' }])
         };
     }
 

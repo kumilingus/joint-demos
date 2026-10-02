@@ -31,7 +31,7 @@ export default class Heater extends Shape {
             ...super.defaults,
             type: 'Heater',
             size: {
-                width: 90,
+                width: 80,
                 height: 60
             },
             attrs: {

@@ -106,7 +106,7 @@ export default class CircuitBreaker extends Shape {
                     text: 'Breaker'
                 }
             },
-            ports: terminalPorts([{ id: 'in', side: 'left', along: 'calc(0.4 * h)' }, { id: 'out', side: 'right', along: 'calc(0.4 * h)' }])
+            ports: terminalPorts([{ id: 'in', side: 'left' }, { id: 'out', side: 'right' }])
         };
     }
 

@@ -32,7 +32,7 @@ export default class Fuse extends Shape {
             type: 'Fuse',
             size: {
                 width: 80,
-                height: 28
+                height: 20
             },
             attrs: {
                 root: {

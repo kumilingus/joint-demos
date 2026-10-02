@@ -2,10 +2,13 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
 import Shape, { type ControlKind, type Resizable } from './Shape';
 
+// How high the blade is (and the terminals): on the grid, the shape is not resized
+const BLADE_Y = 20;
+
 // An insulator post standing on the base, at a part of the width
 const post = (x: number) => ({
     x: `calc(${x} * w - 7)`,
-    y: 'calc(0.35 * h)',
+    y: BLADE_Y,
     width: 14,
     height: 'calc(0.5 * h)',
     rx: 3,
@@ -28,8 +31,8 @@ const markup = util.svg/* xml */`
 `;
 
 // The blade from the hinge to the jaw of the contact (closed), or lifted off it (open)
-const CLOSED_BLADE = 'M calc(0.2 * w) calc(0.35 * h) L calc(0.8 * w) calc(0.35 * h)';
-const OPEN_BLADE = 'M calc(0.2 * w) calc(0.35 * h) L calc(0.7 * w) 0';
+const CLOSED_BLADE = `M calc(0.2 * w) ${BLADE_Y} L calc(0.8 * w) ${BLADE_Y}`;
+const OPEN_BLADE = `M calc(0.2 * w) ${BLADE_Y} L calc(0.7 * w) 0`;
 
 /** A disconnector: a knife switch on two insulators isolating a part of the circuit (its blade lifts off when open). */
 export default class Disconnector extends Shape {
@@ -80,7 +83,7 @@ export default class Disconnector extends Shape {
                 },
                 // From the terminals to the tops of the posts
                 straps: {
-                    d: 'M 0 calc(0.35 * h) H calc(0.2 * w) M calc(0.8 * w) calc(0.35 * h) H calc(w)',
+                    d: `M 0 ${BLADE_Y} H calc(0.2 * w) M calc(0.8 * w) ${BLADE_Y} H calc(w)`,
                     stroke: 'var(--shape-copper-3)',
                     strokeWidth: 4
                 },
@@ -91,7 +94,7 @@ export default class Disconnector extends Shape {
                     strokeLinecap: 'round'
                 },
                 jaw: {
-                    d: 'M calc(0.8 * w - 6) calc(0.35 * h - 7) V calc(0.35 * h) H calc(0.8 * w + 6) V calc(0.35 * h - 7)',
+                    d: `M calc(0.8 * w - 6) ${BLADE_Y - 7} V ${BLADE_Y} H calc(0.8 * w + 6) V ${BLADE_Y - 7}`,
                     fill: 'none',
                     stroke: 'var(--shape-copper-3)',
                     strokeWidth: 3,
@@ -103,8 +106,8 @@ export default class Disconnector extends Shape {
                 }
             },
             ports: terminalPorts([
-                { id: 'in', side: 'left', along: 'calc(0.35 * h)' },
-                { id: 'out', side: 'right', along: 'calc(0.35 * h)' }
+                { id: 'in', side: 'left', along: BLADE_Y },
+                { id: 'out', side: 'right', along: BLADE_Y }
             ])
         };
     }

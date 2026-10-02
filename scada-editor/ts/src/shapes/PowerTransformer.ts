@@ -42,7 +42,7 @@ export default class PowerTransformer extends Shape {
             type: 'PowerTransformer',
             size: {
                 width: 160,
-                height: 130
+                height: 150
             },
             attrs: {
                 root: {

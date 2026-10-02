@@ -85,7 +85,7 @@ export default class FuelTank extends Shape {
                 mark: {
                     text: 'FUEL',
                     x: 'calc(0.22 * w)',
-                    y: 'calc(0.45 * h)',
+                    y: 'calc(0.5 * h)',
                     textAnchor: 'middle',
                     textVerticalAnchor: 'middle',
                     fontSize: 12,
@@ -98,7 +98,7 @@ export default class FuelTank extends Shape {
                     text: 'Fuel Tank'
                 }
             },
-            ports: pipePorts(this.stubLength, { left: 'calc(0.45 * h)', right: 'calc(0.45 * h)' })
+            ports: pipePorts(this.stubLength, { left: 'calc(0.5 * h)', right: 'calc(0.5 * h)' })
         };
     }
 

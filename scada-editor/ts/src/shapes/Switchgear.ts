@@ -49,8 +49,8 @@ export default class Switchgear extends Shape {
             ...super.defaults,
             type: 'Switchgear',
             size: {
-                width: 200,
-                height: 140
+                width: 240,
+                height: 150
             },
             attrs: {
                 root: {

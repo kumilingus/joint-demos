@@ -49,7 +49,7 @@ export default class Transformer extends Shape {
             type: 'Transformer',
             size: {
                 width: 80,
-                height: 90
+                height: 100
             },
             attrs: {
                 root: {

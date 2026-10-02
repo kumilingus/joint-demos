@@ -27,8 +27,8 @@ export default class Lamp extends Shape {
             ...super.defaults,
             type: 'Lamp',
             size: {
-                width: 50,
-                height: 70
+                width: 60,
+                height: 80
             },
             attrs: {
                 root: {

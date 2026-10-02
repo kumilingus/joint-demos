@@ -41,7 +41,7 @@ export default class SurgeArrester extends Shape {
             ...super.defaults,
             type: 'SurgeArrester',
             size: {
-                width: 36,
+                width: 40,
                 height: 80
             },
             attrs: {

@@ -6,7 +6,7 @@ import { labelAttributes } from './ports';
 import Shape, { type Resizable } from './Shape';
 
 // Where the outlets are along the header (relative to its width)
-const OUTLETS = ['calc(0.2 * w)', 'calc(0.5 * w)', 'calc(0.8 * w)'];
+const OUTLETS = ['calc(0.25 * w)', 'calc(0.5 * w)', 'calc(0.75 * w)'];
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
