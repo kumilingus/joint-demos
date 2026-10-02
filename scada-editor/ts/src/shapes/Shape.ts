@@ -2,6 +2,7 @@ import { dia } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { GRID_SIZE, Layer } from '../const';
 import { hasSurface, SURFACE_COLOR, surfaceAttributes } from './gradients';
+import { pipeAttributes } from './ports';
 
 /** The size constraints of resizing. */
 export interface ResizeOptions {
@@ -76,9 +77,9 @@ const minSize = (size: number) => Math.max(SIZE_STEP, Math.round(size * MIN_SIZE
  */
 export default abstract class Shape extends dia.Element implements ShapeFeatures {
 
-    // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`; a shape with attributes
-    // of its own adds them to these)
-    static attributes: typeof dia.Element.attributes = surfaceAttributes;
+    // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`), the outlines of its pipes
+    // (`pipeOutline`); a shape with attributes of its own adds them to these
+    static attributes: typeof dia.Element.attributes = { ...surfaceAttributes, ...pipeAttributes };
 
     get resizable(): Resizable {
         return true;

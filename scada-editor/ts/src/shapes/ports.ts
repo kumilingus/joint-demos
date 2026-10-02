@@ -1,6 +1,21 @@
 import { type dia, util } from '@joint/plus';
 import { LABEL_COLOR } from '../const';
 
+/**
+ * The special attributes of the pipes of a shape (its stubs, a pipe running through it): `pipeOutline` - the outline
+ * of the rectangle of a pipe along it only, its top and bottom sides (a dash of its length, a gap of its thickness:
+ * from the model, its `width` and `height`), not its ends - they meet the element, a flange, another pipe.
+ */
+export const pipeAttributes = {
+    // `pipeOutline` in the attributes
+    'pipe-outline': {
+        set(_value: boolean, refBBox: dia.BBox, _node: Element, attrs: Record<string, unknown>) {
+            const size = (value: unknown) => Number(util.evalCalcExpression(String(value ?? 0), refBBox)) || 0;
+            return { 'stroke-dasharray': `${size(attrs.width)} ${size(attrs.height)}` };
+        }
+    }
+};
+
 /** The markup of a pipe stub (parsed once) */
 const pipeStubMarkup = util.svg`
     <rect @selector='pipeBody' />
@@ -10,15 +25,16 @@ const pipeStubMarkup = util.svg`
 // The thickness of a pipe stub (its flange is a little taller, see `pipeEnd`)
 const STUB_THICKNESS = 30;
 
-// How far a pipe stub reaches under the element (its body: no gap at a round side)
+// How far a pipe stub reaches under a piece of equipment (its body: no gap at a round side); a fitting is flat
+// where its stubs meet it (none needed)
 const STUB_TUCK = 20;
 
 /**
- * The group of the pipe stubs of a shape, `length` long (`Shape.stubLength`). The model of a port is
- * its stub: a stub is centered on the position of its port and turned by its angle (see `sideStub()`),
- * with its flange at the outer end (on the right at the angle 0).
+ * The group of the pipe stubs of a shape, `length` long (`Shape.stubLength`) out of it and `tuck` under it.
+ * The model of a port is its stub: a stub is centered on the position of its port and turned by its angle
+ * (see `sideStub()`), with its flange at the outer end (on the right at the angle 0).
  */
-function pipeStubGroup(length: number): dia.Element.PortGroup {
+function pipeStubGroup(length: number, tuck = STUB_TUCK): dia.Element.PortGroup {
     return {
         position: { name: 'absolute' },
         markup: pipeStubMarkup,
@@ -33,11 +49,15 @@ function pipeStubGroup(length: number): dia.Element.PortGroup {
             },
             // In the color of the element (see `surfaceAttributes`), tucked under it
             pipeBody: {
-                x: `calc(-0.5 * w - ${STUB_TUCK})`,
+                x: `calc(-0.5 * w - ${tuck})`,
                 y: 'calc(-0.5 * h)',
-                width: `calc(w + ${STUB_TUCK})`,
+                width: `calc(w + ${tuck})`,
                 height: 'calc(h)',
-                surfaceFill: 'pipe'
+                surfaceFill: 'pipe',
+                // Its edges (the flat finish has no shading to show them), along it only
+                surfaceStroke: 'edge',
+                strokeWidth: 2,
+                pipeOutline: true
             },
             pipeEnd: {
                 x: 'calc(0.5 * w - 10)',
@@ -127,7 +147,10 @@ export function pipeThroughAttributes(ratio = 0.5, half?: 'left' | 'right') {
         width: half ? 'calc(0.5 * w)' : 'calc(w)',
         y: `calc(${ratio} * h - ${STUB_THICKNESS / 2})`,
         height: STUB_THICKNESS,
-        surfaceFill: 'pipe'
+        surfaceFill: 'pipe',
+        surfaceStroke: 'edge',
+        strokeWidth: 2,
+        pipeOutline: true
     };
 }
 
@@ -159,7 +182,7 @@ export function pipePorts(
 export function fittingPorts(sides: Side[], length: number): dia.Element.Attributes['ports'] {
     return {
         groups: {
-            pipes: pipeStubGroup(length)
+            pipes: pipeStubGroup(length, 0)
         },
         items: sides.map(side => sideStub(side, 'pipes', side, length))
     };
@@ -196,7 +219,7 @@ export function terminalPorts(terminals: Terminal[]): dia.Element.Attributes['po
 export function branchPorts(xs: string[], length: number): dia.Element.Attributes['ports'] {
     return {
         groups: {
-            branches: pipeStubGroup(length)
+            branches: pipeStubGroup(length, 0)
         },
         items: xs.map((x, index) => sideStub(`out${index + 1}`, 'branches', 'bottom', length, x))
     };
