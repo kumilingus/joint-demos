@@ -33,8 +33,9 @@ export default class Join extends Shape {
             },
             attrs: {
                 body: {
-                    fill: 'var(--shape-fitting-fill)',
-                    stroke: 'var(--shape-fitting-stroke)',
+                    // In the color of the join (see `surfaceAttributes`), the colors of a fitting by default
+                    surfaceFill: 'var(--shape-fitting-fill)',
+                    surfaceStroke: 'var(--shape-fitting-stroke)',
                     strokeWidth: 2,
                     d: 'M 10 0 H calc(w - 10) l 10 10 V calc(h - 10) l -10 10 H 10 l -10 -10 V 10 Z'
                 }

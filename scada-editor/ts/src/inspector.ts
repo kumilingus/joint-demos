@@ -5,7 +5,7 @@ import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
 import { colorFieldOf, getColorFieldValue, rememberColor, renderColorField } from './color-field';
 import { isGroup } from './shapes/Group';
-import { hasSurface } from './shapes/gradients';
+import { hasShading } from './shapes/gradients';
 import { type Arrowhead, arrowheadMarker } from './shapes/Arrow';
 import { descriptions } from './descriptions';
 import { MAX_SLICES } from './shapes/DonutChart';
@@ -61,8 +61,8 @@ function getInputs(element: dia.Element): Inputs {
     // The color the user sets (see `ColorField`)
     util.merge(inputs, colorInputs(element, 'appearance', index++));
 
-    // The finish of the surfaces (see `SurfaceFinish`)
-    if (hasSurface(element)) {
+    // The finish of the shaded surfaces (see `SurfaceFinish`)
+    if (hasShading(element)) {
         inputs.finish = {
             type: 'select-button-group',
             label: 'Finish',

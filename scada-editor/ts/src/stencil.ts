@@ -22,7 +22,7 @@ import { descriptions } from './descriptions';
 import { CLICK_THRESHOLD } from './config';
 import { LABEL_COLOR } from './const';
 import { type ImageEntry, type ImageLibrary, readImageFile } from './images';
-import { hasSurface, type SurfaceFinish } from './shapes/gradients';
+import { hasShading, type SurfaceFinish } from './shapes/gradients';
 import ShapeView from './shapes/ShapeView';
 
 // The shapes are shown in the palette smaller than on the canvas.
@@ -142,7 +142,7 @@ let paletteFinish: SurfaceFinish = 'shaded';
 
 /** The shape in the finish of the palette: flat set, shaded the default (nothing set) */
 function applyFinish(cell: dia.Cell): void {
-    if (!cell.isElement() || !hasSurface(cell)) return;
+    if (!cell.isElement() || !hasShading(cell)) return;
     if (paletteFinish === 'flat') {
         cell.set('finish', 'flat');
     } else {

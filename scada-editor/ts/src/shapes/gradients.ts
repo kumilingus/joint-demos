@@ -151,8 +151,22 @@ const SURFACE_GRADIENTS = {
     plate: plateGradient
 };
 
-/** The fill of a surface: a shading (by the form of the part), or flat (`--shape-metal-flat`, `--shape-metal-flat-2`) */
-export type SurfaceFill = keyof typeof SURFACE_GRADIENTS | 'flat' | 'flat-2';
+// The forms with a shading the finish can make flat (a plate is nearly flat already)
+const SHADED_FORMS = new Set(['cylinder', 'pipe', 'sphere', 'cone']);
+
+// The flat surfaces of the metal
+const FLAT_SURFACES = {
+    'flat': 'var(--shape-metal-flat)',
+    'flat-2': 'var(--shape-metal-flat-2)'
+};
+
+/** A color of a shape of its own (a CSS variable of the theme, a hex) a surface can have instead of a kind of the metal */
+export type SurfaceColor = `var(${string})` | `#${string}`;
+
+const isSurfaceColor = (value: string): value is SurfaceColor => value.startsWith('var(') || value.startsWith('#');
+
+/** The fill of a surface: a shading (by the form of the part), the flat metal, or a color of the shape (flat) */
+export type SurfaceFill = keyof typeof SURFACE_GRADIENTS | keyof typeof FLAT_SURFACES | SurfaceColor;
 
 /**
  * The finish of the surfaces of an element (its `finish`, set in the inspector): shaded (their gradients),
@@ -163,14 +177,14 @@ export type SurfaceFinish = 'shaded' | 'flat';
 // A shaded surface made flat: the middle tone of its shading
 const FLAT_SHADING = 'var(--shape-metal-5)';
 
-// The outlines of the surfaces
+// The outlines of the surfaces of the metal
 const SURFACE_STROKES = {
     // The shaded edge of the metal: the outline blends into it
     edge: METAL_STROKE
 };
 
-/** The outline of a surface */
-export type SurfaceStroke = keyof typeof SURFACE_STROKES;
+/** The outline of a surface: of the metal, or a color of the shape */
+export type SurfaceStroke = keyof typeof SURFACE_STROKES | SurfaceColor;
 
 /** The gradient tinted with the color */
 function tintGradient(gradient: dia.SVGGradientJSON, color: string): dia.SVGGradientJSON {
@@ -179,18 +193,21 @@ function tintGradient(gradient: dia.SVGGradientJSON, color: string): dia.SVGGrad
 
 /**
  * The special attributes of the surfaces of an element, in its color and its finish: `surfaceFill` (the shading
- * of the part), `surfaceStroke` (its outline). The view renders them again when they change (see `ShapeView`).
+ * of the part), `surfaceStroke` (its outline) - a kind of the metal, or a color of the shape (its color mixed into
+ * that one as into the metal). The view renders them again when they change (see `ShapeView`).
  */
 export const surfaceAttributes = {
     // `surfaceFill` in the attributes
     'surface-fill': {
         set(this: dia.ElementView, fill: SurfaceFill) {
             const color = this.model.get('color');
-            if (fill === 'flat' || fill === 'flat-2' || this.model.get('finish') === 'flat') {
-                const base = fill === 'flat' || fill === 'flat-2' ? `var(--shape-metal-${fill})` : FLAT_SHADING;
+            // A flat one (a color of the shape, the flat metal), or a shaded one made flat
+            const flat = isSurfaceColor(fill) ? fill : FLAT_SURFACES[fill as keyof typeof FLAT_SURFACES];
+            if (flat || this.model.get('finish') === 'flat') {
+                const base = flat ?? FLAT_SHADING;
                 return { fill: isTint(color) ? tint(color, base) : base };
             }
-            const gradient = SURFACE_GRADIENTS[fill];
+            const gradient = SURFACE_GRADIENTS[fill as keyof typeof SURFACE_GRADIENTS];
             return { fill: `url(#${this.paper!.defineGradient(isTint(color) ? tintGradient(gradient, color) : gradient)})` };
         }
     },
@@ -198,24 +215,35 @@ export const surfaceAttributes = {
     'surface-stroke': {
         set(this: dia.ElementView, stroke: SurfaceStroke) {
             const color = this.model.get('color');
-            const base = SURFACE_STROKES[stroke];
+            const base = isSurfaceColor(stroke) ? stroke : SURFACE_STROKES[stroke];
             return { stroke: isTint(color) ? tint(color, base) : base };
         }
     }
 };
 
-/** The types with surfaces (see `hasSurface()`) by whether they have them */
-const surfaceTypes = new Map<string, boolean>();
+/** The fills of the surfaces of the types (see `surfaceFills()`) */
+const surfaceTypes = new Map<string, Set<SurfaceFill>>();
+
+/** The fills of the surfaces of the element: `surfaceFill` in the attributes of its type */
+function surfaceFills(element: dia.Element): Set<SurfaceFill> {
+    const type = element.get('type');
+    if (!surfaceTypes.has(type)) {
+        const { attrs = {}} = util.result(element, 'defaults') as dia.Element.Attributes;
+        const fills = Object.values(attrs).map(node => node?.surfaceFill).filter(Boolean) as SurfaceFill[];
+        surfaceTypes.set(type, new Set(fills));
+    }
+    return surfaceTypes.get(type)!;
+}
 
 /**
  * Whether the element has surfaces (its color can be set): `surfaceFill` in the attributes of its type
  * (an outline alone, `surfaceStroke`, would show the color hardly)
  */
 export function hasSurface(element: dia.Element): boolean {
-    const type = element.get('type');
-    if (!surfaceTypes.has(type)) {
-        const { attrs = {}} = util.result(element, 'defaults') as dia.Element.Attributes;
-        surfaceTypes.set(type, Object.values(attrs).some(node => node && 'surfaceFill' in node));
-    }
-    return surfaceTypes.get(type)!;
+    return surfaceFills(element).size > 0;
+}
+
+/** Whether the element has shaded surfaces (its finish can be set): of a round form (see `SHADED_FORMS`) */
+export function hasShading(element: dia.Element): boolean {
+    return [...surfaceFills(element)].some(fill => SHADED_FORMS.has(fill));
 }
