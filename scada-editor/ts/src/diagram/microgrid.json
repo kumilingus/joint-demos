@@ -2,6 +2,30 @@
   "cells": [
     {
       "position": {
+        "x": 1540,
+        "y": 40
+      },
+      "size": {
+        "width": 340,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "CustomImage",
+      "attrs": {
+        "image": {
+          "imageId": "image-jointjs-badge"
+        },
+        "label": {
+          "text": ""
+        }
+      },
+      "tag": "IMG-101",
+      "id": "f07502dc-09b9-4f4a-8e28-a6362515c270",
+      "layer": "background",
+      "z": -1
+    },
+    {
+      "position": {
         "x": 0,
         "y": 0
       },
@@ -13,7 +37,7 @@
       "type": "Screen",
       "layer": "background",
       "z": -1000,
-      "id": "bfa15e1b-ce00-4518-9280-7e4637d12586"
+      "id": "6a6e4057-a226-476c-87c1-8168328fcdb3"
     },
     {
       "position": {
@@ -32,11 +56,11 @@
           "fillOpacity": 0.18
         }
       },
-      "id": "863c39b6-7125-4d90-8f02-669f589268a7",
+      "id": "29390474-d028-412b-8eeb-3e9d5305db4e",
       "layer": "background",
       "z": -999,
       "tag": "BG-101",
-      "parent": "32ad76c3-70dd-4361-b147-4b019678ad5d"
+      "parent": "0e2f0386-3874-4f2f-9934-2540b75ca507"
     },
     {
       "position": {
@@ -49,22 +73,22 @@
       },
       "angle": 0,
       "type": "Group",
-      "id": "32ad76c3-70dd-4361-b147-4b019678ad5d",
+      "id": "0e2f0386-3874-4f2f-9934-2540b75ca507",
       "layer": "background",
       "z": -998,
       "tag": "GRP-101",
       "embeds": [
-        "863c39b6-7125-4d90-8f02-669f589268a7",
-        "8b6a6cee-c970-4a98-993a-b3d84cf2b720"
+        "29390474-d028-412b-8eeb-3e9d5305db4e",
+        "f6168970-6eea-4276-b5db-f68a0080c121"
       ]
     },
     {
       "source": {
-        "id": "a6c303db-5aa8-48a2-b67f-1bc8dc74c60f",
+        "id": "b359dfd9-2054-46f1-8f40-a874c8cb10ea",
         "port": "right"
       },
       "target": {
-        "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+        "id": "7253b1e9-eb2d-4802-a605-75222faea447",
         "port": "left"
       },
       "type": "Pipe",
@@ -90,15 +114,15 @@
           "stroke": "#fdba74"
         }
       },
-      "id": "45b03cad-c6d7-4215-9f78-b9bca32c905d"
+      "id": "14eb6355-ac86-4374-9611-599c17e2dc86"
     },
     {
       "source": {
-        "id": "941bd69f-b905-45ea-b706-a7f2b484a6bd",
+        "id": "f4dc1d3e-6b82-44ee-b3ab-b2ab7c691eee",
         "port": "out"
       },
       "target": {
-        "id": "d17cc85a-aa8c-43c9-a8b6-476e63de2e80",
+        "id": "8384a5de-7aaa-4cc9-9537-005f667fcc60",
         "port": "in"
       },
       "type": "Wire",
@@ -118,16 +142,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "ff813746-f866-4c1a-bfdb-471fa5656d2a",
+      "id": "3db72544-53cd-4cec-a222-63ba5be548b0",
       "z": 1
     },
     {
       "source": {
-        "id": "d17cc85a-aa8c-43c9-a8b6-476e63de2e80",
+        "id": "8384a5de-7aaa-4cc9-9537-005f667fcc60",
         "port": "out"
       },
       "target": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "top4"
       },
       "type": "Wire",
@@ -147,16 +171,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "04ec21be-23a2-4c74-a53d-ec10749f7c1f",
+      "id": "c8bab45f-53c0-409c-b048-09b099f6ba73",
       "z": 2
     },
     {
       "source": {
-        "id": "bb285dec-1b4e-4e80-acc3-4694fc51b71b",
+        "id": "d4e50b87-122d-41b6-a581-09f08a3e9522",
         "port": "out"
       },
       "target": {
-        "id": "e3b68c97-fa56-4bf7-b307-d38e8adcb41b",
+        "id": "1176b398-3e01-4537-8db8-b6fa269c0a97",
         "port": "in"
       },
       "type": "Wire",
@@ -176,16 +200,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "d657bb4f-5657-4618-8541-0d67c9d746e1",
+      "id": "496078f3-c431-4b69-9e43-94dd54672ceb",
       "z": 3
     },
     {
       "source": {
-        "id": "e3b68c97-fa56-4bf7-b307-d38e8adcb41b",
+        "id": "1176b398-3e01-4537-8db8-b6fa269c0a97",
         "port": "out"
       },
       "target": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "top9"
       },
       "type": "Wire",
@@ -205,16 +229,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "5731d630-4ff0-42ed-be73-b4af5502bebe",
+      "id": "3f926daf-d4b8-474d-af1c-c28f6f32d3f2",
       "z": 4
     },
     {
       "source": {
-        "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+        "id": "7253b1e9-eb2d-4802-a605-75222faea447",
         "port": "out"
       },
       "target": {
-        "id": "68d2b8c1-3aa8-4bbf-b471-e10d72e838f7",
+        "id": "6e504030-2e04-41dc-9888-e4f064ad5ad1",
         "port": "in"
       },
       "type": "Wire",
@@ -234,16 +258,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "02907f4b-2da9-4710-b21f-3001c5584dfd",
+      "id": "89c05584-21bc-4eb2-8da3-b2b22c6c1a94",
       "z": 5
     },
     {
       "source": {
-        "id": "68d2b8c1-3aa8-4bbf-b471-e10d72e838f7",
+        "id": "6e504030-2e04-41dc-9888-e4f064ad5ad1",
         "port": "out"
       },
       "target": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "top16"
       },
       "type": "Wire",
@@ -263,16 +287,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "711f47f9-1abc-4c8b-9a33-5f7ef6d3f958",
+      "id": "a0169403-cc9d-4eec-9fc7-c3a3cf331e7e",
       "z": 6
     },
     {
       "source": {
-        "id": "a7177ded-8ddb-4f4b-aae7-0ff2c57b3337",
+        "id": "9a925912-df0f-47cc-a104-adda1ab39e22",
         "port": "out"
       },
       "target": {
-        "id": "6690336d-5084-47e8-ad56-5b8732f4d079",
+        "id": "36e4543a-1359-41cf-9352-33e0dc5412f0",
         "port": "in"
       },
       "type": "Wire",
@@ -292,16 +316,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "c84522f6-22b7-4025-94ca-3ebf33faab65",
+      "id": "5fab34e7-fa49-4776-b96a-c0ffff5f7a91",
       "z": 7
     },
     {
       "source": {
-        "id": "6690336d-5084-47e8-ad56-5b8732f4d079",
+        "id": "36e4543a-1359-41cf-9352-33e0dc5412f0",
         "port": "out"
       },
       "target": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "top19"
       },
       "type": "Wire",
@@ -321,16 +345,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "736ad5e5-bda1-41e1-af72-1a790ace9225",
+      "id": "8baf45ae-acd0-432f-a60f-7e5f7fc782d0",
       "z": 8
     },
     {
       "source": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "right"
       },
       "target": {
-        "id": "10667876-efb0-4aa8-afc6-a7b49bf06037",
+        "id": "bdae2203-a771-4b02-8b70-57dd4f37d029",
         "port": "in"
       },
       "type": "Wire",
@@ -350,16 +374,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "2e6cfe2e-0733-437e-b1b9-b3a0f817358c",
+      "id": "cf0d882c-39e6-4b46-8e8b-fef224e9cecf",
       "z": 9
     },
     {
       "source": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "bottom1"
       },
       "target": {
-        "id": "d343ba8c-0ad2-4841-86d5-cb886b6ec033",
+        "id": "db79f96d-14c9-4ece-84fb-ed2576490bec",
         "port": "line"
       },
       "type": "Wire",
@@ -379,16 +403,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "d04c66b7-6b50-4efd-b637-4b01980ea488",
+      "id": "f7679e0f-a45e-4479-893f-fb8039f300e4",
       "z": 10
     },
     {
       "source": {
-        "id": "d343ba8c-0ad2-4841-86d5-cb886b6ec033",
+        "id": "db79f96d-14c9-4ece-84fb-ed2576490bec",
         "port": "ground"
       },
       "target": {
-        "id": "ea81485a-5d89-47cd-b0aa-8b88c0ddaeaf",
+        "id": "4d2fad06-8d4c-4fcb-8d44-8ea15a6b0406",
         "port": "in"
       },
       "type": "Wire",
@@ -408,16 +432,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "181881d2-5ed8-49df-84f2-4c8958e40eb8",
+      "id": "b5297927-1b19-40e6-a613-58f877a4b97d",
       "z": 11
     },
     {
       "source": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "bottom3"
       },
       "target": {
-        "id": "0d5fbd14-9c9d-4c64-a696-5883ae1ba0f3",
+        "id": "6ad49878-3518-47c0-b5ab-0b62ccc41a28",
         "port": "in"
       },
       "type": "Wire",
@@ -437,16 +461,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "48c55a71-b6c1-415d-8ad6-3359a1c6783d",
+      "id": "5485dff7-6705-4414-84a5-3d262d1f172b",
       "z": 12
     },
     {
       "source": {
-        "id": "0d5fbd14-9c9d-4c64-a696-5883ae1ba0f3",
+        "id": "6ad49878-3518-47c0-b5ab-0b62ccc41a28",
         "port": "out"
       },
       "target": {
-        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "id": "b9a5c916-5709-4282-a0f8-e0fdd41681ba",
         "port": "in1"
       },
       "type": "Wire",
@@ -466,16 +490,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "9d66e685-3ad9-41b8-b529-6cd9e148599f",
+      "id": "0a2efb0e-abe0-4c5e-b060-031694b3f43e",
       "z": 13
     },
     {
       "source": {
-        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "id": "b9a5c916-5709-4282-a0f8-e0fdd41681ba",
         "port": "feeder1"
       },
       "target": {
-        "id": "9b475bd4-c270-409e-8aa6-d93860c6a425",
+        "id": "8b221cb9-5b29-4f40-91fe-74dd8efdb27c",
         "port": "in"
       },
       "type": "Wire",
@@ -495,16 +519,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "08477d7e-f164-4c3c-a8e7-d3920d8a416b",
+      "id": "59c9a46b-05ec-40b0-a08a-429f96876727",
       "z": 14
     },
     {
       "source": {
-        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "id": "b9a5c916-5709-4282-a0f8-e0fdd41681ba",
         "port": "feeder2"
       },
       "target": {
-        "id": "49af7dc7-32ed-4836-91a2-f52a4d6be8d6",
+        "id": "36ef0725-93b6-4eb0-bf88-bc5ed81a7401",
         "port": "in"
       },
       "type": "Wire",
@@ -524,16 +548,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "0ffe1a07-c246-45db-8259-99c331b4b7b6",
+      "id": "795c4b72-bdd5-4565-b935-d05ad23aec2c",
       "z": 15
     },
     {
       "source": {
-        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "id": "b9a5c916-5709-4282-a0f8-e0fdd41681ba",
         "port": "feeder3"
       },
       "target": {
-        "id": "c4bd9240-6f40-4a42-913f-ac02d6003184",
+        "id": "2cd53d7c-1049-49c2-bd49-29752486fec2",
         "port": "in"
       },
       "type": "Wire",
@@ -553,16 +577,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "048ce2d1-1478-4c9d-9820-ea0e67f3ac1b",
+      "id": "79ce221a-47aa-43e8-9ee7-3b46ec0b2a79",
       "z": 16
     },
     {
       "source": {
-        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "id": "b9a5c916-5709-4282-a0f8-e0fdd41681ba",
         "port": "feeder4"
       },
       "target": {
-        "id": "18b8d01d-f831-4b93-aabb-1eb6a5732ba7",
+        "id": "732e2110-1157-445f-80e5-174d5710c32e",
         "port": "in"
       },
       "type": "Wire",
@@ -582,16 +606,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "01d4f0db-865b-41b8-9c44-16107411c29b",
+      "id": "a7829d21-b60e-40c6-b487-2a33aaf2a3a6",
       "z": 17
     },
     {
       "source": {
-        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
         "port": "bottom13"
       },
       "target": {
-        "id": "0fb215be-9d41-4d96-915d-af861fa3b99d",
+        "id": "80361b32-45fd-4265-8358-6ce4083b2e81",
         "port": "in"
       },
       "type": "Wire",
@@ -611,16 +635,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "5fef40cc-1d92-49af-b0bb-cc9014d039f2",
+      "id": "3031ae09-a02f-4900-8905-828af7fd431a",
       "z": 18
     },
     {
       "source": {
-        "id": "0fb215be-9d41-4d96-915d-af861fa3b99d",
+        "id": "80361b32-45fd-4265-8358-6ce4083b2e81",
         "port": "out"
       },
       "target": {
-        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "id": "46d4da41-e4a4-4136-9032-253b005c4177",
         "port": "in"
       },
       "type": "Wire",
@@ -640,16 +664,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "a878fb36-f470-47eb-a587-756d21db3737",
+      "id": "ddee0c50-c34b-475f-9238-5206d3cf79ed",
       "z": 19
     },
     {
       "source": {
-        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "id": "46d4da41-e4a4-4136-9032-253b005c4177",
         "port": "out1"
       },
       "target": {
-        "id": "4ec6a274-4d29-4dd1-b18b-b8d917ca6e37",
+        "id": "58645609-d208-474a-bb4b-43c3722b96c3",
         "port": "in"
       },
       "type": "Wire",
@@ -669,16 +693,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "42adeace-fea1-42ff-a6b1-83909b8a55e8",
+      "id": "976d8ee3-9cf5-43c7-96b5-7d4c6b1174dc",
       "z": 20
     },
     {
       "source": {
-        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "id": "46d4da41-e4a4-4136-9032-253b005c4177",
         "port": "out2"
       },
       "target": {
-        "id": "1dc65bec-a65e-4580-a2e2-23035d65d4d4",
+        "id": "1e506ef6-d9fd-4b6a-b632-b5c62f606d5c",
         "port": "in"
       },
       "type": "Wire",
@@ -698,16 +722,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "0e98bcc4-ea59-487e-9ad8-9e328583fabe",
+      "id": "8f41ddbb-63b8-4780-94a3-f960023a2333",
       "z": 21
     },
     {
       "source": {
-        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "id": "46d4da41-e4a4-4136-9032-253b005c4177",
         "port": "out3"
       },
       "target": {
-        "id": "00894a48-7ff6-46c9-9057-97e30a831a62",
+        "id": "faedcfa7-0fb2-4e3f-8677-633082824cd0",
         "port": "in"
       },
       "type": "Wire",
@@ -727,7 +751,7 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "id": "eff6c547-f9aa-4c27-ba07-a5697a968728",
+      "id": "e4eeb4dc-5e55-46ef-8620-9d5c294dcb5c",
       "z": 22
     },
     {
@@ -750,7 +774,7 @@
         }
       },
       "taps": 19,
-      "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+      "id": "4ab4fd9e-d55b-4aa7-a624-8f1de58d6035",
       "layer": "equipment",
       "z": 1,
       "tag": "BB-101"
@@ -767,7 +791,7 @@
       "angle": 0,
       "type": "WindTurbine",
       "power": 1,
-      "id": "941bd69f-b905-45ea-b706-a7f2b484a6bd",
+      "id": "f4dc1d3e-6b82-44ee-b3ab-b2ab7c691eee",
       "layer": "equipment",
       "z": 2,
       "tag": "WT-101"
@@ -798,7 +822,7 @@
           "text": "CB-W"
         }
       },
-      "id": "d17cc85a-aa8c-43c9-a8b6-476e63de2e80",
+      "id": "8384a5de-7aaa-4cc9-9537-005f667fcc60",
       "layer": "equipment",
       "z": 3,
       "tag": "CB-101"
@@ -814,7 +838,7 @@
       },
       "angle": 0,
       "type": "SolarArray",
-      "id": "bb285dec-1b4e-4e80-acc3-4694fc51b71b",
+      "id": "d4e50b87-122d-41b6-a581-09f08a3e9522",
       "layer": "equipment",
       "z": 4,
       "tag": "PV-101"
@@ -845,7 +869,7 @@
           "text": "CB-S"
         }
       },
-      "id": "e3b68c97-fa56-4bf7-b307-d38e8adcb41b",
+      "id": "1176b398-3e01-4537-8db8-b6fa269c0a97",
       "layer": "equipment",
       "z": 5,
       "tag": "CB-102"
@@ -867,7 +891,7 @@
           "text": "Diesel Backup"
         }
       },
-      "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+      "id": "7253b1e9-eb2d-4802-a605-75222faea447",
       "layer": "equipment",
       "z": 6,
       "tag": "DG-101"
@@ -893,7 +917,7 @@
           "text": "Day Tank"
         }
       },
-      "id": "a6c303db-5aa8-48a2-b67f-1bc8dc74c60f",
+      "id": "b359dfd9-2054-46f1-8f40-a874c8cb10ea",
       "layer": "equipment",
       "z": 7,
       "tag": "DT-101"
@@ -924,7 +948,7 @@
           "text": "CB-D"
         }
       },
-      "id": "68d2b8c1-3aa8-4bbf-b471-e10d72e838f7",
+      "id": "6e504030-2e04-41dc-9888-e4f064ad5ad1",
       "layer": "equipment",
       "z": 8,
       "tag": "CB-103"
@@ -946,7 +970,7 @@
           "width": "calc(0.8 * w - 16)"
         }
       },
-      "id": "a7177ded-8ddb-4f4b-aae7-0ff2c57b3337",
+      "id": "9a925912-df0f-47cc-a104-adda1ab39e22",
       "layer": "equipment",
       "z": 9,
       "tag": "BESS-101"
@@ -977,7 +1001,7 @@
           "text": "CB-B"
         }
       },
-      "id": "6690336d-5084-47e8-ad56-5b8732f4d079",
+      "id": "36e4543a-1359-41cf-9352-33e0dc5412f0",
       "layer": "equipment",
       "z": 10,
       "tag": "CB-104"
@@ -998,7 +1022,7 @@
           "text": "Arrester"
         }
       },
-      "id": "d343ba8c-0ad2-4841-86d5-cb886b6ec033",
+      "id": "db79f96d-14c9-4ece-84fb-ed2576490bec",
       "layer": "equipment",
       "z": 11,
       "tag": "SA-101"
@@ -1019,7 +1043,7 @@
           "text": "Earth"
         }
       },
-      "id": "ea81485a-5d89-47cd-b0aa-8b88c0ddaeaf",
+      "id": "4d2fad06-8d4c-4fcb-8d44-8ea15a6b0406",
       "layer": "equipment",
       "z": 12,
       "tag": "GND-101"
@@ -1050,7 +1074,7 @@
           "text": "CB-L"
         }
       },
-      "id": "0d5fbd14-9c9d-4c64-a696-5883ae1ba0f3",
+      "id": "6ad49878-3518-47c0-b5ab-0b62ccc41a28",
       "layer": "equipment",
       "z": 13,
       "tag": "CB-105"
@@ -1071,7 +1095,7 @@
           "text": "Lighting Switchgear"
         }
       },
-      "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+      "id": "b9a5c916-5709-4282-a0f8-e0fdd41681ba",
       "layer": "equipment",
       "z": 14,
       "tag": "SWG-101"
@@ -1092,7 +1116,7 @@
           "text": "Hall"
         }
       },
-      "id": "9b475bd4-c270-409e-8aa6-d93860c6a425",
+      "id": "8b221cb9-5b29-4f40-91fe-74dd8efdb27c",
       "layer": "equipment",
       "z": 15,
       "tag": "LMP-101"
@@ -1113,7 +1137,7 @@
           "text": "Yard"
         }
       },
-      "id": "49af7dc7-32ed-4836-91a2-f52a4d6be8d6",
+      "id": "36ef0725-93b6-4eb0-bf88-bc5ed81a7401",
       "layer": "equipment",
       "z": 16,
       "tag": "LMP-102"
@@ -1134,7 +1158,7 @@
           "text": "Office"
         }
       },
-      "id": "c4bd9240-6f40-4a42-913f-ac02d6003184",
+      "id": "2cd53d7c-1049-49c2-bd49-29752486fec2",
       "layer": "equipment",
       "z": 17,
       "tag": "HTR-101"
@@ -1155,7 +1179,7 @@
           "text": "Gate"
         }
       },
-      "id": "18b8d01d-f831-4b93-aabb-1eb6a5732ba7",
+      "id": "732e2110-1157-445f-80e5-174d5710c32e",
       "layer": "equipment",
       "z": 18,
       "tag": "LMP-103"
@@ -1176,7 +1200,7 @@
           "text": "F-MCC"
         }
       },
-      "id": "0fb215be-9d41-4d96-915d-af861fa3b99d",
+      "id": "80361b32-45fd-4265-8358-6ce4083b2e81",
       "layer": "equipment",
       "z": 19,
       "tag": "FU-101"
@@ -1197,7 +1221,7 @@
           "text": "MCC"
         }
       },
-      "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+      "id": "46d4da41-e4a4-4136-9032-253b005c4177",
       "layer": "equipment",
       "z": 20,
       "tag": "MCC-101"
@@ -1218,7 +1242,7 @@
           "text": "Tank Heater"
         }
       },
-      "id": "4ec6a274-4d29-4dd1-b18b-b8d917ca6e37",
+      "id": "58645609-d208-474a-bb4b-43c3722b96c3",
       "layer": "equipment",
       "z": 21,
       "tag": "HTR-102"
@@ -1239,7 +1263,7 @@
           "text": "Pump Room"
         }
       },
-      "id": "1dc65bec-a65e-4580-a2e2-23035d65d4d4",
+      "id": "1e506ef6-d9fd-4b6a-b632-b5c62f606d5c",
       "layer": "equipment",
       "z": 22,
       "tag": "LMP-104"
@@ -1260,7 +1284,7 @@
           "text": "Workshop"
         }
       },
-      "id": "00894a48-7ff6-46c9-9057-97e30a831a62",
+      "id": "faedcfa7-0fb2-4e3f-8677-633082824cd0",
       "layer": "equipment",
       "z": 23,
       "tag": "LMP-105"
@@ -1282,11 +1306,11 @@
           "fontSize": 80
         }
       },
-      "id": "8b6a6cee-c970-4a98-993a-b3d84cf2b720",
+      "id": "f6168970-6eea-4276-b5db-f68a0080c121",
       "layer": "instruments",
       "z": 1,
       "tag": "TXT-101",
-      "parent": "32ad76c3-70dd-4361-b147-4b019678ad5d"
+      "parent": "0e2f0386-3874-4f2f-9934-2540b75ca507"
     },
     {
       "position": {
@@ -1304,7 +1328,7 @@
           "text": "Bus Voltage"
         }
       },
-      "id": "10667876-efb0-4aa8-afc6-a7b49bf06037",
+      "id": "bdae2203-a771-4b02-8b70-57dd4f37d029",
       "layer": "instruments",
       "z": 2,
       "tag": "EI-101"
@@ -1342,7 +1366,7 @@
           "text": "Load (kW)"
         }
       },
-      "id": "141a9bd6-ff4b-45ff-b346-ebc25f53881b",
+      "id": "145f9a1c-fe7a-416b-9a07-317cb11d8c67",
       "layer": "instruments",
       "z": 3,
       "tag": "TRD-101"
@@ -1369,7 +1393,7 @@
           "text": "Frequency"
         }
       },
-      "id": "ae48bf86-0746-4b8e-a08a-f43d82fe94db",
+      "id": "e9cc9326-e8dc-4176-9b0c-74842b19da4e",
       "layer": "instruments",
       "z": 4,
       "tag": "DI-101"
@@ -1396,7 +1420,7 @@
           "text": "Battery"
         }
       },
-      "id": "7128fbd9-9a3c-490e-9202-b6f016620801",
+      "id": "70b9397c-d24d-46b4-8da2-4d0ce638c6dd",
       "layer": "instruments",
       "z": 5,
       "tag": "DI-102"
@@ -1419,14 +1443,14 @@
           "fill": "var(--color-blue)"
         }
       },
-      "id": "c47386a6-715c-4483-af6d-f729e629432b",
+      "id": "dc7d148d-e676-46f4-b67c-44a2b967c642",
       "layer": "instruments",
       "z": 6,
       "tag": "TXT-102"
     },
     {
       "source": {
-        "id": "c47386a6-715c-4483-af6d-f729e629432b",
+        "id": "dc7d148d-e676-46f4-b67c-44a2b967c642",
         "anchor": {
           "name": "left",
           "args": {
@@ -1436,7 +1460,7 @@
         }
       },
       "target": {
-        "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+        "id": "7253b1e9-eb2d-4802-a605-75222faea447",
         "anchor": {
           "name": "topLeft",
           "args": {
@@ -1467,11 +1491,18 @@
           "stroke": "var(--color-blue)"
         }
       },
-      "id": "0be6ae45-404e-4cdf-84c0-3d5b83fb2b4f",
+      "id": "176f8b47-d3d5-425d-803f-e8257f19054a",
       "z": 7
     }
   ],
-  "images": {},
+  "images": {
+    "image-jointjs-badge": {
+      "href": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjAgMTUwIiB3aWR0aD0iNDIwIiBoZWlnaHQ9IjE1MCI+PHBhdGggZmlsbD0iIzFlMjcyZSIgZD0iTTI0IDBINDIwVjEyNkwzOTYgMTUwSDBWMjRaIi8+PHN2ZyB4PSI2NCIgeT0iNDAiIHdpZHRoPSI1OC42IiBoZWlnaHQ9IjcwIiB2aWV3Qm94PSIwIDAgMTEzIDEzNSI+PHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTU2LjMxMzUgMTAzLjk5N0w4Mi4zMzY5IDc3Ljk3MjdWMEg2MC42NzA5VjgyLjMzNEgwTDIxLjY2MTEgMTAzLjk5N0g1Ni4zMTM1Wk04Ni42NTgyIDEzNC4zNDVMMTEyLjY4OCAxMDguMzJWMzAuMzQ3N0g5MS4wMjE1VjExMi42ODJIMzAuMzQzOEw1Mi4wMDQ5IDEzNC4zNDVIODYuNjU4MloiLz48L3N2Zz48dGV4dCB4PSIxNzAiIHk9IjYyIiBmaWxsPSIjRkZGRkZGIiBmaWxsLW9wYWNpdHk9IjAuNiIgZm9udC1mYW1pbHk9IkhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI1MDAiIGxldHRlci1zcGFjaW5nPSI0LjQiPkJVSUxUIFdJVEg8L3RleHQ+PHN2ZyB4PSIxNjgiIHk9Ijc0IiB3aWR0aD0iMTU3LjUiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjI2OCA1OCA2MzAgMTYwIj48cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJtMTMwLjcxIDIyNS43MWwtMjcuMjgtMjcuMjdxMC0wLjAxIDAtMC4wMWg3Ni40MXYtMTAzLjY4aDI3LjI4YzAgMCAwIDU5LjQgMCA5OC4xOWwtMzIuNzcgMzIuNzd6bTMzMC4zNy0xMTYuOTdjMTAuNjggMTAuNDEgMTcuMjkgMjUuODcgMTcuMjkgNDYuMTMgMCAyMC4yNi02LjYxIDM1LjcxLTE3LjI5IDQ2LjEzLTEwLjY5IDEwLjQxLTI1LjQ3IDE1Ljc5LTQxLjkxIDE1Ljc5LTE2LjQ0IDAtMzEuMjItNS4zOC00MS45MS0xNS43OS0xMC42OC0xMC40Mi0xNy4yOS0yNS44Ny0xNy4yOS00Ni4xMyAwLTIwLjI2IDYuNjEtMzUuNzIgMTcuMjktNDYuMTMgMTAuNjktMTAuNDEgMjUuNDctMTUuNzkgNDEuOTEtMTUuNzkgMTYuNDQgMCAzMS4yMiA1LjM4IDQxLjkxIDE1Ljc5em00MDEuNDEtMTguNjFxLTguMjMtNy4xNC0yMi43Ni03LjE1LTExLjc3IDAuMDEtMTguMyA1LjA3LTYuNTkgNS4xMS02LjU5IDE0LjQyIDAgNi42NyAzLjQ3IDEwLjg5IDMuNDIgNC4xOCAxMC4yNyA3LjU5IDYuNzcgMy4zNyAyMC45NiA4LjZoMC4wMXExNC45OCA1Ljg1IDIzLjk1IDEwLjYyIDguOTIgNC43NCAxNS4zMSAxMy4yNiA2LjM4IDguNDggNi4zOCAyMS4xNiAwIDEyLjQ4LTYuMjggMjIuMDUtNi4yOSA5LjU4LTE4LjAzIDE0Ljg2LTExLjc4IDUuMjktMjcuNzYgNS4yOS0xNS45OSAwLTI4LjA5LTUuNC0xMi4wNS01LjM5LTE4LjU1LTE1LjE4LTYuNDktOS43OS02LjQ5LTIyLjcxdi03LjY2aDIzLjM3djYuMzZxLTAuMDEgMTAuMTcgOC43MSAxNi45MiA4LjY0IDYuNyAyMi45NSA2LjcgMTMuMDUtMC4wMSAxOS42OS01Ljc0IDYuNjktNS43NiA2LjY5LTE0Ljg0LTAuMDEtNi4yMy0zLjY5LTEwLjU2LTMuNjMtNC4yOS0xMC4zNy03LjgxLTYuNjctMy40OC0yMC4wMS04LjcgMCAwLTAuMDEgMC0xNC45OC01LjY0LTI0LjI3LTEwLjYzLTkuMjMtNC45NS0xNS40Mi0xMy40Ni02LjE2LTguNDktNi4xNi0yMS4xNyAwLTE4LjkzIDEzLjM5LTI5LjkgMTMuNDUtMTEgMzUuOTMtMTAuOTkgMTUuNzcgMCAyNy44NiA1LjYxIDEyLjA3IDUuNiAxOC43OCAxNS42MiA2LjcgMTAuMDEgNi43IDIzLjEzdjUuOTJoLTIzLjM3di00LjYxcTAtMTAuMzgtOC4yNy0xNy41NnptLTMxOC41NCAxOC4zNWgxLjUyYzcuMi05LjYgMTguNjMtMTUuNTMgMzQuOTQtMTUuNTMgMTQuMTIgMCAyNS41MSA0LjIzIDMzLjM4IDEyLjE4IDcuODggNy45NSAxMi4yNyAxOS42NSAxMi4yNyAzNC43MXY3NC45NmgtMjEuNzR2LTcxLjcxYzAtOS44NC0yLjQ2LTE3LjM3LTcuMjQtMjIuNDItNC43OC01LjAzLTExLjg0LTcuNTUtMjAuODgtNy41NS0xMC4wOSAwLTE4LjE5IDMuMDUtMjMuNzQgOS40LTUuMDUgNS43OS03Ljk5IDE0LjI2LTguNTEgMjUuNDd2NjYuNTNoLTIxLjgzdi0xMTkuNzZoMjEuODN6bS0xOTQuOTUtMTMuNzNjMCAwIDAgNjMuNTggMCA5OC4ybC0yMS44NSAyMS44NWMtMTAuMjkgMC0yMi41MyAwLTMyLjgxIDBsLTIxLjgzLTIxLjgzcTAgMCAwIDBoNTQuNjZ2LTk4LjIyem0zNTMuNDYgOTguMjJsLTIxLjgzIDIxLjgzYzAgMC0xMC44OSAwLTIxLjggMGwtMjEuODUtMjEuODV2LTEzMC45NGgyMS44M3YzMi43NGgzMi43NHYyMS44M2gtMzIuNzR2NzYuMzloOTguMzF2LTEzMC45NmgyMS44M2MwIDAgMCA4OC43IDAgMTMwLjk0bC0yMS44NSAyMS44NWMtMTAuMjkgMC0yMi41MyAwLTMyLjgxIDAgMCAwLTIxLjgzLTIxLjgzLTIxLjgzLTIxLjgzem0tMjEzLjE3LTk4LjIyaDIxLjgzdjExOS43N2gtMjEuODN6bS05Ni44IDI5LjM2Yy02LjYgNy4wNS0xMC40NCAxNy40NC0xMC40NCAzMC43NSAwIDEzLjMgMy44NCAyMy42OSAxMC40NCAzMC43NCA2LjU3IDcuMDIgMTUuODYgMTAuNjkgMjYuNjggMTAuNjkgMTAuODIgMCAyMC4xMS0zLjY3IDI2LjY4LTEwLjY5IDYuNjEtNy4wNSAxMC40NS0xNy40NCAxMC40NS0zMC43NCAwLTEzLjMxLTMuODQtMjMuNy0xMC40NS0zMC43NS02LjU3LTcuMDEtMTUuODYtMTAuNjktMjYuNjgtMTAuNjktMTAuODIgMC0yMC4xMSAzLjY4LTI2LjY4IDEwLjY5em0tMjk5Ljk5IDYzLjM4bC0yNy4yOC0yNy4yOHEwIDAgMCAwaDc2LjR2LTEwMy42OWgyNy4yOWMwIDAgMCA1OS40IDAgOTguMmwtMzIuNzcgMzIuNzd6bTM5Ni43OS0xMjUuNDhoMjEuODJ2MjEuODJoLTIxLjgyem0tMTYyLjExIDBoMjEuODJ2MjEuODNoLTIxLjgyeiIvPjwvc3ZnPjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0zNDMuMCA4Ny4yaDV2Ny41aDcuNXY1aC03LjV2Ny41aC01di03LjVoLTcuNXYtNWg3LjV6Ii8+PC9zdmc+",
+      "width": 420,
+      "height": 150,
+      "name": "Built with JointJS"
+    }
+  },
   "favorites": [
     "Wire",
     "CircuitBreaker",
