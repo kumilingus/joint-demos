@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 /** The side the tip of the zone points to: where the pipe comes from. */
 export type TipSide = 'left' | 'right';
@@ -28,6 +28,11 @@ export default class Zone extends Shape {
 
     get overflow(): Overflow {
         return { bottom: 0 };
+    }
+
+    // The color of its text: of the medium of the pipe it stands for
+    get colorField(): ColorField {
+        return { path: ['attrs', 'label', 'fill'] };
     }
 
     defaults(): dia.Element.Attributes {
