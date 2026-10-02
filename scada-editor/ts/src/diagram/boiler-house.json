@@ -1136,7 +1136,7 @@
       "tag": "P-102",
       "id": "19798285-91a4-4270-b36c-c2b0563f2981",
       "layer": "equipment",
-      "color": "#3b82f6"
+      "color": "var(--color-blue)"
     },
     {
       "position": {
@@ -1810,7 +1810,7 @@
       "attrs": {
         "label": {
           "text": "Standby",
-          "fill": "#3b82f6"
+          "fill": "var(--color-blue)"
         }
       },
       "tag": "TXT-102",
@@ -1857,7 +1857,7 @@
       "targetArrowhead": "arrow",
       "attrs": {
         "line": {
-          "stroke": "#3b82f6"
+          "stroke": "var(--color-blue)"
         }
       },
       "id": "95c6e637-0493-456b-95b9-b41974f95531"
