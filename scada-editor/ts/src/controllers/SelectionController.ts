@@ -46,11 +46,15 @@ function updateSelection(app: App, keepSettings = false) {
 
 /** The screen removed while it is edited (switched off, deleted, undone): the settings stay open. */
 function onSelectionRemove(app: App, cell: dia.Cell) {
+    // More removed with it (see `onCellRemove()`): the last one updates
+    if (app.selection.toArray().some(selected => !app.graph.getCell(selected.id))) return;
     updateSelection(app, cell instanceof Screen && isSettingsOpen());
 }
 
+/** The cell removed: with the others selected removed already (the members of a group, ...), all at once */
 function onCellRemove(app: App, cell: dia.Cell) {
-    app.selection.remove(cell);
+    const { selection, graph } = app;
+    selection.remove([cell, ...selection.toArray().filter(selected => !graph.getCell(selected.id))]);
 }
 
 /**
