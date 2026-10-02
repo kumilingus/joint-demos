@@ -55,7 +55,7 @@
     --shape-smoke-opacity: 0.5;
     --shape-plume: #ffffff;
     --shape-plenum: #c9cfd4;
-    --shape-label: #350100;
+    --shape-label: #1e293b;
     /* The frame of the screen (see `Screen`): a guide while editing */
     --shape-screen: #3b82f6;
     /* The electrical shapes: a wire (live in the runtime mode), a busbar, the states of a breaker, a lit lamp, a glowing heater */
