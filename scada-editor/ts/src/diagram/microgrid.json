@@ -2,8 +2,8 @@
   "cells": [
     {
       "position": {
-        "x": 1540,
-        "y": 40
+        "x": 770,
+        "y": 30
       },
       "size": {
         "width": 340,
@@ -22,7 +22,8 @@
       "tag": "IMG-101",
       "id": "080378d5-3ac0-4940-9803-ecd65eba13dc",
       "layer": "background",
-      "z": -1
+      "z": -1,
+      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0"
     },
     {
       "position": {
@@ -41,18 +42,18 @@
     },
     {
       "position": {
-        "x": 730,
-        "y": -150
+        "x": 350,
+        "y": 30
       },
       "size": {
-        "width": 460,
+        "width": 540,
         "height": 120
       },
       "angle": 0,
       "type": "Rectangle",
       "attrs": {
         "body": {
-          "fill": "var(--color-blue)",
+          "fill": "var(--color-amber)",
           "fillOpacity": 0.18
         }
       },
@@ -60,27 +61,7 @@
       "layer": "background",
       "z": -999,
       "tag": "BG-101",
-      "parent": "c419001b-49b7-4071-ba05-933ae4523dab"
-    },
-    {
-      "position": {
-        "x": 730,
-        "y": -150
-      },
-      "size": {
-        "width": 460,
-        "height": 120
-      },
-      "angle": 0,
-      "type": "Group",
-      "id": "c419001b-49b7-4071-ba05-933ae4523dab",
-      "layer": "background",
-      "z": -998,
-      "tag": "GRP-101",
-      "embeds": [
-        "1ccc7013-ec91-42a6-b78e-6454cdf43556",
-        "01520282-b166-40fc-b47c-5b921184e28a"
-      ]
+      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0"
     },
     {
       "source": {
@@ -1475,11 +1456,11 @@
     },
     {
       "position": {
-        "x": 730,
-        "y": -150
+        "x": 350,
+        "y": 30
       },
       "size": {
-        "width": 460,
+        "width": 420,
         "height": 120
       },
       "angle": 0,
@@ -1487,14 +1468,15 @@
       "attrs": {
         "label": {
           "text": "Microgrid",
-          "fontSize": 80
+          "fontSize": 80,
+          "fill": "var(--color-amber)"
         }
       },
       "id": "01520282-b166-40fc-b47c-5b921184e28a",
-      "layer": "instruments",
+      "layer": "background",
       "z": 1,
       "tag": "TXT-101",
-      "parent": "c419001b-49b7-4071-ba05-933ae4523dab"
+      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0"
     },
     {
       "position": {
@@ -1677,6 +1659,27 @@
       },
       "id": "9d002598-e549-465d-ae31-254bb512b66c",
       "z": 7
+    },
+    {
+      "position": {
+        "x": 350,
+        "y": 30
+      },
+      "size": {
+        "width": 760,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Group",
+      "id": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
+      "layer": "background",
+      "z": 0,
+      "tag": "GRP-101",
+      "embeds": [
+        "1ccc7013-ec91-42a6-b78e-6454cdf43556",
+        "080378d5-3ac0-4940-9803-ecd65eba13dc",
+        "01520282-b166-40fc-b47c-5b921184e28a"
+      ]
     }
   ],
   "images": {
