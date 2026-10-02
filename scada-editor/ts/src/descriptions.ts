@@ -68,7 +68,7 @@ export const descriptions: Record<string, ShapeDescription> = {
     WaterTower: { title: 'Water Tower', description: 'Stores the water up high: the height gives the pressure of the supply.' },
 
     // Structures
-    Chimney: { title: 'Chimney', description: 'Takes the flue gas of the boilers and the furnaces up into the air.' },
+    Stack: { title: 'Stack', description: 'Takes the flue gas of the boilers and the furnaces up into the air.' },
     CoolingTower: { title: 'Cooling Tower', description: 'Cools the water by evaporation: the plume is the water vapor.' },
 
     // Instruments

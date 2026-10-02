@@ -6,7 +6,7 @@ import Shape, { type ColorField } from './Shape';
 // The stack narrows from the full width at the bottom to 60% of it at the top.
 const TAPER = 0.2;
 
-const BAND_COLOR = 'var(--shape-chimney-band)';
+const BAND_COLOR = 'var(--shape-stack-band)';
 
 /**
  * A band across the stack between the relative heights `from` and `to` (0 = top, 1 = bottom).
@@ -37,7 +37,7 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-export default class Chimney extends Shape {
+export default class Stack extends Shape {
 
     // The accent: the warning bands
     get accentField(): ColorField {
@@ -55,7 +55,7 @@ export default class Chimney extends Shape {
     defaults(): dia.Element.Attributes {
         return {
             ...super.defaults,
-            type: 'Chimney',
+            type: 'Stack',
             size: {
                 width: 60,
                 height: 240
@@ -119,7 +119,7 @@ export default class Chimney extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Chimney',
+                    text: 'Stack',
                     y: 'calc(h + 18)'
                 }
             }

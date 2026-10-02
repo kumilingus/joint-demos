@@ -231,7 +231,7 @@ function outlineInputs(cell: dia.Cell, group: string, index: number): Inputs {
     return fieldInputs(cell, outlineFieldOf(cell), 'Outline', group, index);
 }
 
-/** The Accent field of the cell (a marking of it: the bands of a chimney, a handwheel, see `accentField`); nothing if none */
+/** The Accent field of the cell (a marking of it: the bands of a stack, a handwheel, see `accentField`); nothing if none */
 function accentInputs(cell: dia.Cell, group: string, index: number): Inputs {
     return fieldInputs(cell, accentFieldOf(cell), 'Accent', group, index);
 }

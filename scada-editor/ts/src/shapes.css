@@ -82,8 +82,8 @@
     --shape-liquid-min: #FFD23F;
     --shape-background-fill: #64748B;
 
-    /* The accents of the shapes (see `accentField`): the bands of a chimney, the operators of the valves, a terminal box */
-    --base-chimney-band: #ED2637;
+    /* The accents of the shapes (see `accentField`): the bands of a stack, the operators of the valves, a terminal box */
+    --base-stack-band: #ED2637;
     --base-valve-operator: #666666;
     --base-terminal-box: #555555;
     --base-motor: #555555;
@@ -255,7 +255,7 @@
     --shape-thermometer-stroke: var(--style-outline, var(--base-thermometer-stroke));
     --shape-gauge-stroke: var(--style-outline, var(--base-gauge-stroke));
     --shape-zone-stroke: var(--style-outline, var(--base-zone-stroke));
-    --shape-chimney-band: var(--style-accent, var(--base-chimney-band));
+    --shape-stack-band: var(--style-accent, var(--base-stack-band));
     --shape-valve-operator: var(--style-accent, var(--base-valve-operator));
     --shape-terminal-box: var(--style-accent, var(--base-terminal-box));
     --shape-motor: var(--style-accent, var(--base-motor));

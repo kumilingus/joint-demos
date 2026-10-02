@@ -63,7 +63,7 @@ export interface ShapeFeatures {
     colorField: ColorField | null;
     /** The color of the outline the user sets, if any. */
     outlineField: ColorField | null;
-    /** The color of the accent the user sets (a marking: the bands of a chimney, a handwheel), if any. */
+    /** The color of the accent the user sets (a marking: the bands of a stack, a handwheel), if any. */
     accentField: ColorField | null;
 }
 

@@ -5,7 +5,7 @@ import {
     ControlValve, HandValve, CheckValve, ButterflyValve, BallValve, SolenoidValve, ReliefValve,
     HeatExchanger, Filter, Boiler, Reactor, DistillationColumn, Separator, Cyclone,
     LiquidTank, ConicTank, MixingTank, Silo, SphericalTank, Hopper, HorizontalTank,
-    Chimney, CoolingTower,
+    Stack, CoolingTower,
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display,
     Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, SignalLine, Arrow, Label, CustomImage,
     GateValve, YStrainer, OrificePlate, AirCooler, Scrubber, WaterTower,
@@ -265,7 +265,7 @@ function createShapes(): Record<string, dia.Cell[]> {
             new RotaryKiln()
         ],
         structures: [
-            new Chimney(),
+            new Stack(),
             new CoolingTower()
         ],
         instruments: [

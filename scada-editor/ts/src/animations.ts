@@ -282,7 +282,7 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'equipment',
         animate: flicker
     },
-    Chimney: {
+    Stack: {
         kind: 'equipment',
         animate: view => {
             const target = node(view, 'smoke');

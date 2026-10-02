@@ -11,7 +11,7 @@ import Boiler from './Boiler';
 import LiquidTank from './LiquidTank';
 import ConicTank from './ConicTank';
 import MixingTank from './MixingTank';
-import Chimney from './Chimney';
+import Stack from './Stack';
 import CoolingTower from './CoolingTower';
 import Instrument from './Instrument';
 import PressureGauge from './PressureGauge';
@@ -97,7 +97,7 @@ export {
     ControlValve, HandValve, CheckValve, ButterflyValve, BallValve, SolenoidValve, ReliefValve, GateValve,
     HeatExchanger, Filter, Boiler, Reactor, DistillationColumn, Separator, Cyclone, AirCooler, Scrubber,
     LiquidTank, ConicTank, MixingTank, Silo, SphericalTank, Hopper, HorizontalTank, WaterTower,
-    Chimney, CoolingTower,
+    Stack, CoolingTower,
     Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display, Trend,
     Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, Arrow, CustomImage, YStrainer, OrificePlate,
     Screen,
@@ -122,7 +122,7 @@ export const cellNamespace = {
     LiquidTank,
     ConicTank,
     MixingTank,
-    Chimney,
+    Stack,
     CoolingTower,
     Instrument,
     PressureGauge,

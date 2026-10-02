@@ -1249,7 +1249,7 @@
         "height": 240
       },
       "angle": 0,
-      "type": "Chimney",
+      "type": "Stack",
       "attrs": {
         "label": {
           "text": "Stack 1"
@@ -1289,7 +1289,7 @@
         "height": 240
       },
       "angle": 0,
-      "type": "Chimney",
+      "type": "Stack",
       "attrs": {
         "label": {
           "text": "Stack 2"
