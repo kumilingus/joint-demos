@@ -21,6 +21,8 @@
 
     /* The outline of the metal parts (`METAL_STROKE`), the flat light metal (a rotor ring, a nozzle) */
     --base-metal-stroke: #6a737b;
+    /* The outline of the flat finish (see `outlineOf()`): the edge of the metal, darker than the flat surfaces in the dark scheme */
+    --base-flat-stroke: var(--base-metal-stroke);
     --base-metal-flat: #eee;
     --base-metal-flat-2: #ddd;
 
@@ -152,6 +154,7 @@
     --base-metal-flat: #7f95b1;
     --base-metal-flat-2: #7f95b1;
 
+    --base-flat-stroke: #0b1220;
     /* A join, the ends (flanges) of the pipe stubs */
     --base-fitting-fill: #a9bcd3;
     --base-fitting-stroke: #5b7699;
@@ -253,6 +256,7 @@
     --shape-pipe-outline: var(--style-outline, var(--base-pipe-outline));
     --shape-belt-outline: var(--style-outline, var(--base-belt-outline));
     --shape-thermometer-stroke: var(--style-outline, var(--base-thermometer-stroke));
+    --shape-flat-stroke: var(--style-outline, color-mix(in oklab, var(--style-color, var(--base-flat-stroke)) 55%, var(--base-flat-stroke)));
     --shape-gauge-stroke: var(--style-outline, var(--base-gauge-stroke));
     --shape-zone-stroke: var(--style-outline, var(--base-zone-stroke));
     --shape-stack-band: var(--style-accent, var(--base-stack-band));

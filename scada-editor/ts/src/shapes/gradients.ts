@@ -10,6 +10,9 @@ import { type dia, util } from '@joint/plus';
 /** The outline of the metal parts: the color of the shaded edge, so the outline blends into it. */
 export const METAL_STROKE = 'var(--shape-metal-stroke)';
 
+// The outline of the flat finish: the edge of the metal (darker than the flat surfaces in the dark scheme)
+const FLAT_STROKE = 'var(--shape-flat-stroke)';
+
 const metalStops = [
     { offset: '0%', color: 'var(--shape-metal-1)' },
     { offset: '10%', color: 'var(--shape-metal-2)' },
@@ -202,7 +205,7 @@ const OUTLINE_WIDTH = 2;
 function outlineOf(model: dia.Cell): string | null {
     const outline = model.get('outline');
     if (typeof outline === 'string' && outline !== '') return outline;
-    return finishOf(model) === 'flat' ? METAL_STROKE : null;
+    return finishOf(model) === 'flat' ? FLAT_STROKE : null;
 }
 
 // A shaded surface made flat: the middle tone of its shading
