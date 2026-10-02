@@ -36,12 +36,14 @@ export class SelectionFrame extends highlighters.stroke {
     }
 }
 
-/** A link is outlined: a wider stroke behind it. */
+/** A link is outlined: a wider stroke behind it, in its own view (drawn in its layer, not under all of the cells). */
 function frameOptions(cell: dia.Cell): highlighters.StrokeHighlighterArguments {
     if (cell.isLink()) {
         const lineWidth = Number(cell.attr(cell instanceof Pipe ? 'outline/strokeWidth' : 'line/strokeWidth')) || 0;
         return {
-            layer: 'back',
+            // The first child of the view: behind the paths of the link
+            layer: null,
+            z: 0,
             attrs: {
                 stroke: SELECTION_COLOR,
                 strokeWidth: lineWidth + 6,
