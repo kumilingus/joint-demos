@@ -291,9 +291,8 @@ function createShapes(): Record<string, dia.Cell[]> {
             new Ellipse()
         ],
         charts: [
-            // With a title and the names of the columns, with the names only, and a row of a state and a value (neither)
+            // With a title and the names of the columns, and a row of a state and a value (neither)
             new Table(),
-            new Table({ header: false }),
             new Table({
                 header: false,
                 names: false,
@@ -358,8 +357,8 @@ function createShapes(): Record<string, dia.Cell[]> {
 export function paletteKey(cell: dia.Cell): string {
     const type = cell.get('type');
     if (type === 'CustomImage') return `${type}:${cell.attr('image/imageId')}`;
-    // A table with a header, one without, a list (neither the header nor the names): three shapes of the palette
-    if (type === 'Table') return cell.get('header') ? 'Table' : (cell.get('names') ? 'Table:plain' : 'Table:list');
+    // A table (its names of the columns shown), a readout (neither the title nor the names): two shapes of the palette
+    if (type === 'Table') return cell.get('names') ? 'Table' : 'Table:list';
     return type;
 }
 
