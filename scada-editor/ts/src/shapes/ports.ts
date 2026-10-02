@@ -66,7 +66,8 @@ function pipeStubGroup(length: number, tuck = STUB_TUCK): dia.Element.PortGroup 
                 height: 'calc(h + 6)',
                 surfaceStroke: 'edge',
                 strokeWidth: 3,
-                fill: 'var(--shape-flange-fill)'
+                // Its face in the color of the element too
+                surfaceFill: 'var(--shape-flange-fill)'
             }
         }
     };
