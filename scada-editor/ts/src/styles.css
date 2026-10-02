@@ -823,15 +823,17 @@ body {
     gap: 12px;
 }
 
+/* Rows of seven, the swatches as wide as the space takes (a scrollbar of the panel narrows it) */
 .joint-inspector .color-swatches {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(7, minmax(0, 22px));
     gap: 6px;
 }
 
 .joint-inspector .color-swatch {
-    width: 22px;
-    height: 22px;
+    width: 100%;
+    aspect-ratio: 1;
     padding: 0;
     border: 1px solid var(--input);
     border-radius: var(--radius-sm);
@@ -851,8 +853,9 @@ body {
 
 /* The recent colors and the ones of the diagram: on a row under the colors of the theme */
 .joint-inspector .color-swatches-break {
-    flex-basis: 100%;
+    grid-column: 1 / -1;
     height: 0;
+    margin-top: -6px;
 }
 
 /* No color of the cell's own (Auto, see `color-field.ts`): a slashed swatch and input */
