@@ -921,15 +921,13 @@
       "target": {
         "id": "7756cf04-61db-4ae9-aab5-abb234a61d68",
         "anchor": {
-          "name": "left",
+          "name": "topLeft",
           "args": {
-            "dy": 80,
-            "useModelGeometry": true,
-            "rotate": true
+            "dx": "0%",
+            "dy": "81.818%",
+            "rotate": true,
+            "useModelGeometry": true
           }
-        },
-        "connectionPoint": {
-          "name": "anchor"
         }
       },
       "type": "Pipe",
@@ -964,7 +962,7 @@
           "name": "topLeft",
           "args": {
             "dx": "100%",
-            "dy": "62.5%",
+            "dy": "68.75%",
             "rotate": true,
             "useModelGeometry": true
           }
@@ -976,7 +974,7 @@
           "name": "topLeft",
           "args": {
             "dx": "0%",
-            "dy": "83.333%",
+            "dy": "81.818%",
             "rotate": true,
             "useModelGeometry": true
           }
@@ -1241,12 +1239,12 @@
     },
     {
       "position": {
-        "x": 1130,
-        "y": 330
+        "x": 1120,
+        "y": 350
       },
       "size": {
-        "width": 60,
-        "height": 240
+        "width": 80,
+        "height": 220
       },
       "angle": 0,
       "type": "Stack",
@@ -1262,7 +1260,7 @@
     {
       "position": {
         "x": 1260,
-        "y": 430
+        "y": 420
       },
       "size": {
         "width": 120,
@@ -1281,12 +1279,12 @@
     },
     {
       "position": {
-        "x": 1430,
-        "y": 330
+        "x": 1420,
+        "y": 350
       },
       "size": {
-        "width": 60,
-        "height": 240
+        "width": 80,
+        "height": 220
       },
       "angle": 0,
       "type": "Stack",
@@ -2030,6 +2028,170 @@
         "c1320b0c-731e-4beb-9797-316f1c721fda",
         "e7c2ecf7-7134-484b-a3ba-8b37feed12e0"
       ]
+    },
+    {
+      "position": {
+        "x": 840,
+        "y": 660
+      },
+      "size": {
+        "width": 140,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": false,
+      "names": false,
+      "rows": 1,
+      "columns": [
+        {
+          "name": "State",
+          "kind": "state"
+        },
+        {
+          "name": "Value",
+          "kind": "number"
+        },
+        {
+          "name": "Unit",
+          "kind": "text",
+          "width": 50
+        }
+      ],
+      "values": [
+        [
+          "on",
+          "42.0",
+          "m\u00b3/h"
+        ]
+      ],
+      "sourceTag": "P-101",
+      "tag": "TB-101",
+      "id": "2695ba76-704b-4da6-ba5a-d3135405ff35",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 840,
+        "y": 830
+      },
+      "size": {
+        "width": 140,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": false,
+      "names": false,
+      "rows": 1,
+      "columns": [
+        {
+          "name": "State",
+          "kind": "state"
+        },
+        {
+          "name": "Value",
+          "kind": "number"
+        },
+        {
+          "name": "Unit",
+          "kind": "text",
+          "width": 50
+        }
+      ],
+      "values": [
+        [
+          "off",
+          "42.0",
+          "m\u00b3/h"
+        ]
+      ],
+      "sourceTag": "P-102",
+      "tag": "TB-102",
+      "id": "e2433b3d-7bf9-40d9-a32b-1e03e7fc02c4",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 950,
+        "y": 180
+      },
+      "size": {
+        "width": 140,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": false,
+      "names": false,
+      "rows": 1,
+      "columns": [
+        {
+          "name": "State",
+          "kind": "state"
+        },
+        {
+          "name": "Value",
+          "kind": "number"
+        },
+        {
+          "name": "Unit",
+          "kind": "text",
+          "width": 50
+        }
+      ],
+      "values": [
+        [
+          "on",
+          "8.4",
+          "t/h"
+        ]
+      ],
+      "sourceTag": "B-101",
+      "tag": "TB-103",
+      "id": "e4529a54-ab7d-401a-adfb-3e82454010c6",
+      "layer": "instruments"
+    },
+    {
+      "position": {
+        "x": 1250,
+        "y": 180
+      },
+      "size": {
+        "width": 140,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": false,
+      "names": false,
+      "rows": 1,
+      "columns": [
+        {
+          "name": "State",
+          "kind": "state"
+        },
+        {
+          "name": "Value",
+          "kind": "number"
+        },
+        {
+          "name": "Unit",
+          "kind": "text",
+          "width": 50
+        }
+      ],
+      "values": [
+        [
+          "on",
+          "7.9",
+          "t/h"
+        ]
+      ],
+      "sourceTag": "B-102",
+      "tag": "TB-104",
+      "id": "efeace96-a84c-418d-ae7e-ce85315686b0",
+      "layer": "instruments"
     }
   ],
   "images": {

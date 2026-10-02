@@ -20,7 +20,7 @@
         }
       },
       "tag": "IMG-101",
-      "id": "a9f34f2d-52fb-447d-ae8d-5179f786b484",
+      "id": "397cb3f0-9155-4215-af0e-c52c2a2892b6",
       "layer": "background",
       "z": -1
     },
@@ -37,7 +37,7 @@
       "type": "Screen",
       "layer": "background",
       "z": -1000,
-      "id": "f782d84a-0052-4242-bea9-9bcde1c05d79"
+      "id": "df4ff5b2-b874-4f69-970e-c1daf6f81343"
     },
     {
       "position": {
@@ -56,11 +56,11 @@
           "fillOpacity": 0.18
         }
       },
-      "id": "5a55f5fa-a300-4bf0-98ce-8036ee1b8c5a",
+      "id": "307df06b-40da-4564-99cc-f1541422b375",
       "layer": "background",
       "z": -999,
       "tag": "BG-101",
-      "parent": "3b72b929-2984-49f3-9729-d404d3f3075f"
+      "parent": "250a21d0-d181-4d76-9f11-6947e889e79b"
     },
     {
       "position": {
@@ -73,18 +73,18 @@
       },
       "angle": 0,
       "type": "Group",
-      "id": "3b72b929-2984-49f3-9729-d404d3f3075f",
+      "id": "250a21d0-d181-4d76-9f11-6947e889e79b",
       "layer": "background",
       "z": -998,
       "tag": "GRP-101",
       "embeds": [
-        "5a55f5fa-a300-4bf0-98ce-8036ee1b8c5a",
-        "ba3e7628-0582-4e54-baed-c97155c4e5c2"
+        "307df06b-40da-4564-99cc-f1541422b375",
+        "3a8ef731-33ce-41e5-9324-6518e441da91"
       ]
     },
     {
       "source": {
-        "id": "71c35aab-0f5d-4e23-96bb-86c910604c9f",
+        "id": "46895847-9a71-40a9-adba-d461cab8f33a",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -97,7 +97,7 @@
         }
       },
       "target": {
-        "id": "7e36dfa7-28af-4e14-b026-f310a1794938",
+        "id": "6eb2fec9-707a-489f-be81-d2df72462ef2",
         "anchor": {
           "name": "top",
           "args": {
@@ -126,11 +126,11 @@
         }
       },
       "power": 1,
-      "id": "1b909d4a-3e60-4916-ab79-65468f969ebd"
+      "id": "d6f7b32d-776e-4d8c-9e28-0b6f09f4c86e"
     },
     {
       "source": {
-        "id": "7e36dfa7-28af-4e14-b026-f310a1794938",
+        "id": "6eb2fec9-707a-489f-be81-d2df72462ef2",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -144,7 +144,7 @@
         }
       },
       "target": {
-        "id": "82adec61-f41c-4db2-bc2c-e0bac53d2724",
+        "id": "616af48d-dbbb-406d-aa46-f310ea5c821e",
         "anchor": {
           "name": "topLeft",
           "args": {
@@ -173,11 +173,11 @@
         }
       },
       "power": 1,
-      "id": "fb7f95bb-79bf-4211-93d2-bede6715a60f"
+      "id": "2a535481-6ab8-480f-b291-593210146721"
     },
     {
       "source": {
-        "id": "82adec61-f41c-4db2-bc2c-e0bac53d2724",
+        "id": "616af48d-dbbb-406d-aa46-f310ea5c821e",
         "anchor": {
           "name": "right",
           "args": {
@@ -191,7 +191,7 @@
         }
       },
       "target": {
-        "id": "52806f9a-9e9a-417f-b96c-ba573693d124",
+        "id": "24afda56-f38c-460c-ad4f-996b11dc375d",
         "anchor": {
           "name": "bottomLeft",
           "args": {
@@ -221,11 +221,11 @@
         }
       },
       "power": 1,
-      "id": "4bf36bc5-a3c1-4669-9dd9-2b5e43a02ae7"
+      "id": "b2ddbf3b-f7b9-44d1-8309-7c36294e9a69"
     },
     {
       "source": {
-        "id": "52806f9a-9e9a-417f-b96c-ba573693d124",
+        "id": "24afda56-f38c-460c-ad4f-996b11dc375d",
         "anchor": {
           "name": "topRight",
           "args": {
@@ -240,7 +240,7 @@
         }
       },
       "target": {
-        "id": "ca780d5e-0acd-4173-a9e1-b2ac41cc0cde",
+        "id": "e4c421d7-8899-4435-ba30-fd814b416dfc",
         "anchor": {
           "name": "top",
           "args": {
@@ -270,11 +270,11 @@
         }
       },
       "power": 1,
-      "id": "b6ffa9a7-0075-4c08-a62c-e63bf851a96d"
+      "id": "2dffcbf1-1deb-4864-9e2d-ee3f41cbf017"
     },
     {
       "source": {
-        "id": "e4c13f38-cadd-4439-9e94-2d51fda6d269",
+        "id": "80cc6f6a-588c-4de8-9d52-401a261c9228",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -287,7 +287,7 @@
         }
       },
       "target": {
-        "id": "d1492824-98a4-489d-9ef3-d4f7aa033e18",
+        "id": "2588363f-bfa8-48c3-8536-5d424b581e47",
         "anchor": {
           "name": "left",
           "args": {
@@ -322,11 +322,11 @@
           "stroke": "#d6c7a1"
         }
       },
-      "id": "33d0d9b3-1418-4431-bcc0-7cee3cc6aab3"
+      "id": "4255dc25-e035-4c6b-bede-568187e20cdf"
     },
     {
       "source": {
-        "id": "ca780d5e-0acd-4173-a9e1-b2ac41cc0cde",
+        "id": "e4c421d7-8899-4435-ba30-fd814b416dfc",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -339,7 +339,7 @@
         }
       },
       "target": {
-        "id": "d1492824-98a4-489d-9ef3-d4f7aa033e18",
+        "id": "2588363f-bfa8-48c3-8536-5d424b581e47",
         "anchor": {
           "name": "right",
           "args": {
@@ -374,11 +374,11 @@
           "stroke": "#d6c7a1"
         }
       },
-      "id": "2a551a0d-ef9e-4356-87f6-0de0aac90090"
+      "id": "a8dae35f-4af5-4f6c-aef6-9e8e114e4ea4"
     },
     {
       "source": {
-        "id": "d1492824-98a4-489d-9ef3-d4f7aa033e18",
+        "id": "2588363f-bfa8-48c3-8536-5d424b581e47",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -391,7 +391,7 @@
         }
       },
       "target": {
-        "id": "d53a3847-402d-4dbb-8357-bbf6aca6737d",
+        "id": "b30e4bb5-2163-4a81-a2ff-d980d5daa22f",
         "anchor": {
           "name": "left",
           "args": {
@@ -437,11 +437,11 @@
           "y": 540
         }
       ],
-      "id": "5a969791-adaa-4353-9baf-17fd322177dd"
+      "id": "e4e91a35-3cd4-4e41-a84c-61d8c344447a"
     },
     {
       "source": {
-        "id": "d53a3847-402d-4dbb-8357-bbf6aca6737d",
+        "id": "b30e4bb5-2163-4a81-a2ff-d980d5daa22f",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -454,7 +454,7 @@
         }
       },
       "target": {
-        "id": "7c4aec89-18cf-47bc-9009-a6c9f53d8bfb",
+        "id": "cd0c12ee-2052-4061-83ab-3c1562aeaa3e",
         "anchor": {
           "name": "left",
           "args": {
@@ -490,11 +490,11 @@
           "stroke": "#d6c7a1"
         }
       },
-      "id": "a2945d3a-5c38-4217-8f80-ee7854f526d4"
+      "id": "c8ae85fa-dac5-4ce0-b585-e9d403eb9a57"
     },
     {
       "source": {
-        "id": "7c4aec89-18cf-47bc-9009-a6c9f53d8bfb",
+        "id": "cd0c12ee-2052-4061-83ab-3c1562aeaa3e",
         "anchor": {
           "name": "top",
           "args": {
@@ -507,7 +507,7 @@
         }
       },
       "target": {
-        "id": "d53a3847-402d-4dbb-8357-bbf6aca6737d",
+        "id": "b30e4bb5-2163-4a81-a2ff-d980d5daa22f",
         "anchor": {
           "name": "right",
           "args": {
@@ -543,11 +543,11 @@
           "stroke": "#9aa3ab"
         }
       },
-      "id": "4154e8e1-449f-4e55-902a-e1a3f7182152"
+      "id": "cc016e4d-9795-49f8-9819-0d54b57d56aa"
     },
     {
       "source": {
-        "id": "7c4aec89-18cf-47bc-9009-a6c9f53d8bfb",
+        "id": "cd0c12ee-2052-4061-83ab-3c1562aeaa3e",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -560,7 +560,7 @@
         }
       },
       "target": {
-        "id": "4543223b-b7b8-4b32-9fbe-098e836a90a1",
+        "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
         "anchor": {
           "name": "topLeft",
           "args": {
@@ -596,11 +596,11 @@
           "stroke": "#d6c7a1"
         }
       },
-      "id": "e42b6414-981d-4481-85ec-c69bc4b00f1e"
+      "id": "f71d77bf-b7f1-4f4c-bd66-34c9a8ce83a7"
     },
     {
       "source": {
-        "id": "4543223b-b7b8-4b32-9fbe-098e836a90a1",
+        "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
         "anchor": {
           "name": "topLeft",
           "args": {
@@ -614,7 +614,7 @@
         }
       },
       "target": {
-        "id": "7c4aec89-18cf-47bc-9009-a6c9f53d8bfb",
+        "id": "cd0c12ee-2052-4061-83ab-3c1562aeaa3e",
         "anchor": {
           "name": "right",
           "args": {
@@ -656,11 +656,11 @@
           "y": 370
         }
       ],
-      "id": "b5b07c9c-1a6a-4796-a5b6-891de24df75c"
+      "id": "2f6c3c21-ee94-482e-af7c-85dbfc26d136"
     },
     {
       "source": {
-        "id": "d53a3847-402d-4dbb-8357-bbf6aca6737d",
+        "id": "b30e4bb5-2163-4a81-a2ff-d980d5daa22f",
         "anchor": {
           "name": "top",
           "args": {
@@ -673,7 +673,7 @@
         }
       },
       "target": {
-        "id": "b68e6e42-8f6b-4a80-8eaa-cf7244dea55d",
+        "id": "dd7ec4e9-18ec-4bab-a6c4-5bc9dc727b98",
         "port": "left"
       },
       "type": "Pipe",
@@ -713,15 +713,15 @@
           "y": 220
         }
       ],
-      "id": "82c6c189-31e7-4014-8a13-f28562cd61e6"
+      "id": "c4b1ddc3-a2ab-42aa-8a81-78092814acb1"
     },
     {
       "source": {
-        "id": "b68e6e42-8f6b-4a80-8eaa-cf7244dea55d",
+        "id": "dd7ec4e9-18ec-4bab-a6c4-5bc9dc727b98",
         "port": "right"
       },
       "target": {
-        "id": "47dceeeb-20f1-4a59-a647-bcee5c1231fe",
+        "id": "88f966cb-fd44-41b5-8701-d87a66c3d928",
         "port": "left"
       },
       "type": "Pipe",
@@ -747,15 +747,15 @@
           "stroke": "#9aa3ab"
         }
       },
-      "id": "d4471b00-2a2e-4e5e-81ad-63017785beff"
+      "id": "63b27cbb-21ad-422b-a9c7-83182575719b"
     },
     {
       "source": {
-        "id": "47dceeeb-20f1-4a59-a647-bcee5c1231fe",
+        "id": "88f966cb-fd44-41b5-8701-d87a66c3d928",
         "port": "right"
       },
       "target": {
-        "id": "0c0a4bd5-999a-48e2-acf0-2883b8c787d3",
+        "id": "52315eba-43ad-4933-a14d-c26ca9fba2df",
         "anchor": {
           "name": "left",
           "args": {
@@ -791,11 +791,11 @@
           "stroke": "#9aa3ab"
         }
       },
-      "id": "6b763740-cbbc-4ace-9f50-6a344f829e81"
+      "id": "4d0867d5-720d-4db2-aac5-ce1b26b165cd"
     },
     {
       "source": {
-        "id": "4543223b-b7b8-4b32-9fbe-098e836a90a1",
+        "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
         "anchor": {
           "name": "bottomRight",
           "args": {
@@ -810,7 +810,7 @@
         }
       },
       "target": {
-        "id": "9d2b1934-0881-4d0b-8838-8eaaefbf8849",
+        "id": "61852fd0-fe54-4a84-a46f-9bbe1f4983b6",
         "anchor": {
           "name": "top",
           "args": {
@@ -851,11 +851,11 @@
           "y": 760
         }
       ],
-      "id": "4ec1c366-8e7b-499b-be46-09ab242b3704"
+      "id": "dcf11b1d-9129-4a2b-ae3a-7d9d1c1d6e8e"
     },
     {
       "source": {
-        "id": "9d2b1934-0881-4d0b-8838-8eaaefbf8849",
+        "id": "61852fd0-fe54-4a84-a46f-9bbe1f4983b6",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -868,7 +868,7 @@
         }
       },
       "target": {
-        "id": "a0ae3bea-9b68-47e8-a774-eb5aa6e85af8",
+        "id": "ee9a419c-7dc6-4415-8467-0eba18e531bd",
         "anchor": {
           "name": "right",
           "args": {
@@ -899,11 +899,11 @@
         }
       },
       "power": 1,
-      "id": "c3f49690-2e55-4b9c-8a72-da0359e4c635"
+      "id": "4b261895-32a9-40c3-a5ac-179b25941182"
     },
     {
       "source": {
-        "id": "0fed81a0-d66d-4215-a389-74339b36c4ad",
+        "id": "3202d67d-c3d3-45d5-b3b4-a023f3b76ddb",
         "anchor": {
           "name": "bottom",
           "args": {
@@ -916,7 +916,7 @@
         }
       },
       "target": {
-        "id": "4543223b-b7b8-4b32-9fbe-098e836a90a1",
+        "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
         "anchor": {
           "name": "right",
           "args": {
@@ -952,7 +952,7 @@
           "stroke": "#57534e"
         }
       },
-      "id": "36a815da-2d1f-41d7-94f1-6ca4ffdfb939"
+      "id": "cc5b93a2-f33c-4678-aeab-1521bc763272"
     },
     {
       "position": {
@@ -973,7 +973,7 @@
           "text": "From Quarry"
         }
       },
-      "id": "71c35aab-0f5d-4e23-96bb-86c910604c9f",
+      "id": "46895847-9a71-40a9-adba-d461cab8f33a",
       "layer": "equipment",
       "z": 1,
       "tag": "Z-101"
@@ -990,7 +990,7 @@
       "angle": 0,
       "type": "Crusher",
       "power": 1,
-      "id": "7e36dfa7-28af-4e14-b026-f310a1794938",
+      "id": "6eb2fec9-707a-489f-be81-d2df72462ef2",
       "layer": "equipment",
       "z": 2,
       "tag": "CR-101"
@@ -1012,7 +1012,7 @@
           "text": "Raw Mill"
         }
       },
-      "id": "82adec61-f41c-4db2-bc2c-e0bac53d2724",
+      "id": "616af48d-dbbb-406d-aa46-f310ea5c821e",
       "layer": "equipment",
       "z": 3,
       "tag": "ML-101"
@@ -1034,7 +1034,7 @@
           "text": "Elevator"
         }
       },
-      "id": "52806f9a-9e9a-417f-b96c-ba573693d124",
+      "id": "24afda56-f38c-460c-ad4f-996b11dc375d",
       "layer": "equipment",
       "z": 4,
       "tag": "BE-101"
@@ -1056,7 +1056,7 @@
           "text": "Raw Meal 1"
         }
       },
-      "id": "e4c13f38-cadd-4439-9e94-2d51fda6d269",
+      "id": "80cc6f6a-588c-4de8-9d52-401a261c9228",
       "layer": "equipment",
       "z": 5,
       "tag": "SL-101"
@@ -1078,7 +1078,7 @@
           "text": "Raw Meal 2"
         }
       },
-      "id": "ca780d5e-0acd-4173-a9e1-b2ac41cc0cde",
+      "id": "e4c421d7-8899-4435-ba30-fd814b416dfc",
       "layer": "equipment",
       "z": 6,
       "tag": "SL-102"
@@ -1094,7 +1094,7 @@
       },
       "angle": 0,
       "type": "Join",
-      "id": "d1492824-98a4-489d-9ef3-d4f7aa033e18",
+      "id": "2588363f-bfa8-48c3-8536-5d424b581e47",
       "layer": "equipment",
       "z": 7,
       "tag": "J-101"
@@ -1119,7 +1119,7 @@
           "text": "Stage 1"
         }
       },
-      "id": "d53a3847-402d-4dbb-8357-bbf6aca6737d",
+      "id": "b30e4bb5-2163-4a81-a2ff-d980d5daa22f",
       "layer": "equipment",
       "z": 8,
       "tag": "CY-101"
@@ -1144,7 +1144,7 @@
           "text": "Stage 2"
         }
       },
-      "id": "7c4aec89-18cf-47bc-9009-a6c9f53d8bfb",
+      "id": "cd0c12ee-2052-4061-83ab-3c1562aeaa3e",
       "layer": "equipment",
       "z": 9,
       "tag": "CY-102"
@@ -1161,7 +1161,7 @@
       "angle": 0,
       "type": "RotaryKiln",
       "power": 1,
-      "id": "4543223b-b7b8-4b32-9fbe-098e836a90a1",
+      "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
       "layer": "equipment",
       "z": 10,
       "tag": "KL-101"
@@ -1177,7 +1177,7 @@
       },
       "angle": 0,
       "type": "BagFilter",
-      "id": "b68e6e42-8f6b-4a80-8eaa-cf7244dea55d",
+      "id": "dd7ec4e9-18ec-4bab-a6c4-5bc9dc727b98",
       "layer": "equipment",
       "z": 11,
       "tag": "BF-101"
@@ -1199,7 +1199,7 @@
           "text": "ID Fan"
         }
       },
-      "id": "47dceeeb-20f1-4a59-a647-bcee5c1231fe",
+      "id": "88f966cb-fd44-41b5-8701-d87a66c3d928",
       "layer": "equipment",
       "z": 12,
       "tag": "BL-101"
@@ -1215,12 +1215,7 @@
       },
       "angle": 0,
       "type": "Stack",
-      "attrs": {
-        "label": {
-          "text": "Stack"
-        }
-      },
-      "id": "0c0a4bd5-999a-48e2-acf0-2883b8c787d3",
+      "id": "52315eba-43ad-4933-a14d-c26ca9fba2df",
       "layer": "equipment",
       "z": 13,
       "tag": "ST-101"
@@ -1245,7 +1240,7 @@
           "text": "Clinker"
         }
       },
-      "id": "9d2b1934-0881-4d0b-8838-8eaaefbf8849",
+      "id": "61852fd0-fe54-4a84-a46f-9bbe1f4983b6",
       "layer": "equipment",
       "z": 14,
       "tag": "SL-103"
@@ -1266,7 +1261,7 @@
           "text": "To Cement Mill"
         }
       },
-      "id": "a0ae3bea-9b68-47e8-a774-eb5aa6e85af8",
+      "id": "ee9a419c-7dc6-4415-8467-0eba18e531bd",
       "layer": "equipment",
       "z": 15,
       "tag": "Z-102"
@@ -1290,10 +1285,202 @@
           "text": "Coal"
         }
       },
-      "id": "0fed81a0-d66d-4215-a389-74339b36c4ad",
+      "id": "3202d67d-c3d3-45d5-b3b4-a023f3b76ddb",
       "layer": "equipment",
       "z": 16,
       "tag": "Z-103"
+    },
+    {
+      "position": {
+        "x": 240,
+        "y": 180
+      },
+      "size": {
+        "width": 140,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": false,
+      "title": "Table",
+      "names": false,
+      "columns": [
+        {
+          "name": "State",
+          "kind": "state"
+        },
+        {
+          "name": "Value",
+          "kind": "number"
+        },
+        {
+          "name": "Unit",
+          "kind": "text",
+          "width": 50
+        }
+      ],
+      "rows": 1,
+      "values": [
+        [
+          "on",
+          "310",
+          "t/h"
+        ]
+      ],
+      "fill": "var(--shape-face)",
+      "stroke": "var(--shape-table-line)",
+      "headerFill": "var(--shape-table-header)",
+      "id": "75f57af8-6425-4275-8c08-e1a7e55f826c",
+      "layer": "equipment",
+      "z": 17,
+      "tag": "TB-101",
+      "sourceTag": "CR-101"
+    },
+    {
+      "position": {
+        "x": 320,
+        "y": 610
+      },
+      "size": {
+        "width": 140,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": false,
+      "title": "Table",
+      "names": false,
+      "columns": [
+        {
+          "name": "State",
+          "kind": "state"
+        },
+        {
+          "name": "Value",
+          "kind": "number"
+        },
+        {
+          "name": "Unit",
+          "kind": "text",
+          "width": 50
+        }
+      ],
+      "rows": 1,
+      "values": [
+        [
+          "on",
+          "182",
+          "t/h"
+        ]
+      ],
+      "fill": "var(--shape-face)",
+      "stroke": "var(--shape-table-line)",
+      "headerFill": "var(--shape-table-header)",
+      "id": "5fcb055b-3c9f-48ba-8909-bb9ce5ee014f",
+      "layer": "equipment",
+      "z": 18,
+      "tag": "TB-102",
+      "sourceTag": "ML-101"
+    },
+    {
+      "position": {
+        "x": 1630,
+        "y": 250
+      },
+      "size": {
+        "width": 140,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": false,
+      "title": "Table",
+      "names": false,
+      "columns": [
+        {
+          "name": "State",
+          "kind": "state"
+        },
+        {
+          "name": "Value",
+          "kind": "number"
+        },
+        {
+          "name": "Unit",
+          "kind": "text",
+          "width": 50
+        }
+      ],
+      "rows": 1,
+      "values": [
+        [
+          "on",
+          "78",
+          "%"
+        ]
+      ],
+      "fill": "var(--shape-face)",
+      "stroke": "var(--shape-table-line)",
+      "headerFill": "var(--shape-table-header)",
+      "id": "3a6ee97e-c447-480a-8483-e2deb28d4287",
+      "layer": "equipment",
+      "z": 19,
+      "tag": "TB-103",
+      "sourceTag": "BL-101"
+    },
+    {
+      "position": {
+        "x": 40,
+        "y": 900
+      },
+      "size": {
+        "width": 420,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Table",
+      "header": true,
+      "title": "Silo Inventory",
+      "names": true,
+      "columns": [
+        {
+          "name": "Silo",
+          "kind": "text"
+        },
+        {
+          "name": "Level %",
+          "kind": "number"
+        },
+        {
+          "name": "Stock (t)",
+          "kind": "number"
+        }
+      ],
+      "rows": 3,
+      "values": [
+        [
+          "Raw Meal 1",
+          "64.0",
+          "1250"
+        ],
+        [
+          "Raw Meal 2",
+          "71.5",
+          "1390"
+        ],
+        [
+          "Clinker",
+          "48.0",
+          "3120"
+        ]
+      ],
+      "fill": "var(--shape-face)",
+      "stroke": "var(--shape-table-line)",
+      "headerFill": "var(--shape-table-header)",
+      "id": "e28654fc-5981-443f-9c7f-02e590780b10",
+      "layer": "equipment",
+      "z": 20,
+      "tag": "TB-104"
     },
     {
       "position": {
@@ -1312,11 +1499,11 @@
           "fontSize": 80
         }
       },
-      "id": "ba3e7628-0582-4e54-baed-c97155c4e5c2",
+      "id": "3a8ef731-33ce-41e5-9324-6518e441da91",
       "layer": "instruments",
       "z": 1,
       "tag": "TXT-101",
-      "parent": "3b72b929-2984-49f3-9729-d404d3f3075f"
+      "parent": "250a21d0-d181-4d76-9f11-6947e889e79b"
     },
     {
       "position": {
@@ -1351,7 +1538,7 @@
           "text": "Kiln Feed (t/h)"
         }
       },
-      "id": "36fa7344-70ba-4ae6-8081-099e4974d5e0",
+      "id": "53ecd45b-5812-49bb-a2bf-174d57ba9027",
       "layer": "instruments",
       "z": 2,
       "tag": "TRD-101"
@@ -1378,7 +1565,7 @@
           "text": "Kiln Feed"
         }
       },
-      "id": "6861aa13-9133-451b-884f-8ca4a69aa078",
+      "id": "fcda14dc-2d8b-4323-8607-c9e926c52a06",
       "layer": "instruments",
       "z": 3,
       "tag": "DI-101"
@@ -1399,13 +1586,13 @@
           "text": "340.0"
         },
         "unit": {
-          "text": "°C"
+          "text": "\u00b0C"
         },
         "label": {
           "text": "Preheater Exit"
         }
       },
-      "id": "d96935b7-d799-470a-a06d-a04acf10519d",
+      "id": "f3f93a5b-65e5-4984-a687-b58cfa641e59",
       "layer": "instruments",
       "z": 4,
       "tag": "DI-102"
