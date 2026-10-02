@@ -14,11 +14,14 @@ export type Arrowhead = 'none' | 'arrow' | 'open' | 'circle' | 'diamond';
  * The markers of the arrowheads, at the start of the line (pointing back, at the end turned around by
  * the library): in the color of the arrow (the library fills them with its stroke, see `sourceMarker`).
  */
+// How far a pointed arrowhead reaches past the end of the line: the line (its round cap) ends inside it.
+const TIP = 4;
+
 const MARKERS: Record<Exclude<Arrowhead, 'none'>, dia.SVGSimpleMarkerJSON> = {
-    arrow: { type: 'path', d: 'M 0 0 L 12 -6 L 12 6 Z', 'stroke-width': 1, 'stroke-linejoin': 'round' },
-    open: { type: 'path', d: 'M 12 -6 L 0 0 L 12 6', fill: 'none', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' },
+    arrow: { type: 'path', d: `M ${-TIP} 0 L ${12 - TIP} -6 L ${12 - TIP} 6 Z`, 'stroke-width': 1, 'stroke-linejoin': 'round' },
+    open: { type: 'path', d: `M ${12 - TIP} -6 L ${-TIP} 0 L ${12 - TIP} 6`, fill: 'none', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' },
     circle: { type: 'circle', r: 4, 'stroke-width': 1 },
-    diamond: { type: 'path', d: 'M 0 0 L 7 -5 L 14 0 L 7 5 Z', 'stroke-width': 1, 'stroke-linejoin': 'round' }
+    diamond: { type: 'path', d: `M ${-TIP} 0 L ${7 - TIP} -5 L ${14 - TIP} 0 L ${7 - TIP} 5 Z`, 'stroke-width': 1, 'stroke-linejoin': 'round' }
 };
 
 /** The marker of the arrowhead (`null`: none) */
