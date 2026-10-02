@@ -1,0 +1,1482 @@
+{
+  "cells": [
+    {
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "angle": 0,
+      "type": "Screen",
+      "layer": "background",
+      "z": -1000,
+      "id": "bfa15e1b-ce00-4518-9280-7e4637d12586"
+    },
+    {
+      "position": {
+        "x": 730,
+        "y": -150
+      },
+      "size": {
+        "width": 460,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Rectangle",
+      "attrs": {
+        "body": {
+          "fill": "var(--color-blue)",
+          "fillOpacity": 0.18
+        }
+      },
+      "id": "863c39b6-7125-4d90-8f02-669f589268a7",
+      "layer": "background",
+      "z": -999,
+      "tag": "BG-101",
+      "parent": "32ad76c3-70dd-4361-b147-4b019678ad5d"
+    },
+    {
+      "position": {
+        "x": 730,
+        "y": -150
+      },
+      "size": {
+        "width": 460,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Group",
+      "id": "32ad76c3-70dd-4361-b147-4b019678ad5d",
+      "layer": "background",
+      "z": -998,
+      "tag": "GRP-101",
+      "embeds": [
+        "863c39b6-7125-4d90-8f02-669f589268a7",
+        "8b6a6cee-c970-4a98-993a-b3d84cf2b720"
+      ]
+    },
+    {
+      "source": {
+        "id": "a6c303db-5aa8-48a2-b67f-1bc8dc74c60f",
+        "port": "right"
+      },
+      "target": {
+        "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+        "port": "left"
+      },
+      "type": "Pipe",
+      "layer": "pipes",
+      "z": -1,
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "attrs": {
+        "line": {
+          "stroke": "#fdba74"
+        }
+      },
+      "id": "45b03cad-c6d7-4215-9f78-b9bca32c905d"
+    },
+    {
+      "source": {
+        "id": "941bd69f-b905-45ea-b706-a7f2b484a6bd",
+        "port": "out"
+      },
+      "target": {
+        "id": "d17cc85a-aa8c-43c9-a8b6-476e63de2e80",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "ff813746-f866-4c1a-bfdb-471fa5656d2a",
+      "z": 1
+    },
+    {
+      "source": {
+        "id": "d17cc85a-aa8c-43c9-a8b6-476e63de2e80",
+        "port": "out"
+      },
+      "target": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "top4"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "04ec21be-23a2-4c74-a53d-ec10749f7c1f",
+      "z": 2
+    },
+    {
+      "source": {
+        "id": "bb285dec-1b4e-4e80-acc3-4694fc51b71b",
+        "port": "out"
+      },
+      "target": {
+        "id": "e3b68c97-fa56-4bf7-b307-d38e8adcb41b",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "d657bb4f-5657-4618-8541-0d67c9d746e1",
+      "z": 3
+    },
+    {
+      "source": {
+        "id": "e3b68c97-fa56-4bf7-b307-d38e8adcb41b",
+        "port": "out"
+      },
+      "target": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "top9"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "5731d630-4ff0-42ed-be73-b4af5502bebe",
+      "z": 4
+    },
+    {
+      "source": {
+        "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+        "port": "out"
+      },
+      "target": {
+        "id": "68d2b8c1-3aa8-4bbf-b471-e10d72e838f7",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "02907f4b-2da9-4710-b21f-3001c5584dfd",
+      "z": 5
+    },
+    {
+      "source": {
+        "id": "68d2b8c1-3aa8-4bbf-b471-e10d72e838f7",
+        "port": "out"
+      },
+      "target": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "top16"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "711f47f9-1abc-4c8b-9a33-5f7ef6d3f958",
+      "z": 6
+    },
+    {
+      "source": {
+        "id": "a7177ded-8ddb-4f4b-aae7-0ff2c57b3337",
+        "port": "out"
+      },
+      "target": {
+        "id": "6690336d-5084-47e8-ad56-5b8732f4d079",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "c84522f6-22b7-4025-94ca-3ebf33faab65",
+      "z": 7
+    },
+    {
+      "source": {
+        "id": "6690336d-5084-47e8-ad56-5b8732f4d079",
+        "port": "out"
+      },
+      "target": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "top19"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "736ad5e5-bda1-41e1-af72-1a790ace9225",
+      "z": 8
+    },
+    {
+      "source": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "right"
+      },
+      "target": {
+        "id": "10667876-efb0-4aa8-afc6-a7b49bf06037",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "2e6cfe2e-0733-437e-b1b9-b3a0f817358c",
+      "z": 9
+    },
+    {
+      "source": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "bottom1"
+      },
+      "target": {
+        "id": "d343ba8c-0ad2-4841-86d5-cb886b6ec033",
+        "port": "line"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "d04c66b7-6b50-4efd-b637-4b01980ea488",
+      "z": 10
+    },
+    {
+      "source": {
+        "id": "d343ba8c-0ad2-4841-86d5-cb886b6ec033",
+        "port": "ground"
+      },
+      "target": {
+        "id": "ea81485a-5d89-47cd-b0aa-8b88c0ddaeaf",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "181881d2-5ed8-49df-84f2-4c8958e40eb8",
+      "z": 11
+    },
+    {
+      "source": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "bottom3"
+      },
+      "target": {
+        "id": "0d5fbd14-9c9d-4c64-a696-5883ae1ba0f3",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "48c55a71-b6c1-415d-8ad6-3359a1c6783d",
+      "z": 12
+    },
+    {
+      "source": {
+        "id": "0d5fbd14-9c9d-4c64-a696-5883ae1ba0f3",
+        "port": "out"
+      },
+      "target": {
+        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "port": "in1"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "9d66e685-3ad9-41b8-b529-6cd9e148599f",
+      "z": 13
+    },
+    {
+      "source": {
+        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "port": "feeder1"
+      },
+      "target": {
+        "id": "9b475bd4-c270-409e-8aa6-d93860c6a425",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "08477d7e-f164-4c3c-a8e7-d3920d8a416b",
+      "z": 14
+    },
+    {
+      "source": {
+        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "port": "feeder2"
+      },
+      "target": {
+        "id": "49af7dc7-32ed-4836-91a2-f52a4d6be8d6",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "0ffe1a07-c246-45db-8259-99c331b4b7b6",
+      "z": 15
+    },
+    {
+      "source": {
+        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "port": "feeder3"
+      },
+      "target": {
+        "id": "c4bd9240-6f40-4a42-913f-ac02d6003184",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "048ce2d1-1478-4c9d-9820-ea0e67f3ac1b",
+      "z": 16
+    },
+    {
+      "source": {
+        "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+        "port": "feeder4"
+      },
+      "target": {
+        "id": "18b8d01d-f831-4b93-aabb-1eb6a5732ba7",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "01d4f0db-865b-41b8-9c44-16107411c29b",
+      "z": 17
+    },
+    {
+      "source": {
+        "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+        "port": "bottom13"
+      },
+      "target": {
+        "id": "0fb215be-9d41-4d96-915d-af861fa3b99d",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "5fef40cc-1d92-49af-b0bb-cc9014d039f2",
+      "z": 18
+    },
+    {
+      "source": {
+        "id": "0fb215be-9d41-4d96-915d-af861fa3b99d",
+        "port": "out"
+      },
+      "target": {
+        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "a878fb36-f470-47eb-a587-756d21db3737",
+      "z": 19
+    },
+    {
+      "source": {
+        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "port": "out1"
+      },
+      "target": {
+        "id": "4ec6a274-4d29-4dd1-b18b-b8d917ca6e37",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "42adeace-fea1-42ff-a6b1-83909b8a55e8",
+      "z": 20
+    },
+    {
+      "source": {
+        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "port": "out2"
+      },
+      "target": {
+        "id": "1dc65bec-a65e-4580-a2e2-23035d65d4d4",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "0e98bcc4-ea59-487e-9ad8-9e328583fabe",
+      "z": 21
+    },
+    {
+      "source": {
+        "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+        "port": "out3"
+      },
+      "target": {
+        "id": "00894a48-7ff6-46c9-9057-97e30a831a62",
+        "port": "in"
+      },
+      "type": "Wire",
+      "layer": "pipes",
+      "routing": "orthogonal",
+      "router": {
+        "name": "rightAngle",
+        "args": {
+          "useVertices": true
+        }
+      },
+      "connector": {
+        "name": "straight",
+        "args": {
+          "cornerType": "cubic",
+          "cornerRadius": 20,
+          "cornerPreserveAspectRatio": true
+        }
+      },
+      "id": "eff6c547-f9aa-4c27-ba07-a5697a968728",
+      "z": 22
+    },
+    {
+      "position": {
+        "x": 120,
+        "y": 560
+      },
+      "size": {
+        "width": 1520,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Busbar",
+      "attrs": {
+        "bolts": {
+          "d": "M 40 calc(0.5 * h) h 0.01 M 120 calc(0.5 * h) h 0.01 M 200 calc(0.5 * h) h 0.01 M 280 calc(0.5 * h) h 0.01 M 360 calc(0.5 * h) h 0.01 M 440 calc(0.5 * h) h 0.01 M 520 calc(0.5 * h) h 0.01 M 600 calc(0.5 * h) h 0.01 M 680 calc(0.5 * h) h 0.01 M 760 calc(0.5 * h) h 0.01 M 840 calc(0.5 * h) h 0.01 M 920 calc(0.5 * h) h 0.01 M 1000 calc(0.5 * h) h 0.01 M 1080 calc(0.5 * h) h 0.01 M 1160 calc(0.5 * h) h 0.01 M 1240 calc(0.5 * h) h 0.01 M 1320 calc(0.5 * h) h 0.01 M 1400 calc(0.5 * h) h 0.01 M 1480 calc(0.5 * h) h 0.01"
+        },
+        "label": {
+          "text": "Main Bus 400 V"
+        }
+      },
+      "taps": 19,
+      "id": "5fc3fea4-60f3-4005-8abf-32a995ba6122",
+      "layer": "equipment",
+      "z": 1,
+      "tag": "BB-101"
+    },
+    {
+      "position": {
+        "x": 150,
+        "y": 90
+      },
+      "size": {
+        "width": 140,
+        "height": 220
+      },
+      "angle": 0,
+      "type": "WindTurbine",
+      "power": 1,
+      "id": "941bd69f-b905-45ea-b706-a7f2b484a6bd",
+      "layer": "equipment",
+      "z": 2,
+      "tag": "WT-101"
+    },
+    {
+      "position": {
+        "x": 290,
+        "y": 400
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "CircuitBreaker",
+      "open": false,
+      "attrs": {
+        "lever": {
+          "y": "calc(0.2 * h)"
+        },
+        "window": {
+          "fill": "var(--shape-breaker-closed)"
+        },
+        "state": {
+          "text": "ON"
+        },
+        "label": {
+          "text": "CB-W"
+        }
+      },
+      "id": "d17cc85a-aa8c-43c9-a8b6-476e63de2e80",
+      "layer": "equipment",
+      "z": 3,
+      "tag": "CB-101"
+    },
+    {
+      "position": {
+        "x": 430,
+        "y": 250
+      },
+      "size": {
+        "width": 180,
+        "height": 100
+      },
+      "angle": 0,
+      "type": "SolarArray",
+      "id": "bb285dec-1b4e-4e80-acc3-4694fc51b71b",
+      "layer": "equipment",
+      "z": 4,
+      "tag": "PV-101"
+    },
+    {
+      "position": {
+        "x": 690,
+        "y": 400
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "CircuitBreaker",
+      "open": false,
+      "attrs": {
+        "lever": {
+          "y": "calc(0.2 * h)"
+        },
+        "window": {
+          "fill": "var(--shape-breaker-closed)"
+        },
+        "state": {
+          "text": "ON"
+        },
+        "label": {
+          "text": "CB-S"
+        }
+      },
+      "id": "e3b68c97-fa56-4bf7-b307-d38e8adcb41b",
+      "layer": "equipment",
+      "z": 5,
+      "tag": "CB-102"
+    },
+    {
+      "position": {
+        "x": 980,
+        "y": 250
+      },
+      "size": {
+        "width": 200,
+        "height": 100
+      },
+      "angle": 0,
+      "type": "DieselGenerator",
+      "power": 0,
+      "attrs": {
+        "label": {
+          "text": "Diesel Backup"
+        }
+      },
+      "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+      "layer": "equipment",
+      "z": 6,
+      "tag": "DG-101"
+    },
+    {
+      "position": {
+        "x": 750,
+        "y": 270
+      },
+      "size": {
+        "width": 160,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "FuelTank",
+      "level": 70,
+      "attrs": {
+        "fuel": {
+          "y": "calc(0.3800 * h)",
+          "height": "calc(0.4200 * h)"
+        },
+        "label": {
+          "text": "Day Tank"
+        }
+      },
+      "id": "a6c303db-5aa8-48a2-b67f-1bc8dc74c60f",
+      "layer": "equipment",
+      "z": 7,
+      "tag": "DT-101"
+    },
+    {
+      "position": {
+        "x": 1260,
+        "y": 400
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "CircuitBreaker",
+      "open": false,
+      "attrs": {
+        "lever": {
+          "y": "calc(0.2 * h)"
+        },
+        "window": {
+          "fill": "var(--shape-breaker-closed)"
+        },
+        "state": {
+          "text": "ON"
+        },
+        "label": {
+          "text": "CB-D"
+        }
+      },
+      "id": "68d2b8c1-3aa8-4bbf-b471-e10d72e838f7",
+      "layer": "equipment",
+      "z": 8,
+      "tag": "CB-103"
+    },
+    {
+      "position": {
+        "x": 1260,
+        "y": 250
+      },
+      "size": {
+        "width": 160,
+        "height": 100
+      },
+      "angle": 0,
+      "type": "BatteryBank",
+      "level": 80,
+      "attrs": {
+        "charge": {
+          "width": "calc(0.8 * w - 16)"
+        }
+      },
+      "id": "a7177ded-8ddb-4f4b-aae7-0ff2c57b3337",
+      "layer": "equipment",
+      "z": 9,
+      "tag": "BESS-101"
+    },
+    {
+      "position": {
+        "x": 1500,
+        "y": 400
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "CircuitBreaker",
+      "open": false,
+      "attrs": {
+        "lever": {
+          "y": "calc(0.2 * h)"
+        },
+        "window": {
+          "fill": "var(--shape-breaker-closed)"
+        },
+        "state": {
+          "text": "ON"
+        },
+        "label": {
+          "text": "CB-B"
+        }
+      },
+      "id": "6690336d-5084-47e8-ad56-5b8732f4d079",
+      "layer": "equipment",
+      "z": 10,
+      "tag": "CB-104"
+    },
+    {
+      "position": {
+        "x": 140,
+        "y": 640
+      },
+      "size": {
+        "width": 40,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "SurgeArrester",
+      "attrs": {
+        "label": {
+          "text": "Arrester"
+        }
+      },
+      "id": "d343ba8c-0ad2-4841-86d5-cb886b6ec033",
+      "layer": "equipment",
+      "z": 11,
+      "tag": "SA-101"
+    },
+    {
+      "position": {
+        "x": 130,
+        "y": 760
+      },
+      "size": {
+        "width": 60,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Ground",
+      "attrs": {
+        "label": {
+          "text": "Earth"
+        }
+      },
+      "id": "ea81485a-5d89-47cd-b0aa-8b88c0ddaeaf",
+      "layer": "equipment",
+      "z": 12,
+      "tag": "GND-101"
+    },
+    {
+      "position": {
+        "x": 360,
+        "y": 680
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "CircuitBreaker",
+      "open": false,
+      "attrs": {
+        "lever": {
+          "y": "calc(0.2 * h)"
+        },
+        "window": {
+          "fill": "var(--shape-breaker-closed)"
+        },
+        "state": {
+          "text": "ON"
+        },
+        "label": {
+          "text": "CB-L"
+        }
+      },
+      "id": "0d5fbd14-9c9d-4c64-a696-5883ae1ba0f3",
+      "layer": "equipment",
+      "z": 13,
+      "tag": "CB-105"
+    },
+    {
+      "position": {
+        "x": 480,
+        "y": 690
+      },
+      "size": {
+        "width": 480,
+        "height": 150
+      },
+      "angle": 0,
+      "type": "Switchgear",
+      "attrs": {
+        "label": {
+          "text": "Lighting Switchgear"
+        }
+      },
+      "id": "5fb59686-e9c1-4e1b-ac99-c4128dee289b",
+      "layer": "equipment",
+      "z": 14,
+      "tag": "SWG-101"
+    },
+    {
+      "position": {
+        "x": 510,
+        "y": 920
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "Lamp",
+      "attrs": {
+        "label": {
+          "text": "Hall"
+        }
+      },
+      "id": "9b475bd4-c270-409e-8aa6-d93860c6a425",
+      "layer": "equipment",
+      "z": 15,
+      "tag": "LMP-101"
+    },
+    {
+      "position": {
+        "x": 630,
+        "y": 920
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "Lamp",
+      "attrs": {
+        "label": {
+          "text": "Yard"
+        }
+      },
+      "id": "49af7dc7-32ed-4836-91a2-f52a4d6be8d6",
+      "layer": "equipment",
+      "z": 16,
+      "tag": "LMP-102"
+    },
+    {
+      "position": {
+        "x": 740,
+        "y": 920
+      },
+      "size": {
+        "width": 80,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Heater",
+      "attrs": {
+        "label": {
+          "text": "Office"
+        }
+      },
+      "id": "c4bd9240-6f40-4a42-913f-ac02d6003184",
+      "layer": "equipment",
+      "z": 17,
+      "tag": "HTR-101"
+    },
+    {
+      "position": {
+        "x": 870,
+        "y": 920
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "Lamp",
+      "attrs": {
+        "label": {
+          "text": "Gate"
+        }
+      },
+      "id": "18b8d01d-f831-4b93-aabb-1eb6a5732ba7",
+      "layer": "equipment",
+      "z": 18,
+      "tag": "LMP-103"
+    },
+    {
+      "position": {
+        "x": 1160,
+        "y": 650
+      },
+      "size": {
+        "width": 80,
+        "height": 20
+      },
+      "angle": 0,
+      "type": "Fuse",
+      "attrs": {
+        "label": {
+          "text": "F-MCC"
+        }
+      },
+      "id": "0fb215be-9d41-4d96-915d-af861fa3b99d",
+      "layer": "equipment",
+      "z": 19,
+      "tag": "FU-101"
+    },
+    {
+      "position": {
+        "x": 1290,
+        "y": 640
+      },
+      "size": {
+        "width": 120,
+        "height": 200
+      },
+      "angle": 0,
+      "type": "MotorControlCenter",
+      "attrs": {
+        "label": {
+          "text": "MCC"
+        }
+      },
+      "id": "70ecf216-f15b-44c4-ab77-f26207f1a65a",
+      "layer": "equipment",
+      "z": 20,
+      "tag": "MCC-101"
+    },
+    {
+      "position": {
+        "x": 1190,
+        "y": 920
+      },
+      "size": {
+        "width": 80,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Heater",
+      "attrs": {
+        "label": {
+          "text": "Tank Heater"
+        }
+      },
+      "id": "4ec6a274-4d29-4dd1-b18b-b8d917ca6e37",
+      "layer": "equipment",
+      "z": 21,
+      "tag": "HTR-102"
+    },
+    {
+      "position": {
+        "x": 1320,
+        "y": 920
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "Lamp",
+      "attrs": {
+        "label": {
+          "text": "Pump Room"
+        }
+      },
+      "id": "1dc65bec-a65e-4580-a2e2-23035d65d4d4",
+      "layer": "equipment",
+      "z": 22,
+      "tag": "LMP-104"
+    },
+    {
+      "position": {
+        "x": 1440,
+        "y": 920
+      },
+      "size": {
+        "width": 60,
+        "height": 80
+      },
+      "angle": 0,
+      "type": "Lamp",
+      "attrs": {
+        "label": {
+          "text": "Workshop"
+        }
+      },
+      "id": "00894a48-7ff6-46c9-9057-97e30a831a62",
+      "layer": "equipment",
+      "z": 23,
+      "tag": "LMP-105"
+    },
+    {
+      "position": {
+        "x": 730,
+        "y": -150
+      },
+      "size": {
+        "width": 460,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Label",
+      "attrs": {
+        "label": {
+          "text": "Microgrid",
+          "fontSize": 80
+        }
+      },
+      "id": "8b6a6cee-c970-4a98-993a-b3d84cf2b720",
+      "layer": "instruments",
+      "z": 1,
+      "tag": "TXT-101",
+      "parent": "32ad76c3-70dd-4361-b147-4b019678ad5d"
+    },
+    {
+      "position": {
+        "x": 1700,
+        "y": 540
+      },
+      "size": {
+        "width": 120,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "ElectricMeter",
+      "attrs": {
+        "label": {
+          "text": "Bus Voltage"
+        }
+      },
+      "id": "10667876-efb0-4aa8-afc6-a7b49bf06037",
+      "layer": "instruments",
+      "z": 2,
+      "tag": "EI-101"
+    },
+    {
+      "position": {
+        "x": 1580,
+        "y": 650
+      },
+      "size": {
+        "width": 300,
+        "height": 130
+      },
+      "angle": 0,
+      "type": "Trend",
+      "values": [
+        42,
+        45,
+        44,
+        50,
+        55,
+        52,
+        58,
+        61,
+        57,
+        60,
+        64,
+        62
+      ],
+      "attrs": {
+        "line": {
+          "d": "M calc(0 * w + 12) calc(0.58 * h - 2.24) L calc(0.091 * w + 9.818) calc(0.55 * h - 1.4) L calc(0.182 * w + 7.636) calc(0.56 * h - 1.68) L calc(0.273 * w + 5.455) calc(0.5 * h + 0) L calc(0.364 * w + 3.273) calc(0.45 * h + 1.4) L calc(0.455 * w + 1.091) calc(0.48 * h + 0.56) L calc(0.545 * w - 1.091) calc(0.42 * h + 2.24) L calc(0.636 * w - 3.273) calc(0.39 * h + 3.08) L calc(0.727 * w - 5.455) calc(0.43 * h + 1.96) L calc(0.818 * w - 7.636) calc(0.4 * h + 2.8) L calc(0.909 * w - 9.818) calc(0.36 * h + 3.92) L calc(1 * w - 12) calc(0.38 * h + 3.36)"
+        },
+        "label": {
+          "text": "Load (kW)"
+        }
+      },
+      "id": "141a9bd6-ff4b-45ff-b346-ebc25f53881b",
+      "layer": "instruments",
+      "z": 3,
+      "tag": "TRD-101"
+    },
+    {
+      "position": {
+        "x": 1580,
+        "y": 860
+      },
+      "size": {
+        "width": 120,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Display",
+      "attrs": {
+        "value": {
+          "text": "50.0"
+        },
+        "unit": {
+          "text": "Hz"
+        },
+        "label": {
+          "text": "Frequency"
+        }
+      },
+      "id": "ae48bf86-0746-4b8e-a08a-f43d82fe94db",
+      "layer": "instruments",
+      "z": 4,
+      "tag": "DI-101"
+    },
+    {
+      "position": {
+        "x": 1760,
+        "y": 860
+      },
+      "size": {
+        "width": 120,
+        "height": 60
+      },
+      "angle": 0,
+      "type": "Display",
+      "attrs": {
+        "value": {
+          "text": "80"
+        },
+        "unit": {
+          "text": "%"
+        },
+        "label": {
+          "text": "Battery"
+        }
+      },
+      "id": "7128fbd9-9a3c-490e-9202-b6f016620801",
+      "layer": "instruments",
+      "z": 5,
+      "tag": "DI-102"
+    },
+    {
+      "position": {
+        "x": 1240,
+        "y": 110
+      },
+      "size": {
+        "width": 240,
+        "height": 40
+      },
+      "angle": 0,
+      "type": "Label",
+      "attrs": {
+        "label": {
+          "text": "Starts when the battery is low",
+          "fontSize": 14,
+          "fill": "var(--color-blue)"
+        }
+      },
+      "id": "c47386a6-715c-4483-af6d-f729e629432b",
+      "layer": "instruments",
+      "z": 6,
+      "tag": "TXT-102"
+    },
+    {
+      "source": {
+        "id": "c47386a6-715c-4483-af6d-f729e629432b",
+        "anchor": {
+          "name": "left",
+          "args": {
+            "useModelGeometry": true,
+            "rotate": true
+          }
+        }
+      },
+      "target": {
+        "id": "d2bfc2d2-9ff1-48b7-967c-6f157e145e09",
+        "anchor": {
+          "name": "topLeft",
+          "args": {
+            "dx": "85%",
+            "dy": "0%",
+            "rotate": true,
+            "useModelGeometry": true
+          }
+        }
+      },
+      "type": "Arrow",
+      "layer": "instruments",
+      "routing": "smooth",
+      "router": {
+        "name": "normal"
+      },
+      "connector": {
+        "name": "curve",
+        "args": {
+          "sourceDirection": "outwards",
+          "targetDirection": "outwards"
+        }
+      },
+      "sourceArrowhead": "none",
+      "targetArrowhead": "arrow",
+      "attrs": {
+        "line": {
+          "stroke": "var(--color-blue)"
+        }
+      },
+      "id": "0be6ae45-404e-4cdf-84c0-3d5b83fb2b4f",
+      "z": 7
+    }
+  ],
+  "images": {},
+  "favorites": [
+    "Wire",
+    "CircuitBreaker",
+    "Lamp"
+  ],
+  "animations": "full",
+  "style": {}
+}

@@ -4,7 +4,7 @@ import { createStencil } from './stencil';
 import { createGraph } from './layers';
 import { createSelection } from './selection';
 import { createNavigator } from './navigator';
-import boilerHouse from './diagram/boiler-house.json';
+import { EXAMPLES, type Example } from './examples';
 import { ColorScheme, Mode } from './const';
 import {
     canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions
@@ -231,8 +231,35 @@ export class App {
         const caption = document.createElement('p');
         caption.className = 'inspector-empty-caption';
         caption.textContent = 'the screen, the animations, the editor';
-        el.append(text, or, button, caption);
+        el.append(text, or, button, caption, this.createExamples());
         return el;
+    }
+
+    /** The example diagrams to open (see `examples.ts`) */
+    protected createExamples(): HTMLElement {
+        const el = document.createElement('div');
+        el.className = 'inspector-examples';
+        const title = document.createElement('h4');
+        title.textContent = 'Examples';
+        el.append(title);
+        EXAMPLES.forEach((example) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            const name = document.createElement('strong');
+            name.textContent = example.name;
+            const description = document.createElement('span');
+            description.textContent = example.description;
+            button.append(name, description);
+            button.addEventListener('click', () => this.openExample(example));
+            el.append(button);
+        });
+        return el;
+    }
+
+    /** Open the example instead of the diagram: as a file, asked first if the diagram was changed */
+    openExample(example: Example): void {
+        if (this.history.hasUndo() && !window.confirm(`Open the ${example.name} example? The changes of the diagram will be lost.`)) return;
+        this.loadJSON(example.json);
     }
 
     protected createToolbar(mode: Mode): void {
@@ -314,7 +341,7 @@ function storeColorScheme(colorScheme: ColorScheme): void {
 
 export function init(el: HTMLElement = document.querySelector<HTMLElement>('.app')!): App {
     const app = new App(el);
-    // The example (a boiler house), saved with the Save button: its cells, its images and favorites
-    app.loadJSON(boilerHouse as dia.Graph.JSON);
+    // The first example (a boiler house), saved with the Save button: its cells, its images and favorites
+    app.loadJSON(EXAMPLES[0].json);
     return app;
 }
