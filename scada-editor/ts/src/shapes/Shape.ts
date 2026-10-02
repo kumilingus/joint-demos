@@ -125,6 +125,15 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     }
 
     /**
+     * Without the ports: they are the shape's (its pipe stubs, its terminals), not the diagram's - an element
+     * gets them from the defaults of its shape when it is created from the JSON (a busbar makes them of its taps).
+     */
+    toJSON(options?: dia.Cell.ExportOptions): dia.Cell.JSON {
+        const { ports: _ports, ...json } = super.toJSON(options);
+        return json;
+    }
+
+    /**
      * The constraints of resizing, or `null` if the element can't be resized.
      * The minimal size is a part of the default size unless the shape sets it.
      */
