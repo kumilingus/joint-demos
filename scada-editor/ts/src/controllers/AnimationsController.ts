@@ -28,7 +28,7 @@ export default class AnimationsController extends Controller {
         this.animations.start();
 
         this.listenTo(graph, {
-            'change:power change:open': (_app: App, element: dia.Element) => onStateChange(this.animations, element),
+            'change:power change:open': (_app: App, cell: dia.Cell) => onStateChange(this.animations, cell),
             'change:level': (_app: App, element: dia.Element) => onLevelChange(this.animations, element)
         });
     }
@@ -39,9 +39,10 @@ export default class AnimationsController extends Controller {
     }
 }
 
-function onStateChange(animations: Animations, element: dia.Element) {
-    animations.animate(element);
-    animations.animatePipes(element);
+/** The cell switched on or off, opened or closed: its animations, and of the pipes of an element */
+function onStateChange(animations: Animations, cell: dia.Cell) {
+    animations.animate(cell);
+    if (cell.isElement()) animations.animatePipes(cell);
 }
 
 function onLevelChange(animations: Animations, element: dia.Element) {

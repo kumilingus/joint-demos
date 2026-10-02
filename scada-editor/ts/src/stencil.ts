@@ -13,6 +13,7 @@ import {
     Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
     LineChart, BarChart, DonutChart, GaugeChart,
+    Conveyor, RotaryKiln, Crusher, Mill, BucketElevator, BagFilter,
     Rectangle, Ellipse
 } from './shapes';
 import { getFootprint } from './shapes/footprint';
@@ -58,11 +59,12 @@ const groups: Record<string, ui.Stencil.Group> = {
     valves: { index: 6, label: 'Valves' },
     process: { index: 7, label: 'Process' },
     storage: { index: 8, label: 'Storage' },
-    structures: { index: 9, label: 'Structures' },
-    instruments: { index: 10, label: 'Instruments' },
-    electrical: { index: 11, label: 'Electrical' },
-    charts: { index: 12, label: 'Charts' },
-    background: { index: 13, label: 'Background' }
+    bulk: { index: 9, label: 'Bulk Handling' },
+    structures: { index: 10, label: 'Structures' },
+    instruments: { index: 11, label: 'Instruments' },
+    electrical: { index: 12, label: 'Electrical' },
+    charts: { index: 13, label: 'Charts' },
+    background: { index: 14, label: 'Background' }
 };
 
 /**
@@ -212,8 +214,7 @@ function createShapes(): Record<string, dia.Cell[]> {
             new Fan(),
             new Blower(),
             new Motor(),
-            new Turbine(),
-            new ConveyorBelt()
+            new Turbine()
         ],
         valves: [
             new ControlValve({
@@ -238,7 +239,8 @@ function createShapes(): Record<string, dia.Cell[]> {
             new DistillationColumn(),
             new Cyclone(),
             new AirCooler(),
-            new Scrubber()
+            new Scrubber(),
+            new BagFilter()
         ],
         storage: [
             new LiquidTank(),
@@ -250,6 +252,17 @@ function createShapes(): Record<string, dia.Cell[]> {
             new HorizontalTank(),
             new WaterTower(),
             new FuelTank()
+        ],
+        bulk: [
+            new Conveyor({
+                source: { x: 0, y: 0 },
+                target: { x: LINK_LENGTH, y: 0 }
+            }),
+            new ConveyorBelt(),
+            new BucketElevator(),
+            new Crusher(),
+            new Mill(),
+            new RotaryKiln()
         ],
         structures: [
             new Chimney(),

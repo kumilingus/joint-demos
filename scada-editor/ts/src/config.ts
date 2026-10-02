@@ -7,6 +7,7 @@ import type { PREFERENCE } from './favorites';
 import Label from './shapes/Label';
 import SignalLine from './shapes/SignalLine';
 import Wire from './shapes/Wire';
+import Conveyor from './shapes/Conveyor';
 import Arrow from './shapes/Arrow';
 import Screen from './shapes/Screen';
 import { isTerminal } from './shapes/ports';
@@ -62,7 +63,7 @@ export const paperOptions: dia.Paper.Options = {
     },
     // The end of a link (moved with its arrowhead) connects to an element (not to another link, a label, nor the screen):
     // a pipe to one of its pipe stubs if it has any (to its side otherwise), a wire to an electrical terminal,
-    // a signal line and an arrow to its body.
+    // a signal line, an arrow and a conveyor to its body.
     validateConnection: (sourceView, sourceMagnet, targetView, targetMagnet, end, linkView) => {
         const [view, magnet] = end === 'source' ? [sourceView, sourceMagnet] : [targetView, targetMagnet];
         if (!view || !view.model.isElement() || view.model instanceof Label || view.model instanceof Screen) return false;
@@ -72,6 +73,8 @@ export const paperOptions: dia.Paper.Options = {
         const portId = magnet ? view.findAttribute('port', magnet) : null;
         if (linkView.model instanceof Wire) return Boolean(portId) && isTerminal(element.getPort(portId!));
         if (linkView.model instanceof SignalLine || linkView.model instanceof Arrow) return !portId;
+        // A conveyor: to the body of an element (not to a pipe stub nor a terminal), not to an electrical one
+        if (linkView.model instanceof Conveyor) return !portId && !(element.getPorts().length > 0 && element.getPorts().every(isTerminal));
         // A pipe: not to an electrical element
         const ports = element.getPorts();
         if (ports.length === 0) return true;

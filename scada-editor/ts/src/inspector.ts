@@ -271,12 +271,13 @@ const arrowheadInputs: Inputs = {
     targetArrowhead: arrowheadInput('target', 'End', 4)
 };
 
-/** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow points. */
+/** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow points, a conveyor carries the bulk material. */
 const LINK_NAMES: Record<string, string> = {
     Pipe: 'Pipe',
     SignalLine: 'Signal line',
     Wire: 'Wire',
-    Arrow: 'Arrow'
+    Arrow: 'Arrow',
+    Conveyor: 'Conveyor'
 };
 
 /** The layer of the graph the cell is in (moved between them when changed, see `layers.ts`). */
@@ -349,7 +350,10 @@ function inspectorInputs(cell: dia.Cell): Inputs {
         isRouted(cell) ? linkInputs : {},
         colorInputs(cell, 'link', 2),
         outlineInputs(cell, 'link', 3),
+        accentInputs(cell, 'link', 4),
         cell.get('type') === 'Arrow' ? arrowheadInputs : {},
+        // A conveyor runs or stands still
+        cell.has('power') ? { power: { type: 'toggle', label: 'Power', group: 'link', index: 5 }} : {},
         layerInput('link')
     ) as Inputs;
 }

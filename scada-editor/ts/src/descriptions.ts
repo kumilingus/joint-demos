@@ -28,7 +28,7 @@ export const descriptions: Record<string, ShapeDescription> = {
     Blower: { title: 'Blower', description: 'Moves air or a gas at a moderate pressure (aeration, conveying).' },
     Motor: { title: 'Motor', description: 'An electric motor driving the equipment next to it.' },
     Turbine: { title: 'Turbine', description: 'Turns the energy of the steam or a gas into the rotation of a shaft (a generator, a compressor).' },
-    ConveyorBelt: { title: 'Conveyor', description: 'Carries bulk material (coal, grain, parts) between the equipment.' },
+    ConveyorBelt: { title: 'Belt Conveyor', description: 'Carries bulk material (coal, grain, parts) between the equipment.' },
 
     // Valves
     ControlValve: { title: 'Control Valve', description: 'Regulates the flow: open by a part, set by the controller (a slider in the runtime mode).' },
@@ -58,6 +58,12 @@ export const descriptions: Record<string, ShapeDescription> = {
     Silo: { title: 'Silo', description: 'Stores the bulk solids (grain, cement, pellets), emptied from the bottom.' },
     SphericalTank: { title: 'Sphere', description: 'Stores a gas under pressure (a sphere takes the pressure best).' },
     Hopper: { title: 'Hopper', description: 'Feeds the bulk material into the equipment below it.' },
+    Conveyor: { title: 'Conveyor', description: 'A belt carrying bulk material between the equipment: straight, inclined or turning. Its cleats move while it runs (Power in the inspector).' },
+    BucketElevator: { title: 'Bucket Elevator', description: 'Lifts bulk material in buckets on a chain, from the boot at the bottom to the discharge at the top.' },
+    Crusher: { title: 'Crusher', description: 'Crushes the rock fed from the top between a fixed jaw and a moving one.' },
+    Mill: { title: 'Mill', description: 'A turning drum grinding the material into powder with the steel balls in it.' },
+    RotaryKiln: { title: 'Rotary Kiln', description: 'A long turning drum on riding rings, the material burnt by the flame of the burner in the hood.' },
+    BagFilter: { title: 'Bag Filter', description: 'Filters the dust out of the gas on fabric bags, cleaned by pulses of air; the dust falls into the hopper.' },
     HorizontalTank: { title: 'Horizontal Tank', description: 'A horizontal vessel on saddles (fuel, chemicals, a buffer).' },
     WaterTower: { title: 'Water Tower', description: 'Stores the water up high: the height gives the pressure of the supply.' },
 

@@ -1,7 +1,12 @@
 import type { dia } from '@joint/plus';
 import type Panel from './shapes/Panel';
 import type { LiquidState } from './shapes/Panel';
-import { BOX_POSITIONS } from './shapes/ConveyorBelt';
+import { BOX_POSITIONS, BOX_WIDTH } from './shapes/ConveyorBelt';
+import { CLEAT_PATTERN } from './shapes/Conveyor';
+import { JAW_PIVOT } from './shapes/Crusher';
+import { LINER_PATTERN } from './shapes/Mill';
+import { BUCKET_PATTERN } from './shapes/BucketElevator';
+import { BAGS } from './shapes/BagFilter';
 
 /*
  * The animations of the runtime mode (the Web Animations API on the views of the cells):
@@ -78,29 +83,69 @@ function stir(view: dia.CellView, height: number, duration: number): Animation[]
     ], { ...LOOP, duration, easing: 'ease-in-out' })];
 }
 
+// How fast the boxes ride on a belt (px/s)
+const BELT_SPEED = 60;
+
 /**
- * The boxes ride on the belt: each moves to where the next one was (a step apart), the front one fading out
- * at the end of the belt while the back one fades in - so the loop is seamless.
+ * The boxes ride on the belt from its start (over the first roller) to its end, fading in and out there;
+ * each is half of the ride behind the other (so the belt is never empty). They move from where they are drawn
+ * (see `BOX_POSITIONS`): the ride is relative to it.
  */
-function carry(view: dia.CellView, duration: number): Animation[] {
-    const [back, front] = [node(view, 'box1'), node(view, 'box2')];
-    if (!back || !front) return [];
-    const step = (BOX_POSITIONS[1] - BOX_POSITIONS[0]) * (view.model as dia.Element).size().width;
-    const options = { ...LOOP, duration };
-    return [
-        back.animate([
-            { transform: 'translateX(0)', opacity: 0 },
-            { opacity: 1, offset: 0.2 },
-            { transform: `translateX(${step}px)`, opacity: 1 }
-        ], options),
-        front.animate([
-            { transform: 'translateX(0)', opacity: 1 },
-            // Fading out before it gets off the end of the belt
-            { opacity: 1, offset: 0.55 },
-            { transform: `translateX(${step}px)`, opacity: 0 }
-        ], options)
-    ];
+function carry(view: dia.CellView): Animation[] {
+    const { width, height } = (view.model as dia.Element).size();
+    const [start, end] = [height / 2, width - height / 2 - BOX_WIDTH];
+    if (end <= start) return [];
+    const duration = (end - start) / BELT_SPEED * 1000;
+    return BOX_POSITIONS.flatMap((position, index) => {
+        const target = node(view, `box${index + 1}`);
+        if (!target) return [];
+        const x = position * width;
+        return [target.animate([
+            { transform: `translateX(${start - x}px)`, opacity: 0 },
+            { opacity: 1, offset: 0.1 },
+            { opacity: 1, offset: 0.9 },
+            { transform: `translateX(${end - x}px)`, opacity: 0 }
+        ], { ...LOOP, duration, delay: -duration * index / BOX_POSITIONS.length })];
+    });
 }
+
+/** The dashes of the stroke move along its path (from its start to its end) by one period of the pattern per cycle */
+function dashAlong(target: SVGElement | null, pattern: number[], duration: number): Animation[] {
+    if (!target) return [];
+    const period = pattern[0] + pattern[1];
+    return [target.animate([
+        { strokeDashoffset: period },
+        { strokeDashoffset: 0 }
+    ], { ...LOOP, duration })];
+}
+
+/** The node swings around a point (of the coordinate system it is drawn in) by the angle and back */
+function swing(target: SVGElement | null, [x, y]: [number, number], angle: number, duration: number): Animation[] {
+    if (!target) return [];
+    const origin = { transformBox: 'view-box', transformOrigin: `${x}px ${y}px` };
+    return [target.animate([
+        { ...origin, transform: 'rotate(0deg)' },
+        { ...origin, transform: `rotate(${angle}deg)` }
+    ], { ...LOOP, duration, direction: 'alternate', easing: 'ease-in-out' })];
+}
+
+/** The flames flicker (see `Boiler`, `RotaryKiln`) */
+function flicker(view: dia.CellView): Animation[] {
+    return ['flameOuter', 'flameInner'].flatMap((selector, index) => {
+        const target = node(view, selector);
+        if (!target) return [];
+        return [target.animate([{ opacity: 1 }, { opacity: 0.65 }, { opacity: 1 }], {
+            ...LOOP,
+            duration: 500 + index * 170
+        })];
+    });
+}
+
+/** A point of the element (relative to its size) in its own coordinates */
+const at = (cellView: dia.CellView, { x, y }: { x: number; y: number }): [number, number] => {
+    const { width, height } = (cellView.model as dia.Element).size();
+    return [x * width, y * height];
+};
 
 const isOn = (model: dia.Cell) => Boolean(model.get('power'));
 
@@ -148,7 +193,57 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
     },
     ConveyorBelt: {
         kind: 'equipment',
-        animate: view => isOn(view.model) ? carry(view, 2000) : []
+        animate: view => isOn(view.model) ? carry(view) : []
+    },
+    // The cleats move along the belt (from its start to its end)
+    Conveyor: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? dashAlong(node(view, 'cleats'), CLEAT_PATTERN, 400) : []
+    },
+    // The buckets go up (their path is drawn from the boot to the head)
+    BucketElevator: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? dashAlong(node(view, 'buckets'), BUCKET_PATTERN, 500) : []
+    },
+    // The liners move round with the drum
+    Mill: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? dashAlong(node(view, 'liners'), LINER_PATTERN, 700) : []
+    },
+    // The flywheel turns, the moving jaw swings to the fixed one and back
+    Crusher: {
+        kind: 'equipment',
+        animate: view => isOn(view.model)
+            ? [...spin(node(view, 'spokes'), [0, 0], 600), ...swing(node(view, 'movingJaw'), at(view, JAW_PIVOT), -6, 300)]
+            : []
+    },
+    // The flame burns, the hot zone glows
+    RotaryKiln: {
+        kind: 'equipment',
+        animate: (view) => {
+            if (!isOn(view.model)) return [];
+            const hotZone = node(view, 'hotZone');
+            return [
+                ...flicker(view),
+                ...(hotZone
+                    ? [hotZone.animate([{ fillOpacity: 0.2 }, { fillOpacity: 0.45 }], { ...LOOP, duration: 1400, direction: 'alternate', easing: 'ease-in-out' })]
+                    : [])
+            ];
+        }
+    },
+    // The bags are cleaned by pulses of air, one after the other
+    BagFilter: {
+        kind: 'equipment',
+        animate: view => BAGS.flatMap((_, index) => {
+            const target = node(view, `bag${index + 1}`);
+            if (!target) return [];
+            return [target.animate([
+                { transform: 'translateY(0)', offset: 0 },
+                { transform: 'translateY(-3px)', offset: 0.04 },
+                { transform: 'translateY(0)', offset: 0.1 },
+                { transform: 'translateY(0)', offset: 1 }
+            ], { ...LOOP, duration: 4000, delay: index * 1000 })];
+        })
     },
     // The impellers at the bottom of the shafts (see `MixingTank`, `Reactor`)
     MixingTank: {
@@ -185,14 +280,7 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
     },
     Boiler: {
         kind: 'equipment',
-        animate: view => ['flameOuter', 'flameInner'].flatMap((selector, index) => {
-            const target = node(view, selector);
-            if (!target) return [];
-            return [target.animate([{ opacity: 1 }, { opacity: 0.65 }, { opacity: 1 }], {
-                ...LOOP,
-                duration: 500 + index * 170
-            })];
-        })
+        animate: flicker
     },
     Chimney: {
         kind: 'equipment',
@@ -288,7 +376,8 @@ export class Animations {
         this.running.get(cell.id)?.forEach(animation => animation.cancel());
         this.running.delete(cell.id);
         // Not every type of element is animated, nor every kind at the level.
-        const animator = cell.isLink() ? { kind: 'flow' as const, animate: flow } : animators[cell.get('type')];
+        // A link: its own (a conveyor), or the flow of a pipe
+        const animator = animators[cell.get('type')] ?? (cell.isLink() ? { kind: 'flow' as const, animate: flow } : undefined);
         if (!animator || !this.allows(animator.kind)) return;
         const cellView = cell.findView(this.paper);
         if (!cellView) return;

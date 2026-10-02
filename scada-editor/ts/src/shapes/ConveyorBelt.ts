@@ -13,13 +13,16 @@ const roller = (cx: string) => ({
     strokeWidth: 2
 });
 
-/** Where the boxes are on the belt (relative to its width): one step of the carrying apart (see `animations.ts`) */
+/** Where the boxes are drawn on the belt (relative to its width): they ride from its start to its end (see `animations.ts`) */
 export const BOX_POSITIONS = [0.2, 0.6];
+
+/** How wide a box is (see `animations.ts`) */
+export const BOX_WIDTH = 28;
 
 const box = (x: number) => ({
     x: `calc(${x} * w)`,
     y: -22,
-    width: 28,
+    width: BOX_WIDTH,
     height: 22,
     fill: '#c9a26b',
     stroke: '#7a5a32',
