@@ -48,6 +48,8 @@ import Join from './Join';
 import Pipe from './Pipe';
 import Conveyor from './Conveyor';
 import RotaryKiln from './RotaryKiln';
+import Table from './Table';
+import TableView from './TableView';
 import Crusher from './Crusher';
 import Mill from './Mill';
 import BucketElevator from './BucketElevator';
@@ -104,7 +106,7 @@ export {
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground, Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
     LineChart, BarChart, DonutChart, GaugeChart,
-    Conveyor, RotaryKiln, Crusher, Mill, BucketElevator, BagFilter,
+    Conveyor, RotaryKiln, Crusher, Mill, BucketElevator, BagFilter, Table,
     Rectangle, Ellipse, Group
 };
 
@@ -195,6 +197,9 @@ export const cellNamespace = {
     Mill,
     BucketElevator,
     BagFilter,
+    // A table with a view of its own (a change of a value updates its cell only)
+    Table,
+    TableView,
     // The charts, with the views rendering them again when their data changes (a view is looked up by the type)
     LineChart,
     LineChartView: shapeView(['values', 'thresholds', 'min', 'max']),

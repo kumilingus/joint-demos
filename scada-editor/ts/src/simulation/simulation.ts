@@ -166,6 +166,32 @@ const generators: Record<string, Generator> = {
     ElectricMeter: element => ({
         'attrs/value/text': element.get('energized') ? driftText(element.attr('value/text'), 1.5, 225, 235) : '0.0'
     }),
+    // A value of a table changes: a state switches now and then, a number (as many decimals as it has) drifts.
+    // A table of a source (an element): its states follow it (see `readoutStates()`), its numbers drift while it runs.
+    Table: (element, graph) => {
+        const values: string[][] = element.get('values') ?? [];
+        const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
+        const source = sourceOf(element, graph);
+        if (source && !isRunning(source)) return null;
+        const cells = values.flatMap((row, rowIndex) => row
+            .map((value, column) => ({ value, rowIndex, column, kind: kinds[column] }))
+            .filter(({ value, kind }) => (kind === 'state'
+                ? !source && (value === 'on' || value === 'off')
+                : /^-?\d+(\.\d+)?$/.test(value))));
+        if (cells.length === 0) return null;
+        const { value, rowIndex, column, kind } = cells[Math.floor(Math.random() * cells.length)];
+        let next: string;
+        if (kind === 'state') {
+            if (!chance(0.4)) return null;
+            next = value === 'on' ? 'off' : 'on';
+        } else {
+            const number = Number(value);
+            const decimals = value.split('.')[1]?.length ?? 0;
+            // By its share, at least five of its last digit (a whole number from 0 gets going)
+            next = drift(number, Math.max(5 * 10 ** -decimals, Math.abs(number) * 0.05), 0, Number.MAX_VALUE).toFixed(decimals);
+        }
+        return { values: values.map((row, index) => (index === rowIndex ? row.map((cell, c) => (c === column ? next : cell)) : row)) };
+    },
     // The alarm follows the pressure.
     Beacon: (_element, graph) => ({ power: highestPressure(graph) > HIGH_PRESSURE ? 1 : 0 })
 };
@@ -216,6 +242,65 @@ const chartGenerators: Record<string, ChartGenerator> = {
     }
 };
 
+/** The element a table shows the values of (its `sourceTag`, an ID), if any */
+function sourceOf(table: dia.Element, graph: dia.Graph): dia.Element | undefined {
+    const source = table.get('sourceTag');
+    return source ? findByTag(graph, source) : undefined;
+}
+
+/** Whether the element runs: switched on (a pump, a generator), open (a valve, a breaker), or neither */
+function isRunning(element: dia.Element): boolean {
+    if (element.has('power')) return Boolean(element.get('power'));
+    if (element.has('open')) return Boolean(element.get('open'));
+    return true;
+}
+
+/** The numbers of the tables of a stopped source, as they were while it ran (or as saved): back when it runs again */
+const runningValues = new WeakMap<dia.Element, string[][]>();
+
+/** Whether the value is a number (shown as it is, with its decimals) */
+const isNumber = (value: string) => /^-?\d+(\.\d+)?$/.test(value);
+
+/**
+ * The tables of a source as it is: their states `on` while it runs, `off` while not (an alarm stays); their numbers
+ * zero while it is stopped (the ones before kept, see `runningValues`), back when it runs again
+ */
+export function readoutStates(graph: dia.Graph): void {
+    graph.getElements().filter(element => element.get('type') === 'Table').forEach((table) => {
+        const source = sourceOf(table, graph);
+        if (!source) return;
+        const running = isRunning(source);
+        const kinds: Array<string | undefined> = (table.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
+        const values: string[][] = table.get('values') ?? [];
+        let numbers = values;
+        if (running) {
+            numbers = runningValues.get(table) ?? values;
+            runningValues.delete(table);
+        } else if (!runningValues.has(table)) {
+            runningValues.set(table, values);
+            numbers = values.map(row => row.map((value, column) => (kinds[column] === 'number' && isNumber(value)
+                ? (0).toFixed(value.split('.')[1]?.length ?? 0)
+                : value)));
+        }
+        const state = running ? 'on' : 'off';
+        const next = numbers.map(row => row.map((value, column) => (kinds[column] === 'state' && value !== 'alarm' ? state : value)));
+        if (JSON.stringify(next) !== JSON.stringify(values)) table.set('values', next, RUNTIME);
+    });
+}
+
+/** The numbers of the tables of the stopped sources as they were (the runtime mode left: they are not saved as zeros) */
+function restoreReadouts(graph: dia.Graph): void {
+    graph.getElements().forEach((element) => {
+        const numbers = runningValues.get(element);
+        if (!numbers) return;
+        runningValues.delete(element);
+        // The numbers only: the states as they are (of the source now)
+        const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
+        const values: string[][] = element.get('values') ?? [];
+        element.set('values', values.map((row, r) => row.map((value, c) => (kinds[c] === 'number' ? numbers[r]?.[c] ?? value : value))), RUNTIME);
+    });
+}
+
 /** The updates of the charts (of those with a tag) */
 export function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] {
     return graph.getElements()
@@ -258,9 +343,12 @@ export class Simulation {
 
     start(): void {
         if (this.running) return;
-        // The energized circuits: now, and again when a generator or a switch changes
+        // The energized circuits and the states of the readouts of the equipment: now, and again when a generator,
+        // a pump or a switch changes
         this.updateEnergized();
         this.graph.on('change:power change:open', this.updateEnergized, this);
+        readoutStates(this.graph);
+        this.graph.on('change:power change:open', this.updateReadouts, this);
         this.schedule();
         // The charts on a timer of their own: they move steadily
         this.chartTimer = window.setInterval(() => {
@@ -271,6 +359,8 @@ export class Simulation {
 
     stop(): void {
         this.graph.off('change:power change:open', this.updateEnergized, this);
+        this.graph.off('change:power change:open', this.updateReadouts, this);
+        restoreReadouts(this.graph);
         // Not a part of the diagram: not saved with it
         this.graph.getCells().forEach(cell => cell.removeProp('energized', RUNTIME));
         if (this.timer !== null) window.clearTimeout(this.timer);
@@ -282,6 +372,11 @@ export class Simulation {
     }
 
     /** The `energized` of the cells (as a SCADA server would send it): the circuits traced from the sources */
+    /** The states of the readouts follow their sources (see `readoutStates()`) */
+    protected updateReadouts(): void {
+        readoutStates(this.graph);
+    }
+
     protected updateEnergized(): void {
         const energized = getEnergized(this.graph);
         this.graph.getCells().forEach((cell) => {

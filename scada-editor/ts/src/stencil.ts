@@ -13,7 +13,7 @@ import {
     Lamp, Heater, ElectricMeter, Wire,
     DieselGenerator, WindTurbine, SolarArray, PowerTransformer, Switchgear, MotorControlCenter, BatteryBank, FuelTank,
     LineChart, BarChart, DonutChart, GaugeChart,
-    Conveyor, RotaryKiln, Crusher, Mill, BucketElevator, BagFilter,
+    Conveyor, RotaryKiln, Crusher, Mill, BucketElevator, BagFilter, Table,
     Rectangle, Ellipse
 } from './shapes';
 import { getFootprint } from './shapes/footprint';
@@ -291,6 +291,16 @@ function createShapes(): Record<string, dia.Cell[]> {
             new Ellipse()
         ],
         charts: [
+            // With a title and the names of the columns, with the names only, and a row of a state and a value (neither)
+            new Table(),
+            new Table({ header: false }),
+            new Table({
+                header: false,
+                names: false,
+                columns: [{ name: 'State', kind: 'state' }, { name: 'Value', kind: 'number' }, { name: 'Unit', kind: 'text' }],
+                rows: 1,
+                values: [['on', '12.4', 'm³/h']]
+            }),
             new LineChart(),
             new BarChart(),
             new DonutChart(),
@@ -348,6 +358,8 @@ function createShapes(): Record<string, dia.Cell[]> {
 export function paletteKey(cell: dia.Cell): string {
     const type = cell.get('type');
     if (type === 'CustomImage') return `${type}:${cell.attr('image/imageId')}`;
+    // A table with a header, one without, a list (neither the header nor the names): three shapes of the palette
+    if (type === 'Table') return cell.get('header') ? 'Table' : (cell.get('names') ? 'Table:plain' : 'Table:list');
     return type;
 }
 

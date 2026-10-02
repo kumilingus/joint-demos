@@ -35,6 +35,19 @@ const TEXTS: Array<[string, string, string]> = [
     ['unit', 'Unit', 'values']
 ];
 
+/** The elements a table can show the values of: those with an ID (not the tables, the labels, the groups, the background), by the ID */
+function sourceOptions(table: dia.Element): Array<{ value: string; content: string }> {
+    const elements = table.graph?.getElements() ?? [];
+    return elements
+        .filter(element => element.get('tag') && !['Table', 'Label', 'Group', 'Screen', 'Zone', 'CustomImage', 'Rectangle', 'Ellipse'].includes(element.get('type')))
+        .map((element) => {
+            const tag = String(element.get('tag'));
+            const name = element.attr('label/text') || descriptions[element.get('type')]?.title || element.get('type');
+            return { value: tag, content: `${tag} ${name}` };
+        })
+        .sort((a, b) => a.value.localeCompare(b.value));
+}
+
 /** The inputs for what the element has: its texts, its values and its control. */
 function getInputs(element: dia.Element): Inputs {
     const inputs: Inputs = {};
@@ -161,6 +174,50 @@ function getInputs(element: dia.Element): Inputs {
     if (element.get('type') === 'LineChart' || element.get('type') === 'BarChart') {
         inputs.min = { type: 'number', label: 'Min', group: 'values', index: index++ };
         inputs.max = { type: 'number', label: 'Max', group: 'values', index: index++ };
+    }
+
+    // A table: its title (with a header), its columns (their names shown or not, the kinds of their values);
+    // its rows are set by resizing it (their values from the plant)
+    if (element.get('type') === 'Table') {
+        inputs.header = { type: 'toggle', label: 'Header', group: 'general', index: index++ };
+        inputs.title = { type: 'text', label: 'Title', when: { eq: { header: true }}, group: 'general', index: index++ };
+        inputs.names = { type: 'toggle', label: 'Column names', group: 'general', index: index++ };
+        // The element whose values it shows, by its ID (its states follow it in the runtime mode): of those in the diagram now
+        // (not `source`: a link's - the graph takes a change of it for a reconnected link)
+        inputs.sourceTag = {
+            type: 'select',
+            label: 'Source',
+            options: [{ value: '', content: 'None' }, ...sourceOptions(element)],
+            group: 'values',
+            index: index++
+        };
+        inputs.columns = {
+            type: 'list',
+            label: 'Columns',
+            addButtonLabel: 'Add column',
+            min: 1,
+            item: {
+                type: 'object',
+                properties: {
+                    name: { type: 'text', label: 'Name', defaultValue: 'Column', index: 1 },
+                    kind: {
+                        type: 'select-button-group',
+                        label: 'Kind',
+                        defaultValue: 'number',
+                        options: [
+                            { value: 'text', content: 'Text' },
+                            { value: 'number', content: 'Number' },
+                            { value: 'state', content: 'State' }
+                        ],
+                        index: 2
+                    },
+                    // Empty (or 0): auto - a share of the width left
+                    width: { type: 'number', label: 'Width', min: 0, step: 10, attrs: { input: { placeholder: 'auto' }}, index: 3 }
+                }
+            },
+            group: 'values',
+            index: index++
+        };
     }
 
     // The slices of a donut chart: the parts of the whole (their shares are computed)

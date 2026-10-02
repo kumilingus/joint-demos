@@ -121,8 +121,9 @@ function showSelected(app: App, cell: dia.Cell) {
     }));
 }
 
-/** The resize handles for the constraints: all of them, unless the width or the height can't change. */
-function resizeDirections({ minWidth, maxWidth, minHeight, maxHeight }: ResizeOptions): dia.Direction[] {
+/** The resize handles: those of the shape, or for the constraints - all of them, unless the width or the height can't change. */
+function resizeDirections({ minWidth, maxWidth, minHeight, maxHeight, directions }: ResizeOptions): dia.Direction[] {
+    if (directions) return directions;
     const fixedWidth = minWidth !== undefined && minWidth === maxWidth;
     const fixedHeight = minHeight !== undefined && minHeight === maxHeight;
     if (fixedWidth && fixedHeight) return [];

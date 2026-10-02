@@ -115,6 +115,9 @@
     --base-belt-outline: #27272a;
     --base-belt-cleat: #a1a1aa;
     --base-bucket: var(--shape-metal-mid);
+    /* A table: its lines, the head with the names of the columns */
+    --base-table-line: #94a3b8;
+    --base-table-header: #e2e8f0;
     /* The fabric of the filter bags */
     --shape-filter-bag: #e7e2d3;
 
@@ -213,6 +216,8 @@
     --base-belt-outline: #1e293b;
     --base-belt-cleat: #94a3b8;
     --shape-filter-bag: #cbd5e1;
+    --base-table-line: #475569;
+    --base-table-header: #1e293b;
 
     /* Lighter, softer on the dark canvas */
     --color-blue: #60a5fa;
@@ -256,6 +261,7 @@
     --shape-pipe-outline: var(--style-outline, var(--base-pipe-outline));
     --shape-belt-outline: var(--style-outline, var(--base-belt-outline));
     --shape-thermometer-stroke: var(--style-outline, var(--base-thermometer-stroke));
+    --shape-table-line: var(--style-outline, var(--base-table-line));
     --shape-flat-stroke: var(--style-outline, color-mix(in oklab, var(--style-color, var(--base-flat-stroke)) 55%, var(--base-flat-stroke)));
     --shape-gauge-stroke: var(--style-outline, var(--base-gauge-stroke));
     --shape-zone-stroke: var(--style-outline, var(--base-zone-stroke));
@@ -275,6 +281,7 @@
     --shape-flame: var(--style-accent, var(--base-flame));
     --shape-belt-cleat: var(--style-accent, var(--base-belt-cleat));
     --shape-bucket: var(--style-accent, var(--base-bucket));
+    --shape-table-header: var(--style-accent, var(--base-table-header));
     --shape-soil: var(--style-accent, var(--base-soil));
 }
 

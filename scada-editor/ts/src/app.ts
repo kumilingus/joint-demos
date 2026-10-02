@@ -11,6 +11,7 @@ import {
 } from './config';
 import { addImages, clearSelection, confirmReplace, refreshPalette, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
+import { setTablesLive } from './shapes/TableView';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
 import { ANIMATIONS_ATTRIBUTE } from './animations';
@@ -187,6 +188,7 @@ export class App {
         this.modeControllers[mode].forEach(controller => controller.startListening());
         this.paper.setInteractivity(this.interactivityOf(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
+        setTablesLive(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;
         showScreen(this);

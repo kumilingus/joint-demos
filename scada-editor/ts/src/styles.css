@@ -793,6 +793,19 @@ body {
     gap: 6px;
 }
 
+/* The columns of a table (see `Table`): the name above the kind of the values (the buttons are wide) */
+.joint-inspector .list-item .object-properties:has(> .object-property[data-property="kind"]) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Stacked: the labels in each column (not over the first row only, as the slices) */
+.joint-inspector .list-item .object-properties:has(> .object-property[data-property="kind"]) .object-property label {
+    display: block;
+}
+
 /* The color first */
 .joint-inspector .list-item .object-property[data-property="color"] {
     order: -1;

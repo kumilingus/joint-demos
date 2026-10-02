@@ -11,6 +11,8 @@ export interface ResizeOptions {
     minHeight?: number;
     maxWidth?: number;
     maxHeight?: number;
+    /** The sides and corners it is resized by (all of them by default, see `SelectionController`) */
+    directions?: dia.Direction[];
 }
 
 /**

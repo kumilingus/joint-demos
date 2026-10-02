@@ -63,6 +63,7 @@ export const descriptions: Record<string, ShapeDescription> = {
     Crusher: { title: 'Crusher', description: 'Crushes the rock fed from the top between a fixed jaw and a moving one.' },
     Mill: { title: 'Mill', description: 'A turning drum grinding the material into powder with the steel balls in it.' },
     RotaryKiln: { title: 'Rotary Kiln', description: 'A long turning drum on riding rings, the material burnt by the flame of the burner in the hood.' },
+    Table: { title: 'Table', description: 'Values in rows and columns (from the plant in the run mode): texts, numbers or states (a dot); the columns in the inspector, the rows by resizing it (its bottom), a title and the names of the columns shown or not.' },
     BagFilter: { title: 'Bag Filter', description: 'Filters the dust out of the gas on fabric bags, cleaned by pulses of air; the dust falls into the hopper.' },
     HorizontalTank: { title: 'Horizontal Tank', description: 'A horizontal vessel on saddles (fuel, chemicals, a buffer).' },
     WaterTower: { title: 'Water Tower', description: 'Stores the water up high: the height gives the pressure of the supply.' },
