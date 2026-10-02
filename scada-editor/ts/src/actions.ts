@@ -477,8 +477,21 @@ export function saveDiagram(app: App): void {
     URL.revokeObjectURL(url);
 }
 
-/** Let the user pick a JSON file of a diagram and load it. */
+/** Whether the diagram may be replaced (by a new one, a file, an example): asked first if it was changed */
+export function confirmReplace(app: App, question: string): boolean {
+    return !app.history.hasUndo() || window.confirm(`${question} The changes of the diagram will be lost.`);
+}
+
+/** A new diagram instead of this one: an empty screen; `false` if the user keeps this one */
+export function newDiagram(app: App): boolean {
+    if (!confirmReplace(app, 'Start a new diagram?')) return false;
+    app.loadJSON({ cells: [new Screen().toJSON()] });
+    return true;
+}
+
+/** Let the user pick a JSON file of a diagram and load it (asked first if the diagram was changed). */
 export function openDiagram(app: App): void {
+    if (!confirmReplace(app, 'Open a diagram?')) return;
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/json,.json';

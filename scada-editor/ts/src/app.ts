@@ -9,7 +9,7 @@ import { ColorScheme, Mode } from './const';
 import {
     canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions
 } from './config';
-import { addImages, clearSelection, refreshPalette, zoomToFit } from './actions';
+import { addImages, clearSelection, confirmReplace, refreshPalette, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
@@ -260,7 +260,7 @@ export class App {
 
     /** Open the example instead of the diagram: as a file, asked first if the diagram was changed */
     openExample(example: Example): void {
-        if (this.history.hasUndo() && !window.confirm(`Open the ${example.name} example? The changes of the diagram will be lost.`)) return;
+        if (!confirmReplace(this, `Open the ${example.name} example?`)) return;
         this.loadJSON(example.json);
     }
 

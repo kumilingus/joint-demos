@@ -1,8 +1,8 @@
 import Controller from './Controller';
 import type { App } from '../app';
 import { ColorScheme, Mode } from '../const';
-import { openDiagram, saveDiagram, zoomToFit } from '../actions';
-import { toggleSettings } from '../settings';
+import { newDiagram, openDiagram, saveDiagram, zoomToFit } from '../actions';
+import { isSettingsOpen, toggleSettings } from '../settings';
 
 /**
  * The toolbar buttons. Active in every mode.
@@ -17,6 +17,7 @@ export default class ToolbarController extends Controller {
             'mode:pointerclick': onModePointerclick,
             'zoomToFit:pointerclick': onZoomToFitPointerclick,
             // In the edit mode only (the buttons are not in the toolbar of the runtime mode)
+            'new:pointerclick': onNewPointerclick,
             'save:pointerclick': onSavePointerclick,
             'open:pointerclick': onOpenPointerclick,
             'settings:pointerclick': toggleSettings,
@@ -31,6 +32,11 @@ function onModePointerclick(app: App) {
 
 function onColorSchemePointerclick(app: App) {
     app.setColorScheme(app.colorScheme === ColorScheme.Light ? ColorScheme.Dark : ColorScheme.Light);
+}
+
+/** A new diagram: its settings open (the screen, the style) - the first thing to set */
+function onNewPointerclick(app: App) {
+    if (newDiagram(app) && !isSettingsOpen()) toggleSettings(app);
 }
 
 function onSavePointerclick(app: App) {

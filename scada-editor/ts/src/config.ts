@@ -213,8 +213,13 @@ export const tooltipOptions: Partial<ui.Tooltip.Options> = {
 };
 
 export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
-    // The diagram is saved (as JSON) and opened in the edit mode.
+    // A new diagram is started, the diagram is saved (as JSON) and opened in the edit mode.
     const file: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
+        type: 'button',
+        name: 'new',
+        group: 'file',
+        attrs: { button: { 'data-tooltip': 'A new diagram' }}
+    }, {
         type: 'button',
         name: 'open',
         group: 'file',

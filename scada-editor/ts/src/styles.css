@@ -171,6 +171,7 @@ body {
 .joint-toolbar [data-type="zoomOut"] { --icon: var(--icon-zoom-out); }
 .joint-toolbar [data-name="zoomToFit"] { --icon: var(--icon-fit); }
 .joint-toolbar [data-type="undo"] { --icon: var(--icon-undo); }
+.joint-toolbar [data-name="new"] { --icon: var(--icon-new); }
 .joint-toolbar [data-name="open"] { --icon: var(--icon-open); }
 .joint-toolbar [data-name="save"] { --icon: var(--icon-save); }
 .joint-toolbar [data-name="settings"] { --icon: var(--icon-settings); }
