@@ -1794,7 +1794,8 @@
       "attrs": {
         "label": {
           "text": "Boiler House",
-          "fontSize": 80
+          "fontSize": 80,
+          "fill": "var(--color-blue)"
         }
       },
       "tag": "TXT-101",
