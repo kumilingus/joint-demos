@@ -25,7 +25,12 @@ export const GRID_SIZE = 10;
 export const LIQUID_COLOR = '#0EAD69';
 export const MAX_LIQUID_COLOR = '#ED2637';
 export const MIN_LIQUID_COLOR = '#FFD23F';
-export const PIPE_COLOR = '#6CC59A';
+/** The default color of a pipe (its medium, see `Pipe`): of the theme */
+export const PIPE_COLOR = 'var(--shape-pipe)';
+
+/** The outline of a pipe (the dark edges of its line, see `Pipe`): of the theme */
+export const PIPE_OUTLINE = 'var(--shape-pipe-outline)';
+
 // The colors of the parts of the shapes are CSS variables (`--shape-*` in `shapes.css`): themed there.
 export const LABEL_COLOR = 'var(--shape-label)';
 

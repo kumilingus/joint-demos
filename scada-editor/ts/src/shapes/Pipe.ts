@@ -1,6 +1,6 @@
 import { dia, util } from '@joint/plus';
 import { followRouting, routingAttributes } from './routing';
-import { Layer, PIPE_COLOR } from '../const';
+import { Layer, PIPE_COLOR, PIPE_OUTLINE } from '../const';
 import { type ColorField, LINE_COLOR_FIELD } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -16,6 +16,11 @@ export default class Pipe extends dia.Link {
     // The color of its line (see `ColorField`)
     get colorField(): ColorField {
         return LINE_COLOR_FIELD;
+    }
+
+    // The color of its outline: the dark of the theme by default
+    get outlineField(): ColorField {
+        return { path: ['attrs', 'outline', 'stroke'], defaultValue: PIPE_OUTLINE };
     }
 
     defaults(): dia.Link.Attributes {
@@ -37,7 +42,7 @@ export default class Pipe extends dia.Link {
                 },
                 outline: {
                     connection: true,
-                    stroke: '#444',
+                    stroke: PIPE_OUTLINE,
                     strokeWidth: 16,
                     strokeLinejoin: 'round',
                     // Reaching under the element it connects to (the pipes are drawn under the equipment):

@@ -1,7 +1,7 @@
 import { dia } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { GRID_SIZE, Layer } from '../const';
-import { hasSurface, SURFACE_COLOR, surfaceAttributes } from './gradients';
+import { hasOutline, hasSurface, SURFACE_COLOR, surfaceAttributes } from './gradients';
 import { pipeAttributes } from './ports';
 
 /** The size constraints of resizing. */
@@ -29,8 +29,9 @@ export type Anchors = 'sides' | 'middles';
 export type ControlKind = 'power' | 'toggle' | 'slider';
 
 /**
- * The color the user sets (the Color field of the inspector, the swatches of the colors of the diagram,
- * see `color-field.ts`): its path in the model, and its default if the defaults of the shape don't have it.
+ * A color the user sets (the Color, the Outline field of the inspector, the swatches of the colors of the diagram,
+ * see `color-field.ts`): its path in the model, and its default if the defaults of the shape don't have it
+ * (none of them: it can be none of the cell's own - Auto).
  */
 export interface ColorField {
     path: string[];
@@ -60,6 +61,8 @@ export interface ShapeFeatures {
     tagPrefix: string;
     /** The color the user sets, if any. */
     colorField: ColorField | null;
+    /** The color of the outline the user sets, if any. */
+    outlineField: ColorField | null;
 }
 
 // An element can be made this much smaller than its default size (unless the shape says otherwise).
@@ -117,6 +120,11 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     /** The color of the surfaces of the element, if it has any (see `surfaceAttributes`): the metal of the theme by default */
     get colorField(): ColorField | null {
         return hasSurface(this) ? { path: ['color'], defaultValue: SURFACE_COLOR } : null;
+    }
+
+    /** The color of the outlines of its surfaces, if it has any: none of its own by default (Auto - as the shape draws them) */
+    get outlineField(): ColorField | null {
+        return hasOutline(this) ? { path: ['outline'] } : null;
     }
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {

@@ -34,6 +34,16 @@ export function colorFieldOf(cell: dia.Cell): ColorField | null {
     return (cell as dia.Cell & { colorField?: ColorField | null }).colorField ?? null;
 }
 
+/** The color of the outline the user sets on the cell, if any (see `ColorField`) */
+export function outlineFieldOf(cell: dia.Cell): ColorField | null {
+    return (cell as dia.Cell & { outlineField?: ColorField | null }).outlineField ?? null;
+}
+
+/** The default of the color field of the cell: its own, or of the defaults of its shape; none - Auto */
+export function fieldDefault(cell: dia.Cell, field: ColorField): string | undefined {
+    return field.defaultValue ?? util.getByPath(util.result(cell, 'defaults') || {}, field.path.join('/'), '/');
+}
+
 const isHexColor = (value: unknown): value is string => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 
 /** A color of the theme: a CSS variable (see `shapes.css`) */

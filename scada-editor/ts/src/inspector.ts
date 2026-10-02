@@ -3,10 +3,10 @@ import { hasControl } from './controls';
 import { isRouted } from './shapes/routing';
 import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
-import { colorFieldOf, getColorFieldValue, rememberColor, renderColorField } from './color-field';
+import { colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, rememberColor, renderColorField } from './color-field';
 import { isGroup } from './shapes/Group';
 import { appearanceTargets, createAppearanceInspector } from './selection-inspector';
-import { hasOutline, hasSurface } from './shapes/gradients';
+import { hasSurface } from './shapes/gradients';
 import { type Arrowhead, arrowheadMarker } from './shapes/Arrow';
 import { descriptions } from './descriptions';
 import { MAX_SLICES } from './shapes/DonutChart';
@@ -78,9 +78,7 @@ function getInputs(element: dia.Element): Inputs {
     util.merge(inputs, colorInputs(element, 'appearance', index++));
 
     // Their outline (none of its own: as the shape draws it)
-    if (hasOutline(element)) {
-        inputs.outline = { type: 'color', label: 'Outline', auto: true, group: 'appearance', index: index++ };
-    }
+    util.merge(inputs, outlineInputs(element, 'appearance', index++));
 
     // A shape of the background: its opacity
     if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
@@ -219,6 +217,17 @@ function colorInputs(cell: dia.Cell, group: string, index: number): Inputs {
     return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
 }
 
+/**
+ * The Outline field of the cell, at the path of its outline color (see `outlineField`): of the surfaces of
+ * the equipment (Auto - as the shape draws them), of a pipe (its default the dark of the theme); nothing if none.
+ */
+function outlineInputs(cell: dia.Cell, group: string, index: number): Inputs {
+    const field = outlineFieldOf(cell);
+    if (!field) return {};
+    const input = { type: 'color', label: 'Outline', group, index, ...(fieldDefault(cell, field) === undefined ? { auto: true } : {}) };
+    return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
+}
+
 /** An arrowhead as a button: a short line ending with it (pointing outwards: left at the start, right at the end) */
 function arrowheadIcon(arrowhead: Arrowhead, end: 'source' | 'target'): string {
     const marker = arrowheadMarker(arrowhead);
@@ -319,12 +328,15 @@ function getFieldValue(attribute: HTMLElement): { value: unknown } | undefined {
 function inspectorInputs(cell: dia.Cell): Inputs {
     if (isGroup(cell)) return groupInputs;
     if (cell.isElement()) return { ...getInputs(cell), ...layerInput('general') };
-    return {
-        ...(isRouted(cell) ? linkInputs : {}),
-        ...colorInputs(cell, 'link', 2),
-        ...(cell.get('type') === 'Arrow' ? arrowheadInputs : {}),
-        ...layerInput('link')
-    };
+    // Merged deeply: the color and the outline of a pipe are both in its `attrs`
+    return util.merge(
+        {},
+        isRouted(cell) ? linkInputs : {},
+        colorInputs(cell, 'link', 2),
+        outlineInputs(cell, 'link', 3),
+        cell.get('type') === 'Arrow' ? arrowheadInputs : {},
+        layerInput('link')
+    ) as Inputs;
 }
 
 /** The inspector of the appearance of several cells (see `selection-inspector.ts`), if one is open */

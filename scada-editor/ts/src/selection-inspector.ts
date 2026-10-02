@@ -1,6 +1,6 @@
 import { dia, ui, util } from '@joint/plus';
-import { colorFieldOf, getColorFieldValue, renderColorField } from './color-field';
-import { hasOutline, hasSurface, type SurfaceFinish } from './shapes/gradients';
+import { colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, renderColorField } from './color-field';
+import { hasSurface, type SurfaceFinish } from './shapes/gradients';
 import { isGroup } from './shapes/Group';
 
 /*
@@ -33,6 +33,26 @@ const colorOf = (cell: dia.Cell): unknown => cell.prop(colorFieldOf(cell)!.path)
 
 const finishOf = (cell: dia.Cell): SurfaceFinish => cell.get('finish') ?? 'shaded';
 
+const AUTO = 'auto';
+
+/** The outline color of the cell: its own, or the default of its shape; `undefined` - none (Auto) */
+function outlineOf(cell: dia.Cell): string | undefined {
+    const field = outlineFieldOf(cell)!;
+    return cell.prop(field.path) ?? fieldDefault(cell, field);
+}
+
+/** Set the outline color of the cell, or none (`undefined`, Auto): back to the default of its shape, if it has one */
+function setOutline(cell: dia.Cell, outline: string | undefined): void {
+    const field = outlineFieldOf(cell)!;
+    const value = outline ?? fieldDefault(cell, field);
+    if (value === undefined) {
+        // The path as a string: `removeProp()` doesn't unset a top-level property given as an array
+        cell.removeProp(field.path.join('/'));
+    } else {
+        cell.prop(field.path, value);
+    }
+}
+
 /** The value all of them have, `undefined` if they differ */
 function common<T>(values: T[]): T | undefined {
     return values.every(value => value === values[0]) ? values[0] : undefined;
@@ -53,12 +73,13 @@ function changeAll(cells: dia.Cell[], change: (cell: dia.Cell) => void): void {
 export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.Inspector | null {
     const colored = cells.filter(cell => colorFieldOf(cell));
     const surfaced = cells.filter(cell => cell.isElement() && hasSurface(cell));
-    const outlined = cells.filter(cell => cell.isElement() && hasOutline(cell));
+    const outlined = cells.filter(cell => outlineFieldOf(cell));
     if (colored.length === 0 && outlined.length === 0) return null;
     const graph = (colored[0] ?? outlined[0]).graph;
 
     const colors = colored.map(colorOf);
-    const outlines = outlined.map(cell => cell.get('outline'));
+    // Of each its own (a pipe: its default), or none (Auto)
+    const outlines = outlined.map(cell => outlineOf(cell));
     const standIn = new dia.Cell({
         color: common(colors),
         finish: common(surfaced.map(finishOf)),
@@ -98,7 +119,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
             label: 'Outline',
             // None of their own (as the shapes draw them), or mixed
             auto: true,
-            mixed: common(outlines.map(outline => outline ?? 'auto')) === undefined,
+            mixed: common(outlines.map(outline => outline ?? AUTO)) === undefined,
             graph,
             group: 'appearance',
             index: 3
@@ -112,7 +133,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     });
     // A color, or none (Auto): removed
     standIn.on('change:outline', (_cell: dia.Cell, outline: string | undefined) => {
-        changeAll(outlined, cell => (outline ? cell.set('outline', outline) : cell.unset('outline')));
+        changeAll(outlined, cell => setOutline(cell, outline));
     });
     return new ui.Inspector({
         cell: standIn,

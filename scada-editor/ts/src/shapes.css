@@ -76,6 +76,10 @@
     --shape-glass-1: #ffffff;
     --shape-glass-2: #d6dde4;
 
+    /* A pipe: its default color (the medium), its outline */
+    --shape-pipe: #6CC59A;
+    --shape-pipe-outline: #444444;
+
     /* The canvas (the background of the paper; a color of the shapes too) */
     --shape-canvas: #F3F7F6;
     /* The ink on a surface (a scale, a unit): as the labels on a surface in the color of the canvas (see below) */
@@ -162,6 +166,10 @@
     --shape-glass-2: #6f88a8;
 
     --shape-canvas: #0a1628;
+
+    /* Softer on the dark canvas, the outline apart from it */
+    --shape-pipe: #5bb48b;
+    --shape-pipe-outline: #3a4658;
 
     /* Lighter, softer on the dark canvas */
     --color-blue: #60a5fa;
