@@ -30,6 +30,15 @@ const FIELD_HELP: Record<string, string> = {
         Lit metal: a 3D look, close to the real equipment.
         <strong class="tooltip-heading">Flat</strong>
         One tone, as the <em>high-performance HMI</em> style (ISA-101) draws the equipment.`,
+    paletteFinish: `
+        <strong>Palette finish</strong> - the finish of the shapes in the palette, and of the shapes dropped
+        from it from now on. The diagram stays as it is (an element's own finish is set in its inspector).
+        <strong class="tooltip-heading">Flat - high-performance HMI</strong>
+        The ISA-101 standard (<em>Human Machine Interfaces for Process Automation Systems</em>) recommends
+        muted, flat, mostly gray graphics: the equipment stays calm, so that color is left for what needs
+        attention - the abnormal values and the alarms.
+        <strong class="tooltip-heading">Shaded</strong>
+        Lit metal: a 3D look, close to the real equipment.`,
     screen: `
         <strong>Screen</strong> - the part of the diagram the run mode shows: in the whole window,
         fitted to it, without scrolling and zooming; the toolbar slides away (and back when the pointer

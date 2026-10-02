@@ -1,6 +1,6 @@
 import { dia, mvc, ui } from '@joint/plus';
 import { cellNamespace } from './shapes';
-import { createStencil } from './stencil';
+import { createStencil, setPaletteFinish } from './stencil';
 import { createGraph } from './layers';
 import { createSelection } from './selection';
 import { createNavigator } from './navigator';
@@ -33,6 +33,7 @@ import {
 // The mock of the plant (see `simulation/`): an app with a real plant deletes it and this line
 import SimulationController from './simulation/SimulationController';
 import Snaplines from './Snaplines';
+import type { SurfaceFinish } from './shapes/gradients';
 
 export class App {
 
@@ -57,6 +58,8 @@ export class App {
     colorScheme: ColorScheme = getInitialColorScheme();
     /** Whether a moved or resized element aligns with the others (see the settings) */
     snaplinesEnabled = true;
+    /** The finish of the palette shapes (a setting of the editor, see `setPaletteFinish()`) */
+    paletteFinish: SurfaceFinish = 'shaded';
     selection = new mvc.Collection<dia.Cell>();
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;
@@ -222,6 +225,12 @@ export class App {
             getImages: () => getImages(this.graph),
             onUpload: images => addImages(this, images)
         });
+    }
+
+    /** Draw the palette shapes (and those dropped from now on) shaded or flat. */
+    setPaletteFinish(finish: SurfaceFinish): void {
+        this.paletteFinish = finish;
+        setPaletteFinish(this.stencil, finish);
     }
 
     protected destroyStencil(): void {
