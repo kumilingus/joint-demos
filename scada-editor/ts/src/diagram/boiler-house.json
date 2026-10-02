@@ -1092,7 +1092,8 @@
       },
       "tag": "TK-101",
       "id": "907c2990-e903-4d79-b81e-6081359dbddc",
-      "layer": "equipment"
+      "layer": "equipment",
+      "parent": "d91c9b17-7083-4163-b361-1e7499bd5cae"
     },
     {
       "position": {
@@ -1134,7 +1135,8 @@
       },
       "tag": "P-102",
       "id": "19798285-91a4-4270-b36c-c2b0563f2981",
-      "layer": "equipment"
+      "layer": "equipment",
+      "color": "#3b82f6"
     },
     {
       "position": {
@@ -1415,7 +1417,8 @@
       },
       "tag": "LI-101",
       "id": "f5d65fb4-7195-49e5-b6e1-97e172cfa5a1",
-      "layer": "instruments"
+      "layer": "instruments",
+      "parent": "d91c9b17-7083-4163-b361-1e7499bd5cae"
     },
     {
       "position": {
@@ -1795,8 +1798,8 @@
     },
     {
       "position": {
-        "x": 880,
-        "y": 950
+        "x": 870,
+        "y": 960
       },
       "size": {
         "width": 100,
@@ -1807,7 +1810,7 @@
       "attrs": {
         "label": {
           "text": "Standby",
-          "fill": "#ec4899"
+          "fill": "#3b82f6"
         }
       },
       "tag": "TXT-102",
@@ -1830,8 +1833,8 @@
         "anchor": {
           "name": "topLeft",
           "args": {
-            "dx": "82%",
-            "dy": "82%",
+            "dx": "100%",
+            "dy": "100%",
             "rotate": true,
             "useModelGeometry": true
           }
@@ -1854,7 +1857,7 @@
       "targetArrowhead": "arrow",
       "attrs": {
         "line": {
-          "stroke": "#ec4899"
+          "stroke": "#3b82f6"
         }
       },
       "id": "95c6e637-0493-456b-95b9-b41974f95531"
@@ -1977,6 +1980,26 @@
         "21ce6895-5426-442f-8d93-16e340013c60",
         "b6830c2e-7065-41bd-bdcb-265849d8b909",
         "726dd0a3-f351-4851-9fe7-24a2a0bb0a96"
+      ]
+    },
+    {
+      "position": {
+        "x": 470,
+        "y": 710
+      },
+      "size": {
+        "width": 160,
+        "height": 300
+      },
+      "angle": 0,
+      "type": "Group",
+      "id": "d91c9b17-7083-4163-b361-1e7499bd5cae",
+      "layer": "background",
+      "z": 6,
+      "tag": "GRP-102",
+      "embeds": [
+        "907c2990-e903-4d79-b81e-6081359dbddc",
+        "f5d65fb4-7195-49e5-b6e1-97e172cfa5a1"
       ]
     }
   ],
