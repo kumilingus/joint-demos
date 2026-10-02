@@ -1293,6 +1293,9 @@
       "attrs": {
         "label": {
           "text": "Stack 2"
+        },
+        "bands": {
+          "fill": "var(--color-blue)"
         }
       },
       "tag": "ST-102",
