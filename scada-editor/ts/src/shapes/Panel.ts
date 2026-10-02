@@ -196,7 +196,7 @@ export default class Panel extends Shape {
                 },
                 shine: {
                     ...trackAttributes,
-                    fill: shineGradient,
+                    trackShine: true,
                     pointerEvents: 'none'
                 },
                 panelTicks: {
@@ -216,6 +216,17 @@ export default class Panel extends Shape {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    static attributes = {
+        ...Shape.attributes,
+        // The light on the track (`trackShine` in the attributes): shaded only - none in the flat finish
+        'track-shine': {
+            set(this: dia.ElementView) {
+                if (this.model.get('finish') === 'flat') return { fill: 'none' };
+                return { fill: `url(#${this.paper!.defineGradient(shineGradient)})` };
+            }
+        }
+    };
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
