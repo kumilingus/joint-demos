@@ -35,6 +35,7 @@ import {
 import SimulationController from './simulation/SimulationController';
 import Snaplines from './Snaplines';
 import type { SurfaceFinish } from './shapes/gradients';
+import { toggleSettings } from './settings';
 
 export class App {
 
@@ -73,6 +74,12 @@ export class App {
     constructor(el: HTMLElement) {
         this.el = el;
         this.inspectorEl = el.querySelector<HTMLElement>('.inspector-panel')!;
+        // The empty state of the panel: put back when its content is replaced (an inspector empties it)
+        const emptyEl = this.createInspectorEmpty();
+        this.inspectorEl.append(emptyEl);
+        new MutationObserver(() => {
+            if (!emptyEl.isConnected) this.inspectorEl.append(emptyEl);
+        }).observe(this.inspectorEl, { childList: true });
 
         this.graph = createGraph();
 
@@ -204,6 +211,27 @@ export class App {
             const options = base(cellView);
             return typeof options === 'object' ? { ...options, stopDelegation: this.selection.has(cellView.model) } : options;
         };
+    }
+
+    /** What the empty inspector panel says (shown while it has nothing else, see `styles.css`): with a way to the settings */
+    protected createInspectorEmpty(): HTMLElement {
+        const el = document.createElement('div');
+        el.className = 'inspector-empty';
+        // Two ways: a shape, or (an "or" between them) the settings with what they have
+        const text = document.createElement('p');
+        text.textContent = 'Select a shape on the canvas or in the stencil to see its properties.';
+        const or = document.createElement('div');
+        or.className = 'inspector-empty-or';
+        or.textContent = 'or';
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = 'Diagram settings';
+        button.addEventListener('click', () => toggleSettings(this));
+        const caption = document.createElement('p');
+        caption.className = 'inspector-empty-caption';
+        caption.textContent = 'the screen, the animations, the editor';
+        el.append(text, or, button, caption);
+        return el;
     }
 
     protected createToolbar(mode: Mode): void {

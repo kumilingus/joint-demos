@@ -193,8 +193,10 @@ body {
 .joint-toolbar [data-name="fullscreen"] { --icon: var(--icon-maximize); }
 :root:fullscreen .joint-toolbar [data-name="fullscreen"] { --icon: var(--icon-minimize); }
 
-/* A group of one button: rounded on both sides */
+/* A group of one button: rounded on both sides; with its label (not a square icon) */
 .joint-toolbar [data-group="settings"] button {
+    width: auto;
+    padding: 0 12px;
     border-radius: var(--radius-md);
 }
 
@@ -437,9 +439,9 @@ body {
     border-left: 1px solid var(--border);
 }
 
-.inspector-panel:empty::before {
-    content: 'Select a shape on the canvas or in the stencil to see its properties.';
-    display: block;
+/* Nothing in the panel (no selection, no shape of the palette, no settings): what it is for (see `App`) */
+.inspector-empty {
+    display: none;
     margin: 16px;
     padding: 32px 16px;
     border: 1px dashed var(--border);
@@ -448,6 +450,62 @@ body {
     font-size: 13px;
     line-height: 1.5;
     text-align: center;
+}
+
+.inspector-panel:not(:has(> :not(.inspector-empty))) > .inspector-empty {
+    display: block;
+}
+
+.inspector-empty p {
+    margin: 0;
+}
+
+/* "or" between the two ways, on a line */
+.inspector-empty-or {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0;
+    font-size: 12px;
+}
+
+.inspector-empty-or::before,
+.inspector-empty-or::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid var(--border);
+}
+
+/* The settings: a button with the cog of the toolbar */
+.inspector-empty button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 500 13px/1 var(--font);
+    cursor: pointer;
+}
+
+.inspector-empty button::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: currentColor;
+    mask: var(--icon-settings) center / contain no-repeat;
+}
+
+.inspector-empty button:hover {
+    background: var(--muted);
+}
+
+.inspector-empty-caption {
+    margin-top: 8px !important;
+    font-size: 12px;
 }
 
 .joint-inspector {

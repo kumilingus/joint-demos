@@ -226,7 +226,9 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         type: 'button',
         name: 'settings',
         group: 'settings',
-        attrs: { button: { 'data-tooltip': 'Settings of the diagram (the screen)' }}
+        // Labeled: what is behind it is not obvious from the icon (the screen, the animations, the editor)
+        text: 'Settings',
+        attrs: { button: { 'data-tooltip': 'The settings of the diagram (the screen, the animations) and of the editor' }}
     }] : [];
     const history: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
         type: 'undo',
