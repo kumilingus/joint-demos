@@ -65,11 +65,13 @@ function getInputs(element: dia.Element): Inputs {
         inputs.finish = {
             type: 'select-button-group',
             label: 'Finish',
+            // Auto: none of its own - the finish of the diagram (its style)
             options: [
+                { value: 'auto', content: 'Auto' },
                 { value: 'shaded', content: 'Shaded' },
                 { value: 'flat', content: 'Flat' }
             ],
-            defaultValue: 'shaded',
+            defaultValue: 'auto',
             group: 'appearance',
             index: index++
         };

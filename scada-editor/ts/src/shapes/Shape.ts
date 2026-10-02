@@ -142,10 +142,13 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
 
     /**
      * Without the ports: they are the shape's (its pipe stubs, its terminals), not the diagram's - an element
-     * gets them from the defaults of its shape when it is created from the JSON (a busbar makes them of its taps).
+     * gets them from the defaults of its shape when it is created from the JSON (a busbar makes them of its taps);
+     * nor a finish `auto` (none of its own).
      */
     toJSON(options?: dia.Cell.ExportOptions): dia.Cell.JSON {
         const { ports: _ports, ...json } = super.toJSON(options);
+        // No finish of its own (Auto: of the diagram, see `finishOf()`)
+        if (json.finish === 'auto') delete json.finish;
         return json;
     }
 

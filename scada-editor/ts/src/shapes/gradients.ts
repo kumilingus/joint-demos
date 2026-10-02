@@ -178,6 +178,19 @@ export type SurfaceFill = keyof typeof SURFACE_GRADIENTS | keyof typeof FLAT_SUR
  */
 export type SurfaceFinish = 'shaded' | 'flat';
 
+/** The finish of the diagram (its style, see `style.ts`): of the elements without one of their own */
+let styleFinish: SurfaceFinish = 'shaded';
+
+export function setStyleFinish(finish: SurfaceFinish): void {
+    styleFinish = finish;
+}
+
+/** The finish of the element: its own (`finish` set, shaded or flat), else of the diagram (Auto: none, or `auto`) */
+export function finishOf(model: dia.Cell): SurfaceFinish {
+    const finish = model.get('finish');
+    return finish === 'shaded' || finish === 'flat' ? finish : styleFinish;
+}
+
 // The width of the outlines of an element outlined (its `outline`, the flat finish): one for all its surfaces
 const OUTLINE_WIDTH = 2;
 
@@ -189,7 +202,7 @@ const OUTLINE_WIDTH = 2;
 function outlineOf(model: dia.Cell): string | null {
     const outline = model.get('outline');
     if (typeof outline === 'string' && outline !== '') return outline;
-    return model.get('finish') === 'flat' ? METAL_STROKE : null;
+    return finishOf(model) === 'flat' ? METAL_STROKE : null;
 }
 
 // A shaded surface made flat: the middle tone of its shading
@@ -241,10 +254,10 @@ function surfaceFillOf(view: dia.ElementView, fill: SurfaceFill): string {
     const { model } = view;
     const color = model.get('color');
     // Flat: the color as it is (nothing to shade) - a detail keeps its darker tone of it
-    if (model.get('finish') === 'flat' && isTint(color) && !DETAILS.has(fill)) return color;
+    if (finishOf(model) === 'flat' && isTint(color) && !DETAILS.has(fill)) return color;
     // A flat one (a color of the shape, the flat metal), or a shaded one made flat
     const flat = isSurfaceColor(fill) ? fill : FLAT_SURFACES[fill as keyof typeof FLAT_SURFACES];
-    if (flat || model.get('finish') === 'flat') {
+    if (flat || finishOf(model) === 'flat') {
         const base = flat ?? FLAT_SHADING;
         return isTint(color) ? tint(color, base) : base;
     }
@@ -268,7 +281,7 @@ export const materialAttributes = {
     'material-fill': {
         set(this: dia.ElementView, material: MaterialFill) {
             const gradient = MATERIAL_GRADIENTS[material];
-            if (this.model.get('finish') === 'flat') return { fill: gradient.stops[1]?.color ?? gradient.stops[0].color };
+            if (finishOf(this.model) === 'flat') return { fill: gradient.stops[1]?.color ?? gradient.stops[0].color };
             return { fill: `url(#${this.paper!.defineGradient(gradient)})` };
         }
     }

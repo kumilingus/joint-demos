@@ -31,7 +31,8 @@ function defaultColorOf(cell: dia.Cell): unknown {
 /** The color of the cell as drawn: its own, or the default of its shape */
 const colorOf = (cell: dia.Cell): unknown => cell.prop(colorFieldOf(cell)!.path) ?? defaultColorOf(cell);
 
-const finishOf = (cell: dia.Cell): SurfaceFinish => cell.get('finish') ?? 'shaded';
+// Its own finish, or Auto (none of its own)
+const finishOf = (cell: dia.Cell): string => cell.get('finish') ?? 'auto';
 
 const AUTO = 'auto';
 
@@ -113,6 +114,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
             type: 'select-button-group',
             label: 'Finish',
             options: [
+                { value: 'auto', content: 'Auto' },
                 { value: 'shaded', content: 'Shaded' },
                 { value: 'flat', content: 'Flat' }
             ],
@@ -136,8 +138,8 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     standIn.on('change:color', (_cell: dia.Cell, color: string) => {
         changeAll(colored, cell => cell.prop(colorFieldOf(cell)!.path, color));
     });
-    standIn.on('change:finish', (_cell: dia.Cell, finish: SurfaceFinish) => {
-        changeAll(surfaced, cell => cell.set('finish', finish));
+    standIn.on('change:finish', (_cell: dia.Cell, finish: SurfaceFinish | 'auto') => {
+        changeAll(surfaced, cell => (finish === 'auto' ? cell.unset('finish') : cell.set('finish', finish)));
     });
     // A color, or none (Auto): removed
     if (accented.length > 0) {

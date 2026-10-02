@@ -4,37 +4,37 @@
  */
 :root {
     /* The steel (the stops of the metal gradients, see `gradients.ts`): blue in the dark */
-    --shape-metal-1: #737c84;
-    --shape-metal-2: #a3acb4;
-    --shape-metal-3: #e9edf0;
-    --shape-metal-4: #ffffff;
-    --shape-metal-5: #d6dce1;
-    --shape-metal-6: #a7b0b8;
-    --shape-metal-7: #6a737b;
-    --shape-sphere-1: #ffffff;
-    --shape-sphere-2: #eef1f4;
-    --shape-sphere-3: #bac2c9;
-    --shape-sphere-4: #7f888f;
-    --shape-plate-1: #f4f6f8;
-    --shape-plate-2: #dde2e6;
-    --shape-plate-3: #b9c1c8;
+    --base-metal-1: #737c84;
+    --base-metal-2: #a3acb4;
+    --base-metal-3: #e9edf0;
+    --base-metal-4: #ffffff;
+    --base-metal-5: #d6dce1;
+    --base-metal-6: #a7b0b8;
+    --base-metal-7: #6a737b;
+    --base-sphere-1: #ffffff;
+    --base-sphere-2: #eef1f4;
+    --base-sphere-3: #bac2c9;
+    --base-sphere-4: #7f888f;
+    --base-plate-1: #f4f6f8;
+    --base-plate-2: #dde2e6;
+    --base-plate-3: #b9c1c8;
 
     /* The outline of the metal parts (`METAL_STROKE`), the flat light metal (a rotor ring, a nozzle) */
-    --shape-metal-stroke: #6a737b;
-    --shape-metal-flat: #eee;
-    --shape-metal-flat-2: #ddd;
+    --base-metal-stroke: #6a737b;
+    --base-metal-flat: #eee;
+    --base-metal-flat-2: #ddd;
 
     /* A join, the ends (flanges) of the pipe stubs */
-    --shape-fitting-fill: #eee;
-    --shape-fitting-stroke: #666;
-    --shape-flange-fill: #fff;
+    --base-fitting-fill: #eee;
+    --base-fitting-stroke: #666;
+    --base-flange-fill: #fff;
 
     /* The white faces (valves, gauges, zones, instruments): dark, with light strokes in the dark */
     --shape-face: #fff;
     --shape-valve-stroke: #555;
-    --shape-gauge-stroke: #444;
-    --shape-thermometer-stroke: #6a737b;
-    --shape-zone-stroke: #cad8e3;
+    --base-gauge-stroke: #444;
+    --base-thermometer-stroke: #6a737b;
+    --base-zone-stroke: #cad8e3;
     --shape-instrument-ink: #333;
     --shape-instrument-text: #131e29;
 
@@ -54,7 +54,7 @@
     --shape-smoke: #bbb;
     --shape-smoke-opacity: 0.5;
     --shape-plume: #ffffff;
-    --shape-plenum: #c9cfd4;
+    --base-plenum: #c9cfd4;
     --shape-label: #1e293b;
     /* The frame of the screen (see `Screen`): a guide while editing */
     --shape-screen: #3b82f6;
@@ -83,30 +83,30 @@
     --shape-background-fill: #64748B;
 
     /* The accents of the shapes (see `accentField`): the bands of a chimney, the operators of the valves, a terminal box */
-    --shape-chimney-band: #ED2637;
-    --shape-valve-operator: #666666;
-    --shape-terminal-box: #555555;
-    --shape-motor: #555555;
+    --base-chimney-band: #ED2637;
+    --base-valve-operator: #666666;
+    --base-terminal-box: #555555;
+    --base-motor: #555555;
 
     /* The metal of the details (see `FLAT_SURFACES`): a stem, a shaft, the feet; their edge */
-    --shape-metal-dark: #555555;
-    --shape-metal-mid: #777777;
-    --shape-metal-pale: #999999;
-    --shape-metal-dark-edge: #333333;
-    --shape-fuel: #d97706;
-    --shape-hopper-material: #8d7a62;
-    --shape-flame: #F4A261;
-    --shape-soil: #8b6b4a;
-    --shape-coil: #555555;
-    --shape-cap: #666666;
-    --shape-skid: #555555;
-    --shape-support: #777777;
-    --shape-skirt: #999999;
-    --shape-pivot: #333333;
+    --base-metal-dark: #555555;
+    --base-metal-mid: #777777;
+    --base-metal-pale: #999999;
+    --base-metal-dark-edge: #333333;
+    --base-fuel: #d97706;
+    --base-hopper-material: #8d7a62;
+    --base-flame: #F4A261;
+    --base-soil: #8b6b4a;
+    --base-coil: #555555;
+    --base-cap: #666666;
+    --base-skid: #555555;
+    --base-support: #777777;
+    --base-skirt: #999999;
+    --base-pivot: #333333;
 
     /* A pipe: its default color (the medium), its outline */
     --shape-pipe: #6CC59A;
-    --shape-pipe-outline: #444444;
+    --base-pipe-outline: #444444;
 
     /* The canvas (the background of the paper; a color of the shapes too) */
     --shape-canvas: #F3F7F6;
@@ -124,37 +124,37 @@
 
 :root[data-color-scheme="dark"] {
     /* The steel (the stops of the metal gradients, see `gradients.ts`): blue in the dark */
-    --shape-metal-1: #3f5877;
-    --shape-metal-2: #6f88a8;
-    --shape-metal-3: #b9cbe0;
-    --shape-metal-4: #dbe6f3;
-    --shape-metal-5: #9fb4cf;
-    --shape-metal-6: #6f86a4;
-    --shape-metal-7: #34496a;
-    --shape-sphere-1: #dbe6f3;
-    --shape-sphere-2: #c3d3e6;
-    --shape-sphere-3: #7f97b6;
-    --shape-sphere-4: #3f5877;
-    --shape-plate-1: #cfdcea;
-    --shape-plate-2: #a9bcd3;
-    --shape-plate-3: #7f95b1;
+    --base-metal-1: #3f5877;
+    --base-metal-2: #6f88a8;
+    --base-metal-3: #b9cbe0;
+    --base-metal-4: #dbe6f3;
+    --base-metal-5: #9fb4cf;
+    --base-metal-6: #6f86a4;
+    --base-metal-7: #34496a;
+    --base-sphere-1: #dbe6f3;
+    --base-sphere-2: #c3d3e6;
+    --base-sphere-3: #7f97b6;
+    --base-sphere-4: #3f5877;
+    --base-plate-1: #cfdcea;
+    --base-plate-2: #a9bcd3;
+    --base-plate-3: #7f95b1;
 
     /* The outline of the metal parts (`METAL_STROKE`), the flat light metal (a rotor ring, a nozzle) */
-    --shape-metal-stroke: #5b7699;
-    --shape-metal-flat: #7f95b1;
-    --shape-metal-flat-2: #7f95b1;
+    --base-metal-stroke: #5b7699;
+    --base-metal-flat: #7f95b1;
+    --base-metal-flat-2: #7f95b1;
 
     /* A join, the ends (flanges) of the pipe stubs */
-    --shape-fitting-fill: #a9bcd3;
-    --shape-fitting-stroke: #5b7699;
-    --shape-flange-fill: #a9bcd3;
+    --base-fitting-fill: #a9bcd3;
+    --base-fitting-stroke: #5b7699;
+    --base-flange-fill: #a9bcd3;
 
     /* The white faces (valves, gauges, zones, instruments): dark, with light strokes in the dark */
     --shape-face: #10213a;
     --shape-valve-stroke: #9fb4cf;
-    --shape-gauge-stroke: #9fb4cf;
-    --shape-thermometer-stroke: #9fb4cf;
-    --shape-zone-stroke: #2e4a70;
+    --base-gauge-stroke: #9fb4cf;
+    --base-thermometer-stroke: #9fb4cf;
+    --base-zone-stroke: #2e4a70;
     --shape-instrument-ink: #9fb4cf;
     --shape-instrument-text: #dbe6f3;
 
@@ -174,7 +174,7 @@
     --shape-smoke: #d4d4d8;
     --shape-smoke-opacity: 0.85;
     --shape-plume: #dbe6f3;
-    --shape-plenum: #4a6285;
+    --base-plenum: #4a6285;
     --shape-label: #cfdcee;
     --shape-screen: #e879f9;
     --shape-wire: #94a3b8;
@@ -197,7 +197,7 @@
 
     /* Softer on the dark canvas, the outline apart from it */
     --shape-pipe: #5bb48b;
-    --shape-pipe-outline: #3a4658;
+    --base-pipe-outline: #3a4658;
 
     /* Lighter, softer on the dark canvas */
     --color-blue: #60a5fa;
@@ -206,6 +206,57 @@
     --color-slate: #94a3b8;
     --color-amber: #fbbf24;
     --color-red: #f87171;
+}
+
+
+/*
+ * The style of the diagram (see `style.ts`): its color mixed into the metal, its outline and accent instead of
+ * the defaults of the shapes (their `--base-*`) - an element's own color, outline, accent still over them.
+ */
+:root {
+    --shape-metal-1: color-mix(in oklab, var(--style-color, var(--base-metal-1)) 55%, var(--base-metal-1));
+    --shape-metal-2: color-mix(in oklab, var(--style-color, var(--base-metal-2)) 55%, var(--base-metal-2));
+    --shape-metal-3: color-mix(in oklab, var(--style-color, var(--base-metal-3)) 55%, var(--base-metal-3));
+    --shape-metal-4: color-mix(in oklab, var(--style-color, var(--base-metal-4)) 55%, var(--base-metal-4));
+    --shape-metal-5: color-mix(in oklab, var(--style-color, var(--base-metal-5)) 55%, var(--base-metal-5));
+    --shape-metal-6: color-mix(in oklab, var(--style-color, var(--base-metal-6)) 55%, var(--base-metal-6));
+    --shape-metal-7: color-mix(in oklab, var(--style-color, var(--base-metal-7)) 55%, var(--base-metal-7));
+    --shape-metal-flat: color-mix(in oklab, var(--style-color, var(--base-metal-flat)) 55%, var(--base-metal-flat));
+    --shape-metal-flat-2: color-mix(in oklab, var(--style-color, var(--base-metal-flat-2)) 55%, var(--base-metal-flat-2));
+    --shape-plate-1: color-mix(in oklab, var(--style-color, var(--base-plate-1)) 55%, var(--base-plate-1));
+    --shape-plate-2: color-mix(in oklab, var(--style-color, var(--base-plate-2)) 55%, var(--base-plate-2));
+    --shape-plate-3: color-mix(in oklab, var(--style-color, var(--base-plate-3)) 55%, var(--base-plate-3));
+    --shape-sphere-1: color-mix(in oklab, var(--style-color, var(--base-sphere-1)) 55%, var(--base-sphere-1));
+    --shape-sphere-2: color-mix(in oklab, var(--style-color, var(--base-sphere-2)) 55%, var(--base-sphere-2));
+    --shape-sphere-3: color-mix(in oklab, var(--style-color, var(--base-sphere-3)) 55%, var(--base-sphere-3));
+    --shape-sphere-4: color-mix(in oklab, var(--style-color, var(--base-sphere-4)) 55%, var(--base-sphere-4));
+    --shape-metal-dark: color-mix(in oklab, var(--style-color, var(--base-metal-dark)) 55%, var(--base-metal-dark));
+    --shape-metal-mid: color-mix(in oklab, var(--style-color, var(--base-metal-mid)) 55%, var(--base-metal-mid));
+    --shape-metal-pale: color-mix(in oklab, var(--style-color, var(--base-metal-pale)) 55%, var(--base-metal-pale));
+    --shape-flange-fill: color-mix(in oklab, var(--style-color, var(--base-flange-fill)) 55%, var(--base-flange-fill));
+    --shape-fitting-fill: color-mix(in oklab, var(--style-color, var(--base-fitting-fill)) 55%, var(--base-fitting-fill));
+    --shape-metal-stroke: var(--style-outline, color-mix(in oklab, var(--style-color, var(--base-metal-stroke)) 55%, var(--base-metal-stroke)));
+    --shape-metal-dark-edge: var(--style-outline, color-mix(in oklab, var(--style-color, var(--base-metal-dark-edge)) 55%, var(--base-metal-dark-edge)));
+    --shape-fitting-stroke: var(--style-outline, color-mix(in oklab, var(--style-color, var(--base-fitting-stroke)) 55%, var(--base-fitting-stroke)));
+    --shape-pipe-outline: var(--style-outline, var(--base-pipe-outline));
+    --shape-thermometer-stroke: var(--style-outline, var(--base-thermometer-stroke));
+    --shape-gauge-stroke: var(--style-outline, var(--base-gauge-stroke));
+    --shape-zone-stroke: var(--style-outline, var(--base-zone-stroke));
+    --shape-chimney-band: var(--style-accent, var(--base-chimney-band));
+    --shape-valve-operator: var(--style-accent, var(--base-valve-operator));
+    --shape-terminal-box: var(--style-accent, var(--base-terminal-box));
+    --shape-motor: var(--style-accent, var(--base-motor));
+    --shape-coil: var(--style-accent, var(--base-coil));
+    --shape-cap: var(--style-accent, var(--base-cap));
+    --shape-skid: var(--style-accent, var(--base-skid));
+    --shape-support: var(--style-accent, var(--base-support));
+    --shape-skirt: var(--style-accent, var(--base-skirt));
+    --shape-pivot: var(--style-accent, var(--base-pivot));
+    --shape-plenum: var(--style-accent, var(--base-plenum));
+    --shape-fuel: var(--style-accent, var(--base-fuel));
+    --shape-hopper-material: var(--style-accent, var(--base-hopper-material));
+    --shape-flame: var(--style-accent, var(--base-flame));
+    --shape-soil: var(--style-accent, var(--base-soil));
 }
 
 /* An element in the color of the canvas (see `ShapeView`): its ink as the labels, readable on the canvas */

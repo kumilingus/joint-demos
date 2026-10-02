@@ -1,6 +1,6 @@
 import { dia, mvc, ui } from '@joint/plus';
 import { cellNamespace } from './shapes';
-import { createStencil, setPaletteFinish } from './stencil';
+import { createStencil } from './stencil';
 import { createGraph } from './layers';
 import { createSelection } from './selection';
 import { createNavigator } from './navigator';
@@ -14,6 +14,7 @@ import { setControlsOperable } from './controls';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
 import { ANIMATIONS_ATTRIBUTE } from './animations';
+import { applyStyle, getStyle, STYLE_ATTRIBUTE } from './style';
 import { hideScreen, showScreen } from './screen';
 import {
     type Controller,
@@ -34,7 +35,6 @@ import {
 // The mock of the plant (see `simulation/`): an app with a real plant deletes it and this line
 import SimulationController from './simulation/SimulationController';
 import Snaplines from './Snaplines';
-import type { SurfaceFinish } from './shapes/gradients';
 import { toggleSettings } from './settings';
 
 export class App {
@@ -60,8 +60,6 @@ export class App {
     colorScheme: ColorScheme = getInitialColorScheme();
     /** Whether a moved or resized element aligns with the others (see the settings) */
     snaplinesEnabled = true;
-    /** The finish of the palette shapes (a setting of the editor, see `setPaletteFinish()`) */
-    paletteFinish: SurfaceFinish = 'shaded';
     selection = new mvc.Collection<dia.Cell>();
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;
@@ -82,6 +80,8 @@ export class App {
         }).observe(this.inspectorEl, { childList: true });
 
         this.graph = createGraph();
+        // The style of the diagram on the document (see `style.ts`): loaded with it, changed in the settings
+        this.graph.on(`change:${STYLE_ATTRIBUTE}`, () => this.applyStyle());
 
         this.history = new dia.CommandManager({ ...historyOptions, graph: this.graph });
 
@@ -156,7 +156,8 @@ export class App {
         createGraph().fromJSON(json);
         clearSelection(this);
         // A diagram without images (or favorites) has none (not those of the previous one), all of it animated.
-        this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', ...json });
+        this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', [STYLE_ATTRIBUTE]: {}, ...json });
+        this.applyStyle();
         this.history.reset();
         zoomToFit(this);
         this.paper.unfreeze();
@@ -256,10 +257,12 @@ export class App {
         });
     }
 
-    /** Draw the palette shapes (and those dropped from now on) shaded or flat. */
-    setPaletteFinish(finish: SurfaceFinish): void {
-        this.paletteFinish = finish;
-        setPaletteFinish(this.stencil, finish);
+    /** The style of the diagram on the document (see `style.ts`), its finish on the shapes: on the canvas, in the palette */
+    applyStyle(): void {
+        applyStyle(getStyle(this.graph));
+        const papers: dia.Paper[] = [this.paper];
+        if (this.stencil) papers.push(...Object.keys(this.stencil.options.groups ?? {}).map(group => this.stencil!.getPaper(group)));
+        papers.forEach(paper => paper.model.getElements().forEach(element => element.findView(paper)?.render()));
     }
 
     protected destroyStencil(): void {

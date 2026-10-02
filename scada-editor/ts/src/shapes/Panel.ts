@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
 import Shape from './Shape';
+import { finishOf } from './gradients';
 
 // The track of the liquid: below the value, fixed margins - the track takes the rest of the height
 const WINDOW_TOP = 50;
@@ -222,7 +223,7 @@ export default class Panel extends Shape {
         // The light on the track (`trackShine` in the attributes): shaded only - none in the flat finish
         'track-shine': {
             set(this: dia.ElementView) {
-                if (this.model.get('finish') === 'flat') return { fill: 'none' };
+                if (finishOf(this.model) === 'flat') return { fill: 'none' };
                 return { fill: `url(#${this.paper!.defineGradient(shineGradient)})` };
             }
         }

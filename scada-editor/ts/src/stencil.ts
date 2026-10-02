@@ -22,7 +22,6 @@ import { descriptions } from './descriptions';
 import { CLICK_THRESHOLD } from './config';
 import { LABEL_COLOR } from './const';
 import { type ImageEntry, type ImageLibrary, readImageFile } from './images';
-import { hasFinish, type SurfaceFinish } from './shapes/gradients';
 import ShapeView from './shapes/ShapeView';
 
 // The shapes are shown in the palette smaller than on the canvas.
@@ -134,29 +133,6 @@ export interface StencilImages {
     onUpload: (images: ImageEntry[]) => void;
 }
 
-/**
- * The finish of the palette shapes (a setting of the editor, see `settings.ts`): the shapes dropped from now on
- * have it (a drop clones the palette shape), the diagram is left as it is.
- */
-let paletteFinish: SurfaceFinish = 'shaded';
-
-/** The shape in the finish of the palette: flat set, shaded the default (nothing set) */
-function applyFinish(cell: dia.Cell): void {
-    if (!cell.isElement() || !hasFinish(cell)) return;
-    if (paletteFinish !== 'shaded') {
-        cell.set('finish', paletteFinish);
-    } else {
-        cell.unset('finish');
-    }
-}
-
-/** Change the finish of the palette: of its shapes (redrawn, the layout stays) and of those it makes later. */
-export function setPaletteFinish(stencil: ui.Stencil | null, finish: SurfaceFinish): void {
-    paletteFinish = finish;
-    if (!stencil) return;
-    Object.keys(groups).forEach(group => stencil.getGraph(group).getCells().forEach(applyFinish));
-}
-
 export function createStencil(
     el: HTMLElement,
     scroller: ui.PaperScroller,
@@ -202,7 +178,7 @@ export function createStencil(
             getImages,
             clickThreshold: CLICK_THRESHOLD,
             cellViewNamespace: cellNamespace,
-            // Rendered again when the finish changes (see `setPaletteFinish()`)
+            // Rendered again when an attribute its special attributes read changes (see `ShapeView`)
             elementView: (_element, namespaceView) => namespaceView ?? ShapeView
         })
     });
@@ -227,7 +203,7 @@ export function createStencil(
     return stencil;
 }
 
-/** The shapes of the palette by the groups (new ones each time: a shape is in one graph only), with their tooltips, in its finish */
+/** The shapes of the palette by the groups (new ones each time: a shape is in one graph only), with their tooltips */
 function createShapes(): Record<string, dia.Cell[]> {
     const shapes: Record<string, dia.Cell[]> = {
         rotating: [
@@ -348,10 +324,7 @@ function createShapes(): Record<string, dia.Cell[]> {
             new Zone()
         ]
     };
-    Object.values(shapes).flat().forEach((cell) => {
-        setTooltip(cell);
-        applyFinish(cell);
-    });
+    Object.values(shapes).flat().forEach(setTooltip);
     return shapes;
 }
 

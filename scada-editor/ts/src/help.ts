@@ -30,20 +30,13 @@ const FIELD_HELP: Record<string, string> = {
         Lit metal: a 3D look, close to the real equipment.
         <strong class="tooltip-heading">Flat</strong>
         Its color as it is, every part outlined, as the <em>high-performance HMI</em> style (ISA-101) draws the
-        equipment. In the color <em>Canvas</em>: a line drawing, as a P&amp;ID.`,
+        equipment. In the color <em>Canvas</em>: a line drawing, as a P&amp;ID.
+        <strong class="tooltip-heading">Auto</strong>
+        The finish of the diagram (Settings - Style).`,
     outline: `
         <strong>Outline</strong> - the outline of the surfaces of the element: one color, one width for all of them.
         <strong class="tooltip-heading">Auto</strong>
         As the shape draws it (in the finish <em>Flat</em>: the edge of the metal).`,
-    paletteFinish: `
-        <strong>Palette finish</strong> - the finish of the shapes in the palette, and of the shapes dropped
-        from it from now on. The diagram stays as it is (an element's own finish is set in its inspector).
-        <strong class="tooltip-heading">Flat - high-performance HMI</strong>
-        The ISA-101 standard (<em>Human Machine Interfaces for Process Automation Systems</em>) recommends
-        muted, flat, mostly gray graphics: the equipment stays calm, so that color is left for what needs
-        attention - the abnormal values and the alarms.
-        <strong class="tooltip-heading">Shaded</strong>
-        Lit metal: a 3D look, close to the real equipment.`,
     animations: `
         <strong>Animations</strong> - what moves in the run mode. Saved with the diagram.
         <strong class="tooltip-heading">Full</strong>
@@ -53,6 +46,17 @@ const FIELD_HELP: Record<string, string> = {
         for what needs attention - the alarms. A level still glides to its new value.
         <strong class="tooltip-heading">Reduced motion</strong>
         A system set to reduce motion gets the alarms only.`,
+    'style/color': `
+        <strong>Style</strong> - the colors of the whole diagram: of every shape without a color of its own, in the
+        palette too. Saved with the diagram.
+        <strong class="tooltip-heading">Finish</strong>
+        Shaded or flat: of every shape without a finish of its own (its finish <em>Auto</em>).
+        <strong class="tooltip-heading">Color</strong>
+        Mixed into the metal of the equipment (the shading stays).
+        <strong class="tooltip-heading">Outline, Accent</strong>
+        The outlines; the markings (bands, handwheels, motors, caps, ...).
+        <strong class="tooltip-heading">Auto</strong>
+        The colors of the shapes themselves.`,
     screen: `
         <strong>Screen</strong> - the part of the diagram the run mode shows: in the whole window,
         fitted to it, without scrolling and zooming; the toolbar slides away (and back when the pointer

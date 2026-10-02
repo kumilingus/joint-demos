@@ -4,13 +4,13 @@ import { clearSelection, selectCell } from './actions';
 import { addScreen, getScreen } from './screen';
 import Screen from './shapes/Screen';
 import { renderLabel } from './help';
-import type { SurfaceFinish } from './shapes/gradients';
 import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from './animations';
+import { type DiagramStyle, getStyle, STYLE_ATTRIBUTE } from './style';
+import { getColorFieldValue, renderColorField } from './color-field';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
- * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the snaplines,
- * the finish of the palette shapes).
+ * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the snaplines).
  * While they are open, the screen can be
  * moved (and selected, resized); it is out of the way otherwise.
  */
@@ -31,7 +31,6 @@ interface ScreenSettings {
 /** The settings of the editor (not saved with the diagram) */
 interface EditorSettings {
     snaplines: boolean;
-    paletteFinish: SurfaceFinish;
 }
 
 /** A change of the settings following the diagram (not changing it back) */
@@ -83,8 +82,8 @@ export function openSettings(app: App): void {
     app.inspectorEl.append(el);
 
     // A cell (not in the graph): the inspector unsets its properties (`removeProp()`)
-    const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled, paletteFinish: app.paletteFinish };
-    const settings = new dia.Cell({ ...getScreenSettings(graph), animations: getAnimationLevel(graph), ...editorSettings });
+    const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled };
+    const settings = new dia.Cell({ ...getScreenSettings(graph), animations: getAnimationLevel(graph), style: getStyle(graph), ...editorSettings });
     const listener = new mvc.Listener<[]>();
     // The settings change the diagram (the settings of the diagram are its cells)...
     listener.listenTo(settings, 'change:screen', (_cell: dia.Cell, enabled: boolean, options: SettingsOptions) => {
@@ -98,11 +97,14 @@ export function openSettings(app: App): void {
     listener.listenTo(settings, 'change:size', (_cell: dia.Cell, size: dia.Size | undefined, options: SettingsOptions) => {
         if (!options.diagram && size) getScreen(graph)?.resize(size.width, size.height);
     });
+    listener.listenTo(settings, 'change:style', (_cell: dia.Cell, style: DiagramStyle, options: SettingsOptions) => {
+        if (!options.diagram) graph.set(STYLE_ATTRIBUTE, { ...style });
+    });
+    listener.listenTo(graph, `change:${STYLE_ATTRIBUTE}`, () => settings.set({ style: getStyle(graph) }, FROM_DIAGRAM));
     listener.listenTo(settings, 'change:animations', (_cell: dia.Cell, level: AnimationLevel, options: SettingsOptions) => {
         if (!options.diagram) graph.set(ANIMATIONS_ATTRIBUTE, level);
     });
     listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => app.setSnaplinesEnabled(enabled));
-    listener.listenTo(settings, 'change:paletteFinish', (_cell: dia.Cell, finish: SurfaceFinish) => app.setPaletteFinish(finish));
     // ... and follow it.
     listener.listenTo(graph, 'add remove reset change:size', () => {
         const { screen, size } = getScreenSettings(graph);
@@ -125,6 +127,23 @@ export function openSettings(app: App): void {
                 width: { type: 'number', label: 'Width', min: 100, group: 'screen', index: 2, when: withScreen },
                 height: { type: 'number', label: 'Height', min: 100, group: 'screen', index: 3, when: withScreen }
             },
+            // The style of the diagram (see `style.ts`): none of a color - the defaults of the shapes (Auto)
+            style: {
+                finish: {
+                    type: 'select-button-group',
+                    label: 'Finish',
+                    options: [
+                        { value: 'shaded', content: 'Shaded' },
+                        { value: 'flat', content: 'Flat' }
+                    ],
+                    defaultValue: 'shaded',
+                    group: 'style',
+                    index: 0
+                },
+                color: { type: 'color', label: 'Color', auto: true, graph, group: 'style', index: 1 },
+                outline: { type: 'color', label: 'Outline', auto: true, graph, group: 'style', index: 2 },
+                accent: { type: 'color', label: 'Accent', auto: true, graph, group: 'style', index: 3 }
+            },
             // What moves in the run mode (see `AnimationLevel`)
             animations: {
                 type: 'select-button-group',
@@ -137,26 +156,19 @@ export function openSettings(app: App): void {
                 index: 1
             },
             // A moved or resized element aligns with the others
-            snaplines: { type: 'toggle', label: 'Snaplines', group: 'editor', index: 1 },
-            // The palette shapes (and the shapes dropped from them) shaded or flat; the diagram stays
-            paletteFinish: {
-                type: 'select-button-group',
-                label: 'Palette finish',
-                options: [
-                    { value: 'shaded', content: 'Shaded' },
-                    { value: 'flat', content: 'Flat' }
-                ],
-                group: 'editor',
-                index: 2
-            }
+            snaplines: { type: 'toggle', label: 'Snaplines', group: 'editor', index: 1 }
         },
         groups: {
             screen: { label: 'Screen', index: 1 },
-            runtime: { label: 'Run mode', index: 2 },
-            editor: { label: 'Editor', index: 3 }
+            style: { label: 'Style', index: 2 },
+            runtime: { label: 'Run mode', index: 3 },
+            editor: { label: 'Editor', index: 4 }
         },
         // The help of the screen (see `help.ts`)
-        renderLabel
+        renderLabel,
+        // The color fields of the style (see `color-field.ts`)
+        renderFieldContent: renderColorField,
+        getFieldValue: getColorFieldValue
     });
     inspector.render();
     el.append(inspector.el);
