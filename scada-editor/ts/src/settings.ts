@@ -5,10 +5,12 @@ import { addScreen, getScreen } from './screen';
 import Screen from './shapes/Screen';
 import { renderLabel } from './help';
 import type { SurfaceFinish } from './shapes/gradients';
+import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from './animations';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
- * a screen (see `screen.ts`) and its size; the preferences of the editor (the snaplines, the finish of the palette shapes).
+ * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the snaplines,
+ * the finish of the palette shapes).
  * While they are open, the screen can be
  * moved (and selected, resized); it is out of the way otherwise.
  */
@@ -82,7 +84,7 @@ export function openSettings(app: App): void {
 
     // A cell (not in the graph): the inspector unsets its properties (`removeProp()`)
     const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled, paletteFinish: app.paletteFinish };
-    const settings = new dia.Cell({ ...getScreenSettings(graph), ...editorSettings });
+    const settings = new dia.Cell({ ...getScreenSettings(graph), animations: getAnimationLevel(graph), ...editorSettings });
     const listener = new mvc.Listener<[]>();
     // The settings change the diagram (the settings of the diagram are its cells)...
     listener.listenTo(settings, 'change:screen', (_cell: dia.Cell, enabled: boolean, options: SettingsOptions) => {
@@ -96,6 +98,9 @@ export function openSettings(app: App): void {
     listener.listenTo(settings, 'change:size', (_cell: dia.Cell, size: dia.Size | undefined, options: SettingsOptions) => {
         if (!options.diagram && size) getScreen(graph)?.resize(size.width, size.height);
     });
+    listener.listenTo(settings, 'change:animations', (_cell: dia.Cell, level: AnimationLevel, options: SettingsOptions) => {
+        if (!options.diagram) graph.set(ANIMATIONS_ATTRIBUTE, level);
+    });
     listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => app.setSnaplinesEnabled(enabled));
     listener.listenTo(settings, 'change:paletteFinish', (_cell: dia.Cell, finish: SurfaceFinish) => app.setPaletteFinish(finish));
     // ... and follow it.
@@ -104,6 +109,7 @@ export function openSettings(app: App): void {
         settings.set({ screen }, FROM_DIAGRAM);
         if (size) settings.set({ size }, FROM_DIAGRAM);
     });
+    listener.listenTo(graph, 'change:animations', () => settings.set({ animations: getAnimationLevel(graph) }, FROM_DIAGRAM));
     // The screen back (an undo of its removal): selected, as when the settings are opened
     listener.listenTo(graph, 'add', (cell: unknown) => {
         if (cell instanceof Screen) selectCell(app, cell);
@@ -118,6 +124,17 @@ export function openSettings(app: App): void {
             size: {
                 width: { type: 'number', label: 'Width', min: 100, group: 'screen', index: 2, when: withScreen },
                 height: { type: 'number', label: 'Height', min: 100, group: 'screen', index: 3, when: withScreen }
+            },
+            // What moves in the run mode (see `AnimationLevel`)
+            animations: {
+                type: 'select-button-group',
+                label: 'Animations',
+                options: [
+                    { value: 'full', content: 'Full' },
+                    { value: 'alarms', content: 'Alarms only' }
+                ],
+                group: 'runtime',
+                index: 1
             },
             // A moved or resized element aligns with the others
             snaplines: { type: 'toggle', label: 'Snaplines', group: 'editor', index: 1 },
@@ -135,7 +152,8 @@ export function openSettings(app: App): void {
         },
         groups: {
             screen: { label: 'Screen', index: 1 },
-            editor: { label: 'Editor', index: 2 }
+            runtime: { label: 'Run mode', index: 2 },
+            editor: { label: 'Editor', index: 3 }
         },
         // The help of the screen (see `help.ts`)
         renderLabel

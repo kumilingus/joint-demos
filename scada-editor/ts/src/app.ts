@@ -13,6 +13,7 @@ import { addImages, clearSelection, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
+import { ANIMATIONS_ATTRIBUTE } from './animations';
 import { hideScreen, showScreen } from './screen';
 import {
     type Controller,
@@ -147,8 +148,8 @@ export class App {
         // the diagram is not replaced by a part of the file.
         createGraph().fromJSON(json);
         clearSelection(this);
-        // A diagram without images (or favorites) has none (not those of the previous one).
-        this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], ...json });
+        // A diagram without images (or favorites) has none (not those of the previous one), all of it animated.
+        this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', ...json });
         this.history.reset();
         zoomToFit(this);
         this.paper.unfreeze();

@@ -7,12 +7,39 @@ import { BOX_POSITIONS } from './shapes/ConveyorBelt';
  * The animations of the runtime mode (the Web Animations API on the views of the cells):
  * the rotors spin, the agitators stir and the conveyors carry while the power is on, the liquid flows through the pipes and the open valves,
  * the flames flicker, the smoke rises, the liquid in a level gauge rises and falls to its new level.
- * Nothing is animated while the diagram is edited.
+ * Nothing is animated while the diagram is edited; in the run mode, what moves is the level of the diagram
+ * (see `AnimationLevel`): all of it, or the alarms only.
  *
  * An animation doesn't change the model: when it is cancelled, the view is as it was.
  */
 
 type Animator = (cellView: dia.CellView) => Animation[];
+
+/**
+ * What an animation shows: the equipment running (rotors, agitators, flames, smoke, ...), the liquid flowing,
+ * an alarm, a level moving to its new value.
+ */
+export type AnimationKind = 'equipment' | 'flow' | 'alarm' | 'level';
+
+/**
+ * How much of the plant moves (a setting of the diagram, see `settings.ts`): all of it, or the alarms only - the
+ * high-performance HMI style (ISA-101): the steady plant still, the motion left for what needs attention
+ * (a level glides to its new value: a change, not a constant motion).
+ */
+export type AnimationLevel = 'full' | 'alarms';
+
+const LEVEL_KINDS: Record<AnimationLevel, Set<AnimationKind>> = {
+    full: new Set(['equipment', 'flow', 'alarm', 'level']),
+    alarms: new Set(['alarm', 'level'])
+};
+
+/** The attribute of the graph with the animation level (saved with the diagram) */
+export const ANIMATIONS_ATTRIBUTE = 'animations';
+
+/** The animation level of the diagram (all of it by default) */
+export function getAnimationLevel(graph: dia.Graph): AnimationLevel {
+    return graph.get(ANIMATIONS_ATTRIBUTE) === 'alarms' ? 'alarms' : 'full';
+}
 
 const LOOP: KeyframeAnimationOptions = { iterations: Infinity };
 
@@ -113,71 +140,113 @@ const center = (cellView: dia.CellView): [number, number] => {
     return [width / 2, height / 2];
 };
 
-const animators: Record<string, Animator> = {
+const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
     // The rotor and the spokes are drawn around the center already (their groups are moved there).
-    Pump: view => isOn(view.model) ? spin(node(view, 'rotor'), [0, 0], 1000) : [],
-    ConveyorBelt: view => isOn(view.model) ? carry(view, 2000) : [],
+    Pump: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? spin(node(view, 'rotor'), [0, 0], 1000) : []
+    },
+    ConveyorBelt: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? carry(view, 2000) : []
+    },
     // The impellers at the bottom of the shafts (see `MixingTank`, `Reactor`)
-    MixingTank: view => isOn(view.model) ? stir(view, 0.8, 900) : [],
-    Reactor: view => isOn(view.model) ? stir(view, 0.75, 1100) : [],
-    Blower: view => isOn(view.model) ? spin(node(view, 'spokes'), [0, 0], 700) : [],
-    Fan: view => isOn(view.model) ? spin(node(view, 'blades'), center(view), 600) : [],
+    MixingTank: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? stir(view, 0.8, 900) : []
+    },
+    Reactor: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? stir(view, 0.75, 1100) : []
+    },
+    Blower: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? spin(node(view, 'spokes'), [0, 0], 700) : []
+    },
+    Fan: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? spin(node(view, 'blades'), center(view), 600) : []
+    },
     // The blades of each fan are drawn around its hub (their groups are moved there).
-    AirCooler: view => isOn(view.model)
-        ? [...spin(node(view, 'fan1Blades'), [0, 0], 500), ...spin(node(view, 'fan2Blades'), [0, 0], 550)]
-        : [],
+    AirCooler: {
+        kind: 'equipment',
+        animate: view => isOn(view.model)
+            ? [...spin(node(view, 'fan1Blades'), [0, 0], 500), ...spin(node(view, 'fan2Blades'), [0, 0], 550)]
+            : []
+    },
     // The liquid flows through the window of an open valve as through the pipes.
-    ControlValve: view => {
-        const target = node(view, 'flow');
-        if (!target || !view.model.get('open')) return [];
-        return [flowAlong(target)];
+    ControlValve: {
+        kind: 'flow',
+        animate: view => {
+            const target = node(view, 'flow');
+            if (!target || !view.model.get('open')) return [];
+            return [flowAlong(target)];
+        }
     },
-    Boiler: view => ['flameOuter', 'flameInner'].flatMap((selector, index) => {
-        const target = node(view, selector);
-        if (!target) return [];
-        return [target.animate([{ opacity: 1 }, { opacity: 0.65 }, { opacity: 1 }], {
-            ...LOOP,
-            duration: 500 + index * 170
-        })];
-    }),
-    Chimney: view => {
-        const target = node(view, 'smoke');
-        if (!target) return [];
-        return [target.animate([
-            { transform: 'translateY(0)', opacity: 0.9 },
-            { transform: 'translateY(-12px)', opacity: 0.3 }
-        ], { ...LOOP, duration: 1800, easing: 'ease-out' })];
+    Boiler: {
+        kind: 'equipment',
+        animate: view => ['flameOuter', 'flameInner'].flatMap((selector, index) => {
+            const target = node(view, selector);
+            if (!target) return [];
+            return [target.animate([{ opacity: 1 }, { opacity: 0.65 }, { opacity: 1 }], {
+                ...LOOP,
+                duration: 500 + index * 170
+            })];
+        })
     },
-    CoolingTower: view => {
-        const target = node(view, 'plume');
-        if (!target) return [];
-        const { width } = (view.model as dia.Element).size();
-        // The plume grows out of the top of the tower.
-        const origin = { transformBox: 'view-box', transformOrigin: `${width / 2}px 10px` };
-        return [target.animate([
-            { ...origin, transform: 'scale(1)' },
-            { ...origin, transform: 'scale(1.06, 1.12)' }
-        ], { ...LOOP, duration: 2200, direction: 'alternate', easing: 'ease-in-out' })];
+    Chimney: {
+        kind: 'equipment',
+        animate: view => {
+            const target = node(view, 'smoke');
+            if (!target) return [];
+            return [target.animate([
+                { transform: 'translateY(0)', opacity: 0.9 },
+                { transform: 'translateY(-12px)', opacity: 0.3 }
+            ], { ...LOOP, duration: 1800, easing: 'ease-out' })];
+        }
+    },
+    CoolingTower: {
+        kind: 'equipment',
+        animate: view => {
+            const target = node(view, 'plume');
+            if (!target) return [];
+            const { width } = (view.model as dia.Element).size();
+            // The plume grows out of the top of the tower.
+            const origin = { transformBox: 'view-box', transformOrigin: `${width / 2}px 10px` };
+            return [target.animate([
+                { ...origin, transform: 'scale(1)' },
+                { ...origin, transform: 'scale(1.06, 1.12)' }
+            ], { ...LOOP, duration: 2200, direction: 'alternate', easing: 'ease-in-out' })];
+        }
     },
     // The rotor of a wind turbine (drawn around its hub, the group moved there)
-    WindTurbine: view => isOn(view.model) ? spin(node(view, 'rotor'), [0, 0], 3000) : [],
-    // The exhaust of a running diesel generator smokes.
-    DieselGenerator: view => {
-        const target = node(view, 'smoke');
-        if (!target || !isOn(view.model)) return [];
-        return [target.animate([
-            { transform: 'translateY(0)', opacity: 0.9 },
-            { transform: 'translateY(-12px)', opacity: 0.2 }
-        ], { ...LOOP, duration: 1400, easing: 'ease-out' })];
+    WindTurbine: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? spin(node(view, 'rotor'), [0, 0], 3000) : []
     },
-    Beacon: view => {
-        const target = node(view, 'glow');
-        if (!target || !isOn(view.model)) return [];
-        return [target.animate([{ opacity: 0.3 }, { opacity: 1 }], {
-            ...LOOP,
-            duration: 500,
-            direction: 'alternate'
-        })];
+    // The exhaust of a running diesel generator smokes.
+    DieselGenerator: {
+        kind: 'equipment',
+        animate: view => {
+            const target = node(view, 'smoke');
+            if (!target || !isOn(view.model)) return [];
+            return [target.animate([
+                { transform: 'translateY(0)', opacity: 0.9 },
+                { transform: 'translateY(-12px)', opacity: 0.2 }
+            ], { ...LOOP, duration: 1400, easing: 'ease-out' })];
+        }
+    },
+    Beacon: {
+        kind: 'alarm',
+        animate: view => {
+            const target = node(view, 'glow');
+            if (!target || !isOn(view.model)) return [];
+            return [target.animate([{ opacity: 0.3 }, { opacity: 1 }], {
+                ...LOOP,
+                duration: 500,
+                direction: 'alternate'
+            })];
+        }
     }
 };
 
@@ -189,11 +258,18 @@ const liquidKeyframe = ({ y, height, fill }: LiquidState): Keyframe => ({ y: `${
 export class Animations {
 
     paper: dia.Paper;
+    /** What moves (see `AnimationLevel`): set before `start()` */
+    level: AnimationLevel = 'full';
     running = new Map<dia.Cell.ID, Animation[]>();
     levels = new Map<dia.Cell.ID, Animation>();
 
     constructor(paper: dia.Paper) {
         this.paper = paper;
+    }
+
+    /** Whether the animations of the kind run at the level */
+    allows(kind: AnimationKind): boolean {
+        return LEVEL_KINDS[this.level].has(kind);
     }
 
     start(): void {
@@ -211,11 +287,12 @@ export class Animations {
     animate(cell: dia.Cell): void {
         this.running.get(cell.id)?.forEach(animation => animation.cancel());
         this.running.delete(cell.id);
-        // Not every type of element is animated.
-        const animator = cell.isLink() ? flow : animators[cell.get('type')] as Animator | undefined;
-        const cellView = animator && cell.findView(this.paper);
+        // Not every type of element is animated, nor every kind at the level.
+        const animator = cell.isLink() ? { kind: 'flow' as const, animate: flow } : animators[cell.get('type')];
+        if (!animator || !this.allows(animator.kind)) return;
+        const cellView = cell.findView(this.paper);
         if (!cellView) return;
-        const animations = animator(cellView);
+        const animations = animator.animate(cellView);
         if (animations.length > 0) this.running.set(cell.id, animations);
     }
 
@@ -226,6 +303,7 @@ export class Animations {
     animateLevel(panel: Panel): void {
         this.levels.get(panel.id)?.cancel();
         this.levels.delete(panel.id);
+        if (!this.allows('level')) return;
         const liquid = panel.findView(this.paper)?.findNode('liquid') as SVGElement | undefined;
         if (!liquid) return;
         const animation = liquid.animate([

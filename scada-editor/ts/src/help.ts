@@ -39,6 +39,15 @@ const FIELD_HELP: Record<string, string> = {
         attention - the abnormal values and the alarms.
         <strong class="tooltip-heading">Shaded</strong>
         Lit metal: a 3D look, close to the real equipment.`,
+    animations: `
+        <strong>Animations</strong> - what moves in the run mode. Saved with the diagram.
+        <strong class="tooltip-heading">Full</strong>
+        The equipment runs: rotors spin, agitators stir, the liquid flows, flames flicker, the alarms pulse.
+        <strong class="tooltip-heading">Alarms only - high-performance HMI</strong>
+        The ISA-101 standard keeps the steady plant still: the eye goes to what moves, so the motion is left
+        for what needs attention - the alarms. A level still glides to its new value.
+        <strong class="tooltip-heading">Reduced motion</strong>
+        A system set to reduce motion gets the alarms only.`,
     screen: `
         <strong>Screen</strong> - the part of the diagram the run mode shows: in the whole window,
         fitted to it, without scrolling and zooming; the toolbar slides away (and back when the pointer
