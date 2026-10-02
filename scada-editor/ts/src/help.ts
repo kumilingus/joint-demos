@@ -24,6 +24,12 @@ const FIELD_HELP: Record<string, string> = {
         the opening of a valve), operated in the run mode.
         <strong class="tooltip-heading">Off</strong>
         The element only shows its state: it is operated by the plant alone.`,
+    finish: `
+        <strong>Finish</strong> - how the surfaces of the element are drawn, in its color.
+        <strong class="tooltip-heading">Shaded</strong>
+        Lit metal: a 3D look, close to the real equipment.
+        <strong class="tooltip-heading">Flat</strong>
+        One tone, as the <em>high-performance HMI</em> style (ISA-101) draws the equipment.`,
     screen: `
         <strong>Screen</strong> - the part of the diagram the run mode shows: in the whole window,
         fitted to it, without scrolling and zooming; the toolbar slides away (and back when the pointer

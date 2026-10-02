@@ -154,6 +154,15 @@ const SURFACE_GRADIENTS = {
 /** The fill of a surface: a shading (by the form of the part), or flat (`--shape-metal-flat`, `--shape-metal-flat-2`) */
 export type SurfaceFill = keyof typeof SURFACE_GRADIENTS | 'flat' | 'flat-2';
 
+/**
+ * The finish of the surfaces of an element (its `finish`, set in the inspector): shaded (their gradients),
+ * or flat - one tone, as the high-performance HMI (ISA-101) style draws the equipment.
+ */
+export type SurfaceFinish = 'shaded' | 'flat';
+
+// A shaded surface made flat: the middle tone of its shading
+const FLAT_SHADING = 'var(--shape-metal-5)';
+
 // The outlines of the surfaces
 const SURFACE_STROKES = {
     // The shaded edge of the metal: the outline blends into it
@@ -169,16 +178,16 @@ function tintGradient(gradient: dia.SVGGradientJSON, color: string): dia.SVGGrad
 }
 
 /**
- * The special attributes of the surfaces of an element, in its color: `surfaceFill` (the shading of the part),
- * `surfaceStroke` (its outline). The view renders them again when the color changes (see `ShapeView`).
+ * The special attributes of the surfaces of an element, in its color and its finish: `surfaceFill` (the shading
+ * of the part), `surfaceStroke` (its outline). The view renders them again when they change (see `ShapeView`).
  */
 export const surfaceAttributes = {
     // `surfaceFill` in the attributes
     'surface-fill': {
         set(this: dia.ElementView, fill: SurfaceFill) {
             const color = this.model.get('color');
-            if (fill === 'flat' || fill === 'flat-2') {
-                const base = `var(--shape-metal-${fill})`;
+            if (fill === 'flat' || fill === 'flat-2' || this.model.get('finish') === 'flat') {
+                const base = fill === 'flat' || fill === 'flat-2' ? `var(--shape-metal-${fill})` : FLAT_SHADING;
                 return { fill: isTint(color) ? tint(color, base) : base };
             }
             const gradient = SURFACE_GRADIENTS[fill];
