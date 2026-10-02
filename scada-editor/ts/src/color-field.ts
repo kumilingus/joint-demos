@@ -76,7 +76,19 @@ export function rememberColor(color: string): void {
  * by the inspector as its own (it has the attribute and the type), and the swatches setting it.
  * `undefined` for the other fields and the colors of a list (the default content).
  */
-export function renderColorField(options: { type?: string; label?: string; defaultValue?: unknown }, path: string, value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
+/**
+ * The options of a color field: `mixed` - the cells it is for (see `selection-inspector.ts`) have different
+ * colors (none is shown); `graph` - the diagram of the colors to pick, for a cell not in it (a stand-in).
+ */
+interface ColorFieldOptions {
+    type?: string;
+    label?: string;
+    defaultValue?: unknown;
+    mixed?: boolean;
+    graph?: dia.Graph;
+}
+
+export function renderColorField(options: ColorFieldOptions, path: string, value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
     if (options.type !== 'color' || /\/\d+\//.test(path)) return undefined;
     const el = document.createElement('div');
     el.className = 'color-field-content';
@@ -89,7 +101,19 @@ export function renderColorField(options: { type?: string; label?: string; defau
     input.className = 'color';
     input.dataset.attribute = path;
     input.dataset.type = 'color';
-    if (isHexColor(value) || isThemeColor(value)) input.value = resolveColor(value);
+    if (options.mixed) {
+        // None of the colors (the inspector gives the field its default instead of no value)
+        el.classList.add('mixed');
+        input.title = 'Mixed: the colors differ';
+    } else if (isHexColor(value) || isThemeColor(value)) {
+        input.value = resolveColor(value);
+    }
+    // A color picked: the one of them all now
+    const unmix = () => {
+        el.classList.remove('mixed');
+        input.removeAttribute('title');
+    };
+    input.addEventListener('change', unmix);
     // The input and the swatches on a row
     const row = document.createElement('div');
     row.className = 'color-field-row';
@@ -112,11 +136,12 @@ export function renderColorField(options: { type?: string; label?: string; defau
         const swatch = createSwatch(defaultColor, 'Default: the color of the theme (light / dark)', () => {
             cell.prop(path.split('/'), defaultColor);
             input.value = resolveColor(defaultColor);
+            unmix();
         });
         swatch.classList.add('theme');
         swatches.append(swatch);
     }
-    const graph = cell.graph;
+    const graph = cell.graph ?? options.graph;
     [...new Set([...recentColors, ...(graph ? diagramColors(graph) : [])])]
         .filter(color => color !== String(defaultColor).toLowerCase())
         .slice(0, MAX_SWATCHES - swatches.childElementCount)

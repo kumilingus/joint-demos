@@ -710,6 +710,20 @@ body {
     cursor: pointer;
 }
 
+/* The appearance of the members of a group: in the inspector of the group, under its fields (see `inspector.ts`) */
+.joint-inspector .joint-inspector {
+    position: static;
+    overflow: visible;
+}
+
+/* The note over the appearance of the members of a group (see `inspector.ts`) */
+.appearance-note {
+    margin: 0 16px 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+}
+
 /* The members of a group in the inspector (see `inspector.ts`) */
 .joint-inspector .group-members ul {
     margin: 0;
@@ -769,6 +783,15 @@ body {
 
 .joint-inspector .color-swatch:hover {
     transform: scale(1.12);
+}
+
+/* The colors of the cells differ (see `selection-inspector.ts`): none shown, a striped input */
+.joint-inspector .color-field-content.mixed input[type="color"]::-webkit-color-swatch {
+    background: repeating-linear-gradient(135deg, var(--muted) 0 6px, var(--background) 6px 12px) !important;
+}
+
+.joint-inspector .color-field-content.mixed input[type="color"]::-moz-color-swatch {
+    background: repeating-linear-gradient(135deg, var(--muted) 0 6px, var(--background) 6px 12px) !important;
 }
 
 /* The color of the theme (a CSS variable): marked as such - half of it in the other scheme's tone */

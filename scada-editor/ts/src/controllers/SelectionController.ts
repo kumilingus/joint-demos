@@ -2,7 +2,7 @@ import { dia, linkTools, ui } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { GRID_SIZE, SELECTION_PADDING } from '../const';
-import { closeInspector, openInspector } from '../inspector';
+import { closeInspector, openInspector, openSelectionInspector } from '../inspector';
 import { selectCell } from '../actions';
 import { closeShapePreview } from '../shape-preview';
 import { closeSettings, isSettingsOpen, openSettings } from '../settings';
@@ -26,6 +26,10 @@ export default class SelectionController extends Controller {
         this.listenTo(selection, 'remove', onSelectionRemove);
         this.listenTo(graph, 'remove', onCellRemove);
         this.listenTo(graph, 'add remove change:parent', onMembersChange);
+        // The inspector of several cells shows their values (of a stand-in, see `selection-inspector.ts`): after an undo, a redo, again
+        this.listenTo(this.context.history, 'stack:undo stack:redo', (app: App) => {
+            if (app.selection.length > 1 || isGroup(app.selection.at(0))) updateInspector(app);
+        });
     }
 }
 
@@ -77,6 +81,8 @@ function updateInspector(app: App, keepSettings = false) {
     closeSettings(app);
     if (cell) {
         openInspector(inspectorEl, cell, member => selectCell(app, member));
+    } else if (selection.length > 1) {
+        openSelectionInspector(inspectorEl, selection.toArray());
     } else {
         closeInspector();
     }

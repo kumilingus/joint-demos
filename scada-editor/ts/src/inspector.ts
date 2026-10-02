@@ -5,6 +5,7 @@ import { LAYER_NAMES } from './layers';
 import { renderLabel } from './help';
 import { colorFieldOf, getColorFieldValue, rememberColor, renderColorField } from './color-field';
 import { isGroup } from './shapes/Group';
+import { appearanceTargets, createAppearanceInspector } from './selection-inspector';
 import { hasShading } from './shapes/gradients';
 import { type Arrowhead, arrowheadMarker } from './shapes/Arrow';
 import { descriptions } from './descriptions';
@@ -321,6 +322,31 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     };
 }
 
+/** The inspector of the appearance of several cells (see `selection-inspector.ts`), if one is open */
+let appearance: ui.Inspector | null = null;
+
+/** Open the inspector of the appearance of the cells (see `selection-inspector.ts`) in the element, with a note under its heading */
+function openAppearanceInspector(el: HTMLElement, cells: dia.Cell[], label: string, note?: string): void {
+    const inspector = createAppearanceInspector(cells, label);
+    if (!inspector) return;
+    inspector.render();
+    if (note) {
+        const noteEl = document.createElement('p');
+        noteEl.className = 'appearance-note';
+        noteEl.textContent = note;
+        inspector.el.querySelector('.group-label')?.after(noteEl);
+    }
+    el.append(inspector.el);
+    trackPickedColors(inspector.el);
+    appearance = inspector;
+}
+
+/** Open the inspector of several selected cells: their appearance at once (a group for its members) */
+export function openSelectionInspector(el: HTMLElement, cells: dia.Cell[]): void {
+    closeInspector();
+    openAppearanceInspector(el, appearanceTargets(cells), `Appearance · ${cells.length} selected`);
+}
+
 /** Open the inspector of the cell; a click on a member of a group selects it (`onMemberSelect`). */
 export function openInspector(el: HTMLElement, cell: dia.Cell, onMemberSelect?: (member: dia.Cell) => void): void {
     closeInspector();
@@ -336,6 +362,11 @@ export function openInspector(el: HTMLElement, cell: dia.Cell, onMemberSelect?: 
         getFieldValue
     });
     trackPickedColors(inspector.el);
+    // A group: the appearance of its members, set now (it has none of its own) - under its fields, in its inspector
+    if (isGroup(cell)) {
+        openAppearanceInspector(inspector.el, appearanceTargets([cell]), 'Members\' appearance',
+            'Sets the members as they are now: the group has no color of its own, a shape added to it later keeps its own.');
+    }
 }
 
 /**
@@ -377,4 +408,9 @@ export function closeInspector(): void {
     const { instance } = ui.Inspector;
     if (instance) savePickedColors(instance.el);
     ui.Inspector.close();
+    if (appearance) {
+        savePickedColors(appearance.el);
+        appearance.remove();
+        appearance = null;
+    }
 }
