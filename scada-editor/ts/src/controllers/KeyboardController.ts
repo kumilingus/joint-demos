@@ -1,11 +1,11 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { copySelection, cutSelection, groupSelection, paste, redo, removeSelection, selectUp, undo, ungroupSelection } from '../actions';
+import { copySelection, cutSelection, groupSelection, paste, redo, removeSelection, selectAll, selectUp, undo, ungroupSelection } from '../actions';
 import { closeMenu } from '../context-menu';
 
 /**
- * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, group / ungroup, `Escape` one level
+ * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, `Escape` one level
  * up (the group of the selected member, then nothing). Active in the edit mode only.
  */
 export default class KeyboardController extends Controller {
@@ -21,6 +21,7 @@ export default class KeyboardController extends Controller {
             'ctrl+c meta+c': onCopy,
             'ctrl+x meta+x': onCut,
             'ctrl+v meta+v': onPaste,
+            'ctrl+a meta+a': onSelectAll,
             'ctrl+g meta+g': onGroup,
             'ctrl+shift+g meta+shift+g': onUngroup
         });
@@ -75,6 +76,12 @@ function onPaste(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
     evt.preventDefault();
     paste(app);
+}
+
+function onSelectAll(app: App, evt: dia.Event) {
+    if (isTyping(evt)) return;
+    evt.preventDefault();
+    selectAll(app);
 }
 
 // A group of the selected elements, its members back (see `Group`)

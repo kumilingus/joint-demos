@@ -19,6 +19,11 @@ export function selectCells(app: App, cells: dia.Cell[]): void {
     app.selection.reset(cells);
 }
 
+/** Select all the cells: as a region selects them - not the screen, a group for its members (see `Group`) */
+export function selectAll(app: App): void {
+    selectCells(app, app.graph.getCells().filter(cell => !(cell instanceof Screen) && !cell.isEmbedded()));
+}
+
 /** Add the cell to the selection, or remove it if it is selected (cherry-picking). */
 export function toggleCell(app: App, cell: dia.Cell): void {
     const { selection } = app;
