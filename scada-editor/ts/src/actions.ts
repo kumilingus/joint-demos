@@ -497,13 +497,13 @@ export function openDiagram(app: App): void {
     input.click();
 }
 
-/** The groups of the palette made of the diagram: the shapes in use, the favorites, the images of the user. */
+/** The groups of the palette made of the diagram: the shapes in use (unless hidden, empty), the favorites, the images of the user. */
 export function refreshPalette(app: App): void {
     const { stencil, graph } = app;
     if (!stencil) return;
     const images = getImages(graph);
     loadCustomShapes(stencil, images);
-    loadDerivedGroup(stencil, DerivedGroup.InUse, keysInUse(graph), images);
+    loadDerivedGroup(stencil, DerivedGroup.InUse, app.inUseShown ? keysInUse(graph) : new Set(), images);
     loadDerivedGroup(stencil, DerivedGroup.Favorites, getFavorites(graph), images);
 }
 

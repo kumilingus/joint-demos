@@ -10,7 +10,7 @@ import { getColorFieldValue, renderColorField } from './color-field';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
- * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the snaplines).
+ * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the snaplines, the In Use group of the palette).
  * While they are open, the screen can be
  * moved (and selected, resized); it is out of the way otherwise.
  */
@@ -31,6 +31,7 @@ interface ScreenSettings {
 /** The settings of the editor (not saved with the diagram) */
 interface EditorSettings {
     snaplines: boolean;
+    inUse: boolean;
 }
 
 /** A change of the settings following the diagram (not changing it back) */
@@ -82,7 +83,7 @@ export function openSettings(app: App): void {
     app.inspectorEl.append(el);
 
     // A cell (not in the graph): the inspector unsets its properties (`removeProp()`)
-    const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled };
+    const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled, inUse: app.inUseShown };
     const settings = new dia.Cell({ ...getScreenSettings(graph), animations: getAnimationLevel(graph), style: getStyle(graph), ...editorSettings });
     const listener = new mvc.Listener<[]>();
     // The settings change the diagram (the settings of the diagram are its cells)...
@@ -105,6 +106,7 @@ export function openSettings(app: App): void {
         if (!options.diagram) graph.set(ANIMATIONS_ATTRIBUTE, level);
     });
     listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => app.setSnaplinesEnabled(enabled));
+    listener.listenTo(settings, 'change:inUse', (_cell: dia.Cell, shown: boolean) => app.setInUseShown(shown));
     // ... and follow it.
     listener.listenTo(graph, 'add remove reset change:size', () => {
         const { screen, size } = getScreenSettings(graph);
@@ -156,7 +158,9 @@ export function openSettings(app: App): void {
                 index: 1
             },
             // A moved or resized element aligns with the others
-            snaplines: { type: 'toggle', label: 'Snaplines', group: 'editor', index: 1 }
+            snaplines: { type: 'toggle', label: 'Snaplines', group: 'editor', index: 1 },
+            // The group of the palette with the shapes of the diagram
+            inUse: { type: 'toggle', label: 'In Use group', group: 'editor', index: 2 }
         },
         groups: {
             screen: { label: 'Screen', index: 1 },

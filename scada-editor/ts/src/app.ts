@@ -9,7 +9,7 @@ import { ColorScheme, Mode } from './const';
 import {
     canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions
 } from './config';
-import { addImages, clearSelection, zoomToFit } from './actions';
+import { addImages, clearSelection, refreshPalette, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
@@ -60,6 +60,8 @@ export class App {
     colorScheme: ColorScheme = getInitialColorScheme();
     /** Whether a moved or resized element aligns with the others (see the settings) */
     snaplinesEnabled = true;
+    /** Whether the palette has the group of the shapes in use (see `refreshPalette()`) */
+    inUseShown = true;
     selection = new mvc.Collection<dia.Cell>();
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;
@@ -295,6 +297,12 @@ export class App {
     protected destroyStencil(): void {
         this.stencil?.remove();
         this.stencil = null;
+    }
+
+    /** Show or hide the group of the palette with the shapes in use. */
+    setInUseShown(shown: boolean): void {
+        this.inUseShown = shown;
+        refreshPalette(this);
     }
 
     /** Turn the snaplines on or off. */
