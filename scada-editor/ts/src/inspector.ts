@@ -96,6 +96,10 @@ function getInputs(element: dia.Element): Inputs {
     // Their outline (none of its own: as the shape draws it)
     util.merge(inputs, outlineInputs(element, 'appearance', index++));
     util.merge(inputs, accentInputs(element, 'appearance', index++));
+    // The accent of a table: its head - only while the names of the columns are shown
+    if (element.get('type') === 'Table') {
+        util.merge(inputs, { headerFill: { when: { eq: { names: true }}}});
+    }
 
     // A shape of the background: its opacity
     if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
