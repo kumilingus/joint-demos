@@ -30,8 +30,16 @@ export default class Zone extends Shape {
         return { bottom: 0 };
     }
 
-    // The color of its text: of the medium of the pipe it stands for
+    // Its color: the fill; its outline: the border; its accent: the text (of the medium of the pipe it stands for)
     get colorField(): ColorField {
+        return { path: ['attrs', 'body', 'fill'] };
+    }
+
+    get outlineField(): ColorField {
+        return { path: ['attrs', 'body', 'stroke'] };
+    }
+
+    get accentField(): ColorField {
         return { path: ['attrs', 'label', 'fill'] };
     }
 
@@ -52,8 +60,14 @@ export default class Zone extends Shape {
                     tipSide: 'left'
                 },
                 label: {
+                    // On one line in the zone (clear of its tip), cut with an ellipsis; the font growing with the height
                     text: 'Zone',
-                    fontSize: 14,
+                    textWrap: {
+                        width: 'calc(w - 30)',
+                        maxLineCount: 1,
+                        ellipsis: true
+                    },
+                    fontSize: 'calc(0.35 * h)',
                     fontFamily: 'sans-serif',
                     fontWeight: 'bold',
                     fill: LIQUID_COLOR,
