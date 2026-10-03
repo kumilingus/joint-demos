@@ -5,12 +5,12 @@ import { clearLog, closeLog, type LogHooks, logMessage, toggleLog } from '../eve
 import { type MessageDirection, plant } from '../plant';
 import { findByTag, getTag } from '../tags';
 import { propertiesOf } from '../tag-values';
-import { frameOptions, SelectionFrame } from '../selection';
+import { setTint } from '../tint';
 
 /**
  * The log of the messages between the diagram and the plant (see `event-log.ts`): opened by the Log button.
  * Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open, the element
- * of a message under the pointer is framed; the tags of the elements are shown, the elements of the messages flashed if asked.
+ * of a message under the pointer is tinted blue; the tags of the elements are shown, the elements of the messages flashed if asked.
  */
 export default class LogController extends Controller {
 
@@ -37,7 +37,6 @@ function onLogPointerclick(app: App) {
     toggleLog(app.el, logHooks(app), app.toolbar.getWidgetByName('log')?.el);
 }
 
-const LOG_FRAME_ID = 'log-frame';
 const TAG_BADGE_ID = 'tag-badge';
 const FLASH_ID = 'log-flash';
 
@@ -88,20 +87,16 @@ const TagBadge = dia.HighlighterView.extend({
 /** What the log shows on the paper of the app */
 function logHooks(app: App): LogHooks {
     const { paper, graph } = app;
-    let framed: dia.Element | null = null;
+    let focused: dia.Element | null = null;
     let stopFlashing: (() => void) | null = null;
     return {
         hover: (tag) => {
             const element = tag ? findByTag(graph, tag) ?? null : null;
-            if (element === framed) return;
-            const previous = framed?.findView(paper);
-            if (previous) SelectionFrame.remove(previous, LOG_FRAME_ID);
-            framed = element;
-            const view = element?.findView(paper);
-            // Over the shapes (in the front layer of the paper)
-            if (!element || !view) return;
-            const options = frameOptions(element);
-            SelectionFrame.add(view, 'root', LOG_FRAME_ID, { ...options, layer: dia.Paper.Layers.FRONT, attrs: { ...options.attrs, strokeWidth: 2.5 }});
+            if (element === focused) return;
+            if (focused) setTint(paper, focused, 'focus', false);
+            focused = element;
+            // Tinted blue (as an alarm tints it red, see `tint.ts`)
+            if (element) setTint(paper, element, 'focus', true);
         },
         showTags: (shown) => {
             dia.HighlighterView.removeAll(paper, TAG_BADGE_ID);
@@ -136,7 +131,7 @@ const FLASH_REACH = 24;
 
 /**
  * A ping: two rings out of the middle of the element, behind it (the first child of its view), growing and fading
- * (`.jj-ping` in `styles.css`) - an update of the plant in green, a command in amber (as in the log)
+ * (`.jj-ping` in `styles.css`) - an update of the plant in blue (as the focus, see `tint.ts`), a command in amber (as in the log)
  */
 const Ping = dia.HighlighterView.extend({
     tagName: 'g',
@@ -148,7 +143,7 @@ const Ping = dia.HighlighterView.extend({
         const element = cellView.model as dia.Element;
         const { width, height } = element.size();
         const r = Math.hypot(width, height) / 2 + FLASH_REACH;
-        const color = this.options.direction === 'in' ? 'var(--color-green)' : 'var(--color-amber)';
+        const color = this.options.direction === 'in' ? 'var(--selection)' : 'var(--color-amber)';
         const ring = () => V('circle', { cx: width / 2, cy: height / 2, r, fill: color, 'fill-opacity': 0.35, stroke: color, 'stroke-width': 5 });
         this.vel.empty().append([ring(), ring()]);
     }
