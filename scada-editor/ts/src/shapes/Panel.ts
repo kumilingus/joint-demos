@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 import { finishOf } from './gradients';
 
 // The track of the liquid: below the value, fixed margins - the track takes the rest of the height
@@ -122,6 +122,11 @@ const markup = util.svg/* xml */`
  */
 export default class Panel extends Shape {
 
+    // The accent: the color of the liquid in range (not the warnings: below the low threshold, above the high one)
+    get accentField(): ColorField {
+        return { path: ['liquidColor'], defaultValue: LIQUID_COLOR };
+    }
+
     get graphLayer(): Layer {
         return Layer.Instruments;
     }
@@ -232,7 +237,7 @@ export default class Panel extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateLiquid();
-        this.on('change:level change:thresholds', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLiquid(options));
+        this.on('change:level change:thresholds change:liquidColor', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLiquid(options));
     }
 
     get level(): number {
@@ -267,14 +272,14 @@ export default class Panel extends Shape {
         }, options);
     }
 
-    /** The color of the liquid at the level: it warns when the tank is almost empty or full. */
+    /** The color of the liquid at the level: it warns when the tank is almost empty or full (its own color otherwise, the accent). */
     liquidColor(level: number): string {
         const { low, high } = this.thresholds;
         return level > high
             ? MAX_LIQUID_COLOR
             : level < low
                 ? MIN_LIQUID_COLOR
-                : LIQUID_COLOR;
+                : this.get('liquidColor') ?? LIQUID_COLOR;
     }
 
     /** The liquid at the level (0 - 100), as `updateLiquid()` draws it, for the current size. */
