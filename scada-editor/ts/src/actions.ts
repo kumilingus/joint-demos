@@ -1,4 +1,4 @@
-import { type dia, g, util } from '@joint/plus';
+import { type dia, format, g, util } from '@joint/plus';
 import type { App } from './app';
 import { GRID_SIZE, Layer, Mode } from './const';
 import { fitOptions, runtimeFitOptions } from './config';
@@ -552,6 +552,39 @@ export function saveDiagram(app: App): void {
     link.download = DIAGRAM_FILE_NAME;
     link.click();
     URL.revokeObjectURL(url);
+}
+
+const IMAGE_FILE_NAME = 'scada-diagram.webp';
+
+// Not of the diagram (of the editor): the grid, the highlighters (the frames of the selection, the controls),
+// the tools, the screen (its frame: the area of the image)
+const NOT_EXPORTED = ['.joint-grid-layer', '.joint-back-layer > *', '.joint-front-layer > *', '.joint-tools-layer > *', '.joint-type-screen'];
+
+/**
+ * Download the diagram as an image (WebP): the screen only if there is one, else all of it; on the background of
+ * the canvas in the current color scheme.
+ */
+export function exportImage(app: App): void {
+    const { paper, graph } = app;
+    const screen = getScreen(graph);
+    const background = getComputedStyle(paper.el).getPropertyValue('--shape-canvas').trim();
+    format.toDataURL(paper, (dataURL, error) => {
+        if (error) return;
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = IMAGE_FILE_NAME;
+        link.click();
+    }, {
+        type: 'image/webp',
+        quality: 0.92,
+        backgroundColor: background,
+        // All the computed styles copied (the colors of the theme resolved): drawn as on the canvas
+        useComputedStyles: 'full',
+        ...(screen ? { area: screen.getBBox() } : { padding: 20 }),
+        beforeSerialize: (svg) => {
+            NOT_EXPORTED.forEach(selector => svg.querySelectorAll(selector).forEach(node => node.remove()));
+        }
+    });
 }
 
 /** Whether the diagram may be replaced (by a new one, a file, an example): asked first if it was changed */

@@ -231,6 +231,11 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         name: 'save',
         group: 'file',
         attrs: { button: { 'data-tooltip': 'Save the diagram (JSON)' }}
+    }, {
+        type: 'button',
+        name: 'export',
+        group: 'file',
+        attrs: { button: { 'data-tooltip': 'Export the diagram as an image (WebP): the screen if there is one' }}
     }] : [];
     // The settings of the diagram (see `settings.ts`): edited in the edit mode
     const settings: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{

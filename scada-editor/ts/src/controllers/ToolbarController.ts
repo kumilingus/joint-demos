@@ -1,7 +1,7 @@
 import Controller from './Controller';
 import type { App } from '../app';
 import { ColorScheme, Mode } from '../const';
-import { newDiagram, openDiagram, saveDiagram, zoomToFit } from '../actions';
+import { exportImage, newDiagram, openDiagram, saveDiagram, zoomToFit } from '../actions';
 import { isSettingsOpen, toggleSettings } from '../settings';
 
 /**
@@ -19,6 +19,7 @@ export default class ToolbarController extends Controller {
             // In the edit mode only (the buttons are not in the toolbar of the runtime mode)
             'new:pointerclick': onNewPointerclick,
             'save:pointerclick': onSavePointerclick,
+            'export:pointerclick': onExportPointerclick,
             'open:pointerclick': onOpenPointerclick,
             'settings:pointerclick': toggleSettings,
             'colorScheme:pointerclick': onColorSchemePointerclick
@@ -41,6 +42,10 @@ function onNewPointerclick(app: App) {
 
 function onSavePointerclick(app: App) {
     saveDiagram(app);
+}
+
+function onExportPointerclick(app: App) {
+    exportImage(app);
 }
 
 function onOpenPointerclick(app: App) {
