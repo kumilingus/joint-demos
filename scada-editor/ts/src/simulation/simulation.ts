@@ -248,10 +248,13 @@ function sourceOf(table: dia.Element, graph: dia.Graph): dia.Element | undefined
     return source ? findByTag(graph, source) : undefined;
 }
 
-/** Whether the element runs: switched on (a pump, a generator), open (a valve, a breaker), or neither */
+// The switches of the circuits: open, they cut it (a valve open lets the liquid through)
+const SWITCHES = ['CircuitBreaker', 'Disconnector'];
+
+/** Whether the element runs: switched on (a pump, a generator), open (a valve) or closed (a breaker), or neither */
 function isRunning(element: dia.Element): boolean {
     if (element.has('power')) return Boolean(element.get('power'));
-    if (element.has('open')) return Boolean(element.get('open'));
+    if (element.has('open')) return SWITCHES.includes(element.get('type')) ? !element.get('open') : Boolean(element.get('open'));
     return true;
 }
 
