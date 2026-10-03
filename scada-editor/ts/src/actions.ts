@@ -233,20 +233,26 @@ export function sendToBack(app: App): void {
  * bring them over) - the top one of those layers, `null` if nothing of a layer above overlaps them
  */
 export function layerOver(app: App): Layer | null {
+    return farthestLayer(app, 1);
+}
+
+/** The layer of the elements under the selected ones (see `layerOver()`, `sendToBack()`): the bottom one of those layers */
+export function layerUnder(app: App): Layer | null {
+    return farthestLayer(app, -1);
+}
+
+/** Of the layers of the elements overlapping the selected cells, the farthest one up (1) or down (-1) from theirs */
+function farthestLayer(app: App, direction: 1 | -1): Layer | null {
     const { graph } = app;
     const layers = Object.values(Layer);
+    const indexOf = (cell: dia.Cell) => layers.indexOf(graph.getCellLayerId(cell) as Layer);
     const cells = drawnCells(app.selection.toArray());
-    let top = -1;
-    cells.forEach((cell) => {
-        const index = layers.indexOf(graph.getCellLayerId(cell) as Layer);
-        overlapping(app, cell)
-            .filter(other => !isGroup(other) && !(other instanceof Screen) && !cells.includes(other))
-            .forEach((other) => {
-                const otherIndex = layers.indexOf(graph.getCellLayerId(other) as Layer);
-                if (otherIndex > index) top = Math.max(top, otherIndex);
-            });
-    });
-    return top < 0 ? null : layers[top];
+    const beyond = cells.flatMap(cell => overlapping(app, cell)
+        .filter(other => !isGroup(other) && !(other instanceof Screen) && !cells.includes(other))
+        .map(indexOf)
+        .filter(index => (index - indexOf(cell)) * direction > 0));
+    if (beyond.length === 0) return null;
+    return layers[direction > 0 ? Math.max(...beyond) : Math.min(...beyond)];
 }
 
 /**
@@ -274,19 +280,26 @@ function overlapping(app: App, cell: dia.Cell): dia.Element[] {
     });
 }
 
-/** Move the selected cells into the layer, to its front (over the elements there): one step of the history. */
-export function moveToLayer(app: App, layer: Layer): void {
+/**
+ * Move the selected cells into the layer, to its front (over the elements there) or to its `back` (under them):
+ * one step of the history.
+ */
+export function moveToLayer(app: App, layer: Layer, { back = false } = {}): void {
     const { graph } = app;
-    // In their drawing order: kept over each other in the layer
+    // In their drawing order (to the back the top one first): kept over each other in the layer
     const cells = drawnCells(app.selection.toArray())
         .map(cell => ({ cell, order: drawingOrder(graph, cell) }))
-        .sort((a, b) => (a.order[0] - b.order[0]) || (a.order[1] - b.order[1]))
+        .sort((a, b) => ((a.order[0] - b.order[0]) || (a.order[1] - b.order[1])) * (back ? -1 : 1))
         .map(({ cell }) => cell);
     if (cells.length === 0) return;
     graph.startBatch('to-layer');
     cells.forEach((cell) => {
         cell.set('layer', layer);
-        cell.toFront();
+        if (back) {
+            cell.toBack();
+        } else {
+            cell.toFront();
+        }
     });
     graph.stopBatch('to-layer');
 }

@@ -1,7 +1,7 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from './app';
 import {
-    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin
+    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin
 } from './actions';
 import { LAYER_NAMES } from './layers';
 import { isGroup } from './shapes/Group';
@@ -64,8 +64,10 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
     const layers = new Set(app.selection.map(selected => app.graph.getCellLayerId(selected)));
     const [layer] = layers;
     const layerHint = `in ${layers.size === 1 ? LAYER_NAMES[layer as Layer] ?? layer : 'their layers'}`;
-    // Under an element of a layer above (out of the reach of the front): moved into that layer instead
+    // Under an element of a layer above (out of the reach of the front), over one of a layer below (of the back):
+    // moved into that layer instead
     const over = layerOver(app);
+    const under = layerUnder(app);
     const below = elementBelow(app, cell, { x, y });
     openMenu(app, evt, [
         { action: 'cut', label: 'Cut', shortcut: `${MOD}X`, run: () => cutSelection(app) },
@@ -101,6 +103,9 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
         { action: 'back', label: 'Send to Back', hint: layerHint, run: () => sendToBack(app) },
         ...(over
             ? [{ action: 'layer', label: `Move to ${LAYER_NAMES[over]}`, hint: 'over what covers it', run: () => moveToLayer(app, over) }]
+            : []),
+        ...(under
+            ? [{ action: 'layer-down', label: `Move to ${LAYER_NAMES[under]}`, hint: 'under what it covers', run: () => moveToLayer(app, under, { back: true }) }]
             : []),
         { action: 'delete', label: 'Delete', shortcut: 'Del', separated: true, run: () => removeSelection(app) }
     ]);
