@@ -315,6 +315,30 @@ export function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] 
 /** A random update of a random element (of those with data), or `null` if nothing changes this time. */
 export function createRandomUpdate(graph: dia.Graph): TagUpdate | null {
     const elements = graph.getElements().filter(element => getTag(element) && element.get('type') in generators);
+/**
+ * The empty cells of the tables filled (the plant sends every value): a number like the others of its column
+ * (or a percentage), a text the name of its row, a state running
+ */
+function fillTables(graph: dia.Graph): void {
+    graph.getElements().filter(element => element.get('type') === 'Table').forEach((table) => {
+        const kinds: Array<string | undefined> = (table.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
+        const values: string[][] = table.get('values') ?? [];
+        if (values.every(row => row.every(value => value !== ''))) return;
+        const filled = values.map((row, r) => row.map((value, c) => {
+            if (value !== '') return value;
+            if (kinds[c] === 'state') return 'on';
+            if (kinds[c] === 'number') {
+                const numbers = values.map(other => other[c]).filter(isNumber);
+                if (numbers.length === 0) return random(0, 100).toFixed(1);
+                const sample = numbers[Math.floor(Math.random() * numbers.length)];
+                return drift(Number(sample), Math.abs(Number(sample)) * 0.2, 0, Number.MAX_VALUE).toFixed(sample.split('.')[1]?.length ?? 0);
+            }
+            return `Row ${r + 1}`;
+        }));
+        table.set('values', filled, RUNTIME);
+    });
+}
+
     if (elements.length === 0) return null;
     const element = elements[Math.floor(Math.random() * elements.length)];
     const changes = generators[element.get('type')](element, graph);
@@ -374,6 +398,7 @@ export class Simulation {
         periodFlows.clear();
     }
 
+        fillTables(this.graph);
     /** The `energized` of the cells (as a SCADA server would send it): the circuits traced from the sources */
     /** The states of the readouts follow their sources (see `readoutStates()`) */
     protected updateReadouts(): void {
