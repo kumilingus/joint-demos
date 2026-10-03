@@ -8,6 +8,7 @@ import Screen from './shapes/Screen';
 import Join from './shapes/Join';
 import Group, { isGroup } from './shapes/Group';
 import { DERIVED } from './shapes/routing';
+import { PIPE_HALF_WIDTH } from './shapes/footprint';
 import { DerivedGroup, keysInUse, loadCustomShapes, loadDerivedGroup } from './stencil';
 import { getFavorites, removeFavorite } from './favorites';
 
@@ -225,6 +226,69 @@ export function sendToBack(app: App): void {
     graph.startBatch('to-back');
     cells.forEach(cell => cell.toBack());
     graph.stopBatch('to-back');
+}
+
+/**
+ * The layer of the elements over the selected ones: overlapping them, in a layer above (which `bringToFront()` can't
+ * bring them over) - the top one of those layers, `null` if nothing of a layer above overlaps them
+ */
+export function layerOver(app: App): Layer | null {
+    const { graph } = app;
+    const layers = Object.values(Layer);
+    const cells = drawnCells(app.selection.toArray());
+    let top = -1;
+    cells.forEach((cell) => {
+        const index = layers.indexOf(graph.getCellLayerId(cell) as Layer);
+        overlapping(app, cell)
+            .filter(other => !isGroup(other) && !(other instanceof Screen) && !cells.includes(other))
+            .forEach((other) => {
+                const otherIndex = layers.indexOf(graph.getCellLayerId(other) as Layer);
+                if (otherIndex > index) top = Math.max(top, otherIndex);
+            });
+    });
+    return top < 0 ? null : layers[top];
+}
+
+/**
+ * The elements overlapping the cell: of an element its bounding box, of a link its connection (a part of it through
+ * the element - as wide as a pipe: not its bounding box, much larger than what it covers), not its ends (it's connected
+ * to them, not covered by them)
+ */
+function overlapping(app: App, cell: dia.Cell): dia.Element[] {
+    const { graph, paper } = app;
+    if (cell.isElement()) return graph.findElementsUnderElement(cell);
+    const view = cell.findView(paper) as dia.LinkView | undefined;
+    const connection = view?.getConnection();
+    if (!connection) return [];
+    // Curved too: the path as straight segments (of its polylines, one of each of its subpaths)
+    const segments = (connection.toPolylines() ?? []).flatMap(({ points }) => points.slice(1).map((point, index) => new g.Line(points[index], point)));
+    const link = cell as dia.Link;
+    const ends = [link.getSourceElement(), link.getTargetElement()];
+    // The area of the connection as drawn (a curve reaches out of the bounding box of the link)
+    const area = connection.bbox();
+    if (!area) return [];
+    return graph.findElementsInArea(area.inflate(PIPE_HALF_WIDTH)).filter((element) => {
+        if (ends.includes(element)) return false;
+        const box = element.getBBox().inflate(PIPE_HALF_WIDTH);
+        return segments.some(segment => box.containsPoint(segment.start) || segment.intersect(box) !== null);
+    });
+}
+
+/** Move the selected cells into the layer, to its front (over the elements there): one step of the history. */
+export function moveToLayer(app: App, layer: Layer): void {
+    const { graph } = app;
+    // In their drawing order: kept over each other in the layer
+    const cells = drawnCells(app.selection.toArray())
+        .map(cell => ({ cell, order: drawingOrder(graph, cell) }))
+        .sort((a, b) => (a.order[0] - b.order[0]) || (a.order[1] - b.order[1]))
+        .map(({ cell }) => cell);
+    if (cells.length === 0) return;
+    graph.startBatch('to-layer');
+    cells.forEach((cell) => {
+        cell.set('layer', layer);
+        cell.toFront();
+    });
+    graph.stopBatch('to-layer');
 }
 
 /** A link split at a point (see `splitLink()`, `insertJoin()`): its halves, not in the graph yet */

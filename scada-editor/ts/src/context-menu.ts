@@ -1,7 +1,7 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from './app';
 import {
-    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, menuCell, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin
+    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin
 } from './actions';
 import { LAYER_NAMES } from './layers';
 import { isGroup } from './shapes/Group';
@@ -63,7 +63,9 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
     // The front and the back are those of the layer of the cell (see `layers.ts`): named in the menu
     const layers = new Set(app.selection.map(selected => app.graph.getCellLayerId(selected)));
     const [layer] = layers;
-    const layerHint = layers.size === 1 ? LAYER_NAMES[layer as Layer] ?? layer : 'their layers';
+    const layerHint = `in ${layers.size === 1 ? LAYER_NAMES[layer as Layer] ?? layer : 'their layers'}`;
+    // Under an element of a layer above (out of the reach of the front): moved into that layer instead
+    const over = layerOver(app);
     const below = elementBelow(app, cell, { x, y });
     openMenu(app, evt, [
         { action: 'cut', label: 'Cut', shortcut: `${MOD}X`, run: () => cutSelection(app) },
@@ -97,6 +99,9 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
         },
         { action: 'front', label: 'Bring to Front', hint: layerHint, separated: true, run: () => bringToFront(app) },
         { action: 'back', label: 'Send to Back', hint: layerHint, run: () => sendToBack(app) },
+        ...(over
+            ? [{ action: 'layer', label: `Move to ${LAYER_NAMES[over]}`, hint: 'over what covers it', run: () => moveToLayer(app, over) }]
+            : []),
         { action: 'delete', label: 'Delete', shortcut: 'Del', separated: true, run: () => removeSelection(app) }
     ]);
 }

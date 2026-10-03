@@ -13,7 +13,7 @@ export interface Overflow {
 const DEFAULT_OVERFLOW: Overflow = { bottom: 30 };
 
 // The half of the stroke of a pipe
-const PIPE_HALF_WIDTH = 8;
+export const PIPE_HALF_WIDTH = 8;
 
 // The flanges at the ends of the pipe stubs are a little taller than the stubs (see `pipeStubGroup()`).
 const PORT_END_OVERHANG = 3;
