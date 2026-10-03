@@ -37,7 +37,7 @@ export class SelectionFrame extends highlighters.stroke {
 }
 
 /** A link is outlined: a wider stroke behind it, in its own view (drawn in its layer, not under all of the cells). */
-function frameOptions(cell: dia.Cell): highlighters.StrokeHighlighterArguments {
+export function frameOptions(cell: dia.Cell): highlighters.StrokeHighlighterArguments {
     if (cell.isLink()) {
         const lineWidth = Number(cell.attr(cell instanceof Pipe ? 'outline/strokeWidth' : 'line/strokeWidth')) || 0;
         return {
