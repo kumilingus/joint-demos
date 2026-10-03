@@ -1,7 +1,7 @@
 import { dia, V } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { clearLog, closeLog, type LogHooks, logMessage, toggleLog } from '../event-log';
+import { clearLog, closeLog, isLogOpen, type LogHooks, logMessage, toggleFilterTag, toggleLog } from '../event-log';
 import { type MessageDirection, plant } from '../plant';
 import { findByTag, getTag } from '../tags';
 import { propertiesOf } from '../tag-values';
@@ -23,6 +23,10 @@ export default class LogController extends Controller {
         this.listenTo(this.context.toolbar, {
             'log:pointerclick': onLogPointerclick
         });
+        // An element clicked while the log is open: its tag in the filter of the log (or out of it)
+        this.listenTo(this.context.paper, {
+            'element:pointerclick': onElementPointerclick
+        });
     }
 
     stopListening(): void {
@@ -35,6 +39,11 @@ export default class LogController extends Controller {
 
 function onLogPointerclick(app: App) {
     toggleLog(app.el, logHooks(app), app.toolbar.getWidgetByName('log')?.el);
+}
+
+function onElementPointerclick(_app: App, elementView: dia.ElementView) {
+    const tag = getTag(elementView.model);
+    if (tag && isLogOpen()) toggleFilterTag(tag);
 }
 
 const TAG_BADGE_ID = 'tag-badge';
