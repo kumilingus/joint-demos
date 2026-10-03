@@ -1310,31 +1310,36 @@ body {
     padding: 3px;
 }
 
-/* The button of the current state is the enabled one (see `controls.ts`). */
+/* Open / closed: a segmented control, the state the valve is in pressed (see `controls.ts`) */
+.jj-switch {
+    display: flex;
+    gap: 2px;
+    background: var(--muted);
+}
+
 .jj-switch-on,
 .jj-switch-off {
-    width: 50%;
+    flex: 1;
     height: 22px;
-    border: 1px solid var(--primary);
-    background: var(--primary);
-    color: var(--primary-foreground);
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--muted-foreground);
     font: 500 12px var(--font);
     cursor: pointer;
 }
 
-.jj-switch-on {
-    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+.jj-switch-on:hover,
+.jj-switch-off:hover {
+    color: var(--foreground);
 }
 
-.jj-switch-off {
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-}
-
-.jj-switch-on:disabled,
-.jj-switch-off:disabled {
-    border-color: var(--input);
-    background: var(--muted);
-    color: var(--muted-foreground);
+.jj-switch [aria-pressed="true"] {
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font-weight: 600;
     cursor: default;
 }
 

@@ -53,8 +53,8 @@ const pumpControlMarkup = util.svg/* xml */`
 const toggleValveControlMarkup = util.svg/* xml */`
     <foreignObject class="${CONTROL_CLASS}" width="${TOGGLE_SIZE.width}" height="${TOGGLE_SIZE.height}">
         <div class="jj-switch" xmlns="http://www.w3.org/1999/xhtml">
-            <button @selector="buttonOn" class="jj-switch-on">open</button>
-            <button @selector="buttonOff" class="jj-switch-off">close</button>
+            <button @selector="buttonOn" class="jj-switch-on" data-open="true">Open</button>
+            <button @selector="buttonOff" class="jj-switch-off" data-open="false">Closed</button>
         </div>
     </foreignObject>
 `;
@@ -168,14 +168,17 @@ class ToggleValveControl extends Control {
         const isOpen = Boolean(model.get('open'));
         const { buttonOn, buttonOff } = this.nodes;
         this.placeBeside(model, TOGGLE_SIZE.width, TOGGLE_SIZE.height);
-        (buttonOn as HTMLButtonElement).disabled = !isOpen;
-        (buttonOff as HTMLButtonElement).disabled = isOpen;
+        // The state it is in: pressed (a segmented control, see `styles.css`)
+        buttonOn.setAttribute('aria-pressed', String(isOpen));
+        buttonOff.setAttribute('aria-pressed', String(!isOpen));
         this.updateInert(cellView);
     }
 
-    onButtonClick(): void {
-        const { model } = this.cellView;
-        command(model as dia.Element, 'open', !readProperty(model as dia.Element, 'open'));
+    /** The state of the button (open or closed), unless the valve is in it */
+    onButtonClick(evt: dia.Event): void {
+        const model = this.cellView.model as dia.Element;
+        const open = (evt.currentTarget as HTMLElement).dataset.open === 'true';
+        if (open !== readProperty(model, 'open')) command(model, 'open', open);
     }
 }
 
