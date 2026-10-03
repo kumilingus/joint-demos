@@ -1054,6 +1054,45 @@ body {
     color: var(--foreground);
 }
 
+/* The side picker (a label, a control, see `sideField()`): the buttons as a cross around the shape (a square in the middle) */
+
+.joint-select-button-group[data-picker="side"] {
+    display: grid;
+    grid-template: repeat(3, 30px) / 1fr 72px 1fr;
+    gap: 2px;
+}
+
+.joint-select-button-group[data-picker="side"]::after {
+    content: '';
+    grid-area: 2 / 2;
+    margin: 4px 18px;
+    border: 1.5px solid var(--muted-foreground);
+    border-radius: 3px;
+}
+
+[data-picker="side"] .select-button-group-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 8px;
+}
+
+/* On the right: the name, then the triangle (pointing out) */
+[data-picker="side"] .select-button-group-button:nth-child(3) { flex-direction: row-reverse; }
+
+[data-picker="side"] .select-button-group-button:nth-child(1) { grid-area: 1 / 2; }
+[data-picker="side"] .select-button-group-button:nth-child(2) { grid-area: 2 / 1; justify-self: end; }
+[data-picker="side"] .select-button-group-button:nth-child(3) { grid-area: 2 / 3; justify-self: start; }
+[data-picker="side"] .select-button-group-button:nth-child(4) { grid-area: 3 / 2; }
+
+.jj-side-icon {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    fill: currentColor;
+}
+
 /* The region selecting the cells (Shift + drag on the blank canvas, `ui.Selection`) */
 
 .joint-selection.lasso {

@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
 import Shape, { type ColorField, type Resizable } from './Shape';

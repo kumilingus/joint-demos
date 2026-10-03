@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, pipePorts } from './ports';
+import { pipePorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import { Layer, LIQUID_COLOR, SURFACE_INK } from '../const';
 import Shape, { type ColorField } from './Shape';
 

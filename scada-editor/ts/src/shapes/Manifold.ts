@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { branchPorts, fittingPorts } from './ports';
 import { FITTING_STUB_LENGTH } from './Fitting';
 import type { Overflow } from './footprint';
-import { labelAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type Resizable } from './Shape';
 
 // Where the outlets are along the header (relative to its width)

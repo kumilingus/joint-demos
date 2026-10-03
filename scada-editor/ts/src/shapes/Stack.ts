@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import type { Overflow } from './footprint';
 import Shape, { type ColorField } from './Shape';
 

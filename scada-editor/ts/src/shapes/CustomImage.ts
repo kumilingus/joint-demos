@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import { util } from '@joint/plus';
 import { GRID_SIZE } from '../const';
 import { defineImage, definePlaceholder, findImage, type ImageEntry } from '../images';
-import { labelAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type Resizable } from './Shape';
 
 // The largest default size of an uploaded image (it keeps its aspect ratio)
@@ -76,6 +76,7 @@ export default class CustomImage extends Shape {
     }
 
     static attributes = {
+        ...Shape.attributes,
         // The image (its id) shown by the `<use>`: a reference to its definition in the paper.
         // (`imageId` in the attributes: the names are looked up in the kebab case.)
         'image-id': {

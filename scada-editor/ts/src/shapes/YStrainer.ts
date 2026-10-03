@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, pipePorts } from './ports';
+import { pipePorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type ColorField, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */

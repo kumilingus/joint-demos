@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
+import { pipePorts, pipeThroughAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 // Rotor metrics

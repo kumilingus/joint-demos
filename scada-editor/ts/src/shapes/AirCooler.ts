@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, pipePorts } from './ports';
+import { pipePorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 
 // A small blade of a fan, pointing up from its hub; the other two are rotated copies.

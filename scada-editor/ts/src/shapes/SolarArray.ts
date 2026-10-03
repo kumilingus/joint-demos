@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, terminalPorts } from './ports';
+import { terminalPorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type Resizable } from './Shape';
 
 // The cells of the panel: 6 columns, 3 rows

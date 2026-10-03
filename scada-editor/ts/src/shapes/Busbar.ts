@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, terminal, terminalPorts } from './ports';
+import { terminal, terminalPorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import { DERIVED } from './routing';
 import type { Overflow } from './footprint';
 import Shape, { type Resizable } from './Shape';
@@ -77,6 +78,8 @@ export default class Busbar extends Shape {
                 // Above its left end, over the terminals of the top taps (they reach 16 above it)
                 label: {
                     ...labelAttributes,
+                    // Over the taps on the left (see above): at a side of its own, not one to choose
+                    labelPosition: null,
                     text: 'Busbar',
                     x: 0,
                     y: -22,

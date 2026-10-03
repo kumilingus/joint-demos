@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, terminalPorts } from './ports';
+import { terminalPorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type ControlKind, type Resizable } from './Shape';
 
 // How high the blade is (and the terminals): on the grid, the shape is not resized

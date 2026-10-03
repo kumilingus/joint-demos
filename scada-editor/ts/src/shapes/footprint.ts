@@ -1,5 +1,5 @@
 import { type dia, g } from '@joint/plus';
-import Shape from './Shape';
+import type Shape from './Shape';
 
 /** How far the drawing of a shape reaches out of its model bounding box (on top of the default). */
 export interface Overflow {
@@ -68,7 +68,8 @@ export function getFootprint(cell: dia.Cell, { label = true }: FootprintOptions 
         });
     });
 
-    const overflow = Shape.isShape(element) ? element.overflow : {};
+    // Of a shape (not the class itself: the shapes import this module through their attributes, see `attributes/label.ts`)
+    const overflow = 'overflow' in element ? (element as Shape).overflow : {};
     const { top = 0, right = 0, bottom = 0, left = 0 } = { ...DEFAULT_OVERFLOW, ...overflow };
     const drawing = label
         ? { top, right, bottom, left }

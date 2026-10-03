@@ -26,6 +26,26 @@ const groups: ui.Inspector.Options['groups'] = {
 
 type Inputs = Record<string, unknown>;
 
+// The sides of a shape, as they are shown in the side picker: a triangle pointing to the side (turned from the top one)
+const SIDES: Array<[string, string, number]> = [['top', 'Top', 0], ['left', 'Left', -90], ['right', 'Right', 90], ['bottom', 'Bottom', 180]];
+
+/**
+ * A side of the shape (a label, a control): the buttons as a cross around the shape - a triangle and the name on each side
+ * (see `.jj-side-picker` in the styles), below unless set
+ */
+function sideField(label: string): Inputs {
+    return {
+        type: 'select-button-group',
+        label,
+        defaultValue: 'bottom',
+        options: SIDES.map(([value, name, angle]) => ({
+            value,
+            content: `<svg class="jj-side-icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M 5 2 L 9 8 H 1 Z" transform="rotate(${angle} 5 5)"/></svg><span>${name}</span>`
+        })),
+        attrs: { '.joint-select-button-group': { 'data-picker': 'side' }}
+    };
+}
+
 /** The texts of the shapes that can be edited: [selector, label, group]. */
 const TEXTS: Array<[string, string, string]> = [
     ['label', 'Label', 'general'],
@@ -59,6 +79,15 @@ function getInputs(element: dia.Element): Inputs {
     TEXTS.forEach(([selector, label, group]) => {
         if (element.attr([selector, 'text']) === undefined) return;
         attrs[selector] = { text: { type: 'text', label, group, index: index++ }};
+        // The label of a shape at a side of it (see `labelPosition`): the shapes with labels of their own have none
+        if (selector === 'label' && element.attr('label/labelPosition') != null) {
+            (attrs.label as Record<string, unknown>).labelPosition = {
+                ...sideField('Label position'),
+                // How the label is drawn: after the colors, before the layer
+                group: 'appearance',
+                index: 90
+            };
+        }
     });
     if (Object.keys(attrs).length > 0) inputs.attrs = attrs;
 

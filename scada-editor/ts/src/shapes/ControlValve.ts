@@ -1,6 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { PIPE_COLOR } from '../const';
-import { labelAttributes, pipePorts, pipeThroughAttributes } from './ports';
+import { pipePorts, pipeThroughAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import type { Overflow } from './footprint';
 import Shape, { type ColorField, type Resizable, type ControlKind } from './Shape';
 

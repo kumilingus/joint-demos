@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, terminalPorts } from './ports';
+import { terminalPorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import { Layer, LIQUID_COLOR } from '../const';
 import Shape, { type ColorField, type Resizable } from './Shape';
 

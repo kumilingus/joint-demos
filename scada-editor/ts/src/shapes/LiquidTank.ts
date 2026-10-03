@@ -1,5 +1,5 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */

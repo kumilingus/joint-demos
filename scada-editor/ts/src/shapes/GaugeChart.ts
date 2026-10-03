@@ -1,5 +1,5 @@
 import { type dia, g, util, V } from '@joint/plus';
-import { labelAttributes } from './ports';
+import { labelAttributes } from './attributes/label';
 import { Layer, LIQUID_COLOR } from '../const';
 import { arcPath, getScale, scaleFraction } from './charts';
 import Shape, { type ColorField } from './Shape';

@@ -1,5 +1,4 @@
 import { type dia, util } from '@joint/plus';
-import { LABEL_COLOR } from '../const';
 
 /**
  * The special attributes of the pipes of a shape (its stubs, a pipe running through it): `pipeOutline` - the outline
@@ -232,13 +231,3 @@ export function branchPorts(xs: string[], length: number): dia.Element.Attribute
         items: xs.map((x, index) => sideStub(`out${index + 1}`, 'branches', 'bottom', length, x))
     };
 }
-
-export const labelAttributes = {
-    textAnchor: 'middle',
-    textVerticalAnchor: 'top',
-    x: 'calc(0.5*w)',
-    y: 'calc(h+10)',
-    fontSize: 14,
-    fontFamily: 'sans-serif',
-    fill: LABEL_COLOR
-};

@@ -69,7 +69,8 @@ src/
   Snaplines.ts     the snaplines (`ui.Snaplines` with a fix for the dragged groups)
   examples.ts      the examples to open (in the empty inspector panel)
   diagram/         the examples: a boiler house, a microgrid and a cement plant, JSON files as saved by the Save button (with the JointJS badge and a photo as images)
-  shapes/          the shapes (see Shape features); ports.ts the pipe stubs and the terminals, footprint.ts the area a shape takes
+  shapes/          the shapes (see Shape features); ports.ts the pipe stubs and the terminals, footprint.ts the area a shape takes;
+                   attributes/ the special attributes of the texts: the label of a shape and its position (label.ts), the font style (text-styles.ts)
   controllers/     the event handling
   simulation/      the mock of the plant (simulation.ts, the energized circuits in energized.ts) and its controller: delete it for a real plant
 ```

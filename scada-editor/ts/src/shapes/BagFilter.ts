@@ -1,5 +1,6 @@
 import { type dia, util } from '@joint/plus';
-import { labelAttributes, pipePorts } from './ports';
+import { pipePorts } from './ports';
+import { labelAttributes } from './attributes/label';
 import Shape, { type ColorField } from './Shape';
 
 /** Where the filter bags are across the housing (relative to the width) */
