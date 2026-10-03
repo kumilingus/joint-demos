@@ -34,7 +34,6 @@
     /* The white faces (valves, gauges, zones, instruments): dark, with light strokes in the dark */
     --shape-face: #fff;
     --shape-valve-stroke: #555;
-    --base-gauge-stroke: #444;
     --base-thermometer-stroke: #6a737b;
     --base-zone-stroke: #cad8e3;
     --shape-instrument-ink: #333;
@@ -166,7 +165,6 @@
     /* The white faces (valves, gauges, zones, instruments): dark, with light strokes in the dark */
     --shape-face: #10213a;
     --shape-valve-stroke: #9fb4cf;
-    --base-gauge-stroke: #9fb4cf;
     --base-thermometer-stroke: #9fb4cf;
     --base-zone-stroke: #2e4a70;
     --shape-instrument-ink: #9fb4cf;
@@ -263,7 +261,6 @@
     --shape-belt-outline: var(--style-outline, var(--base-belt-outline));
     --shape-table-line: var(--style-outline, var(--base-table-line));
     --shape-thermometer-stroke: var(--style-outline, var(--base-thermometer-stroke));
-    --shape-gauge-stroke: var(--style-outline, var(--base-gauge-stroke));
     --shape-zone-stroke: var(--style-outline, var(--base-zone-stroke));
     --shape-stack-band: var(--style-accent, var(--base-stack-band));
     --shape-valve-operator: var(--style-accent, var(--base-valve-operator));

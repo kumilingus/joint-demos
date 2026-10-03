@@ -5,8 +5,12 @@ import Shape, { type ColorField, type Resizable } from './Shape';
 import type { Thresholds } from './Panel';
 import { Layer, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../const';
 
-// The dial is drawn around the center of the element.
-const dialTransform = 'translate(calc(w / 2), calc(h / 2))';
+// The size the dial is drawn for: it is scaled to the size of the element (kept square, see `resizable`)
+const DIAL_SIZE = 60;
+
+// The dial is drawn around the center of the element, scaled to its size.
+const dialTransform = `translate(calc(w / 2), calc(h / 2)) scale(calc(w / ${DIAL_SIZE}))`;
+
 
 // The scale: 270° from the bottom left (0 %) to the bottom right (100 %), clockwise
 const SCALE_START = 135;
@@ -44,6 +48,7 @@ const clamp = (value: unknown) => Math.max(0, Math.min(100, Number(value) || 0))
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
     <rect @selector='stem' />
+    <circle @selector='bezel' />
     <circle @selector='body' />
     <path @selector='ticks' />
     <path @selector='lowZone' />
@@ -56,32 +61,34 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
-// The default color of the round frame
-const GAUGE_FRAME = 'var(--shape-gauge-stroke)';
+// How wide the metal ring around the dial is (relative to the size)
+const BEZEL = 1 / 12;
 
+/**
+ * A pressure gauge: a dial in a metal ring (its bezel - the color, the finish and the outline of the gauge,
+ * as of the surfaces of the equipment), the needle pointing to the value.
+ */
 export default class PressureGauge extends Shape {
 
-    // Its color is the color of its round frame: the outline of the frame (in full), no Outline of its own
-    get colorField(): ColorField {
-        return { path: ['outline'], defaultValue: GAUGE_FRAME };
-    }
-
-    get outlineField(): null {
-        return null;
+    // The accent: the needle
+    get accentField(): ColorField {
+        return { path: ['attrs', 'needle', 'fill'] };
     }
 
     get graphLayer(): Layer {
         return Layer.Instruments;
     }
 
+    // Kept round: the dial scales with it
     get resizable(): Resizable {
-        return false;
+        return { preserveAspectRatio: true };
     }
 
     get rotatable(): boolean {
         return false;
     }
 
+    // The stem and the label under it
     get overflow(): Overflow {
         return { bottom: 38 };
     }
@@ -100,8 +107,9 @@ export default class PressureGauge extends Shape {
             thresholds: { ...DEFAULT_THRESHOLDS },
             attrs: {
                 root: {
-                    magnetSelector: 'body'
+                    magnetSelector: 'bezel'
                 },
+                // The connection to the pipe: the same whatever the size of the dial
                 stem: {
                     x: 'calc(w / 2 - 5)',
                     y: 'calc(h - 2)',
@@ -111,14 +119,23 @@ export default class PressureGauge extends Shape {
                     stroke: '#555',
                     strokeWidth: 2
                 },
-                body: {
+                // The metal ring: in the color and the finish of the gauge, outlined
+                bezel: {
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 'calc(w / 2)',
+                    surfaceFill: 'sphere',
+                    surfaceStroke: 'edge',
+                    strokeWidth: 1.5
+                },
+                // The dial (its face light whatever the color: the ticks and the needle stay readable)
+                body: {
+                    cx: 'calc(w / 2)',
+                    cy: 'calc(h / 2)',
+                    r: `calc(${0.5 - BEZEL} * w)`,
                     fill: 'var(--shape-face)',
-                    // The frame: in the color of the gauge (see `colorField`)
-                    surfaceStroke: GAUGE_FRAME,
-                    strokeWidth: 4
+                    surfaceStroke: 'edge',
+                    strokeWidth: 1
                 },
                 ticks: {
                     d: TICKS,
@@ -146,19 +163,18 @@ export default class PressureGauge extends Shape {
                 // Pointing up; turned (with a CSS transform, so that it sweeps) to the value.
                 needle: {
                     d: 'M -3 0 L 0 -20 L 3 0 Z',
-                    fill: '#ED2637',
+                    fill: 'var(--color-red)',
                     style: { transition: 'transform 0.6s ease-out' }
                 },
                 hub: {
-                    cx: 'calc(w / 2)',
-                    cy: 'calc(h / 2)',
+                    transform: dialTransform,
                     r: 4,
                     fill: 'var(--shape-gauge-ink)'
                 },
                 unit: {
                     text: 'bar',
-                    x: 'calc(w / 2)',
-                    y: 'calc(0.75 * h)',
+                    transform: dialTransform,
+                    y: 15,
                     textAnchor: 'middle',
                     textVerticalAnchor: 'middle',
                     fontSize: 9,
