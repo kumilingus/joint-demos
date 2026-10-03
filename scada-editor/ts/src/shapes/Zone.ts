@@ -82,7 +82,7 @@ export default class Zone extends Shape {
                     },
                     fontSize: 14,
                     fontFamily: 'sans-serif',
-                    fontWeight: 'bold',
+                    fontWeight: 700,
                     fill: LIQUID_COLOR,
                     textVerticalAnchor: 'middle',
                     textAnchor: 'middle',

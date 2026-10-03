@@ -62,13 +62,24 @@ function getInputs(element: dia.Element): Inputs {
     });
     if (Object.keys(attrs).length > 0) inputs.attrs = attrs;
 
-    // A label (a text on its own) and a zone have a size of the text too.
+    // A label (a text on its own) and a zone have a size and a weight of the text too.
     if (['Label', 'Zone'].includes(element.get('type'))) {
         inputs.attrs = {
             ...(inputs.attrs as Inputs),
             label: {
                 ...(inputs.attrs as Record<string, Inputs>).label,
-                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'appearance', index: index++ }
+                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'appearance', index: index++ },
+                fontWeight: {
+                    type: 'select-button-group',
+                    label: 'Font weight',
+                    options: [
+                        // The sans-serif of the canvas: no semibold (it's drawn bold)
+                        { value: 400, content: 'Normal' },
+                        { value: 700, content: 'Bold' }
+                    ],
+                    group: 'appearance',
+                    index: index++
+                }
             }
         };
     }

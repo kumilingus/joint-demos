@@ -57,7 +57,7 @@ export default class Label extends Shape {
                     },
                     fontSize: 20,
                     fontFamily: 'sans-serif',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     fill: LABEL_COLOR
                 }
             }
