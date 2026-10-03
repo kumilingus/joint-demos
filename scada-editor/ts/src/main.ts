@@ -9,9 +9,9 @@ import './styles.css';
 import { setTheme } from '@joint/plus';
 import { init } from './app';
 
-// A theme of its own, styled from scratch in `styles.css`: none of the
+// A theme of its own, styled from scratch in `theme/theme.css` (and the app in `styles.css`): none of the
 // built-in theme styles apply to it.
-setTheme('scada');
+setTheme('minimal');
 
 // The texts of the diagram are measured when they are rendered (wrapped, cut with an ellipsis): in Inter, loaded first
 Promise.all(['400', '600', '700'].map(weight => document.fonts.load(`${weight} 16px Inter`))).finally(init);

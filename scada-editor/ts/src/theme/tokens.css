@@ -1,4 +1,7 @@
-/* Design tokens (a neutral palette in the style of shadcn/ui) */
+/*
+ * The design tokens of the `minimal` theme (see `theme.css`): the names of the CSS variables of shadcn/ui, a neutral
+ * palette; the dark scheme under `:root[data-color-scheme="dark"]`. The icons (`--icon-*`) are files in `icons/`.
+ */
 
 :root {
     --background: #ffffff;
@@ -26,30 +29,30 @@
     --font: 'Inter', 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
     /* Icons (Lucide), used as masks so that they take the color of the text. */
-    --icon-zoom-in: url("./assets/icons/zoom-in.svg");
-    --icon-zoom-out: url("./assets/icons/zoom-out.svg");
-    --icon-fit: url("./assets/icons/fit.svg");
-    --icon-play: url("./assets/icons/play.svg");
-    --icon-pencil: url("./assets/icons/pencil.svg");
-    --icon-search: url("./assets/icons/search.svg");
-    --icon-save: url("./assets/icons/save.svg");
-    --icon-image: url("./assets/icons/image.svg");
-    --icon-log: url("./assets/icons/log.svg");
-    --icon-settings: url("./assets/icons/settings.svg");
-    --icon-new: url("./assets/icons/new.svg");
-    --icon-open: url("./assets/icons/open.svg");
-    --icon-layers: url("./assets/icons/layers.svg");
-    --icon-star: url("./assets/icons/star.svg");
-    --icon-trash: url("./assets/icons/trash.svg");
-    --icon-upload: url("./assets/icons/upload.svg");
-    --icon-close: url("./assets/icons/close.svg");
-    --icon-undo: url("./assets/icons/undo.svg");
-    --icon-redo: url("./assets/icons/redo.svg");
-    --icon-sun: url("./assets/icons/sun.svg");
-    --icon-moon: url("./assets/icons/moon.svg");
-    --icon-maximize: url("./assets/icons/maximize.svg");
-    --icon-minimize: url("./assets/icons/minimize.svg");
-    --icon-chevron: url("./assets/icons/chevron.svg");
+    --icon-zoom-in: url("./icons/zoom-in.svg");
+    --icon-zoom-out: url("./icons/zoom-out.svg");
+    --icon-fit: url("./icons/fit.svg");
+    --icon-play: url("./icons/play.svg");
+    --icon-pencil: url("./icons/pencil.svg");
+    --icon-search: url("./icons/search.svg");
+    --icon-save: url("./icons/save.svg");
+    --icon-image: url("./icons/image.svg");
+    --icon-log: url("./icons/log.svg");
+    --icon-settings: url("./icons/settings.svg");
+    --icon-new: url("./icons/new.svg");
+    --icon-open: url("./icons/open.svg");
+    --icon-layers: url("./icons/layers.svg");
+    --icon-star: url("./icons/star.svg");
+    --icon-trash: url("./icons/trash.svg");
+    --icon-upload: url("./icons/upload.svg");
+    --icon-close: url("./icons/close.svg");
+    --icon-undo: url("./icons/undo.svg");
+    --icon-redo: url("./icons/redo.svg");
+    --icon-sun: url("./icons/sun.svg");
+    --icon-moon: url("./icons/moon.svg");
+    --icon-maximize: url("./icons/maximize.svg");
+    --icon-minimize: url("./icons/minimize.svg");
+    --icon-chevron: url("./icons/chevron.svg");
 }
 
 /* The dark color scheme (switched in the toolbar, see `App.setColorScheme()`) */

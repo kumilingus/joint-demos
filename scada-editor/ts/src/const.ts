@@ -47,7 +47,7 @@ export const SELECTION_COLOR = '#0075F2';
 
 /** How far the frame of a selected element is around it (`ui.FreeTransform` and the frames of `ui.Selection`) */
 export const SELECTION_PADDING = 6;
-/** The colors of the app (the design tokens of `variables.css` and the canvas, see `config.ts`). */
+/** The colors of the app (the design tokens of `theme/tokens.css` and the canvas, see `config.ts`). */
 export enum ColorScheme {
     Light = 'light',
     Dark = 'dark'
