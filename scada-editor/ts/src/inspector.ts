@@ -73,8 +73,8 @@ function getInputs(element: dia.Element): Inputs {
                     type: 'select-button-group',
                     label: 'Font weight',
                     options: [
-                        // The sans-serif of the canvas: no semibold (it's drawn bold)
                         { value: 400, content: 'Normal' },
+                        { value: 600, content: 'Semibold' },
                         { value: 700, content: 'Bold' }
                     ],
                     group: 'appearance',

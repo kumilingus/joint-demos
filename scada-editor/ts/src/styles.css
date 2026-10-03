@@ -1583,3 +1583,9 @@ body {
     font: 12px var(--font);
     font-variant-numeric: tabular-nums;
 }
+
+/* The texts of the diagram (every paper: the canvas, the palette, the navigator) in the font of the app (Inter, see
+   `main.ts`) - not the readings in monospace. A rule of CSS: over the `font-family` attribute of the shapes. */
+.joint-paper text:not([font-family="monospace"]) {
+    font-family: var(--font);
+}
