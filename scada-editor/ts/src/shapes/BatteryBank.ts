@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
 import { LIQUID_COLOR } from '../const';
-import Shape, { type Resizable } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
 
 // The cells in the cabinet: 2 rows of 5
 const cells = Array.from({ length: 10 }, (_, i) => ({ column: i % 5, row: Math.floor(i / 5) }));
@@ -22,6 +22,11 @@ const GAUGE_PADDING = 10;
 
 /** A battery bank (a UPS, a storage of the energy): a source of the power, its charge on a gauge. */
 export default class BatteryBank extends Shape {
+
+    // The accent: the bar of the charge
+    get accentField(): ColorField {
+        return { path: ['attrs', 'charge', 'fill'] };
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
