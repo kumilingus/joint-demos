@@ -307,6 +307,15 @@ function getInputs(element: dia.Element): Inputs {
             group: 'controls',
             index: index++
         };
+        // The buttons and the slider beside the element (the checkbox of a pump is in its corner, see `controls.ts`)
+        if (element.control !== 'power') {
+            inputs.controlPosition = {
+                ...sideField('Control position'),
+                when: { ne: { controls: false }},
+                group: 'controls',
+                index: index++
+            };
+        }
     }
 
     return inputs;

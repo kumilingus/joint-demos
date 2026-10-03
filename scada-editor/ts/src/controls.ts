@@ -1,5 +1,6 @@
 import { dia, util, type mvc } from '@joint/plus';
 import Shape from './shapes/Shape';
+import { besideElement, seenBBox, sideOf } from './shapes/attributes/label';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -13,6 +14,11 @@ import Shape from './shapes/Shape';
  * see `simulation.ts`), not by editing the diagram: they are not recorded in the history.
  */
 export const RUNTIME = { runtime: true };
+
+// The sizes of the controls beside the element (their `foreignObject`s below), the space between them and the element
+const TOGGLE_SIZE = { width: 100, height: 30 };
+const SLIDER_SIZE = { width: 100, height: 42 };
+const CONTROL_GAP = 6;
 
 /** The class of the root of every control. */
 const CONTROL_CLASS = 'jj-control';
@@ -32,9 +38,8 @@ const pumpControlMarkup = util.svg/* xml */`
 `;
 
 const toggleValveControlMarkup = util.svg/* xml */`
-    <foreignObject class="${CONTROL_CLASS}" width="100" height="50">
+    <foreignObject class="${CONTROL_CLASS}" width="${TOGGLE_SIZE.width}" height="${TOGGLE_SIZE.height}">
         <div class="jj-switch" xmlns="http://www.w3.org/1999/xhtml">
-            <div @selector="label" class="jj-switch-label"></div>
             <button @selector="buttonOn" class="jj-switch-on">open</button>
             <button @selector="buttonOff" class="jj-switch-off">close</button>
         </div>
@@ -42,9 +47,8 @@ const toggleValveControlMarkup = util.svg/* xml */`
 `;
 
 const sliderValveControlMarkup = util.svg/* xml */`
-    <foreignObject class="${CONTROL_CLASS}" width="100" height="60">
+    <foreignObject class="${CONTROL_CLASS}" width="${SLIDER_SIZE.width}" height="${SLIDER_SIZE.height}">
         <div class="jj-slider" xmlns="http://www.w3.org/1999/xhtml">
-            <div @selector="label" class="jj-slider-label"></div>
             <input @selector="slider" class="jj-slider-input" type="range" min="0" max="100" step="25"/>
             <output @selector="value" class="jj-slider-output"></output>
         </div>
@@ -67,10 +71,42 @@ abstract class Control extends dia.HighlighterView {
         return this.childNodes as Record<string, HTMLElement>;
     }
 
-    /** Place the control centered below the element. */
-    protected placeBelow(element: dia.Element): void {
-        const { width, height } = element.size();
-        this.el.setAttribute('transform', `translate(${width / 2 - 50}, ${height + 10})`);
+    /**
+     * Upright: in a layer of the paper (see `updateControl()`), moved with the element but not rotated with it
+     * (the built-in transform of a highlighter in a layer is the translation and the rotation of the element).
+     */
+    protected transform(): void {
+        const { transformGroup, cellView } = this;
+        if (!transformGroup) return;
+        const { x, y } = (cellView.model as dia.Element).position();
+        transformGroup.attr('transform', `translate(${x},${y})`);
+    }
+
+    /** Place the control at the point (in the coordinates of the element as it is seen, see `transform()`) */
+    protected place(x: number, y: number): void {
+        this.el.setAttribute('transform', `translate(${x},${y})`);
+    }
+
+    /** Place the control in the top left corner of the element as it is seen (rotated) */
+    protected placeInCorner(element: dia.Element): void {
+        const { x, y } = seenBBox(element);
+        this.place(x + 5, y + 5);
+    }
+
+    /**
+     * Place the control (of the size) beside the element, on its side (`controlPosition`, set in the inspector, below
+     * unless set): on that side as it is seen, clear of the drawing (see `besideElement()`)
+     */
+    protected placeBeside(element: dia.Element, width: number, height: number): void {
+        const side = sideOf(element.get('controlPosition'));
+        const { x, y } = besideElement(element, side, { width, height }, CONTROL_GAP);
+        const corner = {
+            bottom: { x: x - width / 2, y },
+            top: { x: x - width / 2, y: y - height },
+            left: { x: x - width, y: y - height / 2 },
+            right: { x, y: y - height / 2 }
+        }[side];
+        this.place(corner.x, corner.y);
     }
 }
 
@@ -78,12 +114,10 @@ abstract class Control extends dia.HighlighterView {
 class PumpControl extends Control {
 
     preinitialize(): void {
-        this.UPDATE_ATTRIBUTES = ['power'];
+        // `angle`, `size`: in the corner as it is seen
+        this.UPDATE_ATTRIBUTES = ['power', 'angle', 'size'];
         this.tagName = 'g';
         this.children = pumpControlMarkup;
-        this.attributes = {
-            transform: 'translate(5, 5)'
-        };
     }
 
     events(): mvc.EventsHash {
@@ -92,6 +126,7 @@ class PumpControl extends Control {
 
     protected highlight(cellView: dia.CellView): void {
         this.renderChildren();
+        this.placeInCorner(cellView.model as dia.Element);
         (this.nodes.input as HTMLInputElement).checked = Boolean(cellView.model.get('power'));
         this.updateInert(cellView);
     }
@@ -105,8 +140,8 @@ class PumpControl extends Control {
 class ToggleValveControl extends Control {
 
     preinitialize(): void {
-        // `attrs`: the label of the valve is shown (and can be edited in the edit mode).
-        this.UPDATE_ATTRIBUTES = ['open', 'attrs'];
+        // `controlPosition`, `angle`, `size`: beside the valve (see `placeBeside()`)
+        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size'];
         this.children = toggleValveControlMarkup;
     }
 
@@ -118,11 +153,10 @@ class ToggleValveControl extends Control {
         this.renderChildren();
         const model = cellView.model as dia.Element;
         const isOpen = Boolean(model.get('open'));
-        const { buttonOn, buttonOff, label } = this.nodes;
-        this.placeBelow(model);
+        const { buttonOn, buttonOff } = this.nodes;
+        this.placeBeside(model, TOGGLE_SIZE.width, TOGGLE_SIZE.height);
         (buttonOn as HTMLButtonElement).disabled = !isOpen;
         (buttonOff as HTMLButtonElement).disabled = isOpen;
-        label.textContent = model.attr('label/text');
         this.updateInert(cellView);
     }
 
@@ -136,8 +170,8 @@ class ToggleValveControl extends Control {
 class SliderValveControl extends Control {
 
     preinitialize(): void {
-        // `attrs`: the label of the valve is shown (and can be edited in the edit mode).
-        this.UPDATE_ATTRIBUTES = ['open', 'attrs'];
+        // `controlPosition`, `angle`, `size`: beside the valve (see `placeBeside()`)
+        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size'];
         this.children = sliderValveControlMarkup;
     }
 
@@ -155,8 +189,7 @@ class SliderValveControl extends Control {
         // Follow the changes (from the plant too), but not while the user is dragging the slider.
         const slider = this.nodes.slider as HTMLInputElement;
         if (document.activeElement !== slider) slider.value = String(open * 100);
-        this.placeBelow(model);
-        this.nodes.label.textContent = model.attr('label/text');
+        this.placeBeside(model, SLIDER_SIZE.width, SLIDER_SIZE.height);
         this.nodes.value.textContent = getOpenText(open);
         this.updateInert(cellView);
     }
@@ -190,15 +223,17 @@ export function updateControl(paper: dia.Paper, element: dia.Element): void {
     if (!elementView) return;
     dia.HighlighterView.remove(elementView, CONTROL_HIGHLIGHTER_ID);
     if (!hasControl(element) || !usesControl(element)) return;
+    // In the front layer of the paper: over the shapes, upright (see `Control.transform()`)
+    const options = { layer: dia.Paper.Layers.FRONT };
     switch (element.control) {
         case 'power':
-            PumpControl.add(elementView, 'root', CONTROL_HIGHLIGHTER_ID);
+            PumpControl.add(elementView, 'root', CONTROL_HIGHLIGHTER_ID, options);
             break;
         case 'toggle':
-            ToggleValveControl.add(elementView, 'root', CONTROL_HIGHLIGHTER_ID);
+            ToggleValveControl.add(elementView, 'root', CONTROL_HIGHLIGHTER_ID, options);
             break;
         case 'slider':
-            SliderValveControl.add(elementView, 'root', CONTROL_HIGHLIGHTER_ID);
+            SliderValveControl.add(elementView, 'root', CONTROL_HIGHLIGHTER_ID, options);
             break;
     }
 }

@@ -103,6 +103,8 @@ export default class Disconnector extends Shape {
                 },
                 label: {
                     ...labelAttributes,
+                    // Above it: its control below (see `controlPosition` in `controls.ts`)
+                    labelPosition: 'top',
                     text: 'Disconnector'
                 }
             },

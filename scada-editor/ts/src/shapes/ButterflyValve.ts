@@ -73,6 +73,8 @@ export default class ButterflyValve extends Shape {
                 },
                 label: {
                     ...labelAttributes,
+                    // Above it: its control below (see `controlPosition` in `controls.ts`)
+                    labelPosition: 'top',
                     text: 'Butterfly Valve'
                 }
             },

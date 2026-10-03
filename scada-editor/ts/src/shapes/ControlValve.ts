@@ -128,6 +128,8 @@ export default class ControlValve extends Shape {
                 },
                 label: {
                     ...labelAttributes,
+                    // Above it: its control below (see `controlPosition` in `controls.ts`)
+                    labelPosition: 'top',
                     text: 'Valve'
                 }
             },
