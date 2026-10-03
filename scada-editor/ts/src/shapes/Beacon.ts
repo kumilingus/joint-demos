@@ -1,7 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from './attributes/label';
 import { Layer, MAX_LIQUID_COLOR } from '../const';
-import type { Overflow } from './footprint';
 import Shape, { type Resizable, type ControlKind } from './Shape';
 
 const LAMP_OFF_COLOR = '#9aa3ab';
@@ -34,10 +33,6 @@ export default class Beacon extends Shape {
         return 'power';
     }
 
-    get overflow(): Overflow {
-        return { top: 12, right: 16, left: 16 };
-    }
-
     get tagPrefix(): string {
         return 'AL';
     }
@@ -48,7 +43,7 @@ export default class Beacon extends Shape {
             type: 'Beacon',
             size: {
                 width: 40,
-                height: 60
+                height: 50
             },
             // 0 = off, 1 = on
             power: 0,
@@ -56,21 +51,23 @@ export default class Beacon extends Shape {
                 root: {
                     magnetSelector: 'body'
                 },
+                // Around the lamp, over its surroundings (not a part of the footprint of the shape: shown while it's on only)
                 glow: {
                     cx: 'calc(w / 2)',
-                    cy: 'calc(0.4 * h)',
+                    cy: 'calc(0.4 * w)',
                     r: 'calc(0.9 * w)',
                     fill: MAX_LIQUID_COLOR,
                     fillOpacity: 0.2
                 },
+                // The dome from the top of the element (its center `0.4 * w` below it)
                 lamp: {
-                    d: 'M calc(0.1 * w) calc(0.7 * h) V calc(0.4 * h) A calc(0.4 * w) calc(0.4 * w) 0 0 1 calc(0.9 * w) calc(0.4 * h) V calc(0.7 * h) Z',
+                    d: 'M calc(0.1 * w) calc(0.7 * h) V calc(0.4 * w) A calc(0.4 * w) calc(0.4 * w) 0 0 1 calc(0.9 * w) calc(0.4 * w) V calc(0.7 * h) Z',
                     stroke: '#333',
                     strokeWidth: 2
                 },
                 // The reflection on the glass
                 shine: {
-                    d: 'M calc(0.3 * w) calc(0.6 * h) V calc(0.4 * h) A calc(0.2 * w) calc(0.2 * w) 0 0 1 calc(0.45 * w) calc(0.22 * h)',
+                    d: 'M calc(0.3 * w) calc(0.6 * h) V calc(0.4 * w) A calc(0.2 * w) calc(0.2 * w) 0 0 1 calc(0.45 * w) calc(0.13 * w)',
                     fill: 'none',
                     stroke: '#fff',
                     strokeOpacity: 0.7,

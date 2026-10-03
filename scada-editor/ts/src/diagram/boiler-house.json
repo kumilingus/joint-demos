@@ -1470,12 +1470,12 @@
     },
     {
       "position": {
-        "x": 1090,
-        "y": 50
+        "x": 1080,
+        "y": 70
       },
       "size": {
-        "width": 120,
-        "height": 60
+        "width": 140,
+        "height": 70
       },
       "angle": 0,
       "type": "Display",
@@ -1484,7 +1484,8 @@
           "text": "10.4"
         },
         "label": {
-          "text": "Steam Pressure"
+          "text": "Steam Pressure",
+          "labelPosition": "top"
         }
       },
       "tag": "DI-101",
@@ -1495,11 +1496,11 @@
     {
       "position": {
         "x": 1260,
-        "y": 50
+        "y": 70
       },
       "size": {
-        "width": 60,
-        "height": 60
+        "width": 70,
+        "height": 70
       },
       "angle": 0,
       "type": "PressureGauge",
@@ -1521,7 +1522,8 @@
           }
         },
         "label": {
-          "text": "Header"
+          "text": "Header",
+          "labelPosition": "top"
         }
       },
       "tag": "PG-101",
@@ -1531,11 +1533,11 @@
     },
     {
       "position": {
-        "x": 1380,
-        "y": 50
+        "x": 1386,
+        "y": 70
       },
       "size": {
-        "width": 40,
+        "width": 48,
         "height": 60
       },
       "angle": 0,
@@ -1549,7 +1551,8 @@
           "fill": "#9aa3ab"
         },
         "label": {
-          "text": "High Pressure"
+          "text": "High Pressure",
+          "labelPosition": "top"
         }
       },
       "tag": "AL-101",
@@ -1576,7 +1579,7 @@
         },
         "reading": {
           "y": "calc(0.230 * h)",
-          "text": "75 \u00b0C"
+          "text": "75 °C"
         },
         "label": {
           "text": "Steam Temp."
@@ -2066,7 +2069,7 @@
         [
           "on",
           "42.0",
-          "m\u00b3/h"
+          "m³/h"
         ]
       ],
       "sourceTag": "P-101",
@@ -2107,7 +2110,7 @@
         [
           "off",
           "42.0",
-          "m\u00b3/h"
+          "m³/h"
         ]
       ],
       "sourceTag": "P-102",
