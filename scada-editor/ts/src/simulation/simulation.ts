@@ -202,15 +202,31 @@ type ChartGenerator = (element: dia.Element, graph: dia.Graph, tick: number) => 
 /** The sum of the steam flow of the current period of each bar chart (by its id): its next bar is their mean */
 const periodFlows = new Map<string, number>();
 
+/** Whether the charts follow the steam of a plant (its flow meters: a boiler house); otherwise they drift on their own */
+const hasSteam = (graph: dia.Graph) => graph.getElements().some(element => element.get('type') === 'FlowMeter');
+
+/** A value of a chart moved a little (by a share of its scale), within the scale */
+function driftOnScale(value: number, min: number, max: number, share = 0.04): number {
+    return roundTo(drift(value, (max - min) * share, min, max), max - min);
+}
+
 const chartGenerators: Record<string, ChartGenerator> = {
-    // The steam flow: the newest value on the right, the oldest one drops out on the left
+    // The steam flow (or its own value drifting): the newest value on the right, the oldest one drops out on the left
     LineChart: (element, graph) => {
         const { min, max } = getScale(element);
         const values: number[] = element.get('values') || [];
-        return { values: [...values, roundTo(steamFlow(graph), max - min)].slice(-CHART_POINTS) };
+        const next = hasSteam(graph) ? roundTo(steamFlow(graph), max - min) : driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max);
+        return { values: [...values, next].slice(-CHART_POINTS) };
     },
-    // The steam produced in the last period (the mean flow): a new bar on the right
+    // The steam produced in the last period (the mean flow; or near the last bar): a new bar on the right
     BarChart: (element, graph, tick) => {
+        if (!hasSteam(graph)) {
+            // A new bar now and then, near the last one
+            if (tick % BAR_PERIOD !== 0) return null;
+            const { min, max } = getScale(element);
+            const values: number[] = element.get('values') || [];
+            return { values: [...values.slice(1), driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max, 0.08)] };
+        }
         const sum = (periodFlows.get(element.id as string) ?? 0) + steamFlow(graph);
         if (tick % BAR_PERIOD !== 0) {
             periodFlows.set(element.id as string, sum);
@@ -221,9 +237,13 @@ const chartGenerators: Record<string, ChartGenerator> = {
         const values: number[] = element.get('values') || [];
         return { values: [...values.slice(1), roundTo(sum / BAR_PERIOD, max - min)] };
     },
-    // The fuels burnt: the first one up to the base load, the second one above it, the others steadily
+    // The fuels burnt: the first one up to the base load, the second one above it, the others steadily (or each drifting)
     DonutChart: (element, graph) => {
         const slices: Slice[] = element.get('slices') || [];
+        // Without steam: each part a little more or less (the shares stay close)
+        if (!hasSteam(graph)) {
+            return { slices: slices.map(slice => ({ ...slice, value: Number(drift(Number(slice.value) || 0, (Number(slice.value) || 0) * 0.03, 0, Number.MAX_VALUE).toFixed(1)) })) };
+        }
         const flow = steamFlow(graph);
         return {
             slices: slices.map((slice, index) => {
@@ -234,9 +254,13 @@ const chartGenerators: Record<string, ChartGenerator> = {
             })
         };
     },
-    // The pressure of the feedwater: with the feed pumps running
+    // The pressure of the feedwater: with the feed pumps running (or its own value drifting)
     GaugeChart: (element, graph) => {
         const { min, max } = getScale(element);
+        // Without the feed pumps: its own value drifting
+        if (!graph.getElements().some(other => other.get('type') === 'Pump')) {
+            return { value: driftOnScale(Number(element.get('value')) || 0, min, max, 0.02) };
+        }
         const value = follow(Number(element.get('value')) || 0, withPumps(graph, PUMP_PRESSURE), 0.1);
         return { value: roundTo(Math.max(min, Math.min(max, value)), max - min) };
     }
@@ -291,30 +315,6 @@ export function readoutStates(graph: dia.Graph): void {
     });
 }
 
-/** The numbers of the tables of the stopped sources as they were (the runtime mode left: they are not saved as zeros) */
-function restoreReadouts(graph: dia.Graph): void {
-    graph.getElements().forEach((element) => {
-        const numbers = runningValues.get(element);
-        if (!numbers) return;
-        runningValues.delete(element);
-        // The numbers only: the states as they are (of the source now)
-        const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
-        const values: string[][] = element.get('values') ?? [];
-        element.set('values', values.map((row, r) => row.map((value, c) => (kinds[c] === 'number' ? numbers[r]?.[c] ?? value : value))), RUNTIME);
-    });
-}
-
-/** The updates of the charts (of those with a tag) */
-export function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] {
-    return graph.getElements()
-        .filter(element => getTag(element) && element.get('type') in chartGenerators)
-        .map(element => ({ tag: getTag(element)!, changes: chartGenerators[element.get('type')](element, graph, tick) }))
-        .filter((update): update is TagUpdate => update.changes !== null);
-}
-
-/** A random update of a random element (of those with data), or `null` if nothing changes this time. */
-export function createRandomUpdate(graph: dia.Graph): TagUpdate | null {
-    const elements = graph.getElements().filter(element => getTag(element) && element.get('type') in generators);
 /**
  * The empty cells of the tables filled (the plant sends every value): a number like the others of its column
  * (or a percentage), a text the name of its row, a state running
