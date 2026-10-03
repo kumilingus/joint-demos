@@ -1,5 +1,6 @@
 import { type dia, type ui, util } from '@joint/plus';
 import type { ColorField } from './shapes/Shape';
+import { renderLabel } from './help';
 
 /*
  * The color fields of the inspector: the native color input (with its eyedropper), and the colors
@@ -54,15 +55,27 @@ const isHexColor = (value: unknown): value is string => typeof value === 'string
 /** A color of the theme: a CSS variable (see `shapes.css`) */
 const isThemeColor = (value: unknown): value is string => typeof value === 'string' && value.startsWith('var(');
 
-/** The color as drawn now (a CSS variable resolved in the current scheme), as a hex (for the native input) */
+/** A canvas of a pixel: a color painted on it is read back in sRGB (see `resolveColor()`) */
+let pixel: CanvasRenderingContext2D | null = null;
+
+/**
+ * The color as drawn now (a CSS variable resolved in the current scheme), as a hex (for the native input).
+ * The computed color may be in another color space (`color-mix()` in oklab): it is painted and read back in sRGB.
+ */
 function resolveColor(value: string): string {
     if (isHexColor(value)) return value;
     const probe = document.createElement('span');
     probe.style.color = value;
     document.body.append(probe);
-    const rgb = getComputedStyle(probe).color.match(/\d+/g) || [];
+    const computed = getComputedStyle(probe).color;
     probe.remove();
-    return '#' + rgb.slice(0, 3).map(channel => Number(channel).toString(16).padStart(2, '0')).join('');
+    pixel ??= document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+    if (!pixel) return '#000000';
+    pixel.clearRect(0, 0, 1, 1);
+    pixel.fillStyle = computed;
+    pixel.fillRect(0, 0, 1, 1);
+    const [r, g, b] = pixel.getImageData(0, 0, 1, 1).data;
+    return '#' + [r, g, b].map(channel => channel.toString(16).padStart(2, '0')).join('');
 }
 
 /** A swatch of a color */
@@ -101,11 +114,6 @@ export function rememberColor(color: string): void {
 }
 
 /**
- * The content of a color field (the `renderFieldContent` of the inspector): the native input, saved
- * by the inspector as its own (it has the attribute and the type), and the swatches setting it.
- * `undefined` for the other fields and the colors of a list (the default content).
- */
-/**
  * The options of a color field: `mixed` - the cells it is for (see `selection-inspector.ts`) have different
  * colors (none is shown); `graph` - the diagram of the colors to pick, for a cell not in it (a stand-in);
  * `auto` - the color can be none of the cell's own (an Auto swatch removes it, e.g. the outline of a shape).
@@ -119,13 +127,18 @@ interface ColorFieldOptions {
     auto?: boolean;
 }
 
+/**
+ * The content of a color field (the `renderFieldContent` of the inspector): the native input, saved
+ * by the inspector as its own (it has the attribute and the type), and the swatches setting it.
+ * `undefined` for the other fields and the colors of a list (the default content).
+ */
 export function renderColorField(options: ColorFieldOptions, path: string, value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
     if (options.type !== 'color' || /\/\d+\//.test(path)) return undefined;
     const el = document.createElement('div');
     el.className = 'color-field-content';
-    // The content of a field includes its label.
-    const label = document.createElement('label');
-    label.textContent = options.label ?? path;
+    // The content of a field includes its label (with the help of the field, if it has one).
+    const label = renderLabel(options, path) ?? document.createElement('label');
+    if (!label.textContent) label.textContent = options.label ?? path;
     el.append(label);
     const input = document.createElement('input');
     input.type = 'color';
