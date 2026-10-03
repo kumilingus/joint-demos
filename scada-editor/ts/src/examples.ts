@@ -1,7 +1,7 @@
 import type { dia } from '@joint/plus';
-import boilerHouse from './diagram/boiler-house.json';
-import cementPlant from './diagram/cement-plant.json';
-import microgrid from './diagram/microgrid.json';
+import boilerHouse from './diagrams/boiler-house.json';
+import cementPlant from './diagrams/cement-plant.json';
+import microgrid from './diagrams/microgrid.json';
 
 /*
  * The example diagrams (saved with the Save button): offered in the empty inspector panel (see `App`).
