@@ -32,11 +32,11 @@ export default class Screen extends dia.Element {
                     height: 'calc(h)',
                     // Grabbed anywhere while it is edited (the pointer passes through it otherwise)
                     fill: 'transparent',
-                    // The frame is shown while editing only (see `styles.css`).
+                    // The frame is shown while editing only (see `canvas/canvas.css`).
                     stroke: 'var(--shape-screen)',
                     strokeWidth: 2,
                     strokeDasharray: '8 4',
-                    // The canvas is panned across it, its shapes selected (unless it is edited, `.screen-editable` in `styles.css`)
+                    // The canvas is panned across it, its shapes selected (unless it is edited, `.screen-editable` in `canvas/canvas.css`)
                     pointerEvents: 'none'
                 },
                 label: {

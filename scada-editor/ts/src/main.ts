@@ -14,7 +14,6 @@ import type { Plant } from './plant/plant';
 // built-in theme styles apply to it.
 setTheme('minimal');
 
-// The texts of the diagram are measured when they are rendered (wrapped, cut with an ellipsis): in Inter, loaded first
 declare global {
     interface Window {
         /** The plant of the run, for the browser console: `plant.update('P-101', 'power', true)` (see `plant.ts`) */
@@ -22,6 +21,7 @@ declare global {
     }
 }
 
+// The texts of the diagram are measured when they are rendered (wrapped, cut with an ellipsis): in Inter, loaded first
 Promise.all(['400', '600', '700'].map(weight => document.fonts.load(`${weight} 16px Inter`))).finally(() => {
     const app = init();
     // The one of the current run (a new one for each)

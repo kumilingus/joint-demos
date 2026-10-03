@@ -34,7 +34,7 @@ function thresholdValue(value: unknown): number {
 
 /**
  * A line chart: the recent history of a value (`values` from `min` to `max`: the newest on the right)
- * with the warning thresholds. In the runtime mode the newest value comes on the right (see `simulation.ts`).
+ * with the warning thresholds. In the runtime mode the newest value comes on the right (see `plant/mock/mock-plant.ts`).
  */
 export default class LineChart extends Shape {
 

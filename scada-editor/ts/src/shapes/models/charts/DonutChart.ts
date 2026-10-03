@@ -85,7 +85,7 @@ function slicePath(slices: Slice[], index: number, bbox: dia.BBox): string {
 
 /**
  * A donut chart: the shares of the parts of a whole (`slices`, edited in the inspector),
- * with a legend. In the runtime mode the shares change (see `simulation.ts`).
+ * with a legend. In the runtime mode the shares change (see `plant/mock/mock-plant.ts`).
  */
 export default class DonutChart extends Shape {
 

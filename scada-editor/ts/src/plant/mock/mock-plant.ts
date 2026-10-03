@@ -20,7 +20,7 @@ import type { Slice } from '../../shapes/models/charts/DonutChart';
  * An update of an element of the diagram itself (a chart, a table - they show the values of the plant, not values of
  * tags): the element (by its tag) and the new values of its attributes (by their paths).
  */
-export interface TagUpdate {
+interface TagUpdate {
     tag: string;
     changes: Record<string, unknown>;
 }
@@ -292,7 +292,7 @@ const isNumber = (value: string) => /^-?\d+(\.\d+)?$/.test(value);
  * The tables of a source as it is: their states `on` while it runs, `off` while not (an alarm stays); their numbers
  * zero while it is stopped (the ones before kept, see `runningValues`), back when it runs again
  */
-export function readoutStates(graph: dia.Graph): void {
+function readoutStates(graph: dia.Graph): void {
     graph.getElements().filter(element => element.get('type') === 'Table').forEach((table) => {
         const source = sourceOf(table, graph);
         if (!source) return;
@@ -353,7 +353,7 @@ function restoreReadouts(graph: dia.Graph): void {
 }
 
 /** The updates of the charts (of those with a tag) */
-export function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] {
+function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] {
     return graph.getElements()
         .filter(element => getTag(element) && element.get('type') in chartGenerators)
         .map(element => ({ tag: getTag(element)!, changes: chartGenerators[element.get('type')](element, graph, tick) }))
@@ -371,7 +371,7 @@ interface PlantUpdate {
  * An update of the plant (the new value of the property of a random element of those with data), or an update of
  * a table; `null` if nothing changes this time.
  */
-export function createRandomUpdate(graph: dia.Graph): PlantUpdate | TagUpdate | null {
+function createRandomUpdate(graph: dia.Graph): PlantUpdate | TagUpdate | null {
     const elements = graph.getElements().filter(element => getTag(element) && (element.get('type') in generators || element.get('type') in readoutGenerators));
     if (elements.length === 0) return null;
     const element = elements[Math.floor(Math.random() * elements.length)];
@@ -386,7 +386,7 @@ export function createRandomUpdate(graph: dia.Graph): PlantUpdate | TagUpdate | 
 }
 
 /** Apply an update to the element with its tag (a runtime change: not recorded in the history). */
-export function applyUpdate(graph: dia.Graph, { tag, changes }: TagUpdate): void {
+function applyUpdate(graph: dia.Graph, { tag, changes }: TagUpdate): void {
     const element = findByTag(graph, tag);
     if (!element) return;
     Object.entries(changes).forEach(([path, value]) => element.prop(path, value, RUNTIME));
@@ -443,12 +443,12 @@ export class MockPlant {
         periodFlows.clear();
     }
 
-    /** The `energized` of the cells (as a SCADA server would send it): the circuits traced from the sources */
     /** The states of the readouts follow their sources (see `readoutStates()`) */
     protected updateReadouts(): void {
         readoutStates(this.graph);
     }
 
+    /** The `energized` of the cells (as a SCADA server would send it): the circuits traced from the sources */
     protected updateEnergized(): void {
         const energized = getEnergized(this.graph);
         this.graph.getCells().forEach((cell) => {

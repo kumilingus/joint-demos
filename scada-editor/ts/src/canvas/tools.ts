@@ -7,7 +7,7 @@ import { SELECTION_COLOR } from '../const';
 
 /**
  * The arrowheads: dots at the ends of the pipe in the color of the selection, ringed with the background
- * (see `styles.css`): they stand out on a pipe of any color. Dragging one reconnects the end, or moves
+ * (see `theme/theme-minimal.css`): they stand out on a pipe of any color. Dragging one reconnects the end, or moves
  * its anchor along the side of the same element (see `connectionStrategy` in `connections.ts`)
  * - there is no anchor tool.
  */
@@ -31,7 +31,7 @@ export const TargetArrowhead = linkTools.TargetArrowhead.extend({
 
 /**
  * A vertex of the pipe (the `handleClass` of `linkTools.Vertices`): as the arrowheads, smaller
- * (the colors in `styles.css`) - a bend, not an end.
+ * (the colors in `theme/theme-minimal.css`) - a bend, not an end.
  */
 export const VertexHandle = linkTools.Vertices.VertexHandle.extend({
     attributes: {

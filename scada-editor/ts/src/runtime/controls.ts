@@ -164,7 +164,7 @@ class ToggleValveControl extends Control {
         const isOpen = Boolean(model.get('open'));
         const { buttonOn, buttonOff } = this.nodes;
         this.placeBeside(model, TOGGLE_SIZE.width, TOGGLE_SIZE.height);
-        // The state it is in: pressed (a segmented control, see `styles.css`)
+        // The state it is in: pressed (a segmented control, see `runtime.css`)
         buttonOn.setAttribute('aria-pressed', String(isOpen));
         buttonOff.setAttribute('aria-pressed', String(!isOpen));
         this.updateInert(cellView);

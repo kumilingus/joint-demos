@@ -55,7 +55,7 @@ function minWidthOf(columns: Column[]): number {
 }
 
 /**
- * A table: its columns (their names shown or not), the values of its rows (from the plant, see `simulation.ts`), a title
+ * A table: its columns (their names shown or not), the values of its rows (from the plant, see `plant/mock/mock-plant.ts`), a title
  * above them if it has a header - without both, a list (of states, of values). Resized, its height sets the number of its
  * rows (a row a step of the grid, as the length of a busbar its taps); its width is shared by the columns.
  * Drawn by its own view (see `TableView`): a change of a value updates that cell only.

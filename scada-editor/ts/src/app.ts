@@ -243,7 +243,7 @@ export class App {
         };
     }
 
-    /** What the empty inspector panel says (shown while it has nothing else, see `styles.css`): with a way to the settings */
+    /** What the empty inspector panel says (shown while it has nothing else, see `inspector/inspector.css`): with a way to the settings */
     protected createInspectorEmpty(): HTMLElement {
         const el = document.createElement('div');
         el.className = 'inspector-empty';

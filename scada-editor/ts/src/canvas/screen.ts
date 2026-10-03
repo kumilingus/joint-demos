@@ -31,7 +31,7 @@ export function isScreenShown(app: App): boolean {
     return app.el.dataset.screen === 'shown';
 }
 
-/** Show the screen only, clipped (see `styles.css` for the rest): on entering the runtime mode. */
+/** Show the screen only, clipped (see `canvas.css` for the rest): on entering the runtime mode. */
 export function showScreen(app: App): void {
     const screen = app.mode === Mode.Runtime ? getScreen(app.graph) : undefined;
     if (!screen) return;
@@ -46,7 +46,7 @@ export function showScreen(app: App): void {
 }
 
 /**
- * The toolbar stays down while a press started on it lasts (see `styles.css`): at the top of a full screen
+ * The toolbar stays down while a press started on it lasts (see `canvas.css`): at the top of a full screen
  * the system takes the pointer (the menu bar, the exit of the full screen), the toolbar would not be hovered
  * and slide up under the button being clicked. The toolbar is created again for each mode (the listener with it).
  */
@@ -63,7 +63,7 @@ function holdToolbarWhilePressed(el: HTMLElement): void {
 const REVEAL_DURATION = 1500;
 
 /**
- * The toolbar slides up (see `styles.css`) once the pointer leaves it: it is created again for the mode,
+ * The toolbar slides up (see `canvas.css`) once the pointer leaves it: it is created again for the mode,
  * under the pointer that pressed Run, but not hovered until the pointer moves.
  */
 function revealToolbar(el: HTMLElement): void {

@@ -2,15 +2,10 @@ import { dia, V } from '@joint/plus';
 
 /*
  * An element tinted in a color: recolored by a filter of its view (its shading kept - the light parts in the color, the
- * dark ones dark) and glowing in it, pulsing if asked. A highlighter: nothing of the model changes - the shapes share
+ * dark ones dark) and glowing in it. A highlighter: nothing of the model changes - the shapes share
  * their gradients (a paint server takes the variables where it is defined, not where it is used), so a shape can't be
  * recolored by its variables. E.g. the element of a message of the log under the pointer (see `LogController`).
  */
-
-export interface TintOptions {
-    /** Pulsing (its glow growing and shrinking) */
-    pulse?: boolean;
-}
 
 const TINT_ID = 'tint';
 
@@ -38,31 +33,30 @@ function defineTint(paper: dia.Paper, color: string): string {
     return id;
 }
 
-/** The tint: the class of the view (`.jj-tint` in `styles.css`), its filter and its color as its variables */
+/** The tint: the class of the view (`.jj-tint` in `canvas.css`), its filter and its color as its variables */
 const Tint = dia.HighlighterView.extend({
     // Nothing of its own: the view of the element is tinted
     MOUNTABLE: false,
     highlight(this: dia.HighlighterView, cellView: dia.CellView) {
-        const { color, filter, pulse } = this.options as { color: string; filter: string; pulse: boolean };
+        const { color, filter } = this.options as { color: string; filter: string };
         const { el } = cellView;
         el.classList.add('jj-tint');
-        el.classList.toggle('jj-tint-pulse', pulse);
         el.style.setProperty('--jj-tint-color', color);
         el.style.setProperty('--jj-tint-filter', `url(#${filter})`);
     },
     unhighlight(this: dia.HighlighterView, cellView: dia.CellView) {
         const { el } = cellView;
-        el.classList.remove('jj-tint', 'jj-tint-pulse');
+        el.classList.remove('jj-tint');
         el.style.removeProperty('--jj-tint-color');
         el.style.removeProperty('--jj-tint-filter');
     }
 });
 
 /** The element tinted in the color (e.g. `var(--selection)`, `var(--color-red)`), or not (`null`) */
-export function setTint(paper: dia.Paper, element: dia.Element, color: string | null, { pulse = false }: TintOptions = {}): void {
+export function setTint(paper: dia.Paper, element: dia.Element, color: string | null): void {
     const view = element.findView(paper);
     if (!view) return;
     Tint.remove(view, TINT_ID);
     if (color === null) return;
-    Tint.add(view, 'root', TINT_ID, { color, filter: defineTint(paper, color), pulse });
+    Tint.add(view, 'root', TINT_ID, { color, filter: defineTint(paper, color) });
 }

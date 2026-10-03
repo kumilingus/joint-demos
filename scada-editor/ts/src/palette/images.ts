@@ -70,7 +70,7 @@ const PLACEHOLDER_ID = '';
 
 /**
  * The id of the definition of the placeholder in the paper: a dashed frame with an icon of a missing image
- * (in the colors of the element label, see `styles.css`).
+ * (in the colors of the element label, see `palette.css`).
  */
 export function definePlaceholder(paper: dia.Paper): string {
     let images = definitions.get(paper);

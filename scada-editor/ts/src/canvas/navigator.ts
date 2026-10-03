@@ -33,7 +33,7 @@ const NavigatorElementView = dia.ElementView.extend({
         const doc = util.parseDOMJSON(this.markup);
         this.body = doc.selectors.body;
         if (this.model.get('type') === 'Screen') {
-            // In the color of the screen on the canvas, tinted (see `styles.css`): what the runtime mode shows
+            // In the color of the screen on the canvas, tinted (see `canvas.css`): what the runtime mode shows
             this.body.setAttribute('class', 'navigator-screen');
         } else if (this.model.get('type') === 'Group') {
             // Nothing of it is drawn (see `Group`): its members are.

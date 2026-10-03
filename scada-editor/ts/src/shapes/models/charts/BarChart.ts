@@ -33,7 +33,7 @@ function barsPath(values: number[], scale: Scale, bbox: dia.BBox): string {
 
 /**
  * A bar chart: a value (`values` from `min` to `max`) of each of the recent periods (the mean steam flow
- * of a period). In the runtime mode the newest period comes on the right (see `simulation.ts`).
+ * of a period). In the runtime mode the newest period comes on the right (see `plant/mock/mock-plant.ts`).
  */
 export default class BarChart extends Shape {
 

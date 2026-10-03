@@ -86,7 +86,7 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | Controller | Mode | Listens to |
 |---|---|---|
 | `CanvasController` | always | paper: blank drag (panning), pinch, pan |
-| `ControlsController` | always | graph: the controls of the added elements |
+| `ControlsController` | always | graph: the controls of the added elements; an element operated by its control (a change with the `command` option) - sent to `app.plant` |
 | `SelectionController` | always | the selection: free transform, link tools, the inspector |
 | `TagsController` | always | graph: a free tag for every element |
 | `PipeColorController` | always | graph: the pipes (their colors, their ends) - a control valve shows the color of its pipe |
@@ -127,6 +127,8 @@ app.plant.get('LI-101', 'level');            // what the diagram shows now
 app.plant.on('command', ({ tag, property, value }) => { /* ... */ });   // a command of the operator
 app.plant.on('update', ({ tag, property, value }) => { /* ... */ });    // an update applied to the diagram
 ```
+
+A new plant is created for each run: listen to it when the runtime mode is entered (as a controller of the mode does, see below).
 
 Try it in the browser console: run the plant (the Run button), open the Log, and send an update as a plant would - the diagram follows, the message shows in the log:
 

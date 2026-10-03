@@ -32,7 +32,7 @@ function fraction(model: dia.Cell): number {
 
 /**
  * A gauge chart: a value (`value` from `min` to `max`) as an arc on its scale, with the value and its unit.
- * In the runtime mode the value changes (see `simulation.ts`).
+ * In the runtime mode the value changes (see `plant/mock/mock-plant.ts`).
  */
 export default class GaugeChart extends Shape {
 
@@ -81,7 +81,7 @@ export default class GaugeChart extends Shape {
                 width: 130,
                 height: 130
             },
-            // The scale (bar): the feedwater pressure of the plant fits (see `simulation.ts`)
+            // The scale (bar): the feedwater pressure of the plant fits (see `plant/mock/mock-plant.ts`)
             min: 0,
             max: 16,
             value: 10.5,

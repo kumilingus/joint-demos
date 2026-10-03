@@ -126,7 +126,7 @@ function nameLabel(name: string): dia.Link.Label {
  * the elements), then the elements packed into the width of the palette below them (see `packing.ts`).
  */
 function layoutGroup(graph: dia.Graph): void {
-    // The palette doesn't show the labels (see `styles.css`).
+    // The palette doesn't show the labels (see `palette.css`).
     const footprintOf = (cell: dia.Cell) => getFootprint(cell, { label: false });
     let top = GROUP_MARGIN;
     const links = graph.getLinks();
@@ -178,7 +178,7 @@ export function createStencil(
         // A click shows the shape in the inspector panel (see `PaletteController`): the dragging starts
         // with a move, where a click ends (the same threshold as on the canvas).
         dragThreshold: CLICK_THRESHOLD,
-        // Over the shapes and the names of the links (the links fixed in `styles.css`)
+        // Over the shapes and the names of the links (the links fixed in `theme/theme-minimal.css`)
         cellCursor: 'grab',
         scaleClones: true,
         // A shape dragged from the palette aligns with the others too.

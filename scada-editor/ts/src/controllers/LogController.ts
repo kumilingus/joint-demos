@@ -10,7 +10,7 @@ import { setTint } from '../canvas/tint';
 /**
  * The log of the messages between the diagram and the plant (see `log/log.ts`): opened by the Log button.
  * Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open, the element
- * of a message under the pointer is tinted blue; the tags of the elements are shown, the elements of the messages flashed if asked.
+ * of a message under the pointer is tinted blue; the tags of the elements are shown, the elements of the messages pinged if asked.
  */
 export default class LogController extends Controller {
 
@@ -46,7 +46,7 @@ function onElementPointerclick(_app: App, elementView: dia.ElementView) {
 }
 
 const TAG_BADGE_ID = 'tag-badge';
-const FLASH_ID = 'log-flash';
+const PING_ID = 'log-ping';
 
 // The tag badge: its font (monospace: its width from the number of the characters), its padding and height
 const BADGE_FONT_SIZE = 11;
@@ -96,14 +96,14 @@ const TagBadge = dia.HighlighterView.extend({
 function logHooks(app: App): LogHooks {
     const { paper, graph } = app;
     let focused: dia.Element | null = null;
-    let stopFlashing: (() => void) | null = null;
+    let stopPinging: (() => void) | null = null;
     return {
         hover: (tag) => {
             const element = tag ? findByTag(graph, tag) ?? null : null;
             if (element === focused) return;
             if (focused) setTint(paper, focused, null);
             focused = element;
-            // Tinted in the color of the selection (as its pings, see `flash()`)
+            // Tinted in the color of the selection (as its pings, see `ping()`)
             if (element) setTint(paper, element, 'var(--selection)');
         },
         showTags: (shown) => {
@@ -115,37 +115,37 @@ function logHooks(app: App): LogHooks {
                 if (view) TagBadge.add(view, 'root', TAG_BADGE_ID, { layer: dia.Paper.Layers.FRONT, z: 1 });
             });
         },
-        flashChanges: (flashed) => {
-            stopFlashing?.();
-            stopFlashing = null;
-            if (!flashed) return;
-            // A listener of the plant too: the element of a message flashed
+        pingChanges: (pinged) => {
+            stopPinging?.();
+            stopPinging = null;
+            if (!pinged) return;
+            // A listener of the plant too: the element of a message pinged
             const plant = app.plant!;
             const onMessage = (kind: PlantEvent) => ({ tag }: PlantMessage) => {
                 const element = findByTag(graph, tag);
-                if (element) flash(paper, element, kind);
+                if (element) ping(paper, element, kind);
             };
             const onUpdate = onMessage('update');
             const onCommand = onMessage('command');
             plant.on('update', onUpdate);
             plant.on('command', onCommand);
-            stopFlashing = () => {
+            stopPinging = () => {
                 plant.off('update', onUpdate);
                 plant.off('command', onCommand);
-                dia.HighlighterView.removeAll(paper, FLASH_ID);
+                dia.HighlighterView.removeAll(paper, PING_ID);
             };
         }
     };
 }
 
-// How long a flash lasts (ms): as its rings in `styles.css` (the second one starting later)
-const FLASH_DURATION = 1400;
-// How far the rings of a flash reach out of the element (at their largest)
-const FLASH_REACH = 24;
+// How long a ping lasts (ms): as its rings in `log.css` (the second one starting later)
+const PING_DURATION = 1400;
+// How far the rings of a ping reach out of the element (at their largest)
+const PING_REACH = 24;
 
 /**
  * A ping: two rings out of the middle of the element, behind it (the first child of its view), growing and fading
- * (`.jj-ping` in `styles.css`) - an update of the plant in the color of the selection (as the element under the pointer, see `tint.ts`), a command in amber (as in the log)
+ * (`.jj-ping` in `log.css`) - an update of the plant in the color of the selection (as the element under the pointer, see `tint.ts`), a command in amber (as in the log)
  */
 const Ping = dia.HighlighterView.extend({
     tagName: 'g',
@@ -156,7 +156,7 @@ const Ping = dia.HighlighterView.extend({
     highlight(this: dia.HighlighterView, cellView: dia.CellView) {
         const element = cellView.model as dia.Element;
         const { width, height } = element.size();
-        const r = Math.hypot(width, height) / 2 + FLASH_REACH;
+        const r = Math.hypot(width, height) / 2 + PING_REACH;
         const color = this.options.kind === 'update' ? 'var(--selection)' : 'var(--color-amber)';
         const ring = () => V('circle', { cx: width / 2, cy: height / 2, r, fill: color, 'fill-opacity': 0.35, stroke: color, 'stroke-width': 5 });
         this.vel.empty().append([ring(), ring()]);
@@ -164,12 +164,12 @@ const Ping = dia.HighlighterView.extend({
 });
 
 /** The element pinged (again from the start if it is pinged now) */
-function flash(paper: dia.Paper, element: dia.Element, kind: PlantEvent): void {
+function ping(paper: dia.Paper, element: dia.Element, kind: PlantEvent): void {
     const view = element.findView(paper);
     if (!view) return;
-    Ping.remove(view, FLASH_ID);
-    const ping = Ping.add(view, 'root', FLASH_ID, { layer: null, z: 0, kind });
+    Ping.remove(view, PING_ID);
+    const ping = Ping.add(view, 'root', PING_ID, { layer: null, z: 0, kind });
     window.setTimeout(() => {
-        if (Ping.get(view, FLASH_ID) === ping) Ping.remove(view, FLASH_ID);
-    }, FLASH_DURATION);
+        if (Ping.get(view, PING_ID) === ping) Ping.remove(view, PING_ID);
+    }, PING_DURATION);
 }

@@ -126,16 +126,8 @@
     font-family: var(--font);
 }
 
-/* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - pulsing if asked */
+/* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color */
 .jj-tint {
     filter: var(--jj-tint-filter) drop-shadow(0 0 6px var(--jj-tint-color));
 }
 
-.jj-tint-pulse {
-    animation: jj-tint-pulse 0.9s ease-in-out infinite alternate;
-}
-
-@keyframes jj-tint-pulse {
-    from { filter: var(--jj-tint-filter) drop-shadow(0 0 2px var(--jj-tint-color)); }
-    to { filter: var(--jj-tint-filter) drop-shadow(0 0 12px var(--jj-tint-color)); }
-}
