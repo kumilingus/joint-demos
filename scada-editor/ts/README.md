@@ -63,7 +63,7 @@ src/
   inspector/         the inspector: inspector.ts (the inputs), selection-inspector.ts (several cells), color-field.ts, help.ts (the help of the fields),
                      settings.ts (the settings of the diagram and of the editor)
   runtime/           the runtime mode: controls.ts (the controls of the equipment), animations.ts
-  plant/             the interface of the diagram to the plant: plant.ts (`update(tag, property, value)`, `subscribe()`, `get()`, see Connecting a plant),
+  plant/             the interface of the diagram to the plant: plant.ts (`update(tag, property, value)`, `get()`, the `update` and `command` events, see Connecting a plant),
                      properties.ts (the properties of the equipment as the plant knows them, bound to the elements by their types), tags.ts (the IDs);
                      simulation/ the mock of the plant (simulation.ts, the energized circuits in energized.ts) and its controller: delete it for a real plant
   log/               the log of the messages between the diagram and the plant (the Log button in the runtime mode): a listener of the plant
@@ -124,7 +124,8 @@ The diagram changes in the runtime mode by the messages of the plant only, throu
 app.plant.update('FM-101', 'value', 18.6);   // a reading
 app.plant.update('HV-101', 'open', false);   // a state
 app.plant.get('LI-101', 'level');            // what the diagram shows now
-const unsubscribe = app.plant.subscribe(({ direction, tag, property, value }) => { /* ... */ });
+app.plant.on('command', ({ tag, property, value }) => { /* ... */ });   // a command of the operator
+app.plant.on('update', ({ tag, property, value }) => { /* ... */ });    // an update applied to the diagram
 ```
 
 Try it in the browser console: run the plant (the Run button), open the Log, and send an update as a plant would - the diagram follows, the message shows in the log:
@@ -142,22 +143,22 @@ The properties of each type of element are bound in `plant/properties.ts` (`powe
 ```ts
 export default class PlantSocketController extends Controller {
     socket: WebSocket | null = null;
-    unsubscribe: (() => void) | null = null;
 
     startListening(): void {
+        const plant = this.context.plant!;
         const socket = this.socket = new WebSocket('wss://scada.example.com/plant');
         socket.onmessage = ({ data }) => {
             const { tag, property, value } = JSON.parse(data);
-            this.context.plant.update(tag, property, value);
+            plant.update(tag, property, value);
         };
-        this.unsubscribe = this.context.plant.subscribe(({ direction, tag, property, value }) => {
-            if (direction === 'out') socket.send(JSON.stringify({ tag, property, value }));
+        // The commands of the operator to the plant (stopped with the controller)
+        this.listenTo(plant, 'command', (_app: App, { tag, property, value }: PlantMessage) => {
+            socket.send(JSON.stringify({ tag, property, value }));
         });
     }
 
     stopListening(): void {
         super.stopListening();
-        this.unsubscribe?.();
         this.socket?.close();
     }
 }

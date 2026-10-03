@@ -122,11 +122,11 @@
     color: var(--muted-foreground);
 }
 
-.jj-log-message[data-direction="in"] .jj-log-direction {
+.jj-log-message[data-kind="update"] .jj-log-kind {
     color: var(--selection);
 }
 
-.jj-log-message[data-direction="out"] .jj-log-direction {
+.jj-log-message[data-kind="command"] .jj-log-kind {
     color: var(--color-amber);
 }
 

@@ -2,7 +2,7 @@ import { dia, V } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { clearLog, closeLog, isLogOpen, type LogHooks, logMessage, toggleFilterTag, toggleLog } from '../log/log';
-import type { MessageDirection } from '../plant/plant';
+import type { PlantEvent, PlantMessage } from '../plant/plant';
 import { findByTag, getTag } from '../plant/tags';
 import { propertiesOf } from '../plant/properties';
 import { setTint } from '../canvas/tint';
@@ -14,12 +14,13 @@ import { setTint } from '../canvas/tint';
  */
 export default class LogController extends Controller {
 
-    unsubscribe: (() => void) | null = null;
-
     startListening(): void {
         clearLog();
         // A listener of the plant (as any system): the updates and the commands
-        this.unsubscribe = this.context.plant!.subscribe(logMessage);
+        this.listenTo(this.context.plant!, {
+            'update': (_app: App, message: PlantMessage) => logMessage('update', message),
+            'command': (_app: App, message: PlantMessage) => logMessage('command', message)
+        });
         this.listenTo(this.context.toolbar, {
             'log:pointerclick': onLogPointerclick
         });
@@ -31,8 +32,6 @@ export default class LogController extends Controller {
 
     stopListening(): void {
         super.stopListening();
-        this.unsubscribe?.();
-        this.unsubscribe = null;
         closeLog();
     }
 }
@@ -121,12 +120,18 @@ function logHooks(app: App): LogHooks {
             stopFlashing = null;
             if (!flashed) return;
             // A listener of the plant too: the element of a message flashed
-            const unsubscribe = app.plant!.subscribe(({ tag, direction }) => {
+            const plant = app.plant!;
+            const onMessage = (kind: PlantEvent) => ({ tag }: PlantMessage) => {
                 const element = findByTag(graph, tag);
-                if (element) flash(paper, element, direction);
-            });
+                if (element) flash(paper, element, kind);
+            };
+            const onUpdate = onMessage('update');
+            const onCommand = onMessage('command');
+            plant.on('update', onUpdate);
+            plant.on('command', onCommand);
             stopFlashing = () => {
-                unsubscribe();
+                plant.off('update', onUpdate);
+                plant.off('command', onCommand);
                 dia.HighlighterView.removeAll(paper, FLASH_ID);
             };
         }
@@ -152,18 +157,18 @@ const Ping = dia.HighlighterView.extend({
         const element = cellView.model as dia.Element;
         const { width, height } = element.size();
         const r = Math.hypot(width, height) / 2 + FLASH_REACH;
-        const color = this.options.direction === 'in' ? 'var(--selection)' : 'var(--color-amber)';
+        const color = this.options.kind === 'update' ? 'var(--selection)' : 'var(--color-amber)';
         const ring = () => V('circle', { cx: width / 2, cy: height / 2, r, fill: color, 'fill-opacity': 0.35, stroke: color, 'stroke-width': 5 });
         this.vel.empty().append([ring(), ring()]);
     }
 });
 
 /** The element pinged (again from the start if it is pinged now) */
-function flash(paper: dia.Paper, element: dia.Element, direction: MessageDirection): void {
+function flash(paper: dia.Paper, element: dia.Element, kind: PlantEvent): void {
     const view = element.findView(paper);
     if (!view) return;
     Ping.remove(view, FLASH_ID);
-    const ping = Ping.add(view, 'root', FLASH_ID, { layer: null, z: 0, direction });
+    const ping = Ping.add(view, 'root', FLASH_ID, { layer: null, z: 0, kind });
     window.setTimeout(() => {
         if (Ping.get(view, FLASH_ID) === ping) Ping.remove(view, FLASH_ID);
     }, FLASH_DURATION);

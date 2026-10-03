@@ -1,5 +1,5 @@
 import { ui } from '@joint/plus';
-import type { MessageDirection, PlantMessage } from '../plant/plant';
+import type { PlantEvent, PlantMessage } from '../plant/plant';
 
 /*
  * The log of the messages between the diagram and the plant (in the runtime mode, see `plant.ts`): the updates the
@@ -10,9 +10,15 @@ import type { MessageDirection, PlantMessage } from '../plant/plant';
 // The messages kept (the newest ones)
 const MAX_MESSAGES = 200;
 
-const DIRECTION_NAMES: Record<MessageDirection, string> = {
-    in: 'update',
-    out: 'command'
+/** A message logged: of an event of the plant (see `plant.ts`) */
+export interface LogEntry extends PlantMessage {
+    kind: PlantEvent;
+}
+
+// From the plant (down to the diagram), to it (up)
+const KIND_ARROWS: Record<PlantEvent, string> = {
+    update: '↓',
+    command: '↑'
 };
 
 /** What the log shows on the diagram (see `LogController`) */
@@ -26,13 +32,13 @@ export interface LogHooks {
 }
 
 /** Which messages the log shows: of all the directions or one, with a tag or a property containing any of the words */
-type DirectionFilter = 'all' | MessageDirection;
+type DirectionFilter = 'all' | PlantEvent;
 
 const filter: { text: string; direction: DirectionFilter } = { text: '', direction: 'all' };
 
-const DIRECTION_FILTERS: Array<[DirectionFilter, string]> = [['all', 'All'], ['in', 'Updates'], ['out', 'Commands']];
+const DIRECTION_FILTERS: Array<[DirectionFilter, string]> = [['all', 'All'], ['update', 'Updates'], ['command', 'Commands']];
 
-const messages: PlantMessage[] = [];
+const messages: LogEntry[] = [];
 let dialog: ui.Dialog | null = null;
 let filterInput: HTMLInputElement | null = null;
 let hooks: LogHooks | null = null;
@@ -42,8 +48,9 @@ let list: HTMLElement | null = null;
 /** The button opening the log: active while it is open */
 let button: Element | null = null;
 
-/** Log a message (see `plant.subscribe()`): shown at the top of the log (if it is open) */
-export function logMessage(message: PlantMessage): void {
+/** Log a message of an event of the plant (see `LogController`): shown at the top of the log (if it is open) */
+export function logMessage(kind: PlantEvent, plantMessage: PlantMessage): void {
+    const message: LogEntry = { kind, ...plantMessage };
     messages.unshift(message);
     messages.length = Math.min(messages.length, MAX_MESSAGES);
     if (!list || !matches(message)) return;
@@ -57,8 +64,8 @@ function filterWords(): string[] {
 }
 
 /** Whether the log shows the message (see `filter`) */
-function matches({ direction, tag, property }: PlantMessage): boolean {
-    if (filter.direction !== 'all' && direction !== filter.direction) return false;
+function matches({ kind, tag, property }: LogEntry): boolean {
+    if (filter.direction !== 'all' && kind !== filter.direction) return false;
     const words = filterWords();
     const text = `${tag} ${property}`.toLowerCase();
     return words.length === 0 || words.some(word => text.includes(word));
@@ -207,14 +214,14 @@ function renderOption(text: string, name: keyof typeof options, onChange: (check
     return label;
 }
 
-function renderMessage({ direction, tag, property, value, time }: PlantMessage): HTMLElement {
+function renderMessage({ kind, tag, property, value, time }: LogEntry): HTMLElement {
     const row = document.createElement('div');
     row.className = 'jj-log-message';
-    row.dataset.direction = direction;
+    row.dataset.kind = kind;
     row.dataset.tag = tag;
     const cells: Array<[string, string]> = [
         ['time', time.toLocaleTimeString([], { hour12: false }) + `.${String(time.getMilliseconds()).padStart(3, '0')}`],
-        ['direction', `${direction === 'in' ? '↓' : '↑'} ${DIRECTION_NAMES[direction]}`],
+        ['kind', `${KIND_ARROWS[kind]} ${kind}`],
         ['tag', tag],
         ['property', property],
         ['value', String(value)]
