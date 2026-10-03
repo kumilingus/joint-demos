@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, pipePorts } from './ports';
 import { Layer, LIQUID_COLOR, SURFACE_INK } from '../const';
-import Shape from './Shape';
+import Shape, { type ColorField } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -14,6 +14,11 @@ const markup = util.svg/* xml */`
 
 /** An inline flow meter with a display of the current flow. */
 export default class FlowMeter extends Shape {
+
+    // The accent: the reading
+    get accentField(): ColorField {
+        return { path: ['attrs', 'value', 'fill'] };
+    }
 
     get graphLayer(): Layer {
         return Layer.Instruments;

@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes, terminalPorts } from './ports';
 import { Layer, LIQUID_COLOR } from '../const';
-import Shape, { type Resizable } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -14,6 +14,11 @@ const markup = util.svg/* xml */`
 
 /** A meter on a circuit: shows its voltage (from the plant, zero while it is not energized). */
 export default class ElectricMeter extends Shape {
+
+    // The accent: the reading (its unit in the same color)
+    get accentField(): ColorField {
+        return { path: ['attrs', 'value', 'fill'] };
+    }
 
     get graphLayer(): Layer {
         return Layer.Instruments;
@@ -82,7 +87,7 @@ export default class ElectricMeter extends Shape {
                     textVerticalAnchor: 'middle',
                     fontSize: 14,
                     fontFamily: 'sans-serif',
-                    fill: LIQUID_COLOR
+                    fillFrom: ['value', 'fill'],
                 },
                 label: {
                     ...labelAttributes,
