@@ -1,4 +1,4 @@
-import { type dia, g, ui } from '@joint/plus';
+import { type dia, g, ui, util } from '@joint/plus';
 import {
     cellNamespace,
     Pump, Compressor, Fan, Motor, Blower, Turbine, ConveyorBelt,
@@ -42,6 +42,24 @@ const LINK_LENGTH = 180;
 const LINKS_GAP = 2 * GAP;
 
 /** The groups of the palette filled with the shapes of the others (and hidden while empty) */
+// What a search looks in: the type (e.g. "tank", "valve") and the texts of the shapes (of all, of a type)
+const SEARCH_PATHS: Record<string, string[]> = {
+    '*': ['type', 'attrs/label/text'],
+    'Instrument': ['attrs/tag/text', 'attrs/loop/text']
+};
+
+/**
+ * Whether the shape of the palette matches the search: by its type and its texts (see `SEARCH_PATHS`). Not in the
+ * derived groups (favorites, in use): their shapes are in their own groups too - found there, not twice.
+ */
+function matchShape(cell: dia.Cell, keyword: string, groupId: string): boolean {
+    if (!keyword) return true;
+    if (Object.values(DerivedGroup).includes(groupId as DerivedGroup)) return false;
+    const paths = [...SEARCH_PATHS['*'], ...(SEARCH_PATHS[cell.get('type')] ?? [])];
+    const search = keyword.toLowerCase();
+    return paths.some(path => String(util.getByPath(cell.attributes, path, '/') ?? '').toLowerCase().includes(search));
+}
+
 export enum DerivedGroup {
     Favorites = 'favorites',
     InUse = 'inUse'
@@ -166,11 +184,7 @@ export function createStencil(
         // A shape dragged from the palette aligns with the others too.
         snaplines,
         paperPadding: STENCIL_PADDING,
-        // Search by the type (e.g. "tank", "valve") and by the texts of the shapes.
-        search: {
-            '*': ['type', 'attrs/label/text'],
-            'Instrument': ['attrs/tag/text', 'attrs/loop/text']
-        },
+        search: matchShape,
         // The shape dragged out of the palette shows its image too.
         paperDragOptions: () => ({ getImages }),
         paperOptions: () => ({
