@@ -98,6 +98,7 @@ export default class Zone extends Shape {
     }
 
     static attributes = {
+        ...Shape.attributes,
         // The outline of the body for its size, the tip on the side (`tipSide` in the attributes:
         // the names are looked up in the kebab case).
         'tip-side': {

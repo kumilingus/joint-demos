@@ -62,13 +62,28 @@ function getInputs(element: dia.Element): Inputs {
     });
     if (Object.keys(attrs).length > 0) inputs.attrs = attrs;
 
-    // A label (a text on its own) and a zone have a size and a weight of the text too.
+    // A label (a text on its own) and a zone have a size, a style and a weight of the text too.
     if (['Label', 'Zone'].includes(element.get('type'))) {
         inputs.attrs = {
             ...(inputs.attrs as Inputs),
             label: {
                 ...(inputs.attrs as Record<string, Inputs>).label,
                 fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'appearance', index: index++ },
+                // Several at once: an array (see `textStyles`)
+                textStyles: {
+                    type: 'select-button-group',
+                    label: 'Font style',
+                    multi: true,
+                    // The array replaced (not merged into the one before: an unselected style is gone)
+                    overwrite: true,
+                    options: [
+                        { value: 'italic', content: '<em>Italic</em>' },
+                        { value: 'underline', content: '<u>Underline</u>' },
+                        { value: 'line-through', content: '<s>Strike</s>' }
+                    ],
+                    group: 'appearance',
+                    index: index++
+                },
                 fontWeight: {
                     type: 'select-button-group',
                     label: 'Font weight',
