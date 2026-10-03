@@ -1,25 +1,29 @@
 import { type dia, util } from '@joint/plus';
 import { LIQUID_COLOR } from '../const';
 import type { Overflow } from './footprint';
-import Shape, { type ColorField } from './Shape';
+import Shape, { type ColorField, type Resizable } from './Shape';
 
 /** The side the tip of the zone points to: where the pipe comes from. */
 export type TipSide = 'left' | 'right' | 'top' | 'bottom';
 
-/** How far the tip reaches out of the zone: half of its height */
-const tipDepth = (height: number) => height / 2;
+/** The tip out of the zone, as of a tooltip: how far it reaches, how wide it is at the side - whatever the size of the zone */
+const TIP_DEPTH = 12;
+const TIP_WIDTH = 30;
+
+/** How small the zone can get: the tip fits its side (the whole side of the lowest one) */
+const MIN_SIZE = { width: 40, height: TIP_WIDTH };
 
 /**
  * The outline of a zone of the size: its box, and the tip out of it at the middle of the side
  * (not in its bounding box: the box is the text's, the pipe ends at its side under the tip).
  */
 function zoneOutline(side: TipSide, width: number, height: number): string {
-    const tip = tipDepth(height);
+    const [cx, cy, half] = [width / 2, height / 2, TIP_WIDTH / 2];
     switch (side) {
-        case 'right': return `M 0 0 H ${width} L ${width + tip} ${height / 2} L ${width} ${height} H 0 Z`;
-        case 'top': return `M 0 0 L ${width / 2} ${-tip} L ${width} 0 V ${height} H 0 Z`;
-        case 'bottom': return `M 0 0 H ${width} V ${height} L ${width / 2} ${height + tip} L 0 ${height} Z`;
-        default: return `M 0 0 H ${width} V ${height} H 0 L ${-tip} ${height / 2} Z`;
+        case 'right': return `M 0 0 H ${width} V ${cy - half} L ${width + TIP_DEPTH} ${cy} L ${width} ${cy + half} V ${height} H 0 Z`;
+        case 'top': return `M 0 0 H ${cx - half} L ${cx} ${-TIP_DEPTH} L ${cx + half} 0 H ${width} V ${height} H 0 Z`;
+        case 'bottom': return `M 0 0 H ${width} V ${height} H ${cx + half} L ${cx} ${height + TIP_DEPTH} L ${cx - half} ${height} H 0 Z`;
+        default: return `M 0 0 H ${width} V ${height} H 0 V ${cy + half} L ${-TIP_DEPTH} ${cy} L 0 ${cy - half} Z`;
     }
 }
 
@@ -37,10 +41,15 @@ export default class Zone extends Shape {
         return false;
     }
 
+    // Not smaller than its tip takes
+    get resizable(): Resizable {
+        return { minWidth: MIN_SIZE.width, minHeight: MIN_SIZE.height };
+    }
+
     // The tip out of the box on its side
     get overflow(): Overflow {
         const side: TipSide = this.attr('body/tipSide') ?? 'left';
-        return { bottom: 0, [side]: tipDepth(this.size().height) };
+        return { bottom: 0, [side]: TIP_DEPTH };
     }
 
     // Its color: the fill; its outline: the border; its accent: the text (of the medium of the pipe it stands for)
