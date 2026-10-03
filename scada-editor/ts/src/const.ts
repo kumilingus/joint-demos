@@ -1,6 +1,6 @@
 /**
  * The diagram is edited in the edit mode. In the runtime mode it can't be changed:
- * the plant runs (see `simulation.ts`) and the equipment is operated with its controls.
+ * the plant runs (see `plant/mock/`) and the equipment is operated with its controls.
  */
 export enum Mode {
     Edit = 'edit',

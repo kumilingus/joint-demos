@@ -5,7 +5,7 @@ import { readProperty, type TagValue, writeProperty } from './properties';
 
 /*
  * The interface of the diagram to the plant (in the runtime mode): any system - a SCADA server, a PLC gateway, an MQTT
- * or OPC UA client, the mock in `simulation/` - changes the diagram by calling `update()` with the tag of an element,
+ * or OPC UA client, the mock in `mock/` - changes the diagram by calling `update()` with the tag of an element,
  * the name of a property and its value; it is told the commands of the operator (a pump turned on, a valve opened) by
  * the `command` event. The diagram binds the properties to its elements (see `properties.ts`). Events (`mvc.Events`):
  * `update` - an update applied to the diagram, `command` - a command of the operator; both with the message.

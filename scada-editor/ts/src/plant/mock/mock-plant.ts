@@ -196,7 +196,7 @@ const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph)
     }
 };
 
-/** How the data of each type of chart changes (every `CHART_INTERVAL`, see `Simulation`) */
+/** How the data of each type of chart changes (every `CHART_INTERVAL`, see `MockPlant`) */
 type ChartGenerator = (element: dia.Element, graph: dia.Graph, tick: number) => Record<string, unknown> | null;
 
 /** The sum of the steam flow of the current period of each bar chart (by its id): its next bar is their mean */
@@ -392,7 +392,7 @@ export function applyUpdate(graph: dia.Graph, { tag, changes }: TagUpdate): void
     Object.entries(changes).forEach(([path, value]) => element.prop(path, value, RUNTIME));
 }
 
-export class Simulation {
+export class MockPlant {
 
     graph: dia.Graph;
     timer: number | null = null;

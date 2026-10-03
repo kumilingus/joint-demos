@@ -4,7 +4,7 @@ import Shape from '../shapes/common/Shape';
 /*
  * The tags: the IDs of the elements (`P-101`, `FT-101`, ...), set by the user.
  * JointJS generates the `id` of a cell, but it can't be changed: the tag is an attribute of its own.
- * The runtime updates address the elements by their tags (see `simulation.ts`).
+ * The runtime updates address the elements by their tags (see `plant/mock/`).
  */
 
 // The first number of a prefix: `P-101`

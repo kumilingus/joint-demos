@@ -12,7 +12,7 @@ import { readProperty, type TagValue, writeProperty } from '../plant/properties'
 
 /**
  * The option of the changes made in the runtime mode (by operating the equipment or by the plant,
- * see `simulation.ts`), not by editing the diagram: they are not recorded in the history.
+ * see `plant/mock/`), not by editing the diagram: they are not recorded in the history.
  */
 export const RUNTIME = { runtime: true };
 

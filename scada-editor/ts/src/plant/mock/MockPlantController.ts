@@ -1,29 +1,29 @@
 import Controller from '../../controllers/Controller';
 import type { App } from '../../app';
-import { Simulation } from './simulation';
+import { MockPlant } from './mock-plant';
 
 /**
- * Runs the plant (a mock sending random updates, see `simulation.ts`). Active in the runtime mode only.
+ * Runs the plant (a mock sending random updates, see `mock-plant.ts`). Active in the runtime mode only.
  * The mock is all in this folder: an app with a real plant deletes it, and the controller from `app.ts` - its own
  * controller calls `plant.update()` with the messages of its system and sends the commands of its `command` event
  * (see `plant.ts`, the README).
  */
-export default class SimulationController extends Controller {
+export default class MockPlantController extends Controller {
 
-    simulation: Simulation;
+    mock: MockPlant;
 
     constructor(app: App) {
         super(app);
-        this.simulation = new Simulation(app.graph);
+        this.mock = new MockPlant(app.graph);
     }
 
     startListening(): void {
         // Sending to the plant of the run
-        this.simulation.start(this.context.plant!);
+        this.mock.start(this.context.plant!);
     }
 
     stopListening(): void {
         super.stopListening();
-        this.simulation.stop();
+        this.mock.stop();
     }
 }

@@ -35,8 +35,8 @@ import {
     GroupController,
     ToolbarController
 } from './controllers';
-// The mock of the plant (see `plant/simulation/`): an app with a real plant deletes it and this line
-import SimulationController from './plant/simulation/SimulationController';
+// The mock of the plant (see `plant/mock/`): an app with a real plant deletes it and this line
+import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
 import { toggleSettings } from './inspector/settings';
 
@@ -139,7 +139,7 @@ export class App {
             [Mode.Runtime]: [
                 new ToolbarController(this),
                 new RuntimeController(this),
-                new SimulationController(this),
+                new MockPlantController(this),
                 new LogController(this),
                 new AnimationsController(this),
                 new ElectricalController(this)
