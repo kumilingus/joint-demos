@@ -908,11 +908,11 @@
     },
     {
       "position": {
-        "x": 50,
+        "x": 10,
         "y": 160
       },
       "size": {
-        "width": 120,
+        "width": 200,
         "height": 40
       },
       "angle": 0,
@@ -922,7 +922,8 @@
           "tipSide": "bottom"
         },
         "label": {
-          "text": "From Quarry"
+          "text": "From Quarry",
+          "fontSize": 30
         }
       },
       "id": "46895847-9a71-40a9-adba-d461cab8f33a",
@@ -1199,18 +1200,19 @@
     },
     {
       "position": {
-        "x": 820,
+        "x": 700,
         "y": 1020
       },
       "size": {
-        "width": 140,
+        "width": 260,
         "height": 40
       },
       "angle": 0,
       "type": "Zone",
       "attrs": {
         "label": {
-          "text": "To Cement Mill"
+          "text": "To Cement Mill",
+          "fontSize": 30
         }
       },
       "id": "ee9a419c-7dc6-4415-8467-0eba18e531bd",
@@ -1526,8 +1528,8 @@
     },
     {
       "position": {
-        "x": 1670,
-        "y": 660
+        "x": 1680,
+        "y": 670
       },
       "size": {
         "width": 120,
@@ -2001,11 +2003,11 @@
     },
     {
       "position": {
-        "x": 260,
+        "x": 250,
         "y": 180
       },
       "size": {
-        "width": 280,
+        "width": 290,
         "height": 160
       },
       "angle": 0,
