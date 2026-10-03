@@ -1817,7 +1817,10 @@
       "attrs": {
         "label": {
           "text": "Standby",
-          "fill": "var(--color-blue)"
+          "fill": "var(--color-blue)",
+          "textStyles": [
+            "italic"
+          ]
         }
       },
       "tag": "TXT-102",

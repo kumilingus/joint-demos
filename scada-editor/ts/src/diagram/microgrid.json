@@ -1606,7 +1606,10 @@
         "label": {
           "text": "Starts when the battery is low",
           "fontSize": 14,
-          "fill": "var(--color-blue)"
+          "fill": "var(--color-blue)",
+          "textStyles": [
+            "italic"
+          ]
         }
       },
       "id": "29febbff-570a-4707-9c07-b76036dfb495",
