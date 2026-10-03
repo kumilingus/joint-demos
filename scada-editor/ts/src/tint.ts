@@ -1,48 +1,68 @@
-import { type dia, highlighters, V } from '@joint/plus';
+import { dia, V } from '@joint/plus';
 
 /*
- * An element tinted: recolored by a filter of its view (its shading kept - the highlights light, the edges dark) and
- * glowing. A highlighter: nothing of the model changes - the shapes share their gradients (a paint server takes the
- * variables where it is defined, not where it is used), so a shape can't be recolored by its variables.
- * - `alarm`: red, pulsing (an element in alarm)
- * - `focus`: blue (the element of a message of the log under the pointer, see `LogController`)
+ * An element tinted in a color: recolored by a filter of its view (its shading kept - the light parts in the color, the
+ * dark ones dark) and glowing in it, pulsing if asked. A highlighter: nothing of the model changes - the shapes share
+ * their gradients (a paint server takes the variables where it is defined, not where it is used), so a shape can't be
+ * recolored by its variables. E.g. the element of a message of the log under the pointer (see `LogController`).
  */
 
-export type TintKind = 'alarm' | 'focus';
-
-/** The tints: the brightness of each pixel in the color (rows of `feColorMatrix`: red, green, blue, alpha) */
-const TINT_MATRICES: Record<TintKind, string[]> = {
-    alarm: [
-        '0.33 0.60 0.12 0 0.18',
-        '0.08 0.15 0.03 0 0',
-        '0.08 0.15 0.03 0 0',
-        '0 0 0 1 0'
-    ],
-    focus: [
-        '0.03 0.06 0.01 0 0',
-        '0.15 0.30 0.05 0 0.12',
-        '0.33 0.60 0.12 0 0.30',
-        '0 0 0 1 0'
-    ]
-};
-
-const filterId = (kind: TintKind) => `jj-tint-${kind}`;
-
-/** The filter of the tint in the defs of the paper (`.jj-tint-*` in `styles.css` applies it, with the glow) */
-function defineTint(paper: dia.Paper, kind: TintKind): void {
-    if (paper.svg.querySelector(`#${filterId(kind)}`)) return;
-    V('filter', { id: filterId(kind), 'color-interpolation-filters': 'sRGB' })
-        .append(V('feColorMatrix', { type: 'matrix', values: TINT_MATRICES[kind].join(' ') }))
-        .appendTo(paper.defs);
+export interface TintOptions {
+    /** Pulsing (its glow growing and shrinking) */
+    pulse?: boolean;
 }
 
-/** The element tinted (of the kind), or not */
-export function setTint(paper: dia.Paper, element: dia.Element, kind: TintKind, tinted: boolean): void {
+const TINT_ID = 'tint';
+
+/** The filters of the colors in the defs of the papers (by the color: a variable of the theme or any CSS color) */
+const filterIds = new Map<string, string>();
+
+/**
+ * The filter of the color in the defs of the paper: the element in gray multiplied by the color - the light parts in
+ * the color, the dark ones dark; its shape (alpha) kept. The color as a CSS property: a variable follows the theme.
+ */
+function defineTint(paper: dia.Paper, color: string): string {
+    let id = filterIds.get(color);
+    if (!id) {
+        id = `jj-tint-${filterIds.size + 1}`;
+        filterIds.set(color, id);
+    }
+    if (!paper.svg.querySelector(`#${id}`)) {
+        V('filter', { id, 'color-interpolation-filters': 'sRGB' }).append([
+            V('feColorMatrix', { in: 'SourceGraphic', type: 'saturate', values: 0, result: 'gray' }),
+            V('feFlood', { style: `flood-color: ${color}`, result: 'color' }),
+            V('feBlend', { in: 'color', in2: 'gray', mode: 'multiply', result: 'tinted' }),
+            V('feComposite', { in: 'tinted', in2: 'SourceGraphic', operator: 'in' })
+        ]).appendTo(paper.defs);
+    }
+    return id;
+}
+
+/** The tint: the class of the view (`.jj-tint` in `styles.css`), its filter and its color as its variables */
+const Tint = dia.HighlighterView.extend({
+    // Nothing of its own: the view of the element is tinted
+    MOUNTABLE: false,
+    highlight(this: dia.HighlighterView, cellView: dia.CellView) {
+        const { color, filter, pulse } = this.options as { color: string; filter: string; pulse: boolean };
+        const { el } = cellView;
+        el.classList.add('jj-tint');
+        el.classList.toggle('jj-tint-pulse', pulse);
+        el.style.setProperty('--jj-tint-color', color);
+        el.style.setProperty('--jj-tint-filter', `url(#${filter})`);
+    },
+    unhighlight(this: dia.HighlighterView, cellView: dia.CellView) {
+        const { el } = cellView;
+        el.classList.remove('jj-tint', 'jj-tint-pulse');
+        el.style.removeProperty('--jj-tint-color');
+        el.style.removeProperty('--jj-tint-filter');
+    }
+});
+
+/** The element tinted in the color (e.g. `var(--selection)`, `var(--color-red)`), or not (`null`) */
+export function setTint(paper: dia.Paper, element: dia.Element, color: string | null, { pulse = false }: TintOptions = {}): void {
     const view = element.findView(paper);
     if (!view) return;
-    const id = `tint-${kind}`;
-    highlighters.addClass.remove(view, id);
-    if (!tinted) return;
-    defineTint(paper, kind);
-    highlighters.addClass.add(view, 'root', id, { className: `jj-tint-${kind}` });
+    Tint.remove(view, TINT_ID);
+    if (color === null) return;
+    Tint.add(view, 'root', TINT_ID, { color, filter: defineTint(paper, color), pulse });
 }

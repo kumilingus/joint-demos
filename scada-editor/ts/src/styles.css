@@ -1857,17 +1857,16 @@ body {
     100% { opacity: 0; transform: scale(1); }
 }
 
-/* A tinted element (see `tint.ts`): in alarm - red, glowing, pulsing; in focus - blue, glowing */
-.jj-tint-alarm {
-    filter: url(#jj-tint-alarm) drop-shadow(0 0 3px var(--color-red));
-    animation: jj-tint-alarm 0.9s ease-in-out infinite alternate;
+/* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - pulsing if asked */
+.jj-tint {
+    filter: var(--jj-tint-filter) drop-shadow(0 0 6px var(--jj-tint-color));
 }
 
-@keyframes jj-tint-alarm {
-    from { filter: url(#jj-tint-alarm) drop-shadow(0 0 2px var(--color-red)); }
-    to { filter: url(#jj-tint-alarm) drop-shadow(0 0 12px var(--color-red)); }
+.jj-tint-pulse {
+    animation: jj-tint-pulse 0.9s ease-in-out infinite alternate;
 }
 
-.jj-tint-focus {
-    filter: url(#jj-tint-focus) drop-shadow(0 0 6px var(--selection));
+@keyframes jj-tint-pulse {
+    from { filter: var(--jj-tint-filter) drop-shadow(0 0 2px var(--jj-tint-color)); }
+    to { filter: var(--jj-tint-filter) drop-shadow(0 0 12px var(--jj-tint-color)); }
 }

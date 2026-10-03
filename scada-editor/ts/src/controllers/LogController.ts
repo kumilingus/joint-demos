@@ -102,10 +102,10 @@ function logHooks(app: App): LogHooks {
         hover: (tag) => {
             const element = tag ? findByTag(graph, tag) ?? null : null;
             if (element === focused) return;
-            if (focused) setTint(paper, focused, 'focus', false);
+            if (focused) setTint(paper, focused, null);
             focused = element;
-            // Tinted blue (as an alarm tints it red, see `tint.ts`)
-            if (element) setTint(paper, element, 'focus', true);
+            // Tinted in the color of the selection (as its pings, see `flash()`)
+            if (element) setTint(paper, element, 'var(--selection)');
         },
         showTags: (shown) => {
             dia.HighlighterView.removeAll(paper, TAG_BADGE_ID);
@@ -140,7 +140,7 @@ const FLASH_REACH = 24;
 
 /**
  * A ping: two rings out of the middle of the element, behind it (the first child of its view), growing and fading
- * (`.jj-ping` in `styles.css`) - an update of the plant in blue (as the focus, see `tint.ts`), a command in amber (as in the log)
+ * (`.jj-ping` in `styles.css`) - an update of the plant in the color of the selection (as the element under the pointer, see `tint.ts`), a command in amber (as in the log)
  */
 const Ping = dia.HighlighterView.extend({
     tagName: 'g',
