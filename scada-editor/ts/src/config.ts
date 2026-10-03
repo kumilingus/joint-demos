@@ -61,12 +61,14 @@ export const paperOptions: dia.Paper.Options = {
             }
         }
     },
-    // The end of a link (moved with its arrowhead) connects to an element (not to another link, a label, nor the screen):
-    // a pipe to one of its pipe stubs if it has any (to its side otherwise), a wire to an electrical terminal,
-    // a signal line, an arrow and a conveyor to its body.
+    // The end of a link (moved with its arrowhead) connects to an element (not to another link nor the screen; a label
+    // to an arrow only): a pipe to one of its pipe stubs if it has any (to its side otherwise), a wire to an electrical
+    // terminal, a signal line, an arrow and a conveyor to its body.
     validateConnection: (sourceView, sourceMagnet, targetView, targetMagnet, end, linkView) => {
         const [view, magnet] = end === 'source' ? [sourceView, sourceMagnet] : [targetView, targetMagnet];
-        if (!view || !view.model.isElement() || view.model instanceof Label || view.model instanceof Screen) return false;
+        if (!view || !view.model.isElement() || view.model instanceof Screen) return false;
+        // A label: an arrow only (from a note to a part of the plant)
+        if (view.model instanceof Label) return linkView.model instanceof Arrow;
         // Nor to a shape of the background
         if (['Rectangle', 'Ellipse'].includes(view.model.get('type'))) return false;
         const element = view.model as dia.Element;
