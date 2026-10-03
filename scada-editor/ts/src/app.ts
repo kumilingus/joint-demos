@@ -10,7 +10,7 @@ import {
     canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions
 } from './config';
 import { addImages, clearSelection, confirmReplace, refreshPalette, zoomToFit } from './actions';
-import { setControlsOperable } from './controls';
+import { isControlEvent, setControlsOperable } from './controls';
 import { plant } from './plant';
 import { setTablesLive } from './shapes/TableView';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
@@ -97,6 +97,9 @@ export class App {
             model: this.graph,
             cellViewNamespace: cellNamespace,
             interactive: this.interactivityOf(this.mode),
+            // Not an event of the paper on a control (in its layer, not in the view of the element: a press would be one
+            // on the blank canvas, its default action - dragging the slider - prevented)
+            guard: (evt: dia.Event) => isControlEvent(evt),
             getImages: () => getImages(this.graph)
         } as dia.Paper.Options & ImagesPaperOptions);
 
