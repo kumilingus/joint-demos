@@ -3,6 +3,7 @@ import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineF
 import { hasFinish, type SurfaceFinish } from './shapes/gradients';
 import { isGroup } from './shapes/Group';
 import { LAYER_NAMES } from './layers';
+import { renderLabel } from './help';
 
 /*
  * The appearance of several cells at once (a selection of them, the members of a group): an inspector
@@ -184,6 +185,8 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         cell: standIn,
         inputs,
         groups: { appearance: { label, index: 1 }},
+        // The help of the fields (the layer; the colors draw their own labels with it, see `color-field.ts`)
+        renderLabel,
         renderFieldContent: renderColorField,
         getFieldValue: getColorFieldValue
     });

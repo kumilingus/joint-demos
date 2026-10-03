@@ -137,7 +137,8 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
     const el = document.createElement('div');
     el.className = 'color-field-content';
     // The content of a field includes its label (with the help of the field, if it has one).
-    const label = renderLabel(options, path) ?? document.createElement('label');
+    // The help of the field by its path, or of its kind by its label (a color is at a path of each shape's own)
+    const label = renderLabel(options, path) ?? renderLabel(options, (options.label ?? '').toLowerCase()) ?? document.createElement('label');
     if (!label.textContent) label.textContent = options.label ?? path;
     el.append(label);
     const input = document.createElement('input');

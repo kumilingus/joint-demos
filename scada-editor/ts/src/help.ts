@@ -33,10 +33,24 @@ const FIELD_HELP: Record<string, string> = {
         equipment. In the color <em>Canvas</em>: a line drawing, as a P&amp;ID.
         <strong class="tooltip-heading">Auto</strong>
         The finish of the diagram (Settings - Style).`,
+    // The colors of a shape (see `ColorField`): by the label of the field - each shape has them at a path of its own
+    color: `
+        <strong>Color</strong> - the main color of the shape: the metal of the equipment, the line of a pipe,
+        the text of a label. Mixed into the shading in the finish <em>Shaded</em>, as it is in <em>Flat</em>.
+        <strong class="tooltip-heading">Default</strong>
+        The color of the shape (the first swatch): of the diagram's style, if it has one (Settings - Style).
+        <strong class="tooltip-heading">Canvas</strong>
+        The color of the canvas, light or dark with the theme: a line drawing, as a P&amp;ID.`,
     outline: `
-        <strong>Outline</strong> - the outline of the surfaces of the element: one color, one width for all of them.
+        <strong>Outline</strong> - the outline of the shape (of its surfaces: one color, one width for all of them;
+        the edges of a pipe).
         <strong class="tooltip-heading">Auto</strong>
         As the shape draws it (in the finish <em>Flat</em>: the edge of the metal).`,
+    accent: `
+        <strong>Accent</strong> - a marking of the shape in a color of its own: the bands of a stack, the handwheel
+        of a valve, the motor of a pump, the needle of a gauge, the reading of a meter, the liquid of a level panel.
+        <strong class="tooltip-heading">Not a state</strong>
+        The colors of a state (an alarm, a warning level, a running pump) are the plant's: they stay.`,
     animations: `
         <strong>Animations</strong> - what moves in the run mode. Saved with the diagram.
         <strong class="tooltip-heading">Full</strong>
