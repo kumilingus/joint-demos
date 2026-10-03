@@ -339,6 +339,30 @@ function fillTables(graph: dia.Graph): void {
     });
 }
 
+/** The numbers of the tables of the stopped sources as they were (the runtime mode left: they are not saved as zeros) */
+function restoreReadouts(graph: dia.Graph): void {
+    graph.getElements().forEach((element) => {
+        const numbers = runningValues.get(element);
+        if (!numbers) return;
+        runningValues.delete(element);
+        // The numbers only: the states as they are (of the source now)
+        const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
+        const values: string[][] = element.get('values') ?? [];
+        element.set('values', values.map((row, r) => row.map((value, c) => (kinds[c] === 'number' ? numbers[r]?.[c] ?? value : value))), RUNTIME);
+    });
+}
+
+/** The updates of the charts (of those with a tag) */
+export function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] {
+    return graph.getElements()
+        .filter(element => getTag(element) && element.get('type') in chartGenerators)
+        .map(element => ({ tag: getTag(element)!, changes: chartGenerators[element.get('type')](element, graph, tick) }))
+        .filter((update): update is TagUpdate => update.changes !== null);
+}
+
+/** A random update of a random element (of those with data), or `null` if nothing changes this time. */
+export function createRandomUpdate(graph: dia.Graph): TagUpdate | null {
+    const elements = graph.getElements().filter(element => getTag(element) && element.get('type') in generators);
     if (elements.length === 0) return null;
     const element = elements[Math.floor(Math.random() * elements.length)];
     const changes = generators[element.get('type')](element, graph);
@@ -374,6 +398,7 @@ export class Simulation {
         // a pump or a switch changes
         this.updateEnergized();
         this.graph.on('change:power change:open', this.updateEnergized, this);
+        fillTables(this.graph);
         readoutStates(this.graph);
         this.graph.on('change:power change:open', this.updateReadouts, this);
         this.schedule();
@@ -398,7 +423,6 @@ export class Simulation {
         periodFlows.clear();
     }
 
-        fillTables(this.graph);
     /** The `energized` of the cells (as a SCADA server would send it): the circuits traced from the sources */
     /** The states of the readouts follow their sources (see `readoutStates()`) */
     protected updateReadouts(): void {
