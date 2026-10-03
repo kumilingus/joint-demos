@@ -205,8 +205,12 @@ const OUTLINE_WIDTH = 2;
 function outlineOf(model: dia.Cell): string | null {
     const outline = model.get('outline');
     if (typeof outline === 'string' && outline !== '') return outline;
-    return finishOf(model) === 'flat' ? FLAT_STROKE : null;
+    // Flat: of an element with a finish only (a gauge, a thermometer has none - not restyled by the diagram's finish)
+    return model.isElement() && hasFinish(model) && finishOf(model) === 'flat' ? FLAT_STROKE : null;
 }
+
+/** Whether the color of the element is its outline (a gauge: its frame) - drawn as wide as the shape draws it */
+const isColorOutline = (model: dia.Cell) => (model as dia.Cell & { colorField?: { path: string[] } | null }).colorField?.path[0] === 'outline';
 
 // A shaded surface made flat: the middle tone of its shading
 const FLAT_SHADING = 'var(--shape-metal-5)';
@@ -244,7 +248,7 @@ export const surfaceAttributes = {
     'surface-stroke': {
         set(this: dia.ElementView, stroke: SurfaceStroke) {
             const outline = outlineOf(this.model);
-            if (outline) return { stroke: outline, 'stroke-width': OUTLINE_WIDTH };
+            if (outline) return isColorOutline(this.model) ? { stroke: outline } : { stroke: outline, 'stroke-width': OUTLINE_WIDTH };
             const color = this.model.get('color');
             const base = isSurfaceColor(stroke) ? stroke : SURFACE_STROKES[stroke];
             return { stroke: isTint(color) ? tint(color, base) : base };
