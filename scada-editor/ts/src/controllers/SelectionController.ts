@@ -2,15 +2,15 @@ import { dia, linkTools, ui } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { GRID_SIZE, SELECTION_PADDING } from '../const';
-import { closeInspector, openInspector, openSelectionInspector } from '../inspector';
+import { closeInspector, openInspector, openSelectionInspector } from '../inspector/inspector';
 import { selectCell } from '../actions';
-import { closeShapePreview } from '../shape-preview';
-import { closeSettings, isSettingsOpen, openSettings } from '../settings';
-import Screen from '../shapes/Screen';
-import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../tools';
-import Shape, { type ResizeOptions } from '../shapes/Shape';
-import { isGroup } from '../shapes/Group';
-import { showGroupBadges, showHover, updateGroupBadge } from '../selection';
+import { closeShapePreview } from '../palette/shape-preview';
+import { closeSettings, isSettingsOpen, openSettings } from '../inspector/settings';
+import Screen from '../shapes/models/diagram/Screen';
+import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../canvas/tools';
+import Shape, { type ResizeOptions } from '../shapes/common/Shape';
+import { isGroup } from '../shapes/models/diagram/Group';
+import { showGroupBadges, showHover, updateGroupBadge } from '../canvas/selection';
 
 /**
  * Shows the selected cells in the inspector and a single selected cell with its tools: an element

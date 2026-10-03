@@ -1,0 +1,31 @@
+/*
+ * The design tokens of the app, over the ones of the theme (see `theme/tokens.css`): the hover of its primary button,
+ * the overlay of the canvas, the icons of its tools (Lucide, files in `icons/`); the dark scheme as the theme's.
+ */
+
+:root {
+    --primary-hover: #27272a;
+    --overlay: rgb(255 255 255 / 0.92);
+
+    --icon-fit: url("./icons/fit.svg");
+    --icon-play: url("./icons/play.svg");
+    --icon-pencil: url("./icons/pencil.svg");
+    --icon-save: url("./icons/save.svg");
+    --icon-image: url("./icons/image.svg");
+    --icon-log: url("./icons/log.svg");
+    --icon-settings: url("./icons/settings.svg");
+    --icon-new: url("./icons/new.svg");
+    --icon-open: url("./icons/open.svg");
+    --icon-layers: url("./icons/layers.svg");
+    --icon-star: url("./icons/star.svg");
+    --icon-upload: url("./icons/upload.svg");
+    --icon-sun: url("./icons/sun.svg");
+    --icon-moon: url("./icons/moon.svg");
+    --icon-maximize: url("./icons/maximize.svg");
+    --icon-minimize: url("./icons/minimize.svg");
+}
+
+:root[data-color-scheme="dark"] {
+    --primary-hover: #c6d4e8;
+    --overlay: rgb(11 21 38 / 0.92);
+}

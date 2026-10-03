@@ -3,7 +3,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { ZOOM } from '../config';
 import { Mode } from '../const';
-import { isScreenShown } from '../screen';
+import { isScreenShown } from '../canvas/screen';
 
 /**
  * Panning and zooming of the canvas. Active in every mode.

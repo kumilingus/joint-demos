@@ -1,8 +1,8 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { ensureTag } from '../tags';
-import Screen from '../shapes/Screen';
+import { ensureTag } from '../plant/tags';
+import Screen from '../shapes/models/diagram/Screen';
 
 /**
  * Every element has a tag (an ID, see `tags.ts`): an element added without one

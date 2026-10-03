@@ -2,8 +2,8 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, clickTarget, selectAtLevel, toggleAtLevel } from '../actions';
-import { openBlankMenu, openCellMenu } from '../context-menu';
-import { showHover } from '../selection';
+import { openBlankMenu, openCellMenu } from '../canvas/context-menu';
+import { showHover } from '../canvas/selection';
 
 /**
  * Selecting cells on the canvas: a click selects a cell (the group it is in, a level further in when

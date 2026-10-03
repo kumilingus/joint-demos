@@ -1,0 +1,385 @@
+/* The inspector panel (see `inspector.ts`): its empty state, the examples, the fields of the app, the settings (see `settings.ts`) */
+
+/* Inspector */
+
+.inspector-panel {
+    width: 280px;
+    border-left: 1px solid var(--border);
+}
+
+/* Nothing in the panel (no selection, no shape of the palette, no settings): what it is for (see `App`) */
+.inspector-empty {
+    display: none;
+    margin: 16px;
+    padding: 32px 16px;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    color: var(--muted-foreground);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.inspector-panel:not(:has(> :not(.inspector-empty))) > .inspector-empty {
+    display: block;
+}
+
+.inspector-empty p {
+    margin: 0;
+}
+
+/* "or" between the two ways, on a line */
+.inspector-empty-or {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0;
+    font-size: 12px;
+}
+
+.inspector-empty-or::before,
+.inspector-empty-or::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid var(--border);
+}
+
+/* The settings: a button with the cog of the toolbar */
+.inspector-empty button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 500 13px/1 var(--font);
+    cursor: pointer;
+}
+
+.inspector-empty button::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: currentColor;
+    mask: var(--icon-settings) center / contain no-repeat;
+}
+
+.inspector-empty button:hover {
+    background: var(--muted);
+}
+
+/* The examples to open (see `App`): under the hint */
+.inspector-examples {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    text-align: left;
+}
+
+.inspector-examples h4 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.inspector-examples button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    width: 100%;
+    margin-bottom: 6px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    color: var(--foreground);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.inspector-examples button::before {
+    display: none;
+}
+
+.inspector-examples button:hover {
+    background: var(--muted);
+}
+
+.inspector-examples strong {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.inspector-examples span {
+    font-size: 12px;
+    color: var(--muted-foreground);
+}
+
+.inspector-empty-caption {
+    margin-top: 8px !important;
+    font-size: 12px;
+}
+
+/* A question mark next to a label: its tooltip explains the field (see `help.ts`). */
+.joint-inspector .field-help {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    margin-left: 6px;
+    border: 1px solid var(--muted-foreground);
+    border-radius: 50%;
+    color: var(--muted-foreground);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    vertical-align: 1px;
+    cursor: help;
+}
+
+.joint-inspector .field-help:hover {
+    border-color: var(--foreground);
+    color: var(--foreground);
+}
+
+/* Text and number */
+
+.palette-shape-field input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 14px var(--font);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.palette-shape-field input:focus {
+    border-color: var(--ring-strong);
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* The columns of a table (see `Table`): the name above the kind of the values (the buttons are wide) */
+.joint-inspector .list-item .object-properties:has(> .object-property[data-property="kind"]) {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Stacked: the labels in each column (not over the first row only, as the slices) */
+.joint-inspector .list-item .object-properties:has(> .object-property[data-property="kind"]) .object-property label {
+    display: block;
+}
+
+/* The color first */
+.joint-inspector .list-item .object-property[data-property="color"] {
+    order: -1;
+}
+
+/* The appearance of the members of a group: in the inspector of the group, under its fields (see `inspector.ts`) */
+.joint-inspector .joint-inspector {
+    position: static;
+    overflow: visible;
+}
+
+/* The note over the appearance of the members of a group (see `inspector.ts`) */
+.appearance-note {
+    margin: 0 16px 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+}
+
+/* The members of a group in the inspector (see `inspector.ts`) */
+.joint-inspector .group-members ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+}
+
+.joint-inspector .group-members li {
+    margin: 0 -8px;
+}
+
+/* A member: clicked, it is selected */
+.joint-inspector .group-member {
+    width: 100%;
+    padding: 5px 8px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--foreground);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.joint-inspector .group-member:hover {
+    background: var(--muted);
+}
+
+.joint-inspector .group-member-tag {
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
+}
+
+/* A color field (see `color-field.ts`): the input, and the colors to pick again under it */
+.joint-inspector .color-field-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Rows of seven, the swatches as wide as the space takes (a scrollbar of the panel narrows it) */
+.joint-inspector .color-swatches {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(7, minmax(0, 22px));
+    gap: 6px;
+}
+
+.joint-inspector .color-swatch {
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: transform 0.1s ease-out;
+}
+
+.joint-inspector .color-swatch:hover {
+    transform: scale(1.12);
+}
+
+/* The input keeps its size next to the two rows of the swatches */
+.joint-inspector .color-field-row input[type="color"] {
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
+/* The recent colors and the ones of the diagram: on a row under the colors of the theme */
+.joint-inspector .color-swatches-break {
+    grid-column: 1 / -1;
+    height: 0;
+    margin-top: -6px;
+}
+
+/* No color of the cell's own (Auto, see `color-field.ts`): a slashed swatch and input */
+.joint-inspector .color-swatch.auto,
+.joint-inspector .color-field-content.auto input[type="color"]::-webkit-color-swatch {
+    background: linear-gradient(135deg, transparent calc(50% - 1px), var(--muted-foreground) calc(50% - 1px), var(--muted-foreground) calc(50% + 1px), transparent calc(50% + 1px)) !important;
+}
+
+.joint-inspector .color-field-content.auto input[type="color"]::-moz-color-swatch {
+    background: linear-gradient(135deg, transparent calc(50% - 1px), var(--muted-foreground) calc(50% - 1px), var(--muted-foreground) calc(50% + 1px), transparent calc(50% + 1px)) !important;
+}
+
+/* The colors of the cells differ (see `selection-inspector.ts`): none shown, a striped input */
+.joint-inspector .color-field-content.mixed input[type="color"]::-webkit-color-swatch {
+    background: repeating-linear-gradient(135deg, var(--muted) 0 6px, var(--background) 6px 12px) !important;
+}
+
+.joint-inspector .color-field-content.mixed input[type="color"]::-moz-color-swatch {
+    background: repeating-linear-gradient(135deg, var(--muted) 0 6px, var(--background) 6px 12px) !important;
+}
+
+/* The color of the theme (a CSS variable): marked as such - half of it in the other scheme's tone */
+.joint-inspector .color-swatch.theme {
+    position: relative;
+    overflow: hidden;
+}
+
+.joint-inspector .color-swatch.theme::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 50%, var(--background) 50%);
+    opacity: 0.85;
+}
+
+.joint-inspector .color-swatch:focus-visible {
+    outline: 2px solid var(--ring-strong);
+    outline-offset: 1px;
+}
+
+/* The side picker (a label, a control, see `sideField()`): the buttons as a cross around the shape (a square in the middle) */
+
+.joint-select-button-group[data-picker="side"] {
+    display: grid;
+    grid-template: repeat(3, 30px) / 1fr 72px 1fr;
+    gap: 2px;
+}
+
+.joint-select-button-group[data-picker="side"]::after {
+    content: '';
+    grid-area: 2 / 2;
+    margin: 4px 18px;
+    border: 1.5px solid var(--muted-foreground);
+    border-radius: 3px;
+}
+
+[data-picker="side"] .select-button-group-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 8px;
+}
+
+/* On the right: the name, then the triangle (pointing out) */
+[data-picker="side"] .select-button-group-button:nth-child(3) { flex-direction: row-reverse; }
+
+[data-picker="side"] .select-button-group-button:nth-child(1) { grid-area: 1 / 2; }
+[data-picker="side"] .select-button-group-button:nth-child(2) { grid-area: 2 / 1; justify-self: end; }
+[data-picker="side"] .select-button-group-button:nth-child(3) { grid-area: 2 / 3; justify-self: start; }
+[data-picker="side"] .select-button-group-button:nth-child(4) { grid-area: 3 / 2; }
+
+.jj-side-icon {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    fill: currentColor;
+}
+
+/* The settings of the diagram in the inspector panel (see `settings.ts`): the inspectors one below the other */
+.settings .joint-inspector {
+    position: static;
+    overflow: visible;
+}
+
+.settings-title {
+    margin: 0;
+    padding: 16px 16px 4px;
+    color: var(--foreground);
+    font: 600 15px/1.3 var(--font);
+}
+
+/* A richer tooltip (the help of the inspectors, see `help.ts`): a list, a heading of a part */
+.joint-tooltip .tooltip-list {
+    margin: 4px 0 6px;
+    padding-left: 20px;
+}
+
+.joint-tooltip .tooltip-heading {
+    display: block;
+    margin-top: 8px;
+}
+
+/* A select of several cells with different values ("Mixed", see `selection-inspector.ts`): greyed until one is picked */
+.joint-inspector select:has(option[value=""]:checked) {
+    color: var(--muted-foreground);
+}

@@ -1,9 +1,9 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { isControlEvent } from '../controls';
+import { isControlEvent } from '../runtime/controls';
 import { zoomToFit } from '../actions';
-import { isScreenShown } from '../screen';
+import { isScreenShown } from '../canvas/screen';
 
 /**
  * The runtime mode: the diagram can't be changed, but the equipment

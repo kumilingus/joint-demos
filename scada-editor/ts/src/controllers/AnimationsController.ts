@@ -1,8 +1,8 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { Animations, getAnimationLevel } from '../animations';
-import Panel from '../shapes/Panel';
+import { Animations, getAnimationLevel } from '../runtime/animations';
+import Panel from '../shapes/models/instruments/Panel';
 
 /**
  * Animates the plant (see `animations.ts`) and keeps the animations in sync with its state:

@@ -1,17 +1,17 @@
 import { dia, ui } from '@joint/plus';
 import { ColorScheme, GRID_SIZE, Mode, SELECTION_COLOR } from './const';
-import type { RUNTIME } from './controls';
-import { connectionStrategy } from './connections';
-import { type DERIVED, routerNamespace } from './shapes/routing';
-import type { PREFERENCE } from './favorites';
-import Label from './shapes/Label';
-import SignalLine from './shapes/SignalLine';
-import Wire from './shapes/Wire';
-import Conveyor from './shapes/Conveyor';
-import Arrow from './shapes/Arrow';
-import Screen from './shapes/Screen';
-import { isTerminal } from './shapes/ports';
-import ShapeView from './shapes/ShapeView';
+import type { RUNTIME } from './runtime/controls';
+import { connectionStrategy } from './canvas/connections';
+import { type DERIVED, routerNamespace } from './shapes/common/routing';
+import type { PREFERENCE } from './palette/favorites';
+import Label from './shapes/models/instruments/Label';
+import SignalLine from './shapes/models/instruments/SignalLine';
+import Wire from './shapes/models/electrical/Wire';
+import Conveyor from './shapes/models/bulk/Conveyor';
+import Arrow from './shapes/models/instruments/Arrow';
+import Screen from './shapes/models/diagram/Screen';
+import { isTerminal } from './shapes/common/ports';
+import ShapeView from './shapes/views/ShapeView';
 
 export const ZOOM = { min: 0.2, max: 3 };
 
@@ -246,7 +246,7 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         text: 'Settings',
         attrs: { button: { 'data-tooltip': 'The settings of the diagram (the screen, the animations) and of the editor' }}
     }] : [];
-    // The messages between the diagram and the plant (see `event-log.ts`): in the runtime mode
+    // The messages between the diagram and the plant (see `log/log.ts`): in the runtime mode
     const log: ui.Toolbar.Options['tools'] = mode === Mode.Runtime ? [{
         type: 'button',
         name: 'log',

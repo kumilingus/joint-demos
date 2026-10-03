@@ -1,0 +1,129 @@
+/* The layout of the app: the page, the toolbar and its tools, the panels */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.canvas {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/*
+ * Runtime mode: the palette and the undo / redo buttons don't exist in it (see `App.enterMode()`),
+ * the inspector is closed - its empty panel is not in the way of the canvas.
+ */
+.app[data-mode="runtime"] .inspector-panel {
+    display: none;
+}
+
+/* Toolbar: the tools of the app */
+
+.joint-toolbar [data-name="title"] {
+    padding-right: 16px;
+    border-right: 1px solid var(--border);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+/* The file, history, zoom and view buttons (and the settings): groups of square icon buttons. */
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="view"]) button {
+    width: 36px;
+    padding: 0;
+    border-radius: 0;
+    color: var(--muted-foreground);
+}
+
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="view"]) button:hover:not(:disabled) {
+    color: var(--foreground);
+}
+
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="view"]) button:first-child {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="view"]) button:last-child {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.joint-toolbar [data-name="zoomToFit"] { --icon: var(--icon-fit); }
+.joint-toolbar [data-name="new"] { --icon: var(--icon-new); }
+.joint-toolbar [data-name="open"] { --icon: var(--icon-open); }
+.joint-toolbar [data-name="save"] { --icon: var(--icon-save); }
+.joint-toolbar [data-name="export"] { --icon: var(--icon-image); }
+.joint-toolbar [data-name="settings"] { --icon: var(--icon-settings); }
+.joint-toolbar [data-name="log"] { --icon: var(--icon-log); }
+
+/* The color scheme button shows the one it switches to. */
+.joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-moon); }
+:root[data-color-scheme="dark"] .joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-sun); }
+
+.joint-toolbar-group[data-group="view"] {
+    margin-right: 8px;
+}
+
+/* The full screen button shows what it does: into the full screen, out of it. */
+.joint-toolbar [data-name="fullscreen"] { --icon: var(--icon-maximize); }
+:root:fullscreen .joint-toolbar [data-name="fullscreen"] { --icon: var(--icon-minimize); }
+
+/* A group of one button: rounded on both sides; with its label (not a square icon) */
+.joint-toolbar [data-group="settings"] button {
+    width: auto;
+    padding: 0 12px;
+    border-radius: var(--radius-md);
+}
+
+/* The mode button: the primary action. Its icon says which mode it switches to. */
+.joint-toolbar [data-name="mode"] {
+    min-width: 112px;
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--primary-foreground);
+}
+
+.joint-toolbar [data-name="mode"]:hover:not(:disabled) {
+    border-color: var(--primary-hover);
+    background: var(--primary-hover);
+}
+
+.app[data-mode="edit"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-play); }
+.app[data-mode="runtime"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-pencil); }
+
+/* Panels (palette and inspector) */
+
+.stencil-panel,
+.inspector-panel {
+    position: relative;
+    flex-shrink: 0;
+    overflow: auto;
+    background: var(--background);
+}

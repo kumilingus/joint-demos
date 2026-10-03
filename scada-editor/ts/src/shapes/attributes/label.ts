@@ -1,6 +1,6 @@
 import { dia, type g } from '@joint/plus';
 import { LABEL_COLOR } from '../../const';
-import { getFootprint } from '../footprint';
+import { getFootprint } from '../common/footprint';
 
 /**
  * Where the label of a shape is: below it (the default - as the shape draws it), above it, on its left or right -

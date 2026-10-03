@@ -1,14 +1,14 @@
 import { dia, V } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { clearLog, closeLog, isLogOpen, type LogHooks, logMessage, toggleFilterTag, toggleLog } from '../event-log';
-import { type MessageDirection, plant } from '../plant';
-import { findByTag, getTag } from '../tags';
-import { propertiesOf } from '../tag-values';
-import { setTint } from '../tint';
+import { clearLog, closeLog, isLogOpen, type LogHooks, logMessage, toggleFilterTag, toggleLog } from '../log/log';
+import type { MessageDirection } from '../plant/plant';
+import { findByTag, getTag } from '../plant/tags';
+import { propertiesOf } from '../plant/properties';
+import { setTint } from '../canvas/tint';
 
 /**
- * The log of the messages between the diagram and the plant (see `event-log.ts`): opened by the Log button.
+ * The log of the messages between the diagram and the plant (see `log/log.ts`): opened by the Log button.
  * Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open, the element
  * of a message under the pointer is tinted blue; the tags of the elements are shown, the elements of the messages flashed if asked.
  */
@@ -19,7 +19,7 @@ export default class LogController extends Controller {
     startListening(): void {
         clearLog();
         // A listener of the plant (as any system): the updates and the commands
-        this.unsubscribe = plant.subscribe(logMessage);
+        this.unsubscribe = this.context.plant!.subscribe(logMessage);
         this.listenTo(this.context.toolbar, {
             'log:pointerclick': onLogPointerclick
         });
@@ -110,7 +110,7 @@ function logHooks(app: App): LogHooks {
         showTags: (shown) => {
             dia.HighlighterView.removeAll(paper, TAG_BADGE_ID);
             if (!shown) return;
-            // Of the elements the plant knows (with properties, see `tag-values.ts`)
+            // Of the elements the plant knows (with properties, see `plant/properties.ts`)
             graph.getElements().filter(element => getTag(element) && propertiesOf(element).length > 0).forEach((element) => {
                 const view = element.findView(paper);
                 if (view) TagBadge.add(view, 'root', TAG_BADGE_ID, { layer: dia.Paper.Layers.FRONT, z: 1 });
@@ -121,7 +121,7 @@ function logHooks(app: App): LogHooks {
             stopFlashing = null;
             if (!flashed) return;
             // A listener of the plant too: the element of a message flashed
-            const unsubscribe = plant.subscribe(({ tag, direction }) => {
+            const unsubscribe = app.plant!.subscribe(({ tag, direction }) => {
                 const element = findByTag(graph, tag);
                 if (element) flash(paper, element, direction);
             });

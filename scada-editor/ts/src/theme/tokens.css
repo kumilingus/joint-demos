@@ -12,12 +12,10 @@
     --input: #e4e4e7;
     --primary: #18181b;
     --primary-foreground: #fafafa;
-    --primary-hover: #27272a;
     --ring: rgb(24 24 27 / 0.12);
     --ring-strong: #a1a1aa;
     /* The color of the selection on the canvas (`SELECTION_COLOR` in `const.ts`). */
     --selection: #0075f2;
-    --overlay: rgb(255 255 255 / 0.92);
     color-scheme: light;
 
     --radius: 8px;
@@ -28,30 +26,14 @@
 
     --font: 'Inter', 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-    /* Icons (Lucide), used as masks so that they take the color of the text. */
+    /* The icons of the components (Lucide), used as masks so that they take the color of the text. */
     --icon-zoom-in: url("./icons/zoom-in.svg");
     --icon-zoom-out: url("./icons/zoom-out.svg");
-    --icon-fit: url("./icons/fit.svg");
-    --icon-play: url("./icons/play.svg");
-    --icon-pencil: url("./icons/pencil.svg");
     --icon-search: url("./icons/search.svg");
-    --icon-save: url("./icons/save.svg");
-    --icon-image: url("./icons/image.svg");
-    --icon-log: url("./icons/log.svg");
-    --icon-settings: url("./icons/settings.svg");
-    --icon-new: url("./icons/new.svg");
-    --icon-open: url("./icons/open.svg");
-    --icon-layers: url("./icons/layers.svg");
-    --icon-star: url("./icons/star.svg");
     --icon-trash: url("./icons/trash.svg");
-    --icon-upload: url("./icons/upload.svg");
     --icon-close: url("./icons/close.svg");
     --icon-undo: url("./icons/undo.svg");
     --icon-redo: url("./icons/redo.svg");
-    --icon-sun: url("./icons/sun.svg");
-    --icon-moon: url("./icons/moon.svg");
-    --icon-maximize: url("./icons/maximize.svg");
-    --icon-minimize: url("./icons/minimize.svg");
     --icon-chevron: url("./icons/chevron.svg");
 }
 
@@ -66,11 +48,9 @@
     --input: #283d5e;
     --primary: #e6edf7;
     --primary-foreground: #0b1526;
-    --primary-hover: #c6d4e8;
     --ring: rgb(125 211 252 / 0.2);
     --ring-strong: #4b6a94;
     --selection: #38bdf8;
-    --overlay: rgb(11 21 38 / 0.92);
     --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
     --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     color-scheme: dark;

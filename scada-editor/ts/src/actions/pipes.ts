@@ -1,0 +1,81 @@
+import { type dia, g } from '@joint/plus';
+import type { App } from '../app';
+import { GRID_SIZE } from '../const';
+import Join from '../shapes/models/piping/Join';
+import { selectCell } from './selection';
+
+/*
+ * A pipe split at a point: into two pipes, or with a join inserted.
+ */
+
+/** A link split at a point (see `splitLink()`, `insertJoin()`): its halves, not in the graph yet */
+interface SplitLink {
+    point: g.Point;
+    first: dia.Link;
+    second: dia.Link;
+    /** The direction of the route at the point: from the first half to the second one */
+    direction: g.Point;
+}
+
+/**
+ * The link split at the point of its route nearest to the point (snapped to the grid) into two links with free
+ * ends there: the first one from the source, the second one to the target, each with the vertices on its side.
+ * The route is the rendered one (the link is under the pointer, its view rendered): the vertices before the point
+ * along it go to the first half, the direction of the route there says from where the halves come.
+ */
+function splitAt(app: App, link: dia.Link, point: dia.Point): SplitLink {
+    const view = link.findView(app.paper) as dia.LinkView;
+    const length = view.getClosestPointLength(point);
+    const split = view.getPointAtLength(length).snapToGrid(GRID_SIZE);
+    const tangent = view.getTangentAtLength(length);
+    const direction = tangent ? tangent.end.difference(tangent.start) : new g.Point(1, 0);
+    const vertices = link.vertices();
+    const isBefore = (vertex: dia.Point) => view.getClosestPointLength(vertex) < length;
+    const first = link.clone();
+    first.set({ target: split.toJSON(), vertices: vertices.filter(isBefore) });
+    const second = link.clone();
+    second.set({ source: split.toJSON(), vertices: vertices.filter(vertex => !isBefore(vertex)) });
+    return { point: split, first, second, direction };
+}
+
+/** Split the link at the point into two links with free ends there: the first one selected, one step of the history. */
+export function splitLink(app: App, link: dia.Link, point: dia.Point): void {
+    const { graph } = app;
+    const { first, second } = splitAt(app, link, point);
+    graph.startBatch('split-link');
+    link.remove();
+    graph.addCells([first, second]);
+    graph.stopBatch('split-link');
+    selectCell(app, first);
+}
+
+/** The side of an element the direction points to (of the axis it goes along the most) */
+function sideOf(direction: g.Point): 'left' | 'right' | 'top' | 'bottom' {
+    if (Math.abs(direction.x) >= Math.abs(direction.y)) return direction.x < 0 ? 'left' : 'right';
+    return direction.y < 0 ? 'top' : 'bottom';
+}
+
+/**
+ * Insert a join into the pipe at the point: the pipe split there (see `splitAt()`), both halves connected
+ * to the join centered at the point, each to the side it comes from along the route. The join selected
+ * (a branch can be added to it), one step of the history.
+ */
+export function insertJoin(app: App, link: dia.Link, point: dia.Point): void {
+    const { graph } = app;
+    const { point: center, first, second, direction } = splitAt(app, link, point);
+    const join = new Join();
+    join.position(center.x - join.size().width / 2, center.y - join.size().height / 2);
+    const end = (side: string) => ({
+        id: join.id,
+        anchor: { name: side, args: { useModelGeometry: true, rotate: true }},
+        connectionPoint: { name: 'anchor' }
+    });
+    // The first half comes in against the direction of the route, the second one goes on in it.
+    first.set({ target: end(sideOf(direction.clone().scale(-1, -1))) });
+    second.set({ source: end(sideOf(direction)) });
+    graph.startBatch('insert-join');
+    link.remove();
+    graph.addCells([join, first, second]);
+    graph.stopBatch('insert-join');
+    selectCell(app, join);
+}

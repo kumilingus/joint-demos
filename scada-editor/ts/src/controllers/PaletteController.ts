@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, refreshPalette, selectCell } from '../actions';
-import { showShapePreview } from '../shape-preview';
+import { showShapePreview } from '../palette/shape-preview';
 
 /**
  * A shape clicked in the palette (not dragged, see `dragThreshold`) is shown in the inspector panel,

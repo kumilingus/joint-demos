@@ -1,23 +1,23 @@
 import { dia, mvc, ui } from '@joint/plus';
 import { cellNamespace } from './shapes';
-import { createStencil } from './stencil';
-import { createGraph } from './layers';
-import { createSelection } from './selection';
-import { createNavigator } from './navigator';
+import { createStencil } from './palette/stencil';
+import { createGraph } from './canvas/layers';
+import { createSelection } from './canvas/selection';
+import { createNavigator } from './canvas/navigator';
 import { EXAMPLES, type Example } from './examples';
 import { ColorScheme, Mode } from './const';
 import {
     canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions
 } from './config';
 import { addImages, clearSelection, confirmReplace, refreshPalette, zoomToFit } from './actions';
-import { isControlEvent, setControlsOperable } from './controls';
-import { plant } from './plant';
-import { setTablesLive } from './shapes/TableView';
-import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
-import { FAVORITES_ATTRIBUTE } from './favorites';
-import { ANIMATIONS_ATTRIBUTE } from './animations';
-import { applyStyle, getStyle, STYLE_ATTRIBUTE } from './style';
-import { hideScreen, showScreen } from './screen';
+import { isControlEvent, setControlsOperable } from './runtime/controls';
+import { Plant } from './plant/plant';
+import { setTablesLive } from './shapes/views/TableView';
+import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './palette/images';
+import { FAVORITES_ATTRIBUTE } from './palette/favorites';
+import { ANIMATIONS_ATTRIBUTE } from './runtime/animations';
+import { applyStyle, getStyle, STYLE_ATTRIBUTE } from './diagram-style';
+import { hideScreen, showScreen } from './canvas/screen';
 import {
     type Controller,
     AnimationsController,
@@ -35,16 +35,18 @@ import {
     GroupController,
     ToolbarController
 } from './controllers';
-// The mock of the plant (see `simulation/`): an app with a real plant deletes it and this line
-import SimulationController from './simulation/SimulationController';
-import Snaplines from './Snaplines';
-import { toggleSettings } from './settings';
+// The mock of the plant (see `plant/simulation/`): an app with a real plant deletes it and this line
+import SimulationController from './plant/simulation/SimulationController';
+import Snaplines from './canvas/Snaplines';
+import { toggleSettings } from './inspector/settings';
 
 export class App {
 
     el: HTMLElement;
     inspectorEl: HTMLElement;
     graph: dia.Graph;
+    /** The interface of the diagram to the plant (see `plant.ts`): a new one for each run, none while editing */
+    plant: Plant | null = null;
     history: dia.CommandManager;
     paper: dia.Paper;
     scroller: ui.PaperScroller;
@@ -87,7 +89,7 @@ export class App {
         }).observe(this.inspectorEl, { childList: true });
 
         this.graph = createGraph();
-        // The style of the diagram on the document (see `style.ts`): loaded with it, changed in the settings
+        // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings
         this.graph.on(`change:${STYLE_ATTRIBUTE}`, () => this.applyStyle());
 
         this.history = new dia.CommandManager({ ...historyOptions, graph: this.graph });
@@ -199,15 +201,11 @@ export class App {
             // All their attributes, the defaults too (left out, a sync would remove them)
             this.runtimeCells = this.graph.getCells().map(cell => cell.toJSON({ ignoreDefaults: false }));
         }
+        // A plant for the run (see `plant.ts`): before the controllers of the mode, they listen to it
+        if (mode === Mode.Runtime) this.plant = new Plant(this.graph);
         this.modeControllers[mode].forEach(controller => controller.startListening());
         this.paper.setInteractivity(this.interactivityOf(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
-        // Updated by the plant (any system, see `plant.ts`) in the runtime mode only
-        if (mode === Mode.Runtime) {
-            plant.connect(this.graph);
-        } else {
-            plant.disconnect();
-        }
         setTablesLive(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;
@@ -220,6 +218,7 @@ export class App {
         clearSelection(this);
         hideScreen(this);
         this.modeControllers[mode].forEach(controller => controller.stopListening());
+        this.plant = null;
         if (mode === Mode.Runtime && this.runtimeCells) {
             // The diagram as it was before the runtime mode (its values, the operated equipment)
             this.graph.syncCells(this.runtimeCells, { remove: true });
@@ -314,7 +313,7 @@ export class App {
         });
     }
 
-    /** The style of the diagram on the document (see `style.ts`), its finish on the shapes: on the canvas, in the palette */
+    /** The style of the diagram on the document (see `diagram-style.ts`), its finish on the shapes: on the canvas, in the palette */
     applyStyle(): void {
         applyStyle(getStyle(this.graph));
         const papers: dia.Paper[] = [this.paper];

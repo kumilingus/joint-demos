@@ -1,8 +1,8 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { pipeColorAt } from '../connections';
-import { DERIVED } from '../shapes/routing';
+import { pipeColorAt } from '../canvas/connections';
+import { DERIVED } from '../shapes/common/routing';
 
 /** The elements showing the pipe they sit on (its color): the control valves (the pipe through the window) */
 const SHOWS_PIPE = ['ControlValve'];

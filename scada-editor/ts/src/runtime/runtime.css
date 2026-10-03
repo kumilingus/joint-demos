@@ -1,0 +1,99 @@
+/* The runtime mode: the energized circuits, the controls of the equipment (see `controls.ts`) */
+
+/* The energized circuits in the runtime mode (see `ElectricalController`): a live wire, a lit lamp, a glowing heater */
+
+[data-type="Wire"].energized [joint-selector="line"] {
+    stroke: var(--shape-wire-live);
+}
+
+[data-type="Lamp"].energized [joint-selector="glass"] {
+    fill: var(--shape-lamp-on);
+    filter: drop-shadow(0 0 8px var(--shape-lamp-on));
+}
+
+/* The lamps of the cabinets */
+:is([data-type="Switchgear"], [data-type="MotorControlCenter"]).energized [joint-selector^="lamp"] {
+    fill: #22c55e;
+    filter: drop-shadow(0 0 3px #22c55e);
+}
+
+[data-type="Heater"].energized [joint-selector="coil"] {
+    stroke: var(--shape-heater-on);
+    filter: drop-shadow(0 0 4px var(--shape-heater-on));
+}
+
+/* Controls of the equipment (see `controls.ts`) */
+
+.jj-switch,
+.jj-checkbox,
+.jj-slider {
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font: 13px var(--font);
+}
+
+.jj-switch,
+.jj-slider {
+    padding: 3px;
+}
+
+/* Open / closed: a segmented control, the state the valve is in pressed (see `controls.ts`) */
+.jj-switch {
+    display: flex;
+    gap: 2px;
+    background: var(--muted);
+}
+
+.jj-switch-on,
+.jj-switch-off {
+    flex: 1;
+    height: 22px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--muted-foreground);
+    font: 500 12px var(--font);
+    cursor: pointer;
+}
+
+.jj-switch-on:hover,
+.jj-switch-off:hover {
+    color: var(--foreground);
+}
+
+.jj-switch [aria-pressed="true"] {
+    background: var(--background);
+    box-shadow: var(--shadow-xs);
+    color: var(--foreground);
+    font-weight: 600;
+    cursor: default;
+}
+
+.jj-checkbox-input {
+    width: 14px;
+    height: 14px;
+    margin: 2px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.jj-slider-input {
+    width: 100%;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.jj-slider-output {
+    display: block;
+    width: 100%;
+    color: var(--muted-foreground);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}

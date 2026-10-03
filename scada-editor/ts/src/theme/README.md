@@ -41,7 +41,7 @@ The dark scheme: `data-color-scheme="dark"` on the root element (`document.docum
 | `--radius`, `--radius-md`, `--radius-sm` | the corners |
 | `--shadow-xs`, `--shadow-md` | the buttons, the popovers |
 | `--font` | the text |
-| `--icon-*` | the icons (`icons/`, [Lucide](https://lucide.dev), ISC): masks in the color of the text |
+| `--icon-search`, `--icon-close`, `--icon-chevron`, `--icon-trash`, `--icon-zoom-in`, `--icon-zoom-out`, `--icon-undo`, `--icon-redo` | the icons of the components (`icons/`, [Lucide](https://lucide.dev), ISC): masks in the color of the text |
 
 The icons of the built-in tools of the toolbar (`zoomIn`, `zoomOut`, `undo`, `redo`) are set; another button gets
-an icon by `--icon` (e.g. `.joint-toolbar [data-name="save"] { --icon: var(--icon-save); }`).
+an icon by `--icon`, from a variable of the app (e.g. `.joint-toolbar [data-name="save"] { --icon: var(--icon-save); }`).

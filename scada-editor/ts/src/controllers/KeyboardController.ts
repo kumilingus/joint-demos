@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { copySelection, cutSelection, groupSelection, paste, redo, removeSelection, selectAll, selectUp, undo, ungroupSelection } from '../actions';
-import { closeMenu } from '../context-menu';
+import { closeMenu } from '../canvas/context-menu';
 
 /**
  * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, `Escape` one level

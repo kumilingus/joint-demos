@@ -1,0 +1,141 @@
+/* The canvas: the cursors, the screen, the minimap, the context menu, the texts of the diagram, a tinted element */
+
+/*
+ * The cursor on the canvas: the blank canvas is panned (`grab` of the paper scroller, see `config.ts`),
+ * a cell is moved in the edit mode; in the runtime mode it is not (its controls have their own cursors).
+ */
+.app[data-mode="edit"] .joint-paper-scroller .joint-cell {
+    cursor: move;
+}
+
+.app[data-mode="runtime"] .joint-paper-scroller .joint-cell {
+    cursor: default;
+}
+
+/*
+ * The screen (see `Screen`): out of the way unless the settings are open (see `settings.ts`),
+ * without its frame and name in the runtime mode, where the canvas shows it only (see `screen.ts`).
+ */
+
+.screen-editable [data-type="Screen"] [joint-selector="body"] {
+    pointer-events: visiblePainted;
+    cursor: move;
+}
+
+.app[data-mode="runtime"] [data-type="Screen"] [joint-selector="body"] {
+    stroke: none;
+}
+
+.app[data-mode="runtime"] [data-type="Screen"] [joint-selector="label"] {
+    display: none;
+}
+
+.app[data-screen="shown"] .joint-paper-scroller {
+    overflow: hidden;
+}
+
+/* The screen takes the whole window: the toolbar slides up out of the way, and down when the pointer comes to the top. */
+.app[data-screen="shown"] {
+    position: relative;
+}
+
+.app[data-screen="shown"] > .joint-toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-100%);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+/* The strip at the top of the window it is shown from (a part of the toolbar: hovered with it) */
+.app[data-screen="shown"] > .joint-toolbar::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 32px;
+}
+
+/*
+ * Down while hovered, focused from the keyboard (not a clicked button), just shown (see `revealToolbar()`)
+ * or pressed (see `holdToolbarWhilePressed()`)
+ */
+.app[data-screen="shown"] > .joint-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
+    transform: translateY(0);
+    box-shadow: var(--shadow-md);
+}
+
+.app[data-screen="shown"] :is(.navigator-panel, .joint-toolbar [data-group="zoom"]) {
+    display: none;
+}
+
+/* Navigator: a minimap in the bottom right corner of the canvas */
+
+.navigator-panel {
+    /* Center the minimap (what the navigator does for an element it creates itself). */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--overlay);
+    backdrop-filter: blur(4px);
+    box-shadow: var(--shadow-md);
+}
+
+/* The screen in the minimap (see `navigator.ts`): its frame as on the canvas, its area tinted */
+.joint-navigator .navigator-screen {
+    fill: color-mix(in srgb, var(--shape-screen) 12%, transparent);
+    stroke: var(--shape-screen);
+    /* Solid: dashes would scale down with the minimap; the width not (a CSS rule overrides the attribute) */
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+}
+
+/* A line above the item: the items in groups */
+.joint-context-toolbar .tool.separated {
+    position: relative;
+    margin-top: 9px;
+}
+
+.joint-context-toolbar .tool.separated::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -4px;
+    left: -4px;
+    border-top: 1px solid var(--border);
+}
+
+.joint-context-toolbar :is(kbd, .hint) {
+    color: var(--muted-foreground);
+    font: 12px var(--font);
+    font-variant-numeric: tabular-nums;
+}
+
+/* The texts of the diagram (every paper: the canvas, the palette, the navigator) in the font of the app (Inter, see
+   `main.ts`) - not the readings in monospace. A rule of CSS: over the `font-family` attribute of the shapes. */
+.joint-paper text:not([font-family="monospace"]) {
+    font-family: var(--font);
+}
+
+/* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - pulsing if asked */
+.jj-tint {
+    filter: var(--jj-tint-filter) drop-shadow(0 0 6px var(--jj-tint-color));
+}
+
+.jj-tint-pulse {
+    animation: jj-tint-pulse 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes jj-tint-pulse {
+    from { filter: var(--jj-tint-filter) drop-shadow(0 0 2px var(--jj-tint-color)); }
+    to { filter: var(--jj-tint-filter) drop-shadow(0 0 12px var(--jj-tint-color)); }
+}

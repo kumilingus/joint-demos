@@ -2,7 +2,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { ColorScheme, Mode } from '../const';
 import { exportImage, newDiagram, openDiagram, saveDiagram, zoomToFit } from '../actions';
-import { isSettingsOpen, toggleSettings } from '../settings';
+import { isSettingsOpen, toggleSettings } from '../inspector/settings';
 
 /**
  * The toolbar buttons. Active in every mode.

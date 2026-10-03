@@ -5,7 +5,7 @@ import type { App } from '../app';
 const ENERGIZED_HIGHLIGHTER_ID = 'energized';
 
 /**
- * Shows the energized circuits: a cell with `energized` from the plant (see `simulation/`) gets the `energized`
+ * Shows the energized circuits: a cell with `energized` from the plant (see `plant/simulation/`) gets the `energized`
  * class (a live wire, a lit lamp, a glowing heater in `styles.css`). Active in the runtime mode only.
  */
 export default class ElectricalController extends Controller {
