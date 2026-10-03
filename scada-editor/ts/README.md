@@ -68,6 +68,9 @@ src/
   selection.ts     the selection on the canvas (`ui.Selection`): the region, the frames, the hover frame, the badges of the groups
   Snaplines.ts     the snaplines (`ui.Snaplines` with a fix for the dragged groups)
   examples.ts      the examples to open (in the empty inspector panel)
+  plant.ts         the interface of the diagram to the plant: `update(tag, property, value)`, `subscribe()`, `get()` (see Connecting a plant)
+  tag-values.ts    the properties of the equipment as the plant knows them (`power`, `open`, `level`, `value`: a number or a boolean), bound to the elements by their types
+  event-log.ts     the log of the messages between the diagram and the plant (the Log button in the runtime mode): a listener of the plant
   assets/icons/    the icons of the UI (Lucide, SVG files): the `--icon-*` variables in variables.css, used as masks
   diagrams/        the examples: a boiler house, a microgrid and a cement plant, JSON files as saved by the Save button (with the JointJS badge and a photo as images)
   shapes/          the shapes (see Shape features); ports.ts the pipe stubs and the terminals, footprint.ts the area a shape takes;
@@ -93,7 +96,8 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | `PaletteController` | edit | palette: shape click, shape drop; graph: the derived palette groups |
 | `KeyboardController` | edit | the keyboard shortcuts |
 | `RuntimeController` | runtime | paper: a cell drag pans the canvas |
-| `SimulationController` | runtime | the mock of the plant (in `simulation/`) |
+| `SimulationController` | runtime | the mock of the plant (in `simulation/`): calls `plant.update()` |
+| `LogController` | runtime | toolbar: the Log button; the plant: its messages |
 | `AnimationsController` | runtime | graph: `power`, `open`, `level` |
 | `ElectricalController` | runtime | graph: `energized` (the live circuits) |
 
@@ -111,6 +115,43 @@ Every element extends `Shape` (`shapes/Shape.ts`) and overrides the prototype ge
 | `stubLength` | `null` | `20` (a valve): how far the pipe stubs reach out |
 | `tagPrefix` | the initials of the type | `'NRV'` (a check valve) |
 | `overflow` | `{}` | `{ top: 42 }` (the actuator of a control valve) |
+
+### Connecting a plant
+
+The diagram changes in the runtime mode by the messages of the plant only, through its interface (`plant.ts`, also `window.plant` in the console): the tag of an element, the name of a property, a plain value - nothing of the shapes. The commands of the operator (a pump turned on, a valve opened) come out of it the same way.
+
+```ts
+plant.update('FM-101', 'value', 18.6);   // a reading
+plant.update('HV-101', 'open', false);   // a state
+plant.get('LI-101', 'level');            // what the diagram shows now
+const unsubscribe = plant.subscribe(({ direction, tag, property, value }) => { /* ... */ });
+```
+
+The properties of each type of element are bound in `tag-values.ts` (`power`, `open`, `level`, `value`; an element can have several). The mock in `simulation/` is one such system: to connect a real one, delete the folder and its controller in `app.ts`, and add a controller of your own - e.g. over a WebSocket:
+
+```ts
+export default class PlantSocketController extends Controller {
+    socket: WebSocket | null = null;
+    unsubscribe: (() => void) | null = null;
+
+    startListening(): void {
+        const socket = this.socket = new WebSocket('wss://scada.example.com/plant');
+        socket.onmessage = ({ data }) => {
+            const { tag, property, value } = JSON.parse(data);
+            plant.update(tag, property, value);
+        };
+        this.unsubscribe = plant.subscribe(({ direction, tag, property, value }) => {
+            if (direction === 'out') socket.send(JSON.stringify({ tag, property, value }));
+        });
+    }
+
+    stopListening(): void {
+        super.stopListening();
+        this.unsubscribe?.();
+        this.socket?.close();
+    }
+}
+```
 
 ## Running the Demo
 

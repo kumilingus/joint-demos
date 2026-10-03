@@ -11,6 +11,7 @@ import {
 } from './config';
 import { addImages, clearSelection, confirmReplace, refreshPalette, zoomToFit } from './actions';
 import { setControlsOperable } from './controls';
+import { plant } from './plant';
 import { setTablesLive } from './shapes/TableView';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
 import { FAVORITES_ATTRIBUTE } from './favorites';
@@ -25,6 +26,7 @@ import {
     EditController,
     ElectricalController,
     KeyboardController,
+    LogController,
     PaletteController,
     RuntimeController,
     SelectionController,
@@ -133,6 +135,7 @@ export class App {
                 new ToolbarController(this),
                 new RuntimeController(this),
                 new SimulationController(this),
+                new LogController(this),
                 new AnimationsController(this),
                 new ElectricalController(this)
             ]
@@ -196,6 +199,12 @@ export class App {
         this.modeControllers[mode].forEach(controller => controller.startListening());
         this.paper.setInteractivity(this.interactivityOf(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
+        // Updated by the plant (any system, see `plant.ts`) in the runtime mode only
+        if (mode === Mode.Runtime) {
+            plant.connect(this.graph);
+        } else {
+            plant.disconnect();
+        }
         setTablesLive(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode, this.colorScheme));
         this.el.dataset.mode = mode;

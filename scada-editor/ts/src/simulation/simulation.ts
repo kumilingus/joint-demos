@@ -1,19 +1,25 @@
 import type { dia } from '@joint/plus';
 import { RUNTIME } from '../controls';
 import { findByTag, getTag } from '../tags';
+import { plant } from '../plant';
+import { propertiesOf, type TagValue } from '../tag-values';
 import { getEnergized } from './energized';
 import { CHART_POINTS, getScale } from '../shapes/charts';
 import type { Slice } from '../shapes/DonutChart';
 
 /*
- * A mock of the plant: in random intervals it sends random updates of the plant data,
- * addressed by the tags of the elements - as a SCADA server would; the energized circuits (see `energized.ts`).
+ * A mock of the plant: in random intervals it sends random updates of the plant data - the new value of a property
+ * of an element by its tag, through the interface of the diagram (`plant.update()`, see `plant.ts`) as any system
+ * would; the energized circuits (see `energized.ts`).
  * Some of the data follows the plant:
  * the flow and the pressure of the feedwater follow the feed pumps running, the charts (updated
  * every second) follow the flow.
  */
 
-/** An update of the plant data: the element (by its tag) and the new values of its attributes (by their paths). */
+/**
+ * An update of an element of the diagram itself (a chart, a table - they show the values of the plant, not values of
+ * tags): the element (by its tag) and the new values of its attributes (by their paths).
+ */
 export interface TagUpdate {
     tag: string;
     changes: Record<string, unknown>;
@@ -44,12 +50,6 @@ const chance = (probability: number) => Math.random() < probability;
 /** The value moved by up to `step` either way, within `min` and `max`. */
 function drift(value: number, step: number, min: number, max: number): number {
     return Math.max(min, Math.min(max, value + random(-step, step)));
-}
-
-/** A number shown as a text (on a display, a flow meter), moved like `drift()`. */
-function driftText(text: string, step: number, min: number, max: number): string {
-    const value = Number.parseFloat(text);
-    return drift(Number.isNaN(value) ? min : value, step, min, max).toFixed(1);
 }
 
 /** How a display of the unit drifts (a pressure without a unit) */
@@ -91,15 +91,17 @@ function steamFlow(graph: dia.Graph): number {
     return flows.length > 0 ? flows.reduce((sum, value) => sum + value, 0) / flows.length : 0;
 }
 
-type Generator = (element: dia.Element, graph: dia.Graph) => Record<string, unknown> | null;
+/** The next value of the tag of the element (see `tag-values.ts`), or `null` if it doesn't change this time */
+type Generator = (element: dia.Element, graph: dia.Graph) => TagValue | null;
 
-const togglePower = (probability: number): Generator => element => {
-    return chance(probability) ? { power: element.get('power') ? 0 : 1 } : null;
-};
+/** The property of the element the mock changes: its only one (see `tag-values.ts`) */
+const propertyOf = (element: dia.Element) => propertiesOf(element)[0];
 
-const toggleOpen = (probability: number): Generator => element => {
-    return chance(probability) ? { open: !element.get('open') } : null;
-};
+/** The value of the property of the element now (as the diagram shows it: a real plant knows it itself) */
+const valueOf = (element: dia.Element) => plant.get(getTag(element)!, propertyOf(element));
+
+/** On / off, open / closed: switched now and then */
+const toggle = (probability: number): Generator => element => (chance(probability) ? !valueOf(element) : null);
 
 /** The highest pressure shown on the displays with the `bar` unit */
 function highestPressure(graph: dia.Graph): number {
@@ -110,62 +112,62 @@ function highestPressure(graph: dia.Graph): number {
     return pressures.length > 0 ? Math.max(...pressures) : 0;
 }
 
-/** How the data of each type of element changes. */
+/** How the value of the tag of each type of element changes. */
 const generators: Record<string, Generator> = {
-    Panel: element => ({ level: Math.round(drift(element.get('level') ?? 50, 6, 0, 100)) }),
-    Thermometer: element => ({ value: Math.round(drift(element.get('value') ?? 50, 4, 0, 100)) }),
-    PressureGauge: element => ({ value: Math.round(drift(element.get('value') ?? 50, 8, 0, 100)) }),
+    Panel: element => Math.round(drift(Number(valueOf(element) ?? 50), 6, 0, 100)),
+    Thermometer: element => Math.round(drift(Number(valueOf(element) ?? 50), 4, 0, 100)),
+    PressureGauge: element => Math.round(drift(Number(valueOf(element) ?? 50), 8, 0, 100)),
     // The feed pumps push the water.
-    FlowMeter: (element, graph) => {
-        const flow = Number.parseFloat(element.attr('value/text')) || 0;
-        return { 'attrs/value/text': Math.max(0, follow(flow, withPumps(graph, PUMP_FLOW), 0.5)).toFixed(1) };
-    },
+    FlowMeter: (element, graph) => roundTo(Math.max(0, follow(Number(valueOf(element)), withPumps(graph, PUMP_FLOW), 0.5)), 10),
     Display: (element) => {
         const { step, min, max } = DISPLAY_RANGES[element.attr('unit/text')] ?? DISPLAY_RANGES.bar;
-        return { 'attrs/value/text': driftText(element.attr('value/text'), step, min, max) };
+        return roundTo(drift(Number(valueOf(element)) || min, step, min, max), 10);
     },
-    ControlValve: element => {
-        const open = element.get('open') ?? 0;
-        const step = chance(0.5) ? 0.25 : -0.25;
-        return { open: Math.max(0, Math.min(1, open + step)) };
+    // How much it is open (%), in steps of a quarter
+    ControlValve: (element) => {
+        const step = chance(0.5) ? 25 : -25;
+        return Math.max(0, Math.min(100, Number(valueOf(element)) + step));
     },
     // The equipment is switched now and then only.
-    Pump: togglePower(0.15),
-    Compressor: togglePower(0.15),
-    Fan: togglePower(0.15),
-    Blower: togglePower(0.15),
-    Motor: togglePower(0.15),
-    Turbine: togglePower(0.15),
-    ConveyorBelt: togglePower(0.15),
-    AirCooler: togglePower(0.15),
-    MixingTank: togglePower(0.15),
-    BucketElevator: togglePower(0.1),
-    Crusher: togglePower(0.1),
-    Mill: togglePower(0.1),
-    RotaryKiln: togglePower(0.03),
-    Reactor: togglePower(0.15),
-    HandValve: toggleOpen(0.1),
-    ButterflyValve: toggleOpen(0.1),
-    BallValve: toggleOpen(0.1),
-    SolenoidValve: toggleOpen(0.1),
-    GateValve: toggleOpen(0.1),
-    // The newest value on the right, the oldest one drops out on the left.
-    Trend: element => {
-        const values: number[] = element.get('values') || [];
-        const last = values.length > 0 ? values[values.length - 1] : 50;
-        return { values: [...values.slice(1), Math.round(drift(last, 8, 5, 95))] };
-    },
+    Pump: toggle(0.15),
+    Compressor: toggle(0.15),
+    Fan: toggle(0.15),
+    Blower: toggle(0.15),
+    Motor: toggle(0.15),
+    Turbine: toggle(0.15),
+    ConveyorBelt: toggle(0.15),
+    AirCooler: toggle(0.15),
+    MixingTank: toggle(0.15),
+    BucketElevator: toggle(0.1),
+    Crusher: toggle(0.1),
+    Mill: toggle(0.1),
+    RotaryKiln: toggle(0.03),
+    Reactor: toggle(0.15),
+    HandValve: toggle(0.1),
+    ButterflyValve: toggle(0.1),
+    BallValve: toggle(0.1),
+    SolenoidValve: toggle(0.1),
+    GateValve: toggle(0.1),
+    // The newest value of a trend
+    Trend: element => Math.round(drift(Number(valueOf(element) ?? 50), 8, 5, 95)),
     // The electrical equipment: a breaker trips now and then, a generator stops; a meter shows the voltage.
-    CircuitBreaker: toggleOpen(0.08),
-    Generator: togglePower(0.05),
-    DieselGenerator: togglePower(0.05),
-    WindTurbine: togglePower(0.05),
+    CircuitBreaker: toggle(0.08),
+    Generator: toggle(0.05),
+    DieselGenerator: toggle(0.05),
+    WindTurbine: toggle(0.05),
     // The charge of a battery bank, the fuel of a day tank
-    BatteryBank: element => ({ level: Math.round(drift(element.get('level') ?? 80, 3, 20, 100)) }),
-    FuelTank: element => ({ level: Math.round(drift(element.get('level') ?? 70, 3, 10, 100)) }),
-    ElectricMeter: element => ({
-        'attrs/value/text': element.get('energized') ? driftText(element.attr('value/text'), 1.5, 225, 235) : '0.0'
-    }),
+    BatteryBank: element => Math.round(drift(Number(valueOf(element) ?? 80), 3, 20, 100)),
+    FuelTank: element => Math.round(drift(Number(valueOf(element) ?? 70), 3, 10, 100)),
+    ElectricMeter: element => (element.get('energized') ? roundTo(drift(Number(valueOf(element) ?? 230), 1.5, 225, 235), 10) : 0),
+    // The alarm follows the pressure.
+    Beacon: (_element, graph) => highestPressure(graph) > HIGH_PRESSURE
+};
+
+/**
+ * How the values of a table change (not the values of tags: a table shows those of the diagram, see `readoutStates()`) -
+ * the changes of the table, or `null` if nothing changes this time.
+ */
+const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph) => Record<string, unknown> | null> = {
     // A value of a table changes: a state switches now and then, a number (as many decimals as it has) drifts.
     // A table of a source (an element): its states follow it (see `readoutStates()`), its numbers drift while it runs.
     Table: (element, graph) => {
@@ -191,9 +193,7 @@ const generators: Record<string, Generator> = {
             next = drift(number, Math.max(5 * 10 ** -decimals, Math.abs(number) * 0.05), 0, Number.MAX_VALUE).toFixed(decimals);
         }
         return { values: values.map((row, index) => (index === rowIndex ? row.map((cell, c) => (c === column ? next : cell)) : row)) };
-    },
-    // The alarm follows the pressure.
-    Beacon: (_element, graph) => ({ power: highestPressure(graph) > HIGH_PRESSURE ? 1 : 0 })
+    }
 };
 
 /** How the data of each type of chart changes (every `CHART_INTERVAL`, see `Simulation`) */
@@ -360,14 +360,29 @@ export function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] 
         .filter((update): update is TagUpdate => update.changes !== null);
 }
 
-/** A random update of a random element (of those with data), or `null` if nothing changes this time. */
-export function createRandomUpdate(graph: dia.Graph): TagUpdate | null {
-    const elements = graph.getElements().filter(element => getTag(element) && element.get('type') in generators);
+/** An update of the plant: the new value of a property of an element (by its tag) */
+interface PlantUpdate {
+    tag: string;
+    property: string;
+    value: TagValue;
+}
+
+/**
+ * An update of the plant (the new value of the property of a random element of those with data), or an update of
+ * a table; `null` if nothing changes this time.
+ */
+export function createRandomUpdate(graph: dia.Graph): PlantUpdate | TagUpdate | null {
+    const elements = graph.getElements().filter(element => getTag(element) && (element.get('type') in generators || element.get('type') in readoutGenerators));
     if (elements.length === 0) return null;
     const element = elements[Math.floor(Math.random() * elements.length)];
-    const changes = generators[element.get('type')](element, graph);
-    if (!changes) return null;
-    return { tag: getTag(element)!, changes };
+    const tag = getTag(element)!;
+    const type = element.get('type');
+    if (type in readoutGenerators) {
+        const changes = readoutGenerators[type](element, graph);
+        return changes ? { tag, changes } : null;
+    }
+    const value = generators[type](element, graph);
+    return value === null ? null : { tag, property: propertyOf(element), value };
 }
 
 /** Apply an update to the element with its tag (a runtime change: not recorded in the history). */
@@ -445,7 +460,12 @@ export class Simulation {
     protected schedule(): void {
         this.timer = window.setTimeout(() => {
             const update = createRandomUpdate(this.graph);
-            if (update) applyUpdate(this.graph, update);
+            if (update && 'property' in update) {
+                // As any system would: through the interface of the diagram
+                plant.update(update.tag, update.property, update.value);
+            } else if (update) {
+                applyUpdate(this.graph, update);
+            }
             this.schedule();
         }, random(MIN_INTERVAL, MAX_INTERVAL));
     }

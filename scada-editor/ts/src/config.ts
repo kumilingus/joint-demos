@@ -246,6 +246,14 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         text: 'Settings',
         attrs: { button: { 'data-tooltip': 'The settings of the diagram (the screen, the animations) and of the editor' }}
     }] : [];
+    // The messages between the diagram and the plant (see `event-log.ts`): in the runtime mode
+    const log: ui.Toolbar.Options['tools'] = mode === Mode.Runtime ? [{
+        type: 'button',
+        name: 'log',
+        group: 'settings',
+        text: 'Log',
+        attrs: { button: { 'data-tooltip': 'The messages between the diagram and the plant: the updates, the commands' }}
+    }] : [];
     const history: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
         type: 'undo',
         name: 'undo',
@@ -298,6 +306,7 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             attrs: { button: { 'data-tooltip': 'Zoom to fit the diagram' }}
         },
         ...settings,
+        ...log,
         {
             // The whole page (hidden by the tool itself in an iframe, where the page can't be full screen)
             type: 'fullscreen',

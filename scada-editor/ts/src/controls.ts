@@ -1,6 +1,9 @@
 import { dia, util, type mvc } from '@joint/plus';
 import Shape from './shapes/Shape';
 import { besideElement, seenBBox, sideOf } from './shapes/attributes/label';
+import { getTag } from './tags';
+import { readProperty, type TagValue, writeProperty } from './tag-values';
+import { plant } from './plant';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -14,6 +17,16 @@ import { besideElement, seenBBox, sideOf } from './shapes/attributes/label';
  * see `simulation.ts`), not by editing the diagram: they are not recorded in the history.
  */
 export const RUNTIME = { runtime: true };
+
+/** A command of the operator: the new value of the property of the element - shown on it, sent to the plant (see `plant.ts`) */
+function command(element: dia.Element, property: string, value: TagValue): void {
+    const tag = getTag(element);
+    if (tag) {
+        plant.send(tag, property, value);
+    } else {
+        writeProperty(element, property, value, RUNTIME);
+    }
+}
 
 // The sizes of the controls beside the element (their `foreignObject`s below), the space between them and the element
 const TOGGLE_SIZE = { width: 100, height: 30 };
@@ -132,7 +145,7 @@ class PumpControl extends Control {
     }
 
     onChange(evt: dia.Event): void {
-        this.cellView.model.set('power', (evt.target as HTMLInputElement).checked ? 1 : 0, RUNTIME);
+        command(this.cellView.model as dia.Element, 'power', (evt.target as HTMLInputElement).checked);
     }
 }
 
@@ -162,7 +175,7 @@ class ToggleValveControl extends Control {
 
     onButtonClick(): void {
         const { model } = this.cellView;
-        model.set('open', !model.get('open'), RUNTIME);
+        command(model as dia.Element, 'open', !readProperty(model as dia.Element, 'open'));
     }
 }
 
@@ -176,7 +189,8 @@ class SliderValveControl extends Control {
     }
 
     events(): mvc.EventsHash {
-        return { 'input input': 'onInput' };
+        // Moved: the valve follows; released: the command sent
+        return { 'input input': 'onInput', 'change input': 'onChange' };
     }
 
     protected highlight(cellView: dia.CellView): void {
@@ -196,6 +210,10 @@ class SliderValveControl extends Control {
 
     onInput(evt: dia.Event): void {
         this.cellView.model.set('open', Number((evt.target as HTMLInputElement).value) / 100, RUNTIME);
+    }
+
+    onChange(evt: dia.Event): void {
+        command(this.cellView.model as dia.Element, 'open', Number((evt.target as HTMLInputElement).value));
     }
 }
 

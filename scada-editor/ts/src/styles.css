@@ -176,6 +176,7 @@ body {
 .joint-toolbar [data-name="save"] { --icon: var(--icon-save); }
 .joint-toolbar [data-name="export"] { --icon: var(--icon-image); }
 .joint-toolbar [data-name="settings"] { --icon: var(--icon-settings); }
+.joint-toolbar [data-name="log"] { --icon: var(--icon-log); }
 
 /* The settings are open (see `settings.ts`). */
 .joint-toolbar button.active {
@@ -1624,4 +1625,122 @@ body {
 /* A select of several cells with different values ("Mixed", see `selection-inspector.ts`): greyed until one is picked */
 .joint-inspector select:has(option[value=""]:checked) {
     color: var(--muted-foreground);
+}
+
+/* The log of the messages between the diagram and the plant (see `event-log.ts`): a dialog that can be moved */
+
+.joint-dialog .fg {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--background);
+    box-shadow: var(--shadow-md);
+    color: var(--foreground);
+}
+
+.joint-dialog .titlebar {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: none;
+    color: var(--foreground);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.joint-dialog .fg {
+    overflow: hidden;
+}
+
+/* Moved by its title bar */
+.joint-dialog.draggable .titlebar {
+    cursor: move;
+}
+
+.joint-dialog .body {
+    padding: 0;
+}
+
+/* The close button: an icon, as the clear button of the search */
+.joint-dialog .btn-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--muted-foreground);
+    font-size: 0;
+    line-height: 0;
+    cursor: pointer;
+}
+
+.joint-dialog .btn-close::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    margin: auto;
+    background-color: currentColor;
+    mask: var(--icon-close) center / contain no-repeat;
+}
+
+.joint-dialog .btn-close:hover {
+    background: var(--muted);
+    color: var(--foreground);
+}
+
+.jj-log-intro {
+    margin: 0;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted-foreground);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.jj-log-list {
+    height: 280px;
+    overflow-y: auto;
+    padding: 4px 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+}
+
+.jj-log-message {
+    display: grid;
+    grid-template-columns: auto 74px 64px 48px 1fr;
+    gap: 10px;
+    padding: 3px 14px;
+    white-space: nowrap;
+}
+
+.jj-log-message:nth-child(odd) {
+    background: var(--muted);
+}
+
+.jj-log-time {
+    color: var(--muted-foreground);
+}
+
+.jj-log-message[data-direction="in"] .jj-log-direction {
+    color: var(--color-blue);
+}
+
+.jj-log-message[data-direction="out"] .jj-log-direction {
+    color: var(--color-amber);
+}
+
+.jj-log-tag {
+    font-weight: 600;
+}
+
+.jj-log-property {
+    color: var(--muted-foreground);
+}
+
+.jj-log-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
