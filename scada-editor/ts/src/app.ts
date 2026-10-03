@@ -61,6 +61,8 @@ export class App {
     colorScheme: ColorScheme = getInitialColorScheme();
     /** Whether a moved or resized element aligns with the others (see the settings) */
     snaplinesEnabled = true;
+    /** The cells as they were before the runtime mode (put back when it is left: its changes are not the diagram's) */
+    runtimeCells: dia.Cell.JSON[] | null = null;
     /** Whether the palette has the group of the shapes in use (see `refreshPalette()`) */
     inUseShown = true;
     selection = new mvc.Collection<dia.Cell>();
@@ -185,6 +187,12 @@ export class App {
             this.createSnaplines();
             this.createStencil(this.snaplines!);
         }
+        if (mode === Mode.Runtime) {
+            // Nothing of the runtime mode in the history; the diagram kept as it is
+            this.history.stopListening();
+            // All their attributes, the defaults too (left out, a sync would remove them)
+            this.runtimeCells = this.graph.getCells().map(cell => cell.toJSON({ ignoreDefaults: false }));
+        }
         this.modeControllers[mode].forEach(controller => controller.startListening());
         this.paper.setInteractivity(this.interactivityOf(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
@@ -200,6 +208,12 @@ export class App {
         clearSelection(this);
         hideScreen(this);
         this.modeControllers[mode].forEach(controller => controller.stopListening());
+        if (mode === Mode.Runtime && this.runtimeCells) {
+            // The diagram as it was before the runtime mode (its values, the operated equipment)
+            this.graph.syncCells(this.runtimeCells, { remove: true });
+            this.runtimeCells = null;
+            this.history.listen();
+        }
         this.destroyStencil();
         this.destroySnaplines();
         this.toolbar.remove();
