@@ -1042,12 +1042,14 @@
       "open": true,
       "attrs": {
         "label": {
-          "text": "Inlet Valve"
+          "text": "Inlet Valve",
+          "labelPosition": "bottom"
         }
       },
       "tag": "HV-101",
       "id": "37a68821-71c8-475e-ae95-32a4ae7c75ff",
-      "layer": "equipment"
+      "layer": "equipment",
+      "controlPosition": "top"
     },
     {
       "position": {
