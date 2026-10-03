@@ -12,7 +12,7 @@ Copy this folder into the app, then:
 ```css
 @import '@joint/plus/joint-plus.css' layer(joint);
 @import './theme/tokens.css';
-@import './theme/theme.css' layer(theme);
+@import './theme/theme-minimal.css' layer(theme);
 ```
 
 ```ts

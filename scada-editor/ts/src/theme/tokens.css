@@ -1,5 +1,5 @@
 /*
- * The design tokens of the `minimal` theme (see `theme.css`): the names of the CSS variables of shadcn/ui, a neutral
+ * The design tokens of the `minimal` theme (see `theme-minimal.css`): the names of the CSS variables of shadcn/ui, a neutral
  * palette; the dark scheme under `:root[data-color-scheme="dark"]`. The icons (`--icon-*`) are files in `icons/`.
  */
 

@@ -10,7 +10,7 @@ import { setTheme } from '@joint/plus';
 import { init } from './app';
 import type { Plant } from './plant/plant';
 
-// A theme of its own, styled from scratch in `theme/theme.css` (and the app in `styles.css`): none of the
+// A theme of its own, styled from scratch in `theme/theme-minimal.css` (and the app in `styles.css`): none of the
 // built-in theme styles apply to it.
 setTheme('minimal');
 

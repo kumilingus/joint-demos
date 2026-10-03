@@ -74,7 +74,7 @@ src/
                      common/ the base class (Shape.ts) and the parts the shapes share (ports.ts the pipe stubs and the terminals, footprint.ts
                      the area a shape takes, routing.ts, gradients.ts, charts.ts), attributes/ the special attributes of the texts
                      (label.ts the label of a shape and its position, text-styles.ts the font style), shapes.css the colors of the shapes
-  theme/             the `minimal` theme of the JointJS+ components (theme.css, scoped to `.joint-theme-minimal`), its design tokens (tokens.css:
+  theme/             the `minimal` theme of the JointJS+ components (theme-minimal.css, scoped to `.joint-theme-minimal`), its design tokens (tokens.css:
                      the CSS variable names of shadcn/ui, light and dark) and icons (icons/, Lucide) - reusable in another app, see theme/README.md
   diagrams/          the examples: a boiler house, a microgrid and a cement plant, JSON files as saved by the Save button (with the JointJS badge and a photo as images)
 ```
