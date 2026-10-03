@@ -2,11 +2,13 @@ import { dia, ui, util } from '@joint/plus';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, renderColorField } from './color-field';
 import { hasFinish, type SurfaceFinish } from './shapes/gradients';
 import { isGroup } from './shapes/Group';
+import { LAYER_NAMES } from './layers';
 
 /*
  * The appearance of several cells at once (a selection of them, the members of a group): an inspector
  * of a cell standing in for them all, with the fields they share - the color (of each its own: the metal
- * of a pump, the line of a pipe, the text of a label, see `ColorField`), the finish and the outline (of those with surfaces).
+ * of a pump, the line of a pipe, the text of a label, see `ColorField`), the finish and the outline (of those with surfaces),
+ * their layer.
  * A field shows the value they all have, or none ("mixed") if they differ; a change sets it on all of them,
  * one step of the history.
  */
@@ -82,8 +84,8 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     const surfaced = cells.filter(cell => cell.isElement() && hasFinish(cell));
     const outlined = cells.filter(cell => outlineFieldOf(cell));
     const accented = cells.filter(cell => accentFieldOf(cell));
-    if (colored.length === 0 && outlined.length === 0 && accented.length === 0) return null;
-    const graph = (colored[0] ?? outlined[0] ?? accented[0]).graph;
+    if (cells.length === 0) return null;
+    const { graph } = cells[0];
 
     const colors = colored.map(colorOf);
     // Of each its own (a pipe: its default), or none (Auto)
@@ -92,7 +94,9 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         color: common(colors),
         finish: common(surfaced.map(finishOf)),
         outline: common(outlines),
-        accent: common(accented.map(accentOf))
+        accent: common(accented.map(accentOf)),
+        // In different ones: none of them (see the input)
+        layer: common(cells.map(cell => graph.getCellLayerId(cell))) ?? ''
     });
     const inputs: Record<string, unknown> = {};
     if (colored.length > 0) {
@@ -158,6 +162,23 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     });
     standIn.on('change:outline', (_cell: dia.Cell, outline: string | undefined) => {
         changeAll(outlined, cell => setOutline(cell, outline));
+    });
+    // Their layer: the one they are all in, or none (mixed); last, as of a single cell (see `inspector.ts`)
+    inputs.layer = {
+        type: 'select',
+        label: 'Layer',
+        options: [
+            // In different ones: shown as such (not the first layer)
+            ...(standIn.get('layer') === '' ? [{ value: '', content: 'Mixed' }] : []),
+            ...Object.entries(LAYER_NAMES).map(([value, content]) => ({ value, content }))
+        ],
+        // ... not one to pick again
+        attrs: { 'option[value=""]': { disabled: true, hidden: true }},
+        group: 'appearance',
+        index: 100
+    };
+    standIn.on('change:layer', (_cell: dia.Cell, layer: string) => {
+        if (layer) changeAll(cells, cell => cell.set('layer', layer));
     });
     return new ui.Inspector({
         cell: standIn,

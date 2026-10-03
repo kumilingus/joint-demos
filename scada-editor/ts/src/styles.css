@@ -1589,3 +1589,8 @@ body {
 .joint-paper text:not([font-family="monospace"]) {
     font-family: var(--font);
 }
+
+/* A select of several cells with different values ("Mixed", see `selection-inspector.ts`): greyed until one is picked */
+.joint-inspector select:has(option[value=""]:checked) {
+    color: var(--muted-foreground);
+}

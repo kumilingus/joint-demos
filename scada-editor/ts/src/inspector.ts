@@ -367,7 +367,7 @@ const LINK_NAMES: Record<string, string> = {
     Conveyor: 'Conveyor'
 };
 
-/** The layer of the graph the cell is in (moved between them when changed, see `layers.ts`). */
+/** The layer of the graph the cell is in (moved between them when changed, see `layers.ts`): last of its appearance. */
 const layerInput = (group: string) => ({
     layer: {
         type: 'select',
@@ -430,7 +430,7 @@ function getFieldValue(attribute: HTMLElement): { value: unknown } | undefined {
 /** The inputs of the cell: of a group, of an element, of a link */
 function inspectorInputs(cell: dia.Cell): Inputs {
     if (isGroup(cell)) return groupInputs;
-    if (cell.isElement()) return { ...getInputs(cell), ...layerInput('general') };
+    if (cell.isElement()) return { ...getInputs(cell), ...layerInput('appearance') };
     // Merged deeply: the color and the outline of a pipe are both in its `attrs`
     return util.merge(
         {},
