@@ -127,6 +127,16 @@ app.plant.get('LI-101', 'level');            // what the diagram shows now
 const unsubscribe = app.plant.subscribe(({ direction, tag, property, value }) => { /* ... */ });
 ```
 
+Try it in the browser console: run the plant (the Run button), open the Log, and send an update as a plant would - the diagram follows, the message shows in the log:
+
+```js
+plant.update('LI-101', 'level', 90);    // the level panel of the deaerator to 90 %
+plant.update('P-102', 'power', true);   // the feed pump 2 starts
+plant.update('HV-101', 'open', false);  // the inlet valve closes
+```
+
+(`window.plant` is the plant of the current run: `null` while editing.)
+
 The properties of each type of element are bound in `plant/properties.ts` (`power`, `open`, `level`, `value`; an element can have several). The mock in `plant/simulation/` is one such system: to connect a real one, delete the folder and its controller in `app.ts`, and add a controller of your own - e.g. over a WebSocket:
 
 ```ts
