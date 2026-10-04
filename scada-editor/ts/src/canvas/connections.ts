@@ -1,4 +1,4 @@
-import { type dia, g } from '@joint/plus';
+import { anchors, type dia, g } from '@joint/plus';
 import { GRID_SIZE, PIPE_COLOR } from '../const';
 import Shape from '../shapes/common/Shape';
 
@@ -58,9 +58,33 @@ export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end,
         return end;
     }
     const { x, y } = pinToSide(element, coords);
-    // Relative to the size: the end stays on its side when the element is resized.
-    end.anchor = { name: 'topLeft', args: { dx: percent(x, width), dy: percent(y, height), rotate: true, useModelGeometry: true }};
+    // Relative to the size: the end stays on its side when the element is resized - on the grid (see `gridSide`)
+    end.anchor = { name: 'gridSide', args: { dx: percent(x, width), dy: percent(y, height), rotate: true, useModelGeometry: true }};
     return end;
+};
+
+/** A part of the length (`'37.5%'`) or a length */
+const lengthOf = (value: number | string | undefined, length: number) =>
+    (typeof value === 'string' && value.endsWith('%') ? parseFloat(value) / 100 * length : Number(value) || 0);
+
+/**
+ * The anchor of the end of a pipe on a side of an element (see `connectionStrategy`): the point at the parts of its
+ * size (`dx`, `dy`: as `topLeft`), snapped to the grid along the side (of the paper) - the end stays on the grid when
+ * the element is resized (a pipe straight between the elements on the grid).
+ */
+export const gridSide: anchors.GenericAnchor<'topLeft'> = function(this: dia.LinkView, view, magnet, ref, opt, endType, linkView) {
+    const element = view.model as dia.Element;
+    const { width, height } = element.size();
+    const { x: left, y: top } = element.position();
+    let x = lengthOf(opt.dx, width);
+    let y = lengthOf(opt.dy, height);
+    const snap = (value: number, origin: number, max: number) => Math.max(0, Math.min(max, g.snapToGrid(origin + value, GRID_SIZE) - origin));
+    if (x <= 0 || x >= width) {
+        y = snap(y, top, height);
+    } else {
+        x = snap(x, left, width);
+    }
+    return anchors.topLeft.call(this, view, magnet, ref, { ...opt, dx: x, dy: y }, endType, linkView);
 };
 
 /**

@@ -83,6 +83,7 @@ export function createNavigator(el: HTMLElement, scroller: ui.PaperScroller): ui
             defaultAnchor: paperOptions.defaultAnchor,
             defaultConnectionPoint: paperOptions.defaultConnectionPoint,
             routerNamespace: paperOptions.routerNamespace,
+            anchorNamespace: paperOptions.anchorNamespace,
             background: { color: 'transparent' }
         }
     });

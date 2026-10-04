@@ -125,7 +125,7 @@
       "target": {
         "id": "616af48d-dbbb-406d-aa46-f310ea5c821e",
         "anchor": {
-          "name": "topLeft",
+          "name": "gridSide",
           "args": {
             "useModelGeometry": true,
             "rotate": true,
@@ -526,7 +526,7 @@
       "target": {
         "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
         "anchor": {
-          "name": "topLeft",
+          "name": "gridSide",
           "args": {
             "useModelGeometry": true,
             "rotate": true,
@@ -566,7 +566,7 @@
       "source": {
         "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
         "anchor": {
-          "name": "topLeft",
+          "name": "gridSide",
           "args": {
             "useModelGeometry": true,
             "rotate": true,

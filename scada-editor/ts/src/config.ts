@@ -1,7 +1,7 @@
-import { dia, ui } from '@joint/plus';
+import { anchors, dia, ui } from '@joint/plus';
 import { ColorScheme, GRID_SIZE, Mode, SELECTION_COLOR } from './const';
 import type { RUNTIME } from './runtime/controls';
-import { connectionStrategy } from './canvas/connections';
+import { connectionStrategy, gridSide } from './canvas/connections';
 import { type DERIVED, routerNamespace } from './shapes/common/routing';
 import type { PREFERENCE } from './palette/favorites';
 import Label from './shapes/models/instruments/Label';
@@ -41,6 +41,8 @@ export const paperOptions: dia.Paper.Options = {
     routerNamespace,
     // The anchor is on a side of the element already (see `connectionStrategy`).
     defaultConnectionPoint: { name: 'anchor' },
+    // The anchors of the paper with the one of the ends of the pipes on the sides (see `gridSide`)
+    anchorNamespace: { ...anchors, gridSide },
     // A dragged end of a pipe snaps to the ports (or the sides of the elements without ones) nearby.
     snapLinks: { radius: 2 * GRID_SIZE },
     // A dragged vertex or end of a link snaps in line with the other points of the link (straight segments).
