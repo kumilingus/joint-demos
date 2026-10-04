@@ -104,7 +104,9 @@ export default class MixingTank extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Mixer'
+                    text: 'Mixer',
+                    // Below its legs
+                    y: 'calc(h + 18)'
                 }
             }
         };
