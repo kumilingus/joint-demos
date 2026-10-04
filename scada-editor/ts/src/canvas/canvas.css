@@ -17,8 +17,14 @@
  * without its frame and name in the runtime mode, where the canvas shows it only (see `screen.ts`).
  */
 
-.screen-editable [data-type="Screen"] [joint-selector="body"] {
-    pointer-events: visiblePainted;
+.screen-editable [data-type="Screen"] [joint-selector="edge"] {
+    pointer-events: stroke;
+    cursor: move;
+}
+
+/* Its name and size above it: a handle too (its whole box, not the glyphs only) */
+.screen-editable [data-type="Screen"] [joint-selector="label"] {
+    pointer-events: bounding-box;
     cursor: move;
 }
 
