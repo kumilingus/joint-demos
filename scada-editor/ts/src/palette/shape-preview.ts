@@ -19,7 +19,7 @@ import { Animations, getAnimationLevel } from '../runtime/animations';
  * An image of the user can be renamed there.
  */
 
-const PREVIEW_WIDTH = 240;
+// The height of the preview (its width: of the panel)
 const PREVIEW_HEIGHT = 180;
 const PREVIEW_PADDING = 20;
 
@@ -120,7 +120,8 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         el: previewEl,
         model: createGraph(),
         cellViewNamespace: cellNamespace,
-        width: PREVIEW_WIDTH,
+        // As wide as the panel (without its border)
+        width: previewEl.clientWidth,
         height: PREVIEW_HEIGHT,
         interactive: false,
         background: { color: 'transparent' },
