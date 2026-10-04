@@ -1,4 +1,4 @@
-import { type dia, util } from '@joint/plus';
+import { type dia, g, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
@@ -137,13 +137,27 @@ export default class Thermometer extends Shape {
         this.on('change:value', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateColumn(options));
     }
 
+    // The column (and its reading) glides to a new value (see `animateLevel()` in `animations.ts`)
+    get glideProperty(): string {
+        return 'value';
+    }
+
+    glideKeyframes(value: number): Record<string, Keyframe> {
+        const { height: h } = this.size();
+        const top = g.scale.linear([0, 100], [0.68, 0.08], Math.max(0, Math.min(100, value)));
+        return {
+            column: { y: `${top * h}px`, height: `${(0.95 - top) * h - 8}px` },
+            reading: { y: `${top * h}px` }
+        };
+    }
+
     /**
      * The column rises from the bulb to the value on the scale (the scale spans 8% to 68% of the height),
      * the reading (in °C, the scale is 0 - 100 °C) is next to its top.
      */
     updateColumn(options?: dia.Cell.Options): void {
         const value = Math.max(0, Math.min(100, this.get('value') || 0));
-        const top = (0.68 - value / 100 * 0.6).toFixed(3);
+        const top = g.scale.linear([0, 100], [0.68, 0.08], value).toFixed(3);
         this.attr({
             column: {
                 y: `calc(${top} * h)`,

@@ -10,6 +10,7 @@ const markup = util.svg/* xml */`
     <path @selector='ribs' />
     <rect @selector='endBell' />
     <rect @selector='shaft' />
+    <rect @selector='shaftMark' />
     <rect @selector='terminalBox' />
     <text @selector='label' />
 `;
@@ -85,6 +86,15 @@ export default class Generator extends Shape {
                     surfaceFill: 'pipe',
                     surfaceStroke: 'edge',
                     strokeWidth: 1.5
+                },
+                // A key on the shaft: swept across it while the generator runs (see `animations.ts`), hidden otherwise
+                shaftMark: {
+                    x: 'calc(0.05 * w - 2)',
+                    y: 'calc(0.47 * h)',
+                    width: 4,
+                    height: 2,
+                    fill: '#333',
+                    opacity: 0
                 },
                 terminalBox: {
                     x: 'calc(0.375 * w)',

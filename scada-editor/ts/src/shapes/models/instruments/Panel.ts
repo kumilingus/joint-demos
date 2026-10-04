@@ -283,6 +283,16 @@ export default class Panel extends Shape {
     }
 
     /** The liquid at the level (0 - 100), as `updateLiquid()` draws it, for the current size. */
+    // Its liquid glides to a new level (see `animateLevel()` in `animations.ts`)
+    get glideProperty(): string {
+        return 'level';
+    }
+
+    glideKeyframes(level: number): Record<string, Keyframe> {
+        const { y, height, fill } = this.liquidState(level);
+        return { liquid: { y: `${y}px`, height: `${height}px`, fill }};
+    }
+
     liquidState(level: number): LiquidState {
         const windowSize = this.size().height - WINDOW_TOP - WINDOW_BOTTOM;
         const height = windowSize * clampLevel(level) / 100;

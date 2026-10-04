@@ -113,6 +113,17 @@ export default class FuelTank extends Shape {
         this.on('change:level', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateFuel(options));
     }
 
+    // The fuel glides to a new level (see `animateLevel()` in `animations.ts`)
+    get glideProperty(): string {
+        return 'level';
+    }
+
+    glideKeyframes(level: number): Record<string, Keyframe> {
+        const { height: h } = this.size();
+        const height = GLASS_HEIGHT * Math.max(0, Math.min(100, level)) / 100;
+        return { fuel: { y: `${(GLASS_Y + GLASS_HEIGHT - height) * h}px`, height: `${height * h}px` }};
+    }
+
     /** The fuel in the sight glass as high as the level (from its bottom) */
     updateFuel(options?: dia.Cell.Options): void {
         const ratio = Math.max(0, Math.min(100, Number(this.get('level')) || 0)) / 100;

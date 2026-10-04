@@ -104,6 +104,36 @@
     overflow: hidden;
 }
 
+/* The state of the shape in the preview (see `shape-preview.ts`): a dot, green while on */
+.palette-shape-state {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: -2px 0 4px;
+    color: var(--muted-foreground);
+    font: 500 12px var(--font);
+}
+
+.palette-shape-state:empty {
+    display: none;
+}
+
+.palette-shape-state::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--muted-foreground);
+}
+
+.palette-shape-state.on {
+    color: var(--foreground);
+}
+
+.palette-shape-state.on::before {
+    background: var(--color-green);
+}
+
 .palette-shape-title {
     margin: 0;
     color: var(--foreground);

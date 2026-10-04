@@ -64,7 +64,7 @@ const newest: Property = {
 
 const RUNNING = [
     'Pump', 'Compressor', 'Fan', 'Blower', 'Motor', 'Turbine', 'ConveyorBelt', 'AirCooler', 'MixingTank',
-    'BucketElevator', 'Crusher', 'Mill', 'RotaryKiln', 'Reactor', 'Generator', 'DieselGenerator', 'WindTurbine', 'Beacon'
+    'BucketElevator', 'Crusher', 'Mill', 'RotaryKiln', 'Reactor', 'Boiler', 'Generator', 'DieselGenerator', 'WindTurbine', 'Beacon'
 ];
 
 const SWITCHED = ['HandValve', 'ButterflyValve', 'BallValve', 'SolenoidValve', 'GateValve', 'CircuitBreaker', 'Disconnector'];

@@ -18,6 +18,7 @@ const markup = util.svg/* xml */`
     <path @selector='shaft' />
     <path @selector='body' />
     <path @selector='blades' />
+    <path @selector='steam' />
     <text @selector='label' />
 `;
 
@@ -67,6 +68,16 @@ export default class Turbine extends Shape {
                     stroke: '#444',
                     strokeWidth: 3,
                     strokeLinecap: 'round'
+                },
+                // The steam passing through: streaming from the left to the right while it runs (see `animations.ts`)
+                steam: {
+                    d: 'M 6 calc(0.42 * h) H calc(w - 6) M 6 calc(0.58 * h) H calc(w - 6)',
+                    fill: 'none',
+                    stroke: '#fff',
+                    strokeWidth: 2,
+                    strokeLinecap: 'round',
+                    strokeDasharray: '6 10',
+                    strokeOpacity: 0
                 },
                 label: {
                     ...labelAttributes,

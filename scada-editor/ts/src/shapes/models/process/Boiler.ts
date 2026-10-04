@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField, type ControlKind } from '../../common/Shape';
 
 // The flames are drawn around the bottom center of the firebox.
 const flamesTransform = 'translate(calc(w / 2), calc(h - 18))';
@@ -16,7 +16,12 @@ const markup = util.svg/* xml */`
     <text @selector='label' />
 `;
 
+/** A boiler: its burner on (the flames in the firebox) or off (`power`, switched by the operator and the plant). */
 export default class Boiler extends Shape {
+
+    get control(): ControlKind {
+        return 'power';
+    }
 
     // The accent: the flames (the inner one a darker tone of it)
     get accentField(): ColorField {
@@ -46,6 +51,8 @@ export default class Boiler extends Shape {
                 width: 120,
                 height: 160
             },
+            // The burner: 1 = on (firing, by default), 0 = off
+            power: 1,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -100,5 +107,17 @@ export default class Boiler extends Shape {
 
     preinitialize(): void {
         this.markup = markup;
+    }
+
+    initialize(...args: Parameters<dia.Element['initialize']>): void {
+        super.initialize(...args);
+        this.updateFlames();
+        this.on('change:power', (_element: dia.Element, _power: unknown, options: dia.Cell.Options) => this.updateFlames(options));
+    }
+
+    /** The flames shown while the burner is on (out: the firebox dark) */
+    updateFlames(options?: dia.Cell.Options): void {
+        const display = this.get('power') ? 'block' : 'none';
+        this.attr({ flameOuter: { display }, flameInner: { display }}, options);
     }
 }

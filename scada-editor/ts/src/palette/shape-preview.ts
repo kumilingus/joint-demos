@@ -1,4 +1,5 @@
 import { dia, highlighters } from '@joint/plus';
+import { propertiesOf, readProperty, writeProperty } from '../plant/properties';
 import { cellNamespace } from '../shapes';
 import { createGraph } from '../canvas/layers';
 import { getFootprint } from '../shapes/common/footprint';
@@ -9,11 +10,13 @@ import type { App } from '../app';
 import { deleteImage, refreshPalette } from '../actions';
 import { isFavorite, toggleFavorite } from './favorites';
 import { paletteKey } from './stencil';
-import { Animations } from '../runtime/animations';
+import { Animations, getAnimationLevel } from '../runtime/animations';
 
 /*
  * A shape of the palette clicked (not dragged): shown in the inspector panel with what it is,
- * on a paper of its own. An image of the user can be renamed there.
+ * on a paper of its own - as in the runtime mode: animated, switched on and off, its reading going up and down
+ * (see `previewState()`).
+ * An image of the user can be renamed there.
  */
 
 const PREVIEW_WIDTH = 240;
@@ -21,12 +24,68 @@ const PREVIEW_HEIGHT = 180;
 const PREVIEW_PADDING = 20;
 
 const PALETTE_HIGHLIGHTER_ID = 'palette-selection';
+const ENERGIZED_HIGHLIGHTER_ID = 'energized';
+
+// How long the shape stays on, and off, in the preview (ms)
+const STATE_INTERVAL = 2500;
+
+// The shapes drawn differently while energized (see `runtime.css`): the others show nothing of it
+const ENERGIZED_TYPES = ['Wire', 'Lamp', 'Switchgear', 'MotorControlCenter', 'Heater'];
+
+// The shapes with a value on a scale (0 - 100: a gauge, a thermometer)
+const SCALED_TYPES = ['PressureGauge', 'Thermometer'];
+
+/**
+ * A state of the shape the preview switches (on and off, or two values): set, the caption of an on / off state returned
+ * (none of a value: the shape shows it)
+ */
+type PreviewState = (cell: dia.Cell, view: dia.CellView, on: boolean) => string | null;
+
+/**
+ * The state of the shape shown in the preview, if it has one: running, open, energized (an electrical part drawn so),
+ * or a reading of the plant (a level, a value) going up and down
+ */
+function previewState(cell: dia.Cell): PreviewState | null {
+    if (cell.has('power')) {
+        return (c, _view, on) => {
+            c.set('power', on ? 1 : 0);
+            return on ? 'Running' : 'Stopped';
+        };
+    }
+    const open = cell.get('open');
+    if (typeof open === 'boolean' || typeof open === 'number') {
+        return (c, _view, on) => {
+            c.set('open', typeof open === 'boolean' ? on : Number(on));
+            return on ? 'Open' : 'Closed';
+        };
+    }
+    if (ENERGIZED_TYPES.includes(cell.get('type'))) {
+        // The class of a live circuit (as in the runtime mode, see `ElectricalController`)
+        return (_cell, view, on) => {
+            highlighters.addClass.remove(view, ENERGIZED_HIGHLIGHTER_ID);
+            if (on) highlighters.addClass.add(view, 'root', ENERGIZED_HIGHLIGHTER_ID, { className: 'energized' });
+            return on ? 'Energized' : 'Off';
+        };
+    }
+    // A reading (see `plant/properties.ts`): between two values - of a scale (0 - 100), or around the one it shows (by a tenth)
+    const element = cell as dia.Element;
+    const property = cell.isElement() ? propertiesOf(element).find(name => typeof readProperty(element, name) === 'number') : undefined;
+    if (!property) return null;
+    const shown = Number(readProperty(element, property)) || 50;
+    const scale = property === 'level' || SCALED_TYPES.includes(element.get('type'));
+    const values = scale ? [75, 25] : [shown * 1.1, shown * 0.9].map(value => Number(value.toFixed(1)));
+    return (_cell, _view, on) => {
+        writeProperty(element, property, values[on ? 0 : 1]);
+        return null;
+    };
+}
 
 interface Shown {
     el: HTMLElement;
     paper: dia.Paper;
     cellView: dia.CellView;
     animations: Animations;
+    timer: number | null;
 }
 
 let shown: Shown | null = null;
@@ -51,7 +110,9 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
     const actionsEl = document.createElement('div');
     actionsEl.className = 'palette-shape-actions';
     actionsEl.append(createFavoriteButton(app, paletteKey(cell)));
-    el.append(previewEl, titleEl, descriptionEl, actionsEl);
+    const stateEl = document.createElement('div');
+    stateEl.className = 'palette-shape-state';
+    el.append(previewEl, stateEl, titleEl, descriptionEl, actionsEl);
 
     app.inspectorEl.append(el);
 
@@ -68,15 +129,33 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
     const copy = cell.clone();
     // A link without its name (the label of the palette, see `setTooltip()` in `stencil.ts`): the title says it.
     if (copy.isLink()) copy.labels([]);
-    // Shown running (see `animations.ts`): switched on, open
-    if (copy.has('power')) copy.set('power', 1);
-    const open = copy.get('open');
-    if (typeof open === 'boolean') copy.set('open', true);
-    if (typeof open === 'number') copy.set('open', 1);
     paper.model.addCell(copy);
     // The paper renders the shape at once (not async): its view is there to be animated.
+    const view = copy.findView(paper)!;
     const animations = new Animations(paper);
+    // As much as the diagram moves (the alarms only: switched still); less if the system asks for less motion
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    animations.level = reducedMotion ? 'alarms' : getAnimationLevel(app.graph);
+    // Shown on (running, open, energized), then off and on again - a change of the state (as the level of the diagram
+    // allows: what moves on its own while it is on is the animations' level)
+    const state = previewState(copy);
+    let on = true;
+    const show = () => {
+        if (!state) return;
+        stateEl.textContent = state(copy, view, on) ?? '';
+        stateEl.classList.toggle('on', on);
+        animations.animate(copy);
+        // A level, a charge, a column glide to the new value (as in the runtime mode)
+        if (copy.isElement()) animations.animateLevel(copy);
+    };
+    show();
     animations.start();
+    const timer = state
+        ? window.setInterval(() => {
+            on = !on;
+            show();
+        }, STATE_INTERVAL)
+        : null;
 
     // An image of the user: named after it, the name can be changed (the label of the elements dropped from now on).
     const imageId: string | undefined = cell.attr('image/imageId');
@@ -95,11 +174,12 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         padding: 4,
         attrs: { stroke: SELECTION_COLOR, strokeWidth: 2, strokeLinejoin: 'round' }
     });
-    shown = { el, paper, cellView, animations };
+    shown = { el, paper, cellView, animations, timer };
 }
 
 export function closeShapePreview(): void {
     if (!shown) return;
+    if (shown.timer !== null) window.clearInterval(shown.timer);
     shown.animations.stop();
     highlighters.mask.remove(shown.cellView, PALETTE_HIGHLIGHTER_ID);
     shown.paper.remove();

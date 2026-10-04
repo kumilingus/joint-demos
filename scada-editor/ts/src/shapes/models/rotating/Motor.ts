@@ -12,6 +12,7 @@ const FINS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 const markup = util.svg/* xml */`
     <path @selector='feet' />
     <rect @selector='shaft' />
+    <rect @selector='shaftMark' />
     <rect @selector='endCap' />
     <rect @selector='body' />
     <path @selector='fins' />
@@ -63,6 +64,15 @@ export default class Motor extends Shape {
                     surfaceFill: 'pale',
                     surfaceStroke: 'var(--shape-metal-dark-edge)',
                     strokeWidth: 1.5
+                },
+                // A key on the shaft: swept across it while the motor runs (see `animations.ts`), hidden otherwise
+                shaftMark: {
+                    x: 'calc(w + 6)',
+                    y: 'calc(h / 2 - 5)',
+                    width: 4,
+                    height: 2,
+                    fill: '#333',
+                    opacity: 0
                 },
                 endCap: {
                     x: -8,

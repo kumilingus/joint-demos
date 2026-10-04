@@ -135,6 +135,8 @@ const generators: Record<string, Generator> = {
     // The equipment is switched now and then only.
     Pump: toggle(0.15),
     Compressor: toggle(0.15),
+    // A burner trips now and then only.
+    Boiler: toggle(0.03),
     Fan: toggle(0.15),
     Blower: toggle(0.15),
     Motor: toggle(0.15),

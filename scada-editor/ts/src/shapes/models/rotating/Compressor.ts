@@ -8,6 +8,7 @@ const markup = util.svg/* xml */`
     <rect @selector='pipe' />
     <path @selector='base' />
     <circle @selector='body' />
+    <circle @selector='rotor' />
     <path @selector='symbol' />
     <text @selector='label' />
 `;
@@ -60,6 +61,17 @@ export default class Compressor extends Shape {
                     surfaceStroke: 'edge',
                     strokeWidth: 2,
                     surfaceFill: 'sphere'
+                },
+                // The rotor: a dashed ring turning around the symbol while it runs (see `animations.ts`), hidden otherwise
+                rotor: {
+                    cx: 'calc(w / 2)',
+                    cy: 'calc(h / 2)',
+                    r: 'calc(0.38 * w)',
+                    fill: 'none',
+                    stroke: '#333',
+                    strokeWidth: 2,
+                    strokeDasharray: '4 6',
+                    strokeOpacity: 0
                 },
                 // The ISA symbol of a compressor: a trapezoid narrowing in the direction of the flow.
                 symbol: {

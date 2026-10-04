@@ -1,6 +1,4 @@
 import type { dia } from '@joint/plus';
-import type Panel from '../shapes/models/instruments/Panel';
-import type { LiquidState } from '../shapes/models/instruments/Panel';
 import { BOX_POSITIONS, BOX_WIDTH } from '../shapes/models/bulk/ConveyorBelt';
 import { CLEAT_PATTERN } from '../shapes/models/bulk/Conveyor';
 import { JAW_PIVOT } from '../shapes/models/bulk/Crusher';
@@ -127,6 +125,22 @@ function swing(target: SVGElement | null, [x, y]: [number, number], angle: numbe
         { ...origin, transform: 'rotate(0deg)' },
         { ...origin, transform: `rotate(${angle}deg)` }
     ], { ...LOOP, duration, direction: 'alternate', easing: 'ease-in-out' })];
+}
+
+/**
+ * A key on a shaft turns with it (seen from the side: it sweeps across the shaft, from its top to its bottom, showing
+ * up and fading) - the shaft from its top (`y`) as tall as `height` (see `Motor`, `Generator`)
+ */
+function turnShaft(view: dia.CellView, height: number): Animation[] {
+    const target = node(view, 'shaftMark');
+    if (!target) return [];
+    const travel = Math.max(0, height - 2);
+    return [target.animate([
+        { transform: 'translateY(0)', opacity: 0 },
+        { opacity: 1, offset: 0.2 },
+        { opacity: 1, offset: 0.8 },
+        { transform: `translateY(${travel}px)`, opacity: 0 }
+    ], { ...LOOP, duration: 450 })];
 }
 
 /** The flames flicker (see `Boiler`, `RotaryKiln`) */
@@ -278,9 +292,10 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
             return [flowAlong(target)];
         }
     },
+    // The flames of a firing boiler (see `Boiler`)
     Boiler: {
         kind: 'equipment',
-        animate: flicker
+        animate: view => isOn(view.model) ? flicker(view) : []
     },
     Stack: {
         kind: 'equipment',
@@ -305,6 +320,41 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
                 { ...origin, transform: 'scale(1)' },
                 { ...origin, transform: 'scale(1.06, 1.12)' }
             ], { ...LOOP, duration: 2200, direction: 'alternate', easing: 'ease-in-out' })];
+        }
+    },
+    // A key on the shaft (see `turnShaft()`)
+    Motor: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? turnShaft(view, 10) : []
+    },
+    Generator: {
+        kind: 'equipment',
+        animate: view => isOn(view.model) ? turnShaft(view, (view.model as dia.Element).size().height * 0.12) : []
+    },
+    // The steam streams through the casing (its dashes shown and moving)
+    Turbine: {
+        kind: 'equipment',
+        animate: (view) => {
+            const target = node(view, 'steam');
+            if (!target || !isOn(view.model)) return [];
+            return [target.animate([
+                { strokeDashoffset: 16, strokeOpacity: 0.7 },
+                { strokeDashoffset: 0, strokeOpacity: 0.7 }
+            ], { ...LOOP, duration: 350 })];
+        }
+    },
+    // The rotor turns around the symbol (its dashed ring shown)
+    Compressor: {
+        kind: 'equipment',
+        animate: (view) => {
+            const target = node(view, 'rotor');
+            if (!target || !isOn(view.model)) return [];
+            const [x, y] = center(view);
+            const origin = { transformBox: 'view-box', transformOrigin: `${x}px ${y}px` };
+            return [target.animate([
+                { ...origin, transform: 'rotate(0deg)', strokeOpacity: 0.8 },
+                { ...origin, transform: 'rotate(360deg)', strokeOpacity: 0.8 }
+            ], { ...LOOP, duration: 900 })];
         }
     },
     // The rotor of a wind turbine (drawn around its hub, the group moved there)
@@ -341,7 +391,18 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
 // The time the liquid of a level gauge takes to reach its new level (ms)
 const LEVEL_DURATION = 1000;
 
-const liquidKeyframe = ({ y, height, fill }: LiquidState): Keyframe => ({ y: `${y}px`, height: `${height}px`, fill });
+/**
+ * A shape showing a value by a part of it (a level, a charge, a column): the part glides to a new value
+ * (see `animateLevel()`) - the property of the value, the keyframe of each part (by its selector) at a value
+ */
+export interface Gliding {
+    glideProperty: string;
+    glideKeyframes(value: number): Record<string, Keyframe>;
+}
+
+export function isGliding(cell: dia.Cell): cell is dia.Element & Gliding {
+    return cell.isElement() && typeof (cell as Partial<Gliding>).glideKeyframes === 'function';
+}
 
 export class Animations {
 
@@ -349,7 +410,7 @@ export class Animations {
     /** What moves (see `AnimationLevel`): set before `start()` */
     level: AnimationLevel = 'full';
     running = new Map<dia.Cell.ID, Animation[]>();
-    levels = new Map<dia.Cell.ID, Animation>();
+    levels = new Map<dia.Cell.ID, Animation[]>();
 
     constructor(paper: dia.Paper) {
         this.paper = paper;
@@ -367,7 +428,7 @@ export class Animations {
     stop(): void {
         this.running.forEach(animations => animations.forEach(animation => animation.cancel()));
         this.running.clear();
-        this.levels.forEach(animation => animation.cancel());
+        this.levels.forEach(animations => animations.forEach(animation => animation.cancel()));
         this.levels.clear();
     }
 
@@ -389,18 +450,22 @@ export class Animations {
      * The liquid of the level gauge moves from the previous level to the current one
      * (both computed from the model); when it finishes, the view shows the current level.
      */
-    animateLevel(panel: Panel): void {
-        this.levels.get(panel.id)?.cancel();
-        this.levels.delete(panel.id);
-        if (!this.allows('level')) return;
-        const liquid = panel.findView(this.paper)?.findNode('liquid') as SVGElement | undefined;
-        if (!liquid) return;
-        const animation = liquid.animate([
-            liquidKeyframe(panel.liquidState(panel.previous('level'))),
-            liquidKeyframe(panel.liquidState(panel.level))
-        ], { duration: LEVEL_DURATION, easing: 'ease-in-out' });
-        this.levels.set(panel.id, animation);
-        animation.onfinish = () => this.levels.delete(panel.id);
+    /** The parts of a gliding element (see `Gliding`) move from its previous value to its value */
+    animateLevel(element: dia.Element): void {
+        this.levels.get(element.id)?.forEach(animation => animation.cancel());
+        this.levels.delete(element.id);
+        if (!isGliding(element) || !this.allows('level')) return;
+        const view = element.findView(this.paper);
+        const previous = Number(element.previous(element.glideProperty));
+        if (!view || !Number.isFinite(previous)) return;
+        const from = element.glideKeyframes(previous);
+        const to = element.glideKeyframes(Number(element.get(element.glideProperty)) || 0);
+        const animations = Object.keys(to).flatMap((selector) => {
+            const target = view.findNode(selector) as SVGElement | null;
+            return target ? [target.animate([from[selector], to[selector]], { duration: LEVEL_DURATION, easing: 'ease-in-out' })] : [];
+        });
+        this.levels.set(element.id, animations);
+        animations[0]?.addEventListener('finish', () => this.levels.delete(element.id));
     }
 
     /** The pipes flow or stop with the equipment at their ends. */

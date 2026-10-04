@@ -102,6 +102,16 @@ export default class BatteryBank extends Shape {
         this.on('change:level', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCharge(options));
     }
 
+    // The bar glides to a new charge (see `animateLevel()` in `animations.ts`)
+    get glideProperty(): string {
+        return 'level';
+    }
+
+    glideKeyframes(level: number): Record<string, Keyframe> {
+        const ratio = Math.max(0, Math.min(100, level)) / 100;
+        return { charge: { width: `${ratio * (this.size().width - 2 * GAUGE_PADDING)}px` }};
+    }
+
     /** The bar of the gauge as long as the charge */
     updateCharge(options?: dia.Cell.Options): void {
         const ratio = Math.max(0, Math.min(100, Number(this.get('level')) || 0)) / 100;

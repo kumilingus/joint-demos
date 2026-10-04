@@ -2,12 +2,11 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { Animations, getAnimationLevel } from '../runtime/animations';
-import Panel from '../shapes/models/instruments/Panel';
 
 /**
  * Animates the plant (see `animations.ts`) and keeps the animations in sync with its state:
  * a pump switched off stops spinning and the liquid stops flowing through its pipes,
- * the liquid of a level gauge moves to its new level. What moves is the level of the diagram (see `AnimationLevel`).
+ * a value shown by a part of a shape (a level, a charge, a column) glides to its new value. What moves is the level of the diagram (see `AnimationLevel`).
  * Active in the runtime mode only.
  */
 export default class AnimationsController extends Controller {
@@ -29,7 +28,7 @@ export default class AnimationsController extends Controller {
 
         this.listenTo(graph, {
             'change:power change:open': (_app: App, cell: dia.Cell) => onStateChange(this.animations, cell),
-            'change:level': (_app: App, element: dia.Element) => onLevelChange(this.animations, element)
+            'change:level change:value': (_app: App, element: dia.Element) => this.animations.animateLevel(element)
         });
     }
 
@@ -43,8 +42,4 @@ export default class AnimationsController extends Controller {
 function onStateChange(animations: Animations, cell: dia.Cell) {
     animations.animate(cell);
     if (cell.isElement()) animations.animatePipes(cell);
-}
-
-function onLevelChange(animations: Animations, element: dia.Element) {
-    if (element instanceof Panel) animations.animateLevel(element);
 }
