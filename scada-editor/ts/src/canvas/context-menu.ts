@@ -54,6 +54,34 @@ function openMenu(app: App, evt: dia.Event, items: MenuItem[]): void {
         });
     });
     menu.render();
+    keepInWindow(menu.el, evt);
+}
+
+// How far the menu keeps from the edges of the window (px)
+const WINDOW_MARGIN = 8;
+
+/**
+ * The menu in the window: opened up from the pointer if it doesn't fit below it, to the left if it doesn't fit on
+ * the right (as the menus of the system); shifted in if it doesn't fit either way
+ */
+function keepInWindow(el: HTMLElement, evt: dia.Event): void {
+    const { innerWidth, innerHeight } = window;
+    const rect = el.getBoundingClientRect();
+    const [x, y] = [evt.clientX!, evt.clientY!];
+    let dx = 0;
+    let dy = 0;
+    if (rect.bottom > innerHeight - WINDOW_MARGIN) {
+        const up = y - rect.height;
+        dy = (up >= WINDOW_MARGIN ? up : Math.max(WINDOW_MARGIN, innerHeight - WINDOW_MARGIN - rect.height)) - rect.top;
+    }
+    if (rect.right > innerWidth - WINDOW_MARGIN) {
+        const left = x - rect.width;
+        dx = (left >= WINDOW_MARGIN ? left : Math.max(WINDOW_MARGIN, innerWidth - WINDOW_MARGIN - rect.width)) - rect.left;
+    }
+    if (dx === 0 && dy === 0) return;
+    const style = getComputedStyle(el);
+    el.style.left = `${parseFloat(style.left) + dx}px`;
+    el.style.top = `${parseFloat(style.top) + dy}px`;
 }
 
 /** The menu of a cell: it acts on the selection (the cell only, unless it is selected), a split on the link */
