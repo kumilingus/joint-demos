@@ -1,7 +1,7 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { copySelection, cutSelection, groupSelection, paste, redo, removeSelection, selectAll, selectUp, undo, ungroupSelection } from '../actions';
+import { copySelection, cutSelection, groupSelection, paste, redo, removeSelection, selectAll, selectElements, selectUp, undo, ungroupSelection } from '../actions';
 import { closeMenu } from '../canvas/context-menu';
 
 /**
@@ -22,6 +22,8 @@ export default class KeyboardController extends Controller {
             'ctrl+x meta+x': onCut,
             'ctrl+v meta+v': onPaste,
             'ctrl+a meta+a': onSelectAll,
+            // The elements only (no connections)
+            'ctrl+shift+a meta+shift+a': onSelectElements,
             'ctrl+g meta+g': onGroup,
             'ctrl+shift+g meta+shift+g': onUngroup
         });
@@ -82,6 +84,12 @@ function onSelectAll(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
     evt.preventDefault();
     selectAll(app);
+}
+
+function onSelectElements(app: App, evt: dia.Event) {
+    if (isTyping(evt)) return;
+    evt.preventDefault();
+    selectElements(app);
 }
 
 // A group of the selected elements, its members back (see `Group`)

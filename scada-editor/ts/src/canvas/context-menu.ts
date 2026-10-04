@@ -1,9 +1,10 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from '../app';
 import {
-    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin
+    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin, sameTypeCells, selectAll, selectConnections, selectedTypes, selectElements, selectSameType
 } from '../actions';
 import { LAYER_NAMES } from './layers';
+import { descriptions } from '../palette/descriptions';
 import { isGroup } from '../shapes/models/diagram/Group';
 import type { Layer } from '../const';
 
@@ -99,6 +100,14 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
             separated: true,
             run: () => below && selectCell(app, below)
         },
+        // All the cells of the types of the selection (all the pumps, all the wires): the type and how many
+        {
+            action: 'same-type',
+            label: 'Select Same Type',
+            hint: sameTypeHint(app),
+            disabled: selectedTypes(app).length === 0,
+            run: () => selectSameType(app)
+        },
         { action: 'front', label: 'Bring to Front', hint: layerHint, separated: true, run: () => bringToFront(app) },
         { action: 'back', label: 'Send to Back', hint: layerHint, run: () => sendToBack(app) },
         ...(over
@@ -113,9 +122,22 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
 
 /** The menu of the blank canvas: the copied cells pasted where it was opened */
 export function openBlankMenu(app: App, evt: dia.Event, x: number, y: number): void {
+    const cells = app.graph.getCells();
     openMenu(app, evt, [
-        { action: 'paste', label: 'Paste', shortcut: `${MOD}V`, disabled: app.clipboard.length === 0, run: () => pasteAt(app, { x, y }) }
+        { action: 'paste', label: 'Paste', shortcut: `${MOD}V`, disabled: app.clipboard.length === 0, run: () => pasteAt(app, { x, y }) },
+        // Everything, the elements only, the connections only (the links of any kind: pipes, wires, ...)
+        { action: 'select-all', label: 'Select All', shortcut: `${MOD}A`, separated: true, disabled: cells.length === 0, run: () => selectAll(app) },
+        { action: 'select-elements', label: 'Select Elements', shortcut: `${MOD}⇧A`, disabled: !cells.some(cell => cell.isElement()), run: () => selectElements(app) },
+        { action: 'select-connections', label: 'Select Connections', disabled: !cells.some(cell => cell.isLink()), run: () => selectConnections(app) }
     ]);
+}
+
+/** The hint of Select Same Type: the type (its name in the palette) or how many types, and how many cells */
+function sameTypeHint(app: App): string | undefined {
+    const types = selectedTypes(app);
+    if (types.length === 0) return undefined;
+    const name = types.length === 1 ? descriptions[types[0]]?.title ?? types[0] : `${types.length} types`;
+    return `${name} · ${sameTypeCells(app).length}`;
 }
 
 export function closeMenu(): void {

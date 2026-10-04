@@ -1,6 +1,7 @@
 import { type dia } from '@joint/plus';
 import type { App } from '../app';
 import Screen from '../shapes/models/diagram/Screen';
+import { isGroup } from '../shapes/models/diagram/Group';
 import { withGroups, topGroup, fitGroups, dissolveLoneGroup } from './groups';
 
 /*
@@ -18,6 +19,41 @@ export function selectCells(app: App, cells: dia.Cell[]): void {
 /** Select all the cells: as a region selects them - not the screen, a group for its members (see `Group`) */
 export function selectAll(app: App): void {
     selectCells(app, app.graph.getCells().filter(cell => !(cell instanceof Screen) && !cell.isEmbedded()));
+}
+
+/** Select all the elements (a group for its members): as `selectAll()`, without the links */
+export function selectElements(app: App): void {
+    selectCells(app, app.graph.getCells().filter(cell => cell.isElement() && !(cell instanceof Screen) && !cell.isEmbedded()));
+}
+
+/** Select all the connections (the links: pipes, wires, conveyors, signal lines, arrows), as `selectAll()` */
+export function selectConnections(app: App): void {
+    selectCells(app, app.graph.getCells().filter(cell => cell.isLink() && !cell.isEmbedded()));
+}
+
+/** The cells of a type the selection has (see `selectSameType()`): not the groups, not the screen */
+function typedCells(app: App): dia.Cell[] {
+    return app.selection.toArray().filter(cell => !isGroup(cell) && !(cell instanceof Screen));
+}
+
+/**
+ * The cells of the types of the selected cells, each at the level of a selected one of its type (the members of the
+ * same group, or the cells out of any group): what `selectSameType()` selects
+ */
+export function sameTypeCells(app: App): dia.Cell[] {
+    const levels = new Set(typedCells(app).map(cell => `${cell.get('type')}|${parentId(cell)}`));
+    return app.graph.getCells().filter(cell => levels.has(`${cell.get('type')}|${parentId(cell)}`));
+}
+
+/** The types of the selected cells (see `selectSameType()`) */
+export function selectedTypes(app: App): string[] {
+    return [...new Set(typedCells(app).map(cell => String(cell.get('type'))))];
+}
+
+/** Select all the cells of the types of the selected ones (all the pumps, all the wires) */
+export function selectSameType(app: App): void {
+    const cells = sameTypeCells(app);
+    if (cells.length > 0) selectCells(app, cells);
 }
 
 /** Add the cell to the selection, or remove it if it is selected (cherry-picking). */
