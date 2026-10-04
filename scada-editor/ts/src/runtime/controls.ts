@@ -66,10 +66,40 @@ const sliderValveControlMarkup = util.svg/* xml */`
     </foreignObject>
 `;
 
+// How long a command waits for the plant (ms): pending until the plant updates the property, or this long
+const PENDING_TIMEOUT = 5000;
+
 /** Whether the controls of the paper can be operated (in the runtime mode, see `setControlsOperable()`). */
 const operable = new WeakMap<dia.Paper, boolean>();
 
 abstract class Control extends dia.HighlighterView {
+
+    /** The command sent and not done yet (the plant hasn't updated the property to the value): shown as pending */
+    protected pending: { property: string; value: TagValue; timer: number } | null = null;
+
+    /** A command of the operator (see `command()`): pending until the plant does it */
+    protected request(property: string, value: TagValue): void {
+        const model = this.cellView.model as dia.Element;
+        if (this.pending) window.clearTimeout(this.pending.timer);
+        // Not done in a while (no plant, refused): not pending any more, the state as it is
+        const timer = window.setTimeout(() => {
+            this.pending = null;
+            if (this.el.isConnected) this.update();
+        }, PENDING_TIMEOUT);
+        this.pending = { property, value, timer };
+        command(model, property, value);
+        this.update();
+    }
+
+    /** Pending until the element has the value asked for (`.jj-control-pending` in `runtime.css`: a busy cursor, a pulse) */
+    protected updatePending(element: dia.Element): void {
+        const { pending } = this;
+        if (pending && readProperty(element, pending.property) === pending.value) {
+            window.clearTimeout(pending.timer);
+            this.pending = null;
+        }
+        this.el.classList.toggle('jj-control-pending', this.pending !== null);
+    }
 
     /**
      * Inert unless the controls of its paper can be operated (the HTML content: `inert` is an HTML attribute); the
@@ -143,15 +173,13 @@ class PumpControl extends Control {
         this.renderChildren();
         this.placeInCorner(cellView.model as dia.Element);
         (this.nodes.input as HTMLInputElement).checked = Boolean(cellView.model.get('power'));
+        this.updatePending(cellView.model as dia.Element);
         this.updateInert(cellView);
     }
 
-    /** Asked to run or to stop: the checkbox shows the state of the pump until the plant changes it */
+    /** Asked to run or to stop: the checkbox shows the state of the pump until the plant changes it (pending) */
     onChange(evt: dia.Event): void {
-        const input = evt.target as HTMLInputElement;
-        const model = this.cellView.model as dia.Element;
-        command(model, 'power', input.checked);
-        input.checked = Boolean(model.get('power'));
+        this.request('power', (evt.target as HTMLInputElement).checked);
     }
 }
 
@@ -177,6 +205,11 @@ class ToggleValveControl extends Control {
         // The state it is in: pressed (a segmented control, see `runtime.css`)
         buttonOn.setAttribute('aria-pressed', String(isOpen));
         buttonOff.setAttribute('aria-pressed', String(!isOpen));
+        // The state asked for: pending
+        this.updatePending(model);
+        const asked = this.pending?.value;
+        buttonOn.toggleAttribute('data-pending', asked === true);
+        buttonOff.toggleAttribute('data-pending', asked === false);
         this.updateInert(cellView);
     }
 
@@ -184,7 +217,7 @@ class ToggleValveControl extends Control {
     onButtonClick(evt: dia.Event): void {
         const model = this.cellView.model as dia.Element;
         const open = (evt.currentTarget as HTMLElement).dataset.open === 'true';
-        if (open !== readProperty(model, 'open')) command(model, 'open', open);
+        if (open !== readProperty(model, 'open')) this.request('open', open);
     }
 }
 
@@ -213,10 +246,12 @@ class SliderValveControl extends Control {
             this.renderChildren();
         }
         this.placeBeside(model, SLIDER_SIZE.width, SLIDER_SIZE.height);
-        // The valve as the plant says (not while the slider is moved)
+        // The valve as the plant says (not while the slider is moved), or how much open asked for (pending)
+        this.updatePending(model);
         if (!this.moving) {
-            (this.nodes.slider as HTMLInputElement).value = String(open * 100);
-            this.nodes.value.textContent = getOpenText(open);
+            const asked = this.pending ? Number(this.pending.value) / 100 : null;
+            (this.nodes.slider as HTMLInputElement).value = String((asked ?? open) * 100);
+            this.nodes.value.textContent = asked === null ? getOpenText(open) : `→ ${getOpenText(asked)}`;
         }
         this.updateInert(cellView);
     }
@@ -229,7 +264,7 @@ class SliderValveControl extends Control {
     /** Released: how much open asked for (in %); the slider stays there until the plant moves the valve */
     onChange(evt: dia.Event): void {
         this.moving = false;
-        command(this.cellView.model as dia.Element, 'open', Number((evt.target as HTMLInputElement).value));
+        this.request('open', Number((evt.target as HTMLInputElement).value));
     }
 }
 

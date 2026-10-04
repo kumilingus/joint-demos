@@ -103,3 +103,31 @@
     opacity: 0.6;
     pointer-events: none;
 }
+
+/* A command sent, not done by the plant yet (see `controls.ts`): a busy cursor, the state asked for pulsing */
+.jj-control-pending,
+.jj-control-pending * {
+    cursor: progress !important;
+}
+
+.jj-switch [data-pending] {
+    background: color-mix(in srgb, var(--selection) 25%, transparent);
+    color: var(--foreground);
+    animation: jj-pending 0.8s ease-in-out infinite alternate;
+}
+
+.jj-control-pending .jj-checkbox {
+    outline: 2px solid var(--selection);
+    outline-offset: 1px;
+    animation: jj-pending 0.8s ease-in-out infinite alternate;
+}
+
+.jj-control-pending .jj-slider-output {
+    color: var(--selection);
+    animation: jj-pending 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes jj-pending {
+    from { opacity: 1; }
+    to { opacity: 0.45; }
+}
