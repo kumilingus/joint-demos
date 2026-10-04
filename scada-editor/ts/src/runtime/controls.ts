@@ -6,8 +6,9 @@ import { readProperty, type TagValue, writeProperty } from '../plant/properties'
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
  * in a `foreignObject`. They are shown in both modes, but can be operated
- * in the runtime mode only: while editing they are inert (not focused, not clicked -
- * the pointer goes through to the element, to select it or to move it).
+ * in the runtime mode only: while editing they are inert (not focused, not clicked - the pointer goes through to
+ * the element, to select it or to move it) and dimmed (`.jj-control-inert` in `runtime.css`).
+ * In the runtime mode the paper ignores the events on them (its `guard`, see `app.ts`).
  */
 
 /**
@@ -69,9 +70,13 @@ const operable = new WeakMap<dia.Paper, boolean>();
 
 abstract class Control extends dia.HighlighterView {
 
-    /** Inert unless the controls of its paper can be operated (the HTML content: `inert` is an HTML attribute). */
+    /**
+     * Inert unless the controls of its paper can be operated (the HTML content: `inert` is an HTML attribute); the
+     * pointer through it then (to the element under it), the control dimmed
+     */
     protected updateInert(cellView: dia.CellView): void {
         const inert = !operable.get(cellView.paper!);
+        this.el.classList.toggle('jj-control-inert', inert);
         this.el.querySelectorAll('foreignObject > *').forEach(node => node.toggleAttribute('inert', inert));
     }
 
