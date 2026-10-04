@@ -76,3 +76,14 @@ export function pasteAt(app: App, point: dia.Point): void {
     // A pasted group, not its members (see `Group`)
     selectCells(app, cells.filter(cell => !cell.isEmbedded()));
 }
+
+/**
+ * A copy of the element in place (in the graph): a group with its members and the links between them; the copies
+ * get tags of their own (see `TagsController`). In the batch of the caller (one step of the history with the move).
+ */
+export function duplicate(app: App, element: dia.Element): dia.Element {
+    const { graph } = app;
+    const clones = graph.cloneSubgraph(graph.getSubgraph([element], { deep: true }), { deep: true });
+    graph.addCells(Object.values(clones));
+    return clones[element.id] as dia.Element;
+}
