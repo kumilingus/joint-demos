@@ -1065,11 +1065,8 @@
       "type": "Cyclone",
       "attrs": {
         "label": {
-          "textAnchor": "start",
-          "textVerticalAnchor": "middle",
-          "x": "calc(w + 8)",
-          "y": "calc(0.7 * h)",
-          "text": "Stage 1"
+          "text": "Stage 1",
+          "labelPosition": "right"
         }
       },
       "id": "b30e4bb5-2163-4a81-a2ff-d980d5daa22f",
@@ -1090,11 +1087,8 @@
       "type": "Cyclone",
       "attrs": {
         "label": {
-          "textAnchor": "start",
-          "textVerticalAnchor": "middle",
-          "x": "calc(w + 8)",
-          "y": "calc(0.7 * h)",
-          "text": "Stage 2"
+          "text": "Stage 2",
+          "labelPosition": "right"
         }
       },
       "id": "cd0c12ee-2052-4061-83ab-3c1562aeaa3e",
@@ -1186,11 +1180,8 @@
       "type": "Silo",
       "attrs": {
         "label": {
-          "textAnchor": "start",
-          "textVerticalAnchor": "middle",
-          "x": "calc(w + 8)",
-          "y": "calc(0.5 * h)",
-          "text": "Clinker"
+          "text": "Clinker",
+          "labelPosition": "right"
         }
       },
       "id": "61852fd0-fe54-4a84-a46f-9bbe1f4983b6",
@@ -1439,11 +1430,11 @@
     },
     {
       "position": {
-        "x": 10,
+        "x": 20,
         "y": 660
       },
       "size": {
-        "width": 420,
+        "width": 410,
         "height": 120
       },
       "angle": 0,
@@ -1542,7 +1533,7 @@
           "text": "340.0"
         },
         "unit": {
-          "text": "\u00b0C"
+          "text": "°C"
         },
         "label": {
           "text": "Preheater Exit"
@@ -1603,11 +1594,11 @@
     },
     {
       "position": {
-        "x": 10,
+        "x": 20,
         "y": 660
       },
       "size": {
-        "width": 550,
+        "width": 540,
         "height": 420
       },
       "angle": 0,
@@ -2115,7 +2106,7 @@
         },
         "reading": {
           "y": "calc(0.260 * h)",
-          "text": "70 \u00b0C"
+          "text": "70 °C"
         },
         "label": {
           "text": "Kiln Shell"
