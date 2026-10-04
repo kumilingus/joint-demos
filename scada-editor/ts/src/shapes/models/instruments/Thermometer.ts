@@ -147,7 +147,8 @@ export default class Thermometer extends Shape {
         const top = g.scale.linear([0, 100], [0.68, 0.08], Math.max(0, Math.min(100, value)));
         return {
             column: { y: `${top * h}px`, height: `${(0.95 - top) * h - 8}px` },
-            reading: { y: `${top * h}px` }
+            // Moved by its transform (a text's `y` can't be animated)
+            reading: { transform: `translate(0px, ${top * h}px)` }
         };
     }
 
@@ -163,8 +164,11 @@ export default class Thermometer extends Shape {
                 y: `calc(${top} * h)`,
                 height: `calc(${(0.95 - Number(top)).toFixed(3)} * h - 8)`
             },
+            // At the top of the column by a transform (glides with it, see `glideKeyframes()`); not by its `y` (of
+            // a diagram saved before: none)
             reading: {
-                y: `calc(${top} * h)`,
+                y: 0,
+                transform: `translate(0, calc(${top} * h))`,
                 text: `${Math.round(value)} °C`
             }
         }, options);
