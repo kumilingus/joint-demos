@@ -3,7 +3,7 @@
 /* Inspector */
 
 .inspector-panel {
-    width: 280px;
+    width: 300px;
     border-left: 1px solid var(--border);
 }
 
@@ -276,6 +276,11 @@
     grid-column: 1 / -1;
     height: 0;
     margin-top: -6px;
+}
+
+/* The colors of the theme only (see `themeOnly` in `color-field.ts`): no picker */
+.joint-inspector .color-field-content.theme-only input[type="color"] {
+    display: none;
 }
 
 /* No color of the cell's own (Auto, see `color-field.ts`): a slashed swatch and input */

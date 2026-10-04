@@ -192,5 +192,7 @@ export const labelAttributes = {
     y: 'calc(h+10)',
     fontSize: 14,
     fontFamily: 'sans-serif',
-    fill: LABEL_COLOR
+    fill: LABEL_COLOR,
+    // Its size and color: of the style of the diagram (see `diagram-style.ts`, `.jj-label` in `shapes.css`)
+    class: 'jj-label'
 };

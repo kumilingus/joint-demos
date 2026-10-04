@@ -5,6 +5,7 @@ import { setStyleFinish, type SurfaceFinish } from './shapes/common/gradients';
  * The style of the diagram (in the settings, saved with it): the finish of all the equipment (shaded, flat), one color
  * for their metal, one for their outlines, one for their accents - instead of the defaults of the shapes (see the `--base-*` in
  * `shapes.css`), everywhere: the canvas, the palette, the preview. An element's own color, outline, accent stay.
+ * The size and the color of the labels of the elements too (`.jj-label` in `shapes.css`).
  */
 
 /** The attribute of the graph with the style (saved with the diagram) */
@@ -15,7 +16,20 @@ export interface DiagramStyle {
     color?: string;
     outline?: string;
     accent?: string;
+    /** The labels of the elements (not the Label and Zone shapes: texts of their own): their size, their color */
+    labelSize?: LabelSize;
+    labelColor?: string;
 }
+
+export type LabelSize = 'small' | 'medium' | 'large' | 'x-large';
+
+/** The sizes of the labels of the elements to pick: their names, their sizes (px) - medium by default */
+export const LABEL_SIZES: Record<LabelSize, { name: string; px: number }> = {
+    small: { name: 'Small', px: 12 },
+    medium: { name: 'Medium', px: 14 },
+    large: { name: 'Large', px: 16 },
+    'x-large': { name: 'X-Large', px: 18 }
+};
 
 /** The style of the diagram (none of it set: the defaults of the shapes) */
 export function getStyle(graph: dia.Graph): DiagramStyle {
@@ -24,10 +38,11 @@ export function getStyle(graph: dia.Graph): DiagramStyle {
 }
 
 // The CSS variables of the colors of the style (see `shapes.css`)
-const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish'>, string> = {
+const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize'>, string> = {
     color: '--style-color',
     outline: '--style-outline',
-    accent: '--style-accent'
+    accent: '--style-accent',
+    labelColor: '--style-label-color'
 };
 
 /**
@@ -45,4 +60,10 @@ export function applyStyle(style: DiagramStyle): void {
             css.removeProperty(VARIABLES[key]);
         }
     });
+    const labelSize = style.labelSize && LABEL_SIZES[style.labelSize];
+    if (labelSize) {
+        css.setProperty('--style-label-size', `${labelSize.px}px`);
+    } else {
+        css.removeProperty('--style-label-size');
+    }
 }

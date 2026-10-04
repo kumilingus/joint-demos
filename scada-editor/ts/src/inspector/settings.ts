@@ -5,7 +5,7 @@ import { addScreen, getScreen } from '../canvas/screen';
 import Screen from '../shapes/models/diagram/Screen';
 import { renderLabel } from './help';
 import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from '../runtime/animations';
-import { type DiagramStyle, getStyle, STYLE_ATTRIBUTE } from '../diagram-style';
+import { type DiagramStyle, getStyle, LABEL_SIZES, STYLE_ATTRIBUTE } from '../diagram-style';
 import { getColorFieldValue, renderColorField } from './color-field';
 
 /*
@@ -144,7 +144,17 @@ export function openSettings(app: App): void {
                 },
                 color: { type: 'color', label: 'Color', auto: true, graph, group: 'style', index: 1 },
                 outline: { type: 'color', label: 'Outline', auto: true, graph, group: 'style', index: 2 },
-                accent: { type: 'color', label: 'Accent', auto: true, graph, group: 'style', index: 3 }
+                accent: { type: 'color', label: 'Accent', auto: true, graph, group: 'style', index: 3 },
+                // The labels of the elements: a size, a color of the theme (a text readable in both schemes)
+                labelSize: {
+                    type: 'select-button-group',
+                    label: 'Label size',
+                    options: Object.entries(LABEL_SIZES).map(([value, { name }]) => ({ value, content: name })),
+                    defaultValue: 'medium',
+                    group: 'style',
+                    index: 4
+                },
+                labelColor: { type: 'color', label: 'Label color', auto: true, themeOnly: true, graph, group: 'style', index: 5 }
             },
             // What moves in the run mode (see `AnimationLevel`)
             animations: {

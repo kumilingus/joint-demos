@@ -116,7 +116,8 @@ export function rememberColor(color: string): void {
 /**
  * The options of a color field: `mixed` - the cells it is for (see `selection-inspector.ts`) have different
  * colors (none is shown); `graph` - the diagram of the colors to pick, for a cell not in it (a stand-in);
- * `auto` - the color can be none of the cell's own (an Auto swatch removes it, e.g. the outline of a shape).
+ * `auto` - the color can be none of the cell's own (an Auto swatch removes it, e.g. the outline of a shape);
+ * `themeOnly` - the colors of the theme only (no picker, no colors of the diagram: a text readable in both schemes).
  */
 interface ColorFieldOptions {
     type?: string;
@@ -125,6 +126,7 @@ interface ColorFieldOptions {
     mixed?: boolean;
     graph?: dia.Graph;
     auto?: boolean;
+    themeOnly?: boolean;
 }
 
 /**
@@ -164,6 +166,7 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
     // The input and the swatches on a row
     const row = document.createElement('div');
     row.className = 'color-field-row';
+    if (options.themeOnly) el.classList.add('theme-only');
     row.append(input);
     el.append(row);
 
@@ -211,6 +214,10 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
     const others = document.createElement('span');
     others.className = 'color-swatches-break';
     swatches.append(others);
+    if (options.themeOnly) {
+        row.append(swatches);
+        return el;
+    }
     const [canvasName, canvasColor] = CANVAS_SWATCH;
     // Not of an outline (an outline in the color of the canvas is none)
     const withCanvas = !options.auto && canvasColor !== defaultColor;

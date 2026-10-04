@@ -286,3 +286,9 @@
 [data-canvas] {
     --shape-surface-ink: var(--shape-label);
 }
+
+/* The labels of the elements (see `labelAttributes`): the size and the color of the style of the diagram (see `diagram-style.ts`) */
+.jj-label {
+    font-size: var(--style-label-size, 14px);
+    fill: var(--style-label-color, var(--shape-label));
+}
