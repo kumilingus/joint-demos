@@ -1,7 +1,7 @@
 import type { dia } from '@joint/plus';
 import { RUNTIME } from '../../runtime/controls';
 import { findByTag, getTag } from '../tags';
-import type { Plant } from '../plant';
+import type { Plant, PlantMessage } from '../plant';
 import { propertiesOf, readProperty, type TagValue } from '../properties';
 import { getEnergized } from './energized';
 import { CHART_POINTS, getScale } from '../../shapes/common/charts';
@@ -28,6 +28,10 @@ interface TagUpdate {
 // The time between two updates (ms)
 const MIN_INTERVAL = 300;
 const MAX_INTERVAL = 1500;
+
+// How long the equipment takes to do what the operator asked (ms): a valve travelling, a pump starting
+const MIN_RESPONSE = 300;
+const MAX_RESPONSE = 800;
 
 // The alarm (a beacon) goes on above this pressure (on a display)
 const HIGH_PRESSURE = 11;
@@ -413,6 +417,8 @@ export class MockPlant {
     start(plant: Plant): void {
         if (this.running) return;
         this.plant = plant;
+        // The commands of the operator done (as a SCADA server answers them: with the new state)
+        plant.on('command', this.respond, this);
         // The energized circuits and the states of the readouts of the equipment: now, and again when a generator,
         // a pump or a switch changes
         this.updateEnergized();
@@ -429,6 +435,9 @@ export class MockPlant {
     }
 
     stop(): void {
+        this.plant?.off('command', this.respond, this);
+        this.responses.forEach(timer => window.clearTimeout(timer));
+        this.responses.clear();
         this.graph.off('change:power change:open', this.updateEnergized, this);
         this.graph.off('change:power change:open', this.updateReadouts, this);
         restoreReadouts(this.graph);
@@ -441,6 +450,18 @@ export class MockPlant {
         this.tick = 0;
         this.plant = null;
         periodFlows.clear();
+    }
+
+    /** The timers of the answers to the commands (see `respond()`) */
+    protected responses = new Set<number>();
+
+    /** A command of the operator done after a while: the plant updates the property to the value asked for */
+    protected respond({ tag, property, value }: PlantMessage): void {
+        const timer = window.setTimeout(() => {
+            this.responses.delete(timer);
+            this.plant?.update(tag, property, value);
+        }, random(MIN_RESPONSE, MAX_RESPONSE));
+        this.responses.add(timer);
     }
 
     /** The states of the readouts follow their sources (see `readoutStates()`) */

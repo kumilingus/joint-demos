@@ -1,7 +1,7 @@
 import { dia, util, type mvc } from '@joint/plus';
 import Shape from '../shapes/common/Shape';
 import { besideElement, seenBBox, sideOf } from '../shapes/attributes/label';
-import { readProperty, type TagValue, writeProperty } from '../plant/properties';
+import { readProperty, type TagValue } from '../plant/properties';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -17,12 +17,13 @@ import { readProperty, type TagValue, writeProperty } from '../plant/properties'
  */
 export const RUNTIME = { runtime: true };
 
-/** The option of a command of the operator (a runtime change too): sent to the plant (see `ControlsController`) */
-export const COMMAND = { ...RUNTIME, command: true };
-
-/** A command of the operator: the new value of the property of the element (see `properties.ts`) */
+/**
+ * A command of the operator: the value of the property of the element asked for (see `properties.ts`) - the `command`
+ * event of the element, sent to the plant (see `ControlsController`). Nothing of the element changes: the plant
+ * answers with an update when it is done (the valve moved, the pump started), as a SCADA server would.
+ */
 function command(element: dia.Element, property: string, value: TagValue): void {
-    writeProperty(element, property, value, COMMAND);
+    element.trigger('command', element, property, value);
 }
 
 // The sizes of the controls beside the element (their `foreignObject`s below), the space between them and the element
@@ -145,8 +146,12 @@ class PumpControl extends Control {
         this.updateInert(cellView);
     }
 
+    /** Asked to run or to stop: the checkbox shows the state of the pump until the plant changes it */
     onChange(evt: dia.Event): void {
-        command(this.cellView.model as dia.Element, 'power', (evt.target as HTMLInputElement).checked);
+        const input = evt.target as HTMLInputElement;
+        const model = this.cellView.model as dia.Element;
+        command(model, 'power', input.checked);
+        input.checked = Boolean(model.get('power'));
     }
 }
 
@@ -175,7 +180,7 @@ class ToggleValveControl extends Control {
         this.updateInert(cellView);
     }
 
-    /** The state of the button (open or closed), unless the valve is in it */
+    /** The state of the button (open or closed) asked for, unless the valve is in it */
     onButtonClick(evt: dia.Event): void {
         const model = this.cellView.model as dia.Element;
         const open = (evt.currentTarget as HTMLElement).dataset.open === 'true';
@@ -193,9 +198,12 @@ class SliderValveControl extends Control {
     }
 
     events(): mvc.EventsHash {
-        // Moved: the valve follows; released: the command sent
+        // Moved: the value shown on the slider; released: the command sent
         return { 'input input': 'onInput', 'change input': 'onChange' };
     }
+
+    /** The slider is moved (not following the valve until it is released) */
+    protected moving = false;
 
     protected highlight(cellView: dia.CellView): void {
         const model = cellView.model as dia.Element;
@@ -204,32 +212,24 @@ class SliderValveControl extends Control {
             // Render the slider only once so that the user can keep dragging it.
             this.renderChildren();
         }
-        // Follow the changes (from the plant too), but not while the user is dragging the slider.
-        const slider = this.nodes.slider as HTMLInputElement;
-        if (document.activeElement !== slider) slider.value = String(open * 100);
         this.placeBeside(model, SLIDER_SIZE.width, SLIDER_SIZE.height);
-        this.nodes.value.textContent = getOpenText(open);
+        // The valve as the plant says (not while the slider is moved)
+        if (!this.moving) {
+            (this.nodes.slider as HTMLInputElement).value = String(open * 100);
+            this.nodes.value.textContent = getOpenText(open);
+        }
         this.updateInert(cellView);
     }
 
-    /** How much the valve was open before the slider was moved (see `onChange()`) */
-    protected openBefore: number | undefined;
-
     onInput(evt: dia.Event): void {
-        const { model } = this.cellView;
-        this.openBefore ??= model.get('open') ?? 0;
-        model.set('open', Number((evt.target as HTMLInputElement).value) / 100, RUNTIME);
+        this.moving = true;
+        this.nodes.value.textContent = getOpenText(Number((evt.target as HTMLInputElement).value) / 100);
     }
 
-    /**
-     * Released: the command - a change from how much it was open before (the valve followed the slider while it was
-     * moved: as it is now, it wouldn't be a change), put back silently first
-     */
+    /** Released: how much open asked for (in %); the slider stays there until the plant moves the valve */
     onChange(evt: dia.Event): void {
-        const model = this.cellView.model as dia.Element;
-        if (this.openBefore !== undefined) model.set('open', this.openBefore, { ...RUNTIME, silent: true });
-        this.openBefore = undefined;
-        command(model, 'open', Number((evt.target as HTMLInputElement).value));
+        this.moving = false;
+        command(this.cellView.model as dia.Element, 'open', Number((evt.target as HTMLInputElement).value));
     }
 }
 

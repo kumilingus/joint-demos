@@ -86,7 +86,7 @@ A controller is an `mvc.Listener` getting the `App` as its first argument; its h
 | Controller | Mode | Listens to |
 |---|---|---|
 | `CanvasController` | always | paper: blank drag (panning), pinch, pan |
-| `ControlsController` | always | graph: the controls of the added elements; an element operated by its control (a change with the `command` option) - sent to `app.plant` |
+| `ControlsController` | always | graph: the controls of the added elements; the `command` event of an operated element - sent to `app.plant` |
 | `SelectionController` | always | the selection: free transform, link tools, the inspector |
 | `TagsController` | always | graph: a free tag for every element |
 | `PipeColorController` | always | graph: the pipes (their colors, their ends) - a control valve shows the color of its pipe |
@@ -118,7 +118,7 @@ Every element extends `Shape` (`shapes/common/Shape.ts`) and overrides the proto
 
 ### Connecting a plant
 
-The diagram changes in the runtime mode by the messages of the plant only, through its interface (`app.plant`, `plant/plant.ts` - a new one for each run, `null` while editing; also `window.plant` in the console): the tag of an element, the name of a property, a plain value - nothing of the shapes. The commands of the operator (a pump turned on, a valve opened) come out of it the same way: a control changes its element only (with the `command` option), `ControlsController` sends the change to the plant.
+The diagram changes in the runtime mode by the messages of the plant only, through its interface (`app.plant`, `plant/plant.ts` - a new one for each run, `null` while editing; also `window.plant` in the console): the tag of an element, the name of a property, a plain value - nothing of the shapes. The commands of the operator (a pump turned on, a valve opened) come out of it the same way: a control changes nothing - it triggers the `command` event of its element, `ControlsController` sends it to the plant, and the plant answers with an update when the equipment has done it (the mock after a short delay, as a valve travels).
 
 ```ts
 app.plant.update('FM-101', 'value', 18.6);   // a reading
