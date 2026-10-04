@@ -27,6 +27,11 @@ export default class Rectangle extends Shape {
         return { path: ['attrs', 'body', 'fill'] };
     }
 
+    // An outline of its own (a border of the area): none by default
+    get outlineField(): ColorField {
+        return { path: ['attrs', 'body', 'stroke'] };
+    }
+
     get tagPrefix(): string {
         return 'BG';
     }
@@ -47,7 +52,8 @@ export default class Rectangle extends Shape {
                     ry: 8,
                     fill: BACKGROUND_FILL,
                     fillOpacity: 0.3,
-                    stroke: 'none'
+                    stroke: 'none',
+                    strokeWidth: 2
                 }
             }
         };

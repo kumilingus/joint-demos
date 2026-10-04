@@ -83,6 +83,8 @@ function getInputs(element: dia.Element): Inputs {
         if (selector === 'label' && element.attr('label/labelPosition') != null) {
             (attrs.label as Record<string, unknown>).labelPosition = {
                 ...sideField('Label position'),
+                // Of a label that is there (not empty)
+                when: { regex: { 'attrs/label/text': '\\S' }},
                 // How the label is drawn: after the colors, before the layer
                 group: 'appearance',
                 index: 90
@@ -364,7 +366,9 @@ function accentInputs(cell: dia.Cell, group: string, index: number): Inputs {
 /** A color field at the path of the field (Auto if it has no default: none of the cell's own) */
 function fieldInputs(cell: dia.Cell, field: ColorField | null, label: string, group: string, index: number): Inputs {
     if (!field) return {};
-    const input = { type: 'color', label, group, index, ...(fieldDefault(cell, field) === undefined ? { auto: true } : {}) };
+    // No color of its own by default (none, or none at all): Auto
+    const defaultColor = fieldDefault(cell, field);
+    const input = { type: 'color', label, group, index, ...(defaultColor === undefined || defaultColor === 'none' ? { auto: true } : {}) };
     return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
 }
 
