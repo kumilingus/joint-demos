@@ -36,7 +36,7 @@ export function scaleFraction(scale: Scale, value: number): number {
 
 /** The vertical position of a value (on the scale) in the plot */
 export function plotY(plot: g.Rect, value: number, scale: Scale): number {
-    return plot.y + plot.height * (1 - scaleFraction(scale, value));
+    return g.scale.linear([0, 1], [plot.y + plot.height, plot.y], scaleFraction(scale, value));
 }
 
 /** A number with an explicit sign, for `calc()` */
@@ -76,7 +76,7 @@ export const plotAttributes = {
     'chart-scale': {
         set(this: dia.ElementView, fraction: number, _refBBox: dia.BBox, node: Element) {
             const { min, max } = getScale(this.model);
-            V(node as SVGElement).text(formatScale(min + (max - min) * fraction), { textVerticalAnchor: 'middle' });
+            V(node as SVGElement).text(formatScale(g.scale.linear([0, 1], [min, max], fraction)), { textVerticalAnchor: 'middle' });
             return {};
         }
     }

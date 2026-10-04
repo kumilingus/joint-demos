@@ -1,4 +1,4 @@
-import { type dia, util } from '@joint/plus';
+import { type dia, g, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
@@ -30,7 +30,7 @@ const ZONE_RADIUS = 22;
 const DEFAULT_THRESHOLDS: Thresholds = { low: 0, high: 75 };
 
 /** The angle (in degrees) of a value (0 - 100) on the scale. */
-const scaleAngle = (value: number) => SCALE_START + value / 100 * SCALE_SWEEP;
+const scaleAngle = (value: number) => g.scale.linear([0, 100], [SCALE_START, SCALE_START + SCALE_SWEEP], value);
 
 /** An arc of the scale between two values (nothing if they're the same). */
 function zone(from: number, to: number): string {
@@ -39,7 +39,7 @@ function zone(from: number, to: number): string {
         const angle = scaleAngle(value) * Math.PI / 180;
         return `${(ZONE_RADIUS * Math.cos(angle)).toFixed(2)} ${(ZONE_RADIUS * Math.sin(angle)).toFixed(2)}`;
     };
-    const large = (to - from) / 100 * SCALE_SWEEP > 180 ? 1 : 0;
+    const large = scaleAngle(to) - scaleAngle(from) > 180 ? 1 : 0;
     return `M ${point(from)} A ${ZONE_RADIUS} ${ZONE_RADIUS} 0 ${large} 1 ${point(to)}`;
 }
 
