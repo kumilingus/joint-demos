@@ -53,7 +53,6 @@
       "type": "Rectangle",
       "attrs": {
         "body": {
-          "fill": "var(--color-amber)",
           "fillOpacity": 0.18
         }
       },
@@ -61,7 +60,10 @@
       "layer": "background",
       "z": -999,
       "tag": "BG-101",
-      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0"
+      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
+      "style": {
+        "color": "var(--color-amber)"
+      }
     },
     {
       "source": {
@@ -1600,15 +1602,17 @@
       "attrs": {
         "label": {
           "text": "Microgrid",
-          "fontSize": 80,
-          "fill": "var(--color-amber)"
+          "fontSize": 80
         }
       },
       "id": "01520282-b166-40fc-b47c-5b921184e28a",
       "layer": "background",
       "z": 1,
       "tag": "TXT-101",
-      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0"
+      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
+      "style": {
+        "color": "var(--color-amber)"
+      }
     },
     {
       "position": {
@@ -1737,7 +1741,6 @@
         "label": {
           "text": "Starts when the battery is low",
           "fontSize": 14,
-          "fill": "var(--color-blue)",
           "textStyles": [
             "italic"
           ]
@@ -1746,7 +1749,10 @@
       "id": "29febbff-570a-4707-9c07-b76036dfb495",
       "layer": "instruments",
       "z": 6,
-      "tag": "TXT-102"
+      "tag": "TXT-102",
+      "style": {
+        "color": "var(--color-blue)"
+      }
     },
     {
       "source": {

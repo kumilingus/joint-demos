@@ -50,16 +50,15 @@
       },
       "angle": 0,
       "type": "Rectangle",
-      "attrs": {
-        "body": {
-          "fill": "var(--color-slate)"
-        }
-      },
+      "attrs": {},
       "id": "307df06b-40da-4564-99cc-f1541422b375",
       "layer": "background",
       "z": -999,
       "tag": "BG-101",
-      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc"
+      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
+      "style": {
+        "color": "var(--color-slate)"
+      }
     },
     {
       "source": {
@@ -1519,15 +1518,17 @@
       "attrs": {
         "label": {
           "text": "Cement Plant",
-          "fontSize": 60,
-          "fill": "var(--color-blue)"
+          "fontSize": 60
         }
       },
       "id": "3a8ef731-33ce-41e5-9324-6518e441da91",
       "layer": "background",
       "z": 1,
       "tag": "TXT-101",
-      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc"
+      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
+      "style": {
+        "color": "var(--color-blue)"
+      }
     },
     {
       "position": {
@@ -1633,7 +1634,6 @@
       "type": "Rectangle",
       "attrs": {
         "body": {
-          "fill": "var(--color-slate)",
           "fillOpacity": 0.15
         }
       },
@@ -1641,7 +1641,10 @@
       "layer": "background",
       "z": 0,
       "tag": "BG-102",
-      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc"
+      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
+      "style": {
+        "color": "var(--color-slate)"
+      }
     },
     {
       "position": {
@@ -1736,13 +1739,15 @@
       "attrs": {
         "label": {
           "text": "Kiln Gas",
-          "fontSize": 14,
-          "fill": "var(--color-amber)"
+          "fontSize": 14
         }
       },
       "tag": "TXT-102",
       "id": "d2fc8ffc-bffc-4174-b02c-1781296b895e",
-      "layer": "instruments"
+      "layer": "instruments",
+      "style": {
+        "color": "var(--color-amber)"
+      }
     },
     {
       "position": {
@@ -1758,13 +1763,15 @@
       "attrs": {
         "label": {
           "text": "Raw Meal",
-          "fontSize": 14,
-          "fill": "var(--color-amber)"
+          "fontSize": 14
         }
       },
       "tag": "TXT-103",
       "id": "a34205eb-cfc9-4c89-8199-677915e69671",
-      "layer": "instruments"
+      "layer": "instruments",
+      "style": {
+        "color": "var(--color-amber)"
+      }
     },
     {
       "type": "Arrow",
@@ -1844,13 +1851,15 @@
       "attrs": {
         "label": {
           "text": "Exhaust",
-          "fontSize": 14,
-          "fill": "var(--color-amber)"
+          "fontSize": 14
         }
       },
       "tag": "TXT-104",
       "id": "c02bda7e-2271-46de-b4f8-8bd69b5e7876",
-      "layer": "instruments"
+      "layer": "instruments",
+      "style": {
+        "color": "var(--color-amber)"
+      }
     },
     {
       "type": "Arrow",
@@ -1962,13 +1971,15 @@
       "attrs": {
         "label": {
           "text": "Clinker",
-          "fontSize": 14,
-          "fill": "var(--color-amber)"
+          "fontSize": 14
         }
       },
       "tag": "TXT-105",
       "id": "e217674f-94bb-442c-8a36-c576d14864a5",
-      "layer": "instruments"
+      "layer": "instruments",
+      "style": {
+        "color": "var(--color-amber)"
+      }
     },
     {
       "type": "Arrow",
@@ -2181,9 +2192,6 @@
       "angle": 0,
       "type": "Thermometer",
       "attrs": {
-        "column": {
-          "fill": "var(--color-red)"
-        },
         "label": {
           "text": "Kiln Shell"
         }
@@ -2193,6 +2201,9 @@
       "layer": "instruments",
       "data": {
         "value": 70
+      },
+      "style": {
+        "color": "var(--color-red)"
       }
     }
   ],
