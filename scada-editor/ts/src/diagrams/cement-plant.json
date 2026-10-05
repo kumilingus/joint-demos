@@ -1550,9 +1550,6 @@
       "angle": 0,
       "type": "Display",
       "attrs": {
-        "value": {
-          "text": "162.0"
-        },
         "unit": {
           "text": "t/h"
         },
@@ -1563,7 +1560,10 @@
       "id": "fcda14dc-2d8b-4323-8607-c9e926c52a06",
       "layer": "instruments",
       "z": 3,
-      "tag": "DI-101"
+      "tag": "DI-101",
+      "data": {
+        "value": 162.0
+      }
     },
     {
       "position": {
@@ -1577,9 +1577,6 @@
       "angle": 0,
       "type": "Display",
       "attrs": {
-        "value": {
-          "text": "340.0"
-        },
         "unit": {
           "text": "°C"
         },
@@ -1590,7 +1587,10 @@
       "id": "f3f93a5b-65e5-4984-a687-b58cfa641e59",
       "layer": "instruments",
       "z": 4,
-      "tag": "DI-102"
+      "tag": "DI-102",
+      "data": {
+        "value": 340.0
+      }
     },
     {
       "position": {
