@@ -1704,11 +1704,7 @@
       "id": "195419ad-a6e8-4f4e-a232-0f56901f00ef",
       "layer": "background",
       "z": 8,
-      "tag": "GRP-104",
-      "embeds": [
-        "a6b1a638-988b-4a67-af1a-cfb29d8dba93",
-        "cb3b77f0-10cc-4a07-afea-8782173757c5"
-      ]
+      "tag": "GRP-104"
     },
     {
       "position": {
@@ -1907,13 +1903,7 @@
       "id": "f1d4c5e8-513b-42fb-991a-21bc814c0c30",
       "layer": "background",
       "z": 5,
-      "tag": "GRP-101",
-      "embeds": [
-        "a2e46871-9c62-459e-bef6-3a19800370c1",
-        "21ce6895-5426-442f-8d93-16e340013c60",
-        "b6830c2e-7065-41bd-bdcb-265849d8b909",
-        "726dd0a3-f351-4851-9fe7-24a2a0bb0a96"
-      ]
+      "tag": "GRP-101"
     },
     {
       "position": {
@@ -1929,11 +1919,7 @@
       "id": "d91c9b17-7083-4163-b361-1e7499bd5cae",
       "layer": "background",
       "z": 6,
-      "tag": "GRP-102",
-      "embeds": [
-        "907c2990-e903-4d79-b81e-6081359dbddc",
-        "f5d65fb4-7195-49e5-b6e1-97e172cfa5a1"
-      ]
+      "tag": "GRP-102"
     },
     {
       "position": {
@@ -1949,11 +1935,7 @@
       "id": "1f40bf9f-a2fb-4841-bd01-be8d4d1491e3",
       "layer": "background",
       "z": 7,
-      "tag": "GRP-103",
-      "embeds": [
-        "c1320b0c-731e-4beb-9797-316f1c721fda",
-        "e7c2ecf7-7134-484b-a3ba-8b37feed12e0"
-      ]
+      "tag": "GRP-103"
     },
     {
       "position": {

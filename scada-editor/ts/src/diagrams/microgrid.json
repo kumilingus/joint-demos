@@ -1647,12 +1647,7 @@
       "id": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
       "layer": "background",
       "z": 0,
-      "tag": "GRP-101",
-      "embeds": [
-        "1ccc7013-ec91-42a6-b78e-6454cdf43556",
-        "080378d5-3ac0-4940-9803-ecd65eba13dc",
-        "01520282-b166-40fc-b47c-5b921184e28a"
-      ]
+      "tag": "GRP-101"
     }
   ],
   "images": {
