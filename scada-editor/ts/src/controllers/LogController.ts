@@ -141,7 +141,7 @@ function logHooks(app: App): LogHooks {
 // How long a ping lasts (ms): as its rings in `log.css` (the second one starting later)
 const PING_DURATION = 1400;
 // How far the rings of a ping reach out of the element (at their largest)
-const PING_REACH = 24;
+const PING_REACH = 16;
 
 /**
  * A ping: two rings out of the middle of the element, behind it (the first child of its view), growing and fading
@@ -158,7 +158,7 @@ const Ping = dia.HighlighterView.extend({
         const { width, height } = element.size();
         const r = Math.hypot(width, height) / 2 + PING_REACH;
         const color = this.options.kind === 'update' ? 'var(--selection)' : 'var(--color-amber)';
-        const ring = () => V('circle', { cx: width / 2, cy: height / 2, r, fill: color, 'fill-opacity': 0.35, stroke: color, 'stroke-width': 5 });
+        const ring = () => V('circle', { cx: width / 2, cy: height / 2, r, fill: color, 'fill-opacity': 0.2, stroke: color, 'stroke-width': 3 });
         this.vel.empty().append([ring(), ring()]);
     }
 });
