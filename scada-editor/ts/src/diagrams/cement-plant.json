@@ -88,17 +88,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "d6f7b32d-776e-4d8c-9e28-0b6f09f4c86e",
       "data": {
         "power": 1
@@ -137,17 +126,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "2a535481-6ab8-480f-b291-593210146721",
       "data": {
         "power": 1
@@ -187,17 +165,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "b2ddbf3b-f7b9-44d1-8309-7c36294e9a69",
       "data": {
         "power": 1
@@ -227,17 +194,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "2dffcbf1-1deb-4864-9e2d-ee3f41cbf017",
       "data": {
         "power": 1
@@ -274,20 +230,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "4255dc25-e035-4c6b-bede-568187e20cdf",
       "style": {
         "color": "#d6c7a1"
@@ -324,20 +266,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "a8dae35f-4af5-4f6c-aef6-9e8e114e4ea4",
       "style": {
         "color": "#d6c7a1"
@@ -375,20 +303,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "vertices": [
         {
           "x": 1120,
@@ -432,20 +346,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "c8ae85fa-dac5-4ce0-b585-e9d403eb9a57",
       "style": {
         "color": "#d6c7a1"
@@ -483,20 +383,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "cc016e4d-9795-49f8-9819-0d54b57d56aa",
       "style": {
         "lineWidth": "thick",
@@ -535,20 +421,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "f71d77bf-b7f1-4f4c-bd66-34c9a8ce83a7",
       "style": {
         "color": "#d6c7a1"
@@ -587,20 +459,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "vertices": [
         {
           "x": 1440,
@@ -635,20 +493,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "vertices": [
         {
           "x": 1350,
@@ -674,20 +518,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "63b27cbb-21ad-422b-a9c7-83182575719b",
       "style": {
         "lineWidth": "thick",
@@ -717,20 +547,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "4d0867d5-720d-4db2-aac5-ce1b26b165cd",
       "style": {
         "lineWidth": "thick",
@@ -770,20 +586,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "vertices": [
         {
           "x": 1380,
@@ -826,20 +628,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "4b261895-32a9-40c3-a5ac-179b25941182",
       "data": {
         "power": 1
@@ -877,20 +665,6 @@
       "layer": "pipes",
       "z": -1,
       "routing": "orthogonal",
-      "router": {
-        "name": "rightAngle",
-        "args": {
-          "useVertices": true
-        }
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "id": "cc5b93a2-f33c-4678-aeab-1521bc763272",
       "style": {
         "lineWidth": "thin",
@@ -1598,17 +1372,6 @@
         "y": 470
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "b7f89b79-a9d2-4fda-9d43-3a9fa1c3195f",
@@ -1672,17 +1435,6 @@
         "y": 390
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "d61c49b9-d7c2-467c-9c03-5a1a1e853786",
@@ -1702,17 +1454,6 @@
         "y": 60
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "d198194f-525c-40e6-9d77-abf45aa5e410",
@@ -1754,17 +1495,6 @@
         "y": 320
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "61d74140-1ed7-4671-86b5-bb69177a0611",
@@ -1784,17 +1514,6 @@
         "y": 330
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "a7322a04-6c1c-47da-ae1d-d5ab36e716eb",
@@ -1814,17 +1533,6 @@
         "y": 585
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "c9746708-640a-43e1-84cb-dbb95a9f53e2",
@@ -1866,17 +1574,6 @@
         "y": 785
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "3153fdbf-5e3e-4f32-9e59-8f4b921f879d",
@@ -1896,17 +1593,6 @@
         "y": 222
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "c287efd8-3c58-4c92-b501-5be311a83bb2",
@@ -1927,17 +1613,6 @@
         "y": 222
       },
       "routing": "straight",
-      "router": {
-        "name": "normal"
-      },
-      "connector": {
-        "name": "straight",
-        "args": {
-          "cornerType": "cubic",
-          "cornerRadius": 20,
-          "cornerPreserveAspectRatio": true
-        }
-      },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
       "id": "bd10d387-4c1b-44c4-af26-7c5ad727bc01",
