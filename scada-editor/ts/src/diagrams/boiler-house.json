@@ -18,7 +18,7 @@
     },
     {
       "position": {
-        "x": 1630,
+        "x": 270,
         "y": 350
       },
       "size": {
@@ -29,7 +29,8 @@
       "type": "CustomImage",
       "attrs": {
         "image": {
-          "imageId": "image-jointjs-badge"
+          "imageId": "image-jointjs-badge",
+          "opacity": 0.8
         },
         "label": {
           "text": ""
@@ -38,7 +39,8 @@
       "tag": "IMG-101",
       "id": "a6b1a638-988b-4a67-af1a-cfb29d8dba93",
       "layer": "background",
-      "z": 14
+      "z": 14,
+      "parent": "195419ad-a6e8-4f4e-a232-0f56901f00ef"
     },
     {
       "source": {
@@ -1786,7 +1788,28 @@
       "tag": "IMG-102",
       "id": "cb3b77f0-10cc-4a07-afea-8782173757c5",
       "layer": "background",
-      "z": 2
+      "z": 2,
+      "parent": "195419ad-a6e8-4f4e-a232-0f56901f00ef"
+    },
+    {
+      "position": {
+        "x": 20,
+        "y": 70
+      },
+      "size": {
+        "width": 520,
+        "height": 400
+      },
+      "angle": 0,
+      "type": "Group",
+      "id": "195419ad-a6e8-4f4e-a232-0f56901f00ef",
+      "layer": "background",
+      "z": 8,
+      "tag": "GRP-104",
+      "embeds": [
+        "a6b1a638-988b-4a67-af1a-cfb29d8dba93",
+        "cb3b77f0-10cc-4a07-afea-8782173757c5"
+      ]
     },
     {
       "position": {
@@ -2627,7 +2650,7 @@
     },
     {
       "position": {
-        "x": 1540,
+        "x": 1730,
         "y": 540
       },
       "size": {
@@ -2653,8 +2676,8 @@
     },
     {
       "position": {
-        "x": 1640,
-        "y": 520
+        "x": 1690,
+        "y": 370
       },
       "size": {
         "width": 140,
@@ -2664,7 +2687,6 @@
       "type": "HorizontalTank",
       "attrs": {
         "label": {
-          "labelPosition": "top",
           "text": "Blowdown Tank"
         }
       },
@@ -2675,11 +2697,11 @@
     },
     {
       "position": {
-        "x": 1810,
-        "y": 540
+        "x": 1800,
+        "y": 280
       },
       "size": {
-        "width": 90,
+        "width": 100,
         "height": 40
       },
       "angle": 0,
@@ -2930,14 +2952,13 @@
       "target": {
         "id": "32cb41d8-1d85-4ceb-afd2-832c0c6a26ca",
         "anchor": {
-          "name": "left",
+          "name": "gridSide",
           "args": {
-            "useModelGeometry": true,
-            "rotate": true
+            "dx": "100%",
+            "dy": "50%",
+            "rotate": true,
+            "useModelGeometry": true
           }
-        },
-        "connectionPoint": {
-          "name": "anchor"
         }
       },
       "type": "Pipe",
@@ -2970,27 +2991,25 @@
       "source": {
         "id": "32cb41d8-1d85-4ceb-afd2-832c0c6a26ca",
         "anchor": {
-          "name": "right",
+          "name": "gridSide",
           "args": {
-            "useModelGeometry": true,
-            "rotate": true
+            "dx": "0%",
+            "dy": "62.5%",
+            "rotate": true,
+            "useModelGeometry": true
           }
-        },
-        "connectionPoint": {
-          "name": "anchor"
         }
       },
       "target": {
         "id": "0f9e3b9e-42bc-4149-afd5-45f286ee18ad",
         "anchor": {
-          "name": "left",
+          "name": "gridSide",
           "args": {
-            "useModelGeometry": true,
-            "rotate": true
+            "dx": "0%",
+            "dy": "50%",
+            "rotate": true,
+            "useModelGeometry": true
           }
-        },
-        "connectionPoint": {
-          "name": "anchor"
         }
       },
       "type": "Pipe",
