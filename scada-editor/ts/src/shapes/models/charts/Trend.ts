@@ -49,7 +49,7 @@ export default class Trend extends Shape {
             ...super.defaults,
             type: 'Trend',
             // Its label (see `text-from`)
-            label: { text: 'Trend' },
+            label: { text: 'Trend', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // The recent values (0 - 100), the oldest first

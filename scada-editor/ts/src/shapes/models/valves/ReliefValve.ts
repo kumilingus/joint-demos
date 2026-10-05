@@ -50,7 +50,7 @@ export default class ReliefValve extends Shape {
             ...super.defaults,
             type: 'ReliefValve',
             // Its label (see `text-from`)
-            label: { text: 'Relief Valve' },
+            label: { text: 'Relief Valve', position: 'bottom' },
             size: {
                 width: 60,
                 height: 80

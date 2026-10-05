@@ -43,7 +43,7 @@ export default class MixingTank extends Shape {
             ...super.defaults,
             type: 'MixingTank',
             // Its label (see `text-from`)
-            label: { text: 'Mixer' },
+            label: { text: 'Mixer', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1

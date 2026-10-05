@@ -43,7 +43,7 @@ export default class FuelTank extends Shape {
             ...super.defaults,
             type: 'FuelTank',
             // Its label (see `text-from`)
-            label: { text: 'Fuel Tank' },
+            label: { text: 'Fuel Tank', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 level: 70

@@ -36,7 +36,7 @@ export default class Reactor extends Shape {
             ...super.defaults,
             type: 'Reactor',
             // Its label (see `text-from`)
-            label: { text: 'Reactor' },
+            label: { text: 'Reactor', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1

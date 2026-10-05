@@ -41,7 +41,7 @@ export default class Motor extends Shape {
             ...super.defaults,
             type: 'Motor',
             // Its label (see `text-from`)
-            label: { text: 'Motor' },
+            label: { text: 'Motor', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

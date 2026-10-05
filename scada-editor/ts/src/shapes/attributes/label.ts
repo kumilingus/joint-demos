@@ -10,8 +10,8 @@ import { flipOf } from './flip';
  */
 export type LabelPosition = 'bottom' | 'top' | 'left' | 'right';
 
-// The space between a shape and its label, unless the label has a gap of its own (see `labelGap`)
-const DEFAULT_GAP = 8;
+// The space between a shape and its label
+const LABEL_GAP = 8;
 
 
 type TextAttributes = Record<string, unknown>;
@@ -137,68 +137,42 @@ function layoutOf(view: dia.ElementView, position: unknown, gap: number, size: {
 }
 
 /**
- * The text laid out at its label position (if it has one, see `labelPosition`): drawn by the built-in definition
- * with the `x` and the vertical anchor of the layout (its lines are placed by them), the point, the anchor and the
- * transform of the layout set on the node - the transform always (none: the identity), one left from a rotation
- * before is not removed.
+ * The text drawn by the built-in definition, at the position of the label if it has one: drawn first (its size, the
+ * box kept clear of the shape), then with the `x` and the vertical anchor of the layout (its lines are placed by them);
+ * the point, the anchor and the transform of the layout set on the node - the transform always (none: the identity),
+ * one left from a rotation before is not removed.
  */
-function positioned(
+function drawText(
     view: dia.ElementView,
     set: dia.Cell.SetCallback<dia.ElementView>,
     value: unknown,
     refBBox: g.Rect,
     node: Element,
-    attrs: TextAttributes
+    attrs: TextAttributes,
+    position: LabelPosition | undefined
 ): ReturnType<dia.Cell.SetCallback<dia.ElementView>> {
-    // None: a text of its own (not a label at a side of the shape)
-    if (attrs['label-position'] == null) return set.call(view, value, refBBox, node, attrs, view);
-    const gap = attrs['label-gap'] == null ? DEFAULT_GAP : Number(attrs['label-gap']);
-    // The text drawn first: its size (the box kept clear of the shape)
     set.call(view, value, refBBox, node, attrs, view);
+    // None: a text of its own (not a label at a side of the shape)
+    if (!position) return undefined;
     const { width, height } = (node as SVGGraphicsElement).getBBox();
-    const layout = layoutOf(view, attrs['label-position'], gap, { width, height });
+    const layout = layoutOf(view, position, LABEL_GAP, { width, height });
     const transform = layout?.transform ?? 'matrix(1,0,0,1,0,0)';
     if (!layout) return { transform };
     set.call(view, value, refBBox, node, { ...attrs, x: layout.x, 'text-vertical-anchor': layout.verticalAnchor }, view);
     return { x: layout.x, y: layout.y, 'text-anchor': layout.anchor, transform };
 }
 
-// The built-in definitions of the text (of an element without the ones of the shapes): their `set` called with the layout
-const text = dia.Element.getAttributeDefinition('text')!;
-const textWrap = dia.Element.getAttributeDefinition('text-wrap')!;
-const textSet = text.set as dia.Cell.SetCallback<dia.ElementView>;
-const textWrapSet = textWrap.set as dia.Cell.SetCallback<dia.ElementView>;
+// The built-in definitions of the text: their `set` called with the layout
+const textSet = dia.Element.getAttributeDefinition('text')!.set as dia.Cell.SetCallback<dia.ElementView>;
+const textWrapSet = dia.Element.getAttributeDefinition('text-wrap')!.set as dia.Cell.SetCallback<dia.ElementView>;
 
-/**
- * The special attributes of the label of a shape: `labelPosition` (see `LabelPosition`) - read by the text (`text`,
- * `textWrap`) laid out at it: the point and the anchors of the text, the lines of the text placed by them.
- */
-export const labelPositionAttributes: Record<string, dia.Cell.PresentationAttributeDefinition<dia.ElementView>> = {
-    'label-position': {
-        // Not an attribute of the node (no `set`): read by the text
-    },
-    'label-gap': {
-        // The space between the shape (as it is drawn: its pipe stubs, its overflow - see `getFootprint()`) and its
-        // label at its position (8 unless set); not an attribute of the node: read by the text
-    },
-    text: {
-        ...text,
-        set(this: dia.ElementView, value: unknown, refBBox: g.Rect, node: Element, attrs: TextAttributes) {
-            return positioned(this, textSet, value, refBBox, node, attrs);
-        }
-    },
-    'text-wrap': {
-        ...textWrap,
-        set(this: dia.ElementView, value: unknown, refBBox: g.Rect, node: Element, attrs: TextAttributes) {
-            // Of a text of the model: wrapped by it (see `text-from`)
-            if (attrs['text-from'] != null) return {};
-            return positioned(this, textWrapSet, value, refBBox, node, attrs);
-        }
-    },
+export const textFromAttributes: Record<string, dia.Cell.PresentationAttributeDefinition<dia.ElementView>> = {
+    // Read by `text-from` (wrapping the text of the model), not drawn by itself: the built-in one would draw over it
+    'text-wrap': {},
     /**
      * `textFrom` in the attributes: the text of the model at the path (`['label', 'text']`, `['unit']`) - not stored in
-     * the attributes. A label (`['label', …]`): at its position of the model (`label.position`), else of the shape
-     * (`labelPosition`); the size, the weight, the styles (`label.size`, `label.weight`, `label.styles`) of a text of its own
+     * the attributes. A label (`['label', …]`): at its position (`label.position`, see `LabelPosition`), none - where the
+     * shape draws it; the size, the weight, the styles (`label.size`, `label.weight`, `label.styles`) of a text of its own
      * (the Label shape).
      */
     'text-from': {
@@ -207,22 +181,16 @@ export const labelPositionAttributes: Record<string, dia.Cell.PresentationAttrib
             const value = model.prop(path);
             const text = value == null ? '' : String(value);
             const label = (path[0] === 'label' ? model.get('label') : undefined) as ModelLabel | undefined;
-            const textAttrs: TextAttributes = {
-                ...attrs,
-                text,
-                ...(label?.position ? { 'label-position': label.position } : {}),
-                ...(label?.size ? { 'font-size': label.size } : {}),
-                ...(label?.weight ? { 'font-weight': label.weight } : {})
-            };
             const own: TextAttributes = {
                 ...(label?.size ? { 'font-size': label.size } : {}),
                 ...(label?.weight ? { 'font-weight': label.weight } : {}),
                 ...(label?.styles ? textAttributes['text-styles'].set.call(this, label.styles) : {})
             };
+            const textAttrs: TextAttributes = { ...attrs, ...own, text };
             const wrap = attrs['text-wrap'];
             const drawn = wrap
-                ? positioned(this, textWrapSet, wrap, refBBox, node, textAttrs)
-                : positioned(this, textSet, text, refBBox, node, textAttrs);
+                ? drawText(this, textWrapSet, wrap, refBBox, node, textAttrs, label?.position)
+                : drawText(this, textSet, text, refBBox, node, textAttrs, label?.position);
             return { ...own, ...((drawn ?? {}) as TextAttributes) };
         }
     }
@@ -239,10 +207,8 @@ export interface ModelLabel {
 
 /** The label of a shape: below it (see `LabelPosition`), as most of the shapes have it */
 export const labelAttributes = {
-    // The text of the label of the model (see `text-from`)
+    // The text of the label of the model, at its position (see `text-from`)
     textFrom: ['label', 'text'],
-    // Below the shape - as it is seen: kept horizontal when the element is rotated (see `labelPositionAttributes`)
-    labelPosition: 'bottom',
     textAnchor: 'middle',
     textVerticalAnchor: 'top',
     x: 'calc(0.5*w)',

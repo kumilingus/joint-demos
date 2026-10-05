@@ -43,7 +43,7 @@ export default class ElectricMeter extends Shape {
             ...super.defaults,
             type: 'ElectricMeter',
             // Its label (see `text-from`)
-            label: { text: 'Voltmeter' },
+            label: { text: 'Voltmeter', position: 'bottom' },
             unit: 'V',
             // What it shows (see `data.ts`): the reading
             data: {

@@ -42,7 +42,7 @@ export default class PowerTransformer extends Shape {
             ...super.defaults,
             type: 'PowerTransformer',
             // Its label (see `text-from`)
-            label: { text: 'Power Transformer' },
+            label: { text: 'Power Transformer', position: 'bottom' },
             size: {
                 width: 160,
                 height: 150

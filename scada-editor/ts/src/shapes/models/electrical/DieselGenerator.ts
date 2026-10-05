@@ -58,7 +58,7 @@ export default class DieselGenerator extends Shape {
             ...super.defaults,
             type: 'DieselGenerator',
             // Its label (see `text-from`)
-            label: { text: 'Diesel Generator' },
+            label: { text: 'Diesel Generator', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1

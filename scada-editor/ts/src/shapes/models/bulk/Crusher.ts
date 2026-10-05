@@ -70,7 +70,7 @@ export default class Crusher extends Shape {
             ...super.defaults,
             type: 'Crusher',
             // Its label (see `text-from`)
-            label: { text: 'Crusher' },
+            label: { text: 'Crusher', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

@@ -45,7 +45,7 @@ export default class YStrainer extends Shape {
             ...super.defaults,
             type: 'YStrainer',
             // Its label (see `text-from`)
-            label: { text: 'Strainer' },
+            label: { text: 'Strainer', position: 'bottom' },
             size: {
                 width: 80,
                 height: 60

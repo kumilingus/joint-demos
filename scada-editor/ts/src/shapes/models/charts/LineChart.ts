@@ -88,7 +88,7 @@ export default class LineChart extends Shape {
             ...super.defaults,
             type: 'LineChart',
             // Its label (see `text-from`)
-            label: { text: 'Line Chart' },
+            label: { text: 'Line Chart', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // The scale of the values

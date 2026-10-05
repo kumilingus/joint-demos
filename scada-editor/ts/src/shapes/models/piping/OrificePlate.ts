@@ -54,7 +54,7 @@ export default class OrificePlate extends Shape {
             ...super.defaults,
             type: 'OrificePlate',
             // Its label (see `text-from`)
-            label: { text: 'Orifice' },
+            label: { text: 'Orifice', position: 'bottom' },
             size: {
                 width: 40,
                 height: 60

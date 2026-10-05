@@ -42,7 +42,7 @@ export default class Beacon extends Shape {
             ...super.defaults,
             type: 'Beacon',
             // Its label (see `text-from`)
-            label: { text: 'Beacon' },
+            label: { text: 'Beacon', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

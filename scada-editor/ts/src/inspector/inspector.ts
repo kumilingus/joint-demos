@@ -82,8 +82,8 @@ function getInputs(element: dia.Element): Inputs {
         if (element.prop(path) === undefined) return;
         util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), { type: 'text', label, group, index: index++ } as unknown as Inputs));
     });
-    // The label of a shape at a side of it (see `labelPosition`): the shapes with labels of their own have none
-    if (element.prop(['label', 'text']) !== undefined && element.attr('label/labelPosition') != null) {
+    // The label of a shape at a side of it (see `LabelPosition`): the shapes with labels of their own have none
+    if (element.prop(['label', 'position']) !== undefined) {
         util.merge(inputs, { label: { position: {
             ...sideField('Label position'),
             // Of a label that is there (not empty)

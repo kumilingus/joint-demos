@@ -58,7 +58,7 @@ export default class BucketElevator extends Shape {
             ...super.defaults,
             type: 'BucketElevator',
             // Its label (see `text-from`)
-            label: { text: 'Bucket Elevator' },
+            label: { text: 'Bucket Elevator', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

@@ -47,7 +47,7 @@ export default class BatteryBank extends Shape {
             ...super.defaults,
             type: 'BatteryBank',
             // Its label (see `text-from`)
-            label: { text: 'Battery Bank' },
+            label: { text: 'Battery Bank', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // The charge (0 - 100)

@@ -33,7 +33,7 @@ export default class Ground extends Shape {
             ...super.defaults,
             type: 'Ground',
             // Its label (see `text-from`)
-            label: { text: 'Ground' },
+            label: { text: 'Ground', position: 'bottom' },
             size: {
                 width: 60,
                 height: 60

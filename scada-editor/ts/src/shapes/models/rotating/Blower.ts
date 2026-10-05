@@ -66,7 +66,7 @@ export default class Blower extends Shape {
             ...super.defaults,
             type: 'Blower',
             // Its label (see `text-from`)
-            label: { text: 'Blower' },
+            label: { text: 'Blower', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

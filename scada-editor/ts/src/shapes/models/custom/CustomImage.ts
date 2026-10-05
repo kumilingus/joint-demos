@@ -41,7 +41,7 @@ export default class CustomImage extends Shape {
             ...super.defaults,
             type: 'CustomImage',
             // Its label (see `text-from`)
-            label: { text: 'Image' },
+            label: { text: 'Image', position: 'bottom' },
             size: {
                 width: SIZE,
                 height: SIZE

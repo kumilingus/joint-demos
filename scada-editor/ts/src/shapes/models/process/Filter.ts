@@ -33,7 +33,7 @@ export default class Filter extends Shape {
             ...super.defaults,
             type: 'Filter',
             // Its label (see `text-from`)
-            label: { text: 'Filter' },
+            label: { text: 'Filter', position: 'bottom' },
             size: {
                 width: 60,
                 height: 80

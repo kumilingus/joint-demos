@@ -144,7 +144,7 @@ export default class DonutChart extends Shape {
             ...super.defaults,
             type: 'DonutChart',
             // Its label (see `text-from`)
-            label: { text: 'Donut Chart' },
+            label: { text: 'Donut Chart', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 slices: [

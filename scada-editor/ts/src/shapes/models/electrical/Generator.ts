@@ -35,7 +35,7 @@ export default class Generator extends Shape {
             ...super.defaults,
             type: 'Generator',
             // Its label (see `text-from`)
-            label: { text: 'Generator' },
+            label: { text: 'Generator', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1

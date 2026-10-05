@@ -57,7 +57,7 @@ export default class Stack extends Shape {
             ...super.defaults,
             type: 'Stack',
             // Its label (see `text-from`)
-            label: { text: 'Stack' },
+            label: { text: 'Stack', position: 'bottom' },
             size: {
                 width: 60,
                 height: 240

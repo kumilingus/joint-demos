@@ -52,7 +52,7 @@ export default class WindTurbine extends Shape {
             ...super.defaults,
             type: 'WindTurbine',
             // Its label (see `text-from`)
-            label: { text: 'Wind Turbine' },
+            label: { text: 'Wind Turbine', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1

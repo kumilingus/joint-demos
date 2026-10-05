@@ -97,7 +97,7 @@ export default class PressureGauge extends Shape {
             ...super.defaults,
             type: 'PressureGauge',
             // Its label (see `text-from`)
-            label: { text: 'Gauge' },
+            label: { text: 'Gauge', position: 'bottom' },
             unit: 'bar',
             // What it shows (see `data.ts`)
             data: {

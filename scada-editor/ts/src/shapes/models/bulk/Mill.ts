@@ -62,7 +62,7 @@ export default class Mill extends Shape {
             ...super.defaults,
             type: 'Mill',
             // Its label (see `text-from`)
-            label: { text: 'Mill' },
+            label: { text: 'Mill', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

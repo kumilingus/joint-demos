@@ -41,7 +41,7 @@ export default class HeatExchanger extends Shape {
             ...super.defaults,
             type: 'HeatExchanger',
             // Its label (see `text-from`)
-            label: { text: 'Heat Exchanger' },
+            label: { text: 'Heat Exchanger', position: 'bottom' },
             size: {
                 width: 160,
                 height: 60

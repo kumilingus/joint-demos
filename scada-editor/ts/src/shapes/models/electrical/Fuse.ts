@@ -32,7 +32,7 @@ export default class Fuse extends Shape {
             ...super.defaults,
             type: 'Fuse',
             // Its label (see `text-from`)
-            label: { text: 'Fuse' },
+            label: { text: 'Fuse', position: 'bottom' },
             size: {
                 width: 80,
                 height: 20

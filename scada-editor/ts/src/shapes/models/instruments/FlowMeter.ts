@@ -39,7 +39,7 @@ export default class FlowMeter extends Shape {
             ...super.defaults,
             type: 'FlowMeter',
             // Its label (see `text-from`)
-            label: { text: 'Flow Meter' },
+            label: { text: 'Flow Meter', position: 'bottom' },
             unit: 'm³/h',
             // What it shows (see `data.ts`): the reading
             data: {

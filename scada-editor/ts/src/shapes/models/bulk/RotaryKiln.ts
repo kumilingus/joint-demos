@@ -81,7 +81,7 @@ export default class RotaryKiln extends Shape {
             ...super.defaults,
             type: 'RotaryKiln',
             // Its label (see `text-from`)
-            label: { text: 'Rotary Kiln' },
+            label: { text: 'Rotary Kiln', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

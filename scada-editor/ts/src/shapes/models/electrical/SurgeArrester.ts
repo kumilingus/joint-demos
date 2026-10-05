@@ -42,7 +42,7 @@ export default class SurgeArrester extends Shape {
             ...super.defaults,
             type: 'SurgeArrester',
             // Its label (see `text-from`)
-            label: { text: 'Surge Arrester' },
+            label: { text: 'Surge Arrester', position: 'bottom' },
             size: {
                 width: 40,
                 height: 80

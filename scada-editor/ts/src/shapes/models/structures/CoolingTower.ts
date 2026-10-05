@@ -41,7 +41,7 @@ export default class CoolingTower extends Shape {
             ...super.defaults,
             type: 'CoolingTower',
             // Its label (see `text-from`)
-            label: { text: 'Cooling Tower' },
+            label: { text: 'Cooling Tower', position: 'bottom' },
             size: {
                 width: 140,
                 height: 160

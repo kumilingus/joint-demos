@@ -38,7 +38,7 @@ export default class Display extends Shape {
             ...super.defaults,
             type: 'Display',
             // Its label (see `text-from`)
-            label: { text: 'Display' },
+            label: { text: 'Display', position: 'bottom' },
             unit: 'bar',
             // What it shows (see `data.ts`): the reading
             data: {

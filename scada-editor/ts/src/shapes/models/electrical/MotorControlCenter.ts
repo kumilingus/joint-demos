@@ -47,7 +47,7 @@ export default class MotorControlCenter extends Shape {
             ...super.defaults,
             type: 'MotorControlCenter',
             // Its label (see `text-from`)
-            label: { text: 'Motor Control Center' },
+            label: { text: 'Motor Control Center', position: 'bottom' },
             size: {
                 width: 120,
                 height: 200

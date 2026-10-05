@@ -45,7 +45,7 @@ export default class Compressor extends Shape {
             ...super.defaults,
             type: 'Compressor',
             // Its label (see `text-from`)
-            label: { text: 'Compressor' },
+            label: { text: 'Compressor', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

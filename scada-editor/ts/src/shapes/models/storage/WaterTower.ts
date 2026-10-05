@@ -32,7 +32,7 @@ export default class WaterTower extends Shape {
             ...super.defaults,
             type: 'WaterTower',
             // Its label (see `text-from`)
-            label: { text: 'Water Tower' },
+            label: { text: 'Water Tower', position: 'bottom' },
             size: {
                 width: 120,
                 height: 220

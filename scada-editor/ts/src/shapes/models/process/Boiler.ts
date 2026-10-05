@@ -48,7 +48,7 @@ export default class Boiler extends Shape {
             ...super.defaults,
             type: 'Boiler',
             // Its label (see `text-from`)
-            label: { text: 'Boiler' },
+            label: { text: 'Boiler', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // The burner: 1 = on (firing, by default), 0 = off

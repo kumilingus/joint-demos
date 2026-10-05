@@ -57,7 +57,7 @@ export default class BagFilter extends Shape {
             ...super.defaults,
             type: 'BagFilter',
             // Its label (see `text-from`)
-            label: { text: 'Bag Filter' },
+            label: { text: 'Bag Filter', position: 'bottom' },
             size: {
                 width: 160,
                 height: 200

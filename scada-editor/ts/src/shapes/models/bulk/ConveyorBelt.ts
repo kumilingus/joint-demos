@@ -57,7 +57,7 @@ export default class ConveyorBelt extends Shape {
             ...super.defaults,
             type: 'ConveyorBelt',
             // Its label (see `text-from`)
-            label: { text: 'Conveyor' },
+            label: { text: 'Conveyor', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on

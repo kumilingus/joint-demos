@@ -82,7 +82,6 @@ export default class Busbar extends Shape {
                 label: {
                     ...labelAttributes,
                     // Over the taps on the left (see above): at a side of its own, not one to choose
-                    labelPosition: null,
                     x: 0,
                     y: -22,
                     textAnchor: 'start',

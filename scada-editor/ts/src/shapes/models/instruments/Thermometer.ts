@@ -72,7 +72,7 @@ export default class Thermometer extends Shape {
             ...super.defaults,
             type: 'Thermometer',
             // Its label (see `text-from`)
-            label: { text: 'Thermometer' },
+            label: { text: 'Thermometer', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // The height of the column in % of the scale

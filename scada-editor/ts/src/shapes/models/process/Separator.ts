@@ -42,7 +42,7 @@ export default class Separator extends Shape {
             ...super.defaults,
             type: 'Separator',
             // Its label (see `text-from`)
-            label: { text: 'Separator' },
+            label: { text: 'Separator', position: 'bottom' },
             size: {
                 width: 180,
                 height: 80

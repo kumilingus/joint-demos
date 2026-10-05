@@ -56,7 +56,7 @@ export default class Fan extends Shape {
             ...super.defaults,
             type: 'Fan',
             // Its label (see `text-from`)
-            label: { text: 'Fan' },
+            label: { text: 'Fan', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
