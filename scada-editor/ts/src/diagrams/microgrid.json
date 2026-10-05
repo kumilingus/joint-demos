@@ -1102,13 +1102,6 @@
         }
       ],
       "rows": 1,
-      "values": [
-        [
-          "on",
-          "850",
-          "kW"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
@@ -1116,7 +1109,16 @@
       "layer": "equipment",
       "z": 11,
       "tag": "TB-101",
-      "sourceTag": "WT-101"
+      "sourceTag": "WT-101",
+      "data": {
+        "values": [
+          [
+            "on",
+            "850",
+            "kW"
+          ]
+        ]
+      }
     },
     {
       "position": {
@@ -1148,13 +1150,6 @@
         }
       ],
       "rows": 1,
-      "values": [
-        [
-          "on",
-          "420",
-          "kW"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
@@ -1162,7 +1157,16 @@
       "layer": "equipment",
       "z": 12,
       "tag": "TB-102",
-      "sourceTag": "PV-101"
+      "sourceTag": "PV-101",
+      "data": {
+        "values": [
+          [
+            "on",
+            "420",
+            "kW"
+          ]
+        ]
+      }
     },
     {
       "position": {
@@ -1194,13 +1198,6 @@
         }
       ],
       "rows": 1,
-      "values": [
-        [
-          "off",
-          "400",
-          "kW"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
@@ -1208,7 +1205,16 @@
       "layer": "equipment",
       "z": 13,
       "tag": "TB-103",
-      "sourceTag": "DG-101"
+      "sourceTag": "DG-101",
+      "data": {
+        "values": [
+          [
+            "off",
+            "400",
+            "kW"
+          ]
+        ]
+      }
     },
     {
       "position": {
@@ -1240,13 +1246,6 @@
         }
       ],
       "rows": 1,
-      "values": [
-        [
-          "on",
-          "120",
-          "kW"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
@@ -1254,7 +1253,16 @@
       "layer": "equipment",
       "z": 14,
       "tag": "TB-104",
-      "sourceTag": "BESS-101"
+      "sourceTag": "BESS-101",
+      "data": {
+        "values": [
+          [
+            "on",
+            "120",
+            "kW"
+          ]
+        ]
+      }
     },
     {
       "position": {

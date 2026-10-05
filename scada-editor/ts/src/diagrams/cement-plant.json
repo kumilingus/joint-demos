@@ -1315,13 +1315,6 @@
         }
       ],
       "rows": 1,
-      "values": [
-        [
-          "on",
-          "310",
-          "t/h"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
@@ -1329,7 +1322,16 @@
       "layer": "equipment",
       "z": 17,
       "tag": "TB-101",
-      "sourceTag": "CR-101"
+      "sourceTag": "CR-101",
+      "data": {
+        "values": [
+          [
+            "on",
+            "310",
+            "t/h"
+          ]
+        ]
+      }
     },
     {
       "position": {
@@ -1361,13 +1363,6 @@
         }
       ],
       "rows": 1,
-      "values": [
-        [
-          "on",
-          "182",
-          "t/h"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
@@ -1375,7 +1370,16 @@
       "layer": "equipment",
       "z": 18,
       "tag": "TB-102",
-      "sourceTag": "ML-101"
+      "sourceTag": "ML-101",
+      "data": {
+        "values": [
+          [
+            "on",
+            "182",
+            "t/h"
+          ]
+        ]
+      }
     },
     {
       "position": {
@@ -1407,13 +1411,6 @@
         }
       ],
       "rows": 1,
-      "values": [
-        [
-          "on",
-          "78",
-          "%"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
@@ -1421,7 +1418,16 @@
       "layer": "equipment",
       "z": 19,
       "tag": "TB-103",
-      "sourceTag": "BL-101"
+      "sourceTag": "BL-101",
+      "data": {
+        "values": [
+          [
+            "on",
+            "78",
+            "%"
+          ]
+        ]
+      }
     },
     {
       "position": {
@@ -1452,30 +1458,32 @@
         }
       ],
       "rows": 3,
-      "values": [
-        [
-          "Raw Meal 1",
-          "64.0",
-          "1250"
-        ],
-        [
-          "Raw Meal 2",
-          "71.5",
-          "1390"
-        ],
-        [
-          "Clinker",
-          "48.0",
-          "3120"
-        ]
-      ],
       "fill": "var(--shape-face)",
       "stroke": "var(--shape-table-line)",
       "headerFill": "var(--shape-table-header)",
       "id": "e28654fc-5981-443f-9c7f-02e590780b10",
       "layer": "equipment",
       "z": 20,
-      "tag": "TB-104"
+      "tag": "TB-104",
+      "data": {
+        "values": [
+          [
+            "Raw Meal 1",
+            "64.0",
+            "1250"
+          ],
+          [
+            "Raw Meal 2",
+            "71.5",
+            "1390"
+          ],
+          [
+            "Clinker",
+            "48.0",
+            "3120"
+          ]
+        ]
+      }
     },
     {
       "position": {
