@@ -4,10 +4,13 @@ import { dia, V } from '@joint/plus';
  * An element tinted in a color: recolored by a filter of its view (its shading kept - the light parts in the color, the
  * dark ones dark) and glowing in it. A highlighter: nothing of the model changes - the shapes share
  * their gradients (a paint server takes the variables where it is defined, not where it is used), so a shape can't be
- * recolored by its variables. E.g. the element of a message of the log under the pointer (see `LogController`).
+ * recolored by its variables. E.g. the element of the message clicked in the log (see `LogController`).
  */
 
 const TINT_ID = 'tint';
+
+// How the gray of the element is lifted before it is multiplied by the color (see `defineTint()`)
+const TINT_LIFT = { slope: 0.6, intercept: 0.4 };
 
 /** The filters of the colors in the defs of the papers (by the color: a variable of the theme or any CSS color) */
 const filterIds = new Map<string, string>();
@@ -24,7 +27,11 @@ function defineTint(paper: dia.Paper, color: string): string {
     }
     if (!paper.svg.querySelector(`#${id}`)) {
         V('filter', { id, 'color-interpolation-filters': 'sRGB' }).append([
-            V('feColorMatrix', { in: 'SourceGraphic', type: 'saturate', values: 0, result: 'gray' }),
+            V('feColorMatrix', { in: 'SourceGraphic', type: 'saturate', values: 0, result: 'grayscale' }),
+            // The gray lifted (black to a dark gray): the dark shapes of the dark scheme in the color too, not near black
+            V('feComponentTransfer', { in: 'grayscale', result: 'gray' }).append(
+                ['feFuncR', 'feFuncG', 'feFuncB'].map(func => V(func, { type: 'linear', slope: TINT_LIFT.slope, intercept: TINT_LIFT.intercept }))
+            ),
             V('feFlood', { style: `flood-color: ${color}`, result: 'color' }),
             V('feBlend', { in: 'color', in2: 'gray', mode: 'multiply', result: 'tinted' }),
             V('feComposite', { in: 'tinted', in2: 'SourceGraphic', operator: 'in' })

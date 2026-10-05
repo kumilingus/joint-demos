@@ -103,8 +103,8 @@ function logHooks(app: App): LogHooks {
             if (element === focused) return;
             if (focused) setTint(paper, focused, null);
             focused = element;
-            // Tinted in the color of the selection (as its pings, see `ping()`)
-            if (element) setTint(paper, element, 'var(--selection)');
+            // Tinted in the color of the selection (as its pings, see `ping()`), lighter
+            if (element) setTint(paper, element, 'var(--tint-highlight)');
         },
         showTags: (shown) => {
             dia.HighlighterView.removeAll(paper, TAG_BADGE_ID);
