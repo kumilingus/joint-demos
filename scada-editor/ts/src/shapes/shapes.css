@@ -120,8 +120,21 @@
     /* The fabric of the filter bags */
     --shape-filter-bag: #e7e2d3;
 
-    /* The canvas (the background of the paper; a color of the shapes too) */
-    --shape-canvas: #F3F7F6;
+    /* The canvas (the background of the paper; a color of the shapes too): of the style of the diagram, if set */
+    --shape-canvas: var(--style-canvas, #F3F7F6);
+    /* Its grid: the canvas darker */
+    --canvas-grid: color-mix(in oklab, var(--shape-canvas), #000 6%);
+    --canvas-grid-major: color-mix(in oklab, var(--shape-canvas), #000 14%);
+    /* Its gradient (if the style has one): lighter at the top, a little darker at the bottom - the canvas in the middle */
+    --canvas-gradient-top: color-mix(in oklab, var(--shape-canvas), #fff 70%);
+    --canvas-gradient-bottom: color-mix(in oklab, var(--shape-canvas), #000 14%);
+    /* The canvases to pick (see `color-field.ts`): in each scheme its own tone */
+    --canvas-white: #ffffff;
+    --canvas-gray: #d4d7db;
+    --canvas-blue: #dce8f7;
+    --canvas-green: #dcefe4;
+    --canvas-violet: #e7e2f7;
+    --canvas-sand: #f1e8d6;
     /* The ink on a surface (a scale, a unit): as the labels on a surface in the color of the canvas (see below) */
     --shape-surface-ink: #222;
 
@@ -205,7 +218,18 @@
     --shape-glass-1: #dbe6f3;
     --shape-glass-2: #6f88a8;
 
-    --shape-canvas: #0a1628;
+    --shape-canvas: var(--style-canvas, #0a1628);
+    /* Its grid: the canvas lighter */
+    --canvas-grid: color-mix(in oklab, var(--shape-canvas), #fff 5%);
+    --canvas-grid-major: color-mix(in oklab, var(--shape-canvas), #fff 11%);
+    --canvas-gradient-top: color-mix(in oklab, var(--shape-canvas), #fff 5%);
+    --canvas-gradient-bottom: color-mix(in oklab, var(--shape-canvas), #000 35%);
+    --canvas-white: #000000;
+    --canvas-gray: #2a2e33;
+    --canvas-blue: #0e2447;
+    --canvas-green: #0f2a1f;
+    --canvas-violet: #1e1838;
+    --canvas-sand: #2a2318;
 
     /* Softer on the dark canvas, the outline apart from it */
     --shape-pipe: #5bb48b;

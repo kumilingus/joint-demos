@@ -54,6 +54,7 @@ Also: uploaded images (saved with the diagram), Favorites, and the shapes In Use
 
 - Color, outline, accent - per shape or for the diagram; theme colors adapt to light and dark.
 - Label size and color for the whole diagram (theme colors only).
+- Canvas color - a light and a dark tone, flat or in a subtle gradient; the grid follows.
 - Light and dark themes: the editor, the canvas and the shapes, switched in the toolbar (the system setting by default).
 
 ![The Cement Plant example in the dark theme](images/editor-dark.png)

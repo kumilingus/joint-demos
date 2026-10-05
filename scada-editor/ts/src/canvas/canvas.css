@@ -132,6 +132,26 @@
     font-family: var(--font);
 }
 
+/* The grid in the tones of the canvas (`--canvas-grid*` in `shapes.css`): its thin lines, its thick ones */
+.joint-grid-layer pattern:first-of-type path {
+    stroke: var(--canvas-grid);
+}
+
+.joint-grid-layer pattern:last-of-type path {
+    stroke: var(--canvas-grid-major);
+}
+
+/* The canvas in a gradient (the style of the diagram, see `diagram-style.ts`): behind the paper, on the viewport
+   (it stays while the paper is scrolled, zoomed, resized) */
+:root[data-canvas-gradient] .joint-paper-scroller {
+    background: linear-gradient(var(--canvas-gradient-top), var(--canvas-gradient-bottom));
+}
+
+:root[data-canvas-gradient] .joint-paper-scroller .joint-paper,
+:root[data-canvas-gradient] .joint-paper-scroller .joint-paper-background {
+    background: transparent !important;
+}
+
 /* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - not its ping (in its view, see `LogController`) */
 .jj-tint > :not(.jj-ping) {
     filter: var(--jj-tint-filter) drop-shadow(0 0 6px var(--jj-tint-color));

@@ -1,6 +1,7 @@
-import { format } from '@joint/plus';
+import { format, V } from '@joint/plus';
 import type { App } from '../app';
 import { getScreen } from '../canvas/screen';
+import { getStyle } from '../diagram-style';
 import Screen from '../shapes/models/diagram/Screen';
 
 /*
@@ -40,7 +41,12 @@ const NOT_EXPORTED = ['.joint-grid-layer', '.joint-back-layer > *', '.joint-fron
 export function exportImage(app: App): void {
     const { paper, graph } = app;
     const screen = getScreen(graph);
-    const background = getComputedStyle(paper.el).getPropertyValue('--shape-canvas').trim();
+    const computed = getComputedStyle(paper.el);
+    const background = computed.getPropertyValue('--shape-canvas').trim();
+    // The gradient of the canvas (see `canvas.css`): its colors, top to bottom
+    const gradient = getStyle(graph).canvasGradient
+        ? ['--canvas-gradient-top', '--canvas-gradient-bottom'].map(name => computed.getPropertyValue(name).trim())
+        : null;
     format.toDataURL(paper, (dataURL, error) => {
         if (error) return;
         const link = document.createElement('a');
@@ -56,8 +62,22 @@ export function exportImage(app: App): void {
         ...(screen ? { area: screen.getBBox() } : { padding: 20 }),
         beforeSerialize: (svg) => {
             NOT_EXPORTED.forEach(selector => svg.querySelectorAll(selector).forEach(node => node.remove()));
+            if (gradient) drawGradient(svg, gradient);
         }
     });
+}
+
+/** The gradient of the canvas under the whole image (its view box): from the top color to the bottom one */
+function drawGradient(svg: SVGSVGElement, [top, bottom]: string[]): void {
+    const [x, y, width, height] = (svg.getAttribute('viewBox') ?? '').split(/[\s,]+/).map(Number);
+    if (![x, y, width, height].every(Number.isFinite)) return;
+    const id = 'jj-export-canvas-gradient';
+    const gradient = V('linearGradient', { id, x1: 0, y1: 0, x2: 0, y2: 1 }).append([
+        V('stop', { offset: 0, style: `stop-color: ${top}` }),
+        V('stop', { offset: 1, style: `stop-color: ${bottom}` })
+    ]);
+    const rect = V('rect', { x, y, width, height, fill: `url(#${id})` });
+    svg.prepend(gradient.node, rect.node);
 }
 
 /** Whether the diagram may be replaced (by a new one, a file, an example): asked first if it was changed */

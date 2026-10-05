@@ -87,6 +87,8 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - *Color*, *Outline*, *Accent* - the body, edge and detail colors.
 - *Label size* - Small to X-Large, for shape labels (not for the Label shape).
 - *Label color* - the text color of those labels.
+- *Canvas* - the background color (White / Black, Blue, Green, Violet, Gray as in ISA-101, Sand; each with a light and a dark tone); the grid follows.
+- *Canvas gradient* - the canvas lighter at the top, darker at the bottom (the exported image too).
 
 **Run mode**
 - *Animations* - Full: everything animates (running equipment, flames, levels). Alarms only: only the levels and the alarms move.

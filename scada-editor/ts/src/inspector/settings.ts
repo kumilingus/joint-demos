@@ -6,7 +6,7 @@ import Screen from '../shapes/models/diagram/Screen';
 import { renderLabel } from './help';
 import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from '../runtime/animations';
 import { type DiagramStyle, getStyle, LABEL_SIZES, STYLE_ATTRIBUTE } from '../diagram-style';
-import { getColorFieldValue, renderColorField } from './color-field';
+import { CANVAS_COLORS, getColorFieldValue, renderColorField } from './color-field';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
@@ -154,7 +154,10 @@ export function openSettings(app: App): void {
                     group: 'style',
                     index: 4
                 },
-                labelColor: { type: 'color', label: 'Label color', auto: true, themeOnly: true, graph, group: 'style', index: 5 }
+                labelColor: { type: 'color', label: 'Label color', auto: true, themeOnly: true, graph, group: 'style', index: 5 },
+                // The background: of the colors of the canvas (a light and a dark tone), its grid follows
+                canvas: { type: 'color', label: 'Canvas', auto: true, themeOnly: true, palette: CANVAS_COLORS, graph, group: 'style', index: 6 },
+                canvasGradient: { type: 'toggle', label: 'Canvas gradient', group: 'style', index: 7 }
             },
             // What moves in the run mode (see `AnimationLevel`)
             animations: {

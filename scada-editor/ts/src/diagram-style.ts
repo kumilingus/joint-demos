@@ -5,7 +5,7 @@ import { setStyleFinish, type SurfaceFinish } from './shapes/common/gradients';
  * The style of the diagram (in the settings, saved with it): the finish of all the equipment (shaded, flat), one color
  * for their metal, one for their outlines, one for their accents - instead of the defaults of the shapes (see the `--base-*` in
  * `shapes.css`), everywhere: the canvas, the palette, the preview. An element's own color, outline, accent stay.
- * The size and the color of the labels of the elements too (`.jj-label` in `shapes.css`).
+ * The size and the color of the labels of the elements too (`.jj-label` in `shapes.css`), the color of the canvas.
  */
 
 /** The attribute of the graph with the style (saved with the diagram) */
@@ -19,6 +19,10 @@ export interface DiagramStyle {
     /** The labels of the elements (not the Label and Zone shapes: texts of their own): their size, their color */
     labelSize?: LabelSize;
     labelColor?: string;
+    /** The background of the paper (`--shape-canvas`: the surfaces in the color of the canvas too, its grid) */
+    canvas?: string;
+    /** The canvas in a subtle gradient of its color (top to bottom, see `--canvas-gradient-*` in `shapes.css`) */
+    canvasGradient?: boolean;
 }
 
 export type LabelSize = 'small' | 'medium' | 'large' | 'x-large';
@@ -38,11 +42,12 @@ export function getStyle(graph: dia.Graph): DiagramStyle {
 }
 
 // The CSS variables of the colors of the style (see `shapes.css`)
-const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize'>, string> = {
+const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize' | 'canvasGradient'>, string> = {
     color: '--style-color',
     outline: '--style-outline',
     accent: '--style-accent',
-    labelColor: '--style-label-color'
+    labelColor: '--style-label-color',
+    canvas: '--style-canvas'
 };
 
 /**
@@ -60,6 +65,8 @@ export function applyStyle(style: DiagramStyle): void {
             css.removeProperty(VARIABLES[key]);
         }
     });
+    // The gradient drawn behind the paper (`canvas.css`)
+    document.documentElement.toggleAttribute('data-canvas-gradient', Boolean(style.canvasGradient));
     const labelSize = style.labelSize && LABEL_SIZES[style.labelSize];
     if (labelSize) {
         css.setProperty('--style-label-size', `${labelSize.px}px`);
