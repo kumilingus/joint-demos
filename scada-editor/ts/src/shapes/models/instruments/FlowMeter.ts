@@ -3,6 +3,7 @@ import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR, SURFACE_INK } from '../../../const';
 import Shape, { type ColorField } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -37,6 +38,10 @@ export default class FlowMeter extends Shape {
         return {
             ...super.defaults,
             type: 'FlowMeter',
+            // What it shows (see `data.ts`): the reading
+            data: {
+                value: 12.5
+            },
             size: {
                 width: 80,
                 height: 60
@@ -69,7 +74,8 @@ export default class FlowMeter extends Shape {
                 // The texts grow with the height of the meter.
                 // The value is in the middle of the screen (from 6 to 0.72 * h).
                 value: {
-                    text: '12.5',
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(w / 2)',
                     y: 'calc(0.36 * h + 3)',
                     textAnchor: 'middle',
@@ -102,4 +108,10 @@ export default class FlowMeter extends Shape {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** The reading with one decimal (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
+    }
+
 }

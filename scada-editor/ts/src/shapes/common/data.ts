@@ -35,10 +35,17 @@ export function dataChanged(cell: dia.Cell, ...keys: DataKey[]): boolean {
 // The values at the top level of a cell in a diagram saved before they were its data (a table keeps its `values`)
 const DATA_KEYS: DataKey[] = ['power', 'open', 'level', 'value', 'values', 'min', 'max', 'thresholds', 'slices'];
 
+// The shapes showing a reading as a number of their data (saved before: as a text)
+const READINGS = ['Display', 'FlowMeter', 'ElectricMeter'];
+
 /** A diagram (its JSON) with the values of its cells in their data: as saved now */
 export function withData(json: dia.Graph.JSON): dia.Graph.JSON {
-    const cells = (json.cells ?? []).map((cell) => {
+    const cells = (json.cells ?? []).map((saved) => {
+        let cell = saved;
         if (cell.type === 'Table') return cell;
+        // The reading of a display, a meter: was its text
+        const reading = READINGS.includes(String(cell.type)) ? (cell.attrs as { value?: { text?: string }} | undefined)?.value?.text : undefined;
+        if (reading !== undefined && !('value' in cell)) cell = { ...cell, value: Number.parseFloat(reading) || 0 };
         const keys = DATA_KEYS.filter(key => key in cell);
         if (keys.length === 0) return cell;
         const moved: Record<string, unknown> = { ...cell, data: { ...(cell.data as object | undefined) }};

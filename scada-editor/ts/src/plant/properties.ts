@@ -50,8 +50,8 @@ const scaled: Property = {
 
 /** A reading shown as a number (a display, a meter): with one decimal */
 const reading: Property = {
-    read: element => Number.parseFloat(element.attr('value/text')) || 0,
-    write: (_element, value) => ({ 'attrs/value/text': Number(value).toFixed(1) })
+    read: element => Number(dataOf(element, 'value')) || 0,
+    write: (_element, value) => ({ 'data/value': Number(Number(value).toFixed(1)) })
 };
 
 /** The newest value of a history (a trend): on the right, the oldest one drops out on the left */

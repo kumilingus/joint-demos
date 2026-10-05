@@ -53,7 +53,6 @@ const TEXTS: Array<[string, string, string]> = [
     ['label', 'Label', 'general'],
     ['tag', 'Function', 'general'],
     ['loop', 'Loop', 'general'],
-    ['value', 'Value', 'values'],
     ['unit', 'Unit', 'values']
 ];
 
@@ -235,6 +234,11 @@ function getInputs(element: dia.Element): Inputs {
     const scaleLabel = ({ Thermometer: 'Temperature', PressureGauge: 'Pressure' } as Record<string, string>)[element.get('type')];
     if (scaleLabel) {
         inputs.value = { type: 'range', label: scaleLabel, min: 0, max: 100, step: 1, unit: '%', group: 'values', index: index++ };
+    }
+
+    // The reading of a display, a meter (one decimal)
+    if (['Display', 'FlowMeter', 'ElectricMeter'].includes(element.get('type'))) {
+        inputs.value = { type: 'number', label: 'Value', step: 0.1, group: 'values', index: index++ };
     }
 
     // The scale of a gauge chart and the value on it

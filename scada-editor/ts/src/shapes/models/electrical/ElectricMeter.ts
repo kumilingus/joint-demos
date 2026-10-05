@@ -3,6 +3,7 @@ import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR } from '../../../const';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -41,6 +42,10 @@ export default class ElectricMeter extends Shape {
         return {
             ...super.defaults,
             type: 'ElectricMeter',
+            // What it shows (see `data.ts`): the reading
+            data: {
+                value: 230.0
+            },
             size: {
                 width: 120,
                 height: 60
@@ -70,7 +75,8 @@ export default class ElectricMeter extends Shape {
                     strokeWidth: 1
                 },
                 value: {
-                    text: '230.0',
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(w - 26)',
                     y: 'calc(0.5 * h)',
                     textAnchor: 'end',
@@ -102,4 +108,10 @@ export default class ElectricMeter extends Shape {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** The reading with one decimal (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
+    }
+
 }

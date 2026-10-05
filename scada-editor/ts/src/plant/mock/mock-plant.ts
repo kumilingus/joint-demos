@@ -91,7 +91,7 @@ function withPumps(graph: dia.Graph, values: number[]): number {
 function steamFlow(graph: dia.Graph): number {
     const flows = graph.getElements()
         .filter(element => element.get('type') === 'FlowMeter')
-        .map(element => Number.parseFloat(element.attr('value/text')))
+        .map(element => Number(dataOf(element, 'value')))
         .filter(value => !Number.isNaN(value));
     return flows.length > 0 ? flows.reduce((sum, value) => sum + value, 0) / flows.length : 0;
 }
@@ -112,7 +112,7 @@ const toggle = (probability: number): Generator => element => (chance(probabilit
 function highestPressure(graph: dia.Graph): number {
     const pressures = graph.getElements()
         .filter(element => element.get('type') === 'Display' && element.attr('unit/text') === 'bar')
-        .map(element => Number.parseFloat(element.attr('value/text')))
+        .map(element => Number(dataOf(element, 'value')))
         .filter(value => !Number.isNaN(value));
     return pressures.length > 0 ? Math.max(...pressures) : 0;
 }

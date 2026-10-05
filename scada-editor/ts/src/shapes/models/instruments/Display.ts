@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR } from '../../../const';
 import Shape, { type ColorField } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -36,6 +37,10 @@ export default class Display extends Shape {
         return {
             ...super.defaults,
             type: 'Display',
+            // What it shows (see `data.ts`): the reading
+            data: {
+                value: 42.7
+            },
             size: {
                 width: 120,
                 height: 60
@@ -67,7 +72,8 @@ export default class Display extends Shape {
                 // The texts grow with the height of the display (a `calc()` takes a single
                 // variable, so the unit is in the corner rather than next to the value).
                 value: {
-                    text: '42.7',
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(w / 2)',
                     y: 'calc(0.42 * h)',
                     textAnchor: 'middle',
@@ -99,4 +105,10 @@ export default class Display extends Shape {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** The reading with one decimal (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
+    }
+
 }
