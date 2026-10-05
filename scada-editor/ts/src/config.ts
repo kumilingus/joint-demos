@@ -108,7 +108,10 @@ export const interactivity: Record<Mode, Interactivity | false> = {
     [Mode.Runtime]: false
 };
 
-/** The canvas in each color scheme: its background and the dots of its grid. */
+/**
+ * The canvas in each color scheme: its background and the lines of its grid (drawn in the tones of the canvas by
+ * `canvas.css`, these until its style applies).
+ */
 export const canvasColors: Record<ColorScheme, { background: string; grid: string; majorGrid: string }> = {
     // The background: of the theme (`--shape-canvas`, the surfaces of the finish `none` are of it too)
     [ColorScheme.Light]: { background: 'var(--shape-canvas)', grid: '#e1e8e6', majorGrid: '#c9d4d1' },

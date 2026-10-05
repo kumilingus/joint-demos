@@ -20,6 +20,16 @@ const THEME_COLORS: [string, string][] = [
     ['Red', 'var(--color-red)']
 ];
 
+/** The colors of the canvas to pick (see `--canvas-*` in `shapes.css`): light in the light scheme, dark in the dark one */
+export const CANVAS_COLORS: [string, string][] = [
+    ['White / Black', 'var(--canvas-white)'],
+    ['Blue', 'var(--canvas-blue)'],
+    ['Green', 'var(--canvas-green)'],
+    ['Violet', 'var(--canvas-violet)'],
+    ['Gray (ISA-101)', 'var(--canvas-gray)'],
+    ['Sand', 'var(--canvas-sand)']
+];
+
 /** The color of the canvas: light in the light scheme, dark in the dark one - flat, a line drawing */
 const CANVAS_SWATCH: [string, string] = ['Canvas', 'var(--shape-canvas)'];
 
@@ -117,7 +127,8 @@ export function rememberColor(color: string): void {
  * The options of a color field: `mixed` - the cells it is for (see `selection-inspector.ts`) have different
  * colors (none is shown); `graph` - the diagram of the colors to pick, for a cell not in it (a stand-in);
  * `auto` - the color can be none of the cell's own (an Auto swatch removes it, e.g. the outline of a shape);
- * `themeOnly` - the colors of the theme only (no picker, no colors of the diagram: a text readable in both schemes).
+ * `themeOnly` - the colors of the theme only (no picker, no colors of the diagram: a text readable in both schemes);
+ * `palette` - the colors of the theme to pick (instead of `THEME_COLORS`, e.g. the canvases).
  */
 interface ColorFieldOptions {
     type?: string;
@@ -127,6 +138,7 @@ interface ColorFieldOptions {
     graph?: dia.Graph;
     auto?: boolean;
     themeOnly?: boolean;
+    palette?: [string, string][];
 }
 
 /**
@@ -207,7 +219,7 @@ export function renderColorField(options: ColorFieldOptions, path: string, value
     } else if (isThemeColor(defaultColor)) {
         swatches.append(themeSwatch(defaultColor, 'Default: the color of the theme (light / dark)'));
     }
-    THEME_COLORS
+    (options.palette ?? THEME_COLORS)
         .filter(([, color]) => color !== defaultColor)
         .forEach(([name, color]) => swatches.append(themeSwatch(color, `${name} (light / dark)`)));
     // On a row of their own: the canvas, the recent colors and the ones of the diagram
