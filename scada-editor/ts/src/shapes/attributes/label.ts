@@ -1,6 +1,7 @@
 import { dia, type g } from '@joint/plus';
 import { LABEL_COLOR } from '../../const';
 import { getFootprint } from '../common/footprint';
+import { flipOf } from './flip';
 
 /**
  * Where the label of a shape is: below it (the default - as the shape draws it), above it, on its left or right -
@@ -101,6 +102,17 @@ export function sideOf(position: unknown): LabelPosition {
 }
 
 /**
+ * Whether the label below the element is where the shape draws it (its own `y`, clear of its drawing): not when the
+ * element is flipped vertically (its drawing mirrored up and down, see `flip.ts`; horizontally nothing below changes),
+ * nor when its pipe stubs point down (the outlets of a manifold)
+ */
+function drawnBelowAsIs(element: dia.Element): boolean {
+    if (flipOf(element).includes('y')) return false;
+    const groups = Object.keys(element.prop(['ports', 'groups']) ?? {});
+    return !groups.some(group => Object.values(element.getPortsPositions(group)).some(({ angle }) => angle === 90));
+}
+
+/**
  * The layout of the label at its position: the point, the horizontal and the vertical anchor of the text - beside the
  * element on the side as it is seen (see `besideElement()`), the text kept horizontal. `null` below an element not
  * rotated: as the shape draws it.
@@ -109,7 +121,7 @@ function layoutOf(view: dia.ElementView, position: unknown, gap: number, size: {
     const side = sideOf(position);
     const element = view.model as dia.Element;
     const angle = element.angle();
-    if (side === 'bottom' && angle % 360 === 0) return null;
+    if (side === 'bottom' && angle % 360 === 0 && drawnBelowAsIs(element)) return null;
     const point = besideElement(element, side, size, gap);
     const anchors = {
         bottom: { anchor: 'middle', verticalAnchor: 'top' },

@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type Resizable, type ControlKind } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 // Rotor metrics
 const r = 30;
@@ -10,18 +11,27 @@ const l = (3 * r) / 4;
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
-    <rect @selector='outlet' />
+    <g @group-selector='directional'>
+        <rect @selector='outlet' />
+    </g>
     <ellipse @selector='body' />
-    <rect @selector='inlet' />
-    <g @selector='rotorGroup'>
-        <circle @selector='rotorFrame' />
-        <circle @selector='rotorBackground' />
-        <path @selector='rotor' />
+    <g @group-selector='directional'>
+        <rect @selector='inlet' />
+        <g @selector='rotorGroup'>
+            <circle @selector='rotorFrame' />
+            <circle @selector='rotorBackground' />
+            <path @selector='rotor' />
+        </g>
     </g>
     <text @selector='label' />
 `;
 
 export default class Pump extends Shape {
+
+    // The flow the other way: its inlet on the right (see `flip.ts`: its stubs mirrored)
+    get flippable(): Flip {
+        return 'x';
+    }
 
     get resizable(): Resizable {
         return false;
@@ -49,6 +59,10 @@ export default class Pump extends Shape {
                 // The pipes to the stubs: the inlet over the casing, the outlet behind it
                 inlet: pipeThroughAttributes(0.7, 'left'),
                 outlet: pipeThroughAttributes(0.3, 'right'),
+                // The parts showing which way it faces: mirrored when it is flipped, with its stubs (see `flip.ts`)
+                directional: {
+                    flip: true
+                },
                 root: {
                     magnetSelector: 'body'
                 },

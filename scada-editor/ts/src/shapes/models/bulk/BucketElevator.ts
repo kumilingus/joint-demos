@@ -66,7 +66,7 @@ export default class BucketElevator extends Shape {
             attrs: {
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
                 directional: {
-                    flip: ''
+                    flip: true
                 },
                 root: {
                     magnetSelector: 'casing'

@@ -11,3 +11,4 @@ export { topGroup, groupable, fitGroups, groupSelection, ungroupSelection } from
 export { saveDiagram, exportImage, confirmReplace, newDiagram, openDiagram } from './file';
 export { addImages, refreshPalette, deleteImage } from './palette';
 export { zoomToFit } from './view';
+export { flipSelection, flipTargets } from './flip';

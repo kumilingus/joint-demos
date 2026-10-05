@@ -1,9 +1,12 @@
 import { type dia, util } from '@joint/plus';
 import { branchPorts, fittingPorts } from '../../common/ports';
 import { FITTING_STUB_LENGTH } from './Fitting';
-import type { Overflow } from '../../common/footprint';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type Resizable } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
+
+// The rounded ends of the header
+const BODY_RADIUS = 12;
 
 // Where the outlets are along the header (relative to its width)
 const OUTLETS = ['calc(0.25 * w)', 'calc(0.5 * w)', 'calc(0.75 * w)'];
@@ -17,6 +20,11 @@ const markup = util.svg/* xml */`
 /** A distribution header: one inlet on the left, the outlets below it. */
 export default class Manifold extends Shape {
 
+    // Its inlet on the other end, its outlets up (see `flip.ts`: its ports mirrored)
+    get flippable(): Flip {
+        return 'xy';
+    }
+
     get resizable(): Resizable {
         return false;
     }
@@ -25,17 +33,14 @@ export default class Manifold extends Shape {
         return FITTING_STUB_LENGTH;
     }
 
-    // The outlets go down out of the bounding box, the label is above it (the pipes leave below).
-    get overflow(): Overflow {
-        return { top: 30, bottom: FITTING_STUB_LENGTH };
-    }
 
     get tagPrefix(): string {
         return 'HDR';
     }
 
     defaults(): dia.Element.Attributes {
-        const inlet = fittingPorts(['left'], FITTING_STUB_LENGTH)!;
+        // The inlet under the rounded end of the header (no gap at its corners)
+        const inlet = fittingPorts(['left'], FITTING_STUB_LENGTH, BODY_RADIUS)!;
         const outlets = branchPorts(OUTLETS, FITTING_STUB_LENGTH)!;
         return {
             ...super.defaults,
@@ -51,17 +56,17 @@ export default class Manifold extends Shape {
                 body: {
                     width: 'calc(w)',
                     height: 'calc(h)',
-                    rx: 12,
-                    ry: 12,
+                    rx: BODY_RADIUS,
+                    ry: BODY_RADIUS,
                     surfaceStroke: 'edge',
                     strokeWidth: 2,
                     surfaceFill: 'pipe'
                 },
+                // Above it (the pipes leave below): clear of its stubs on any side (flipped: the outlets up)
                 label: {
                     ...labelAttributes,
                     text: 'Manifold',
-                    y: -10,
-                    textVerticalAnchor: 'bottom'
+                    labelPosition: 'top'
                 }
             },
             ports: {

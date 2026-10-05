@@ -183,13 +183,13 @@ export function pipePorts(
 }
 
 /**
- * The pipe stubs of a fitting (a tee, a cross, ...): one in the middle of each of the sides.
+ * The pipe stubs of a fitting (a tee, a cross, ...): one in the middle of each of the sides (`tuck` under a rounded one).
  * The ports are named after the sides.
  */
-export function fittingPorts(sides: Side[], length: number): dia.Element.Attributes['ports'] {
+export function fittingPorts(sides: Side[], length: number, tuck = 0): dia.Element.Attributes['ports'] {
     return {
         groups: {
-            pipes: pipeStubGroup(length, 0)
+            pipes: pipeStubGroup(length, tuck)
         },
         items: sides.map(side => sideStub(side, 'pipes', side, length))
     };

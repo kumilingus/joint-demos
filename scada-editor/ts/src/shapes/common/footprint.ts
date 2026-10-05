@@ -1,5 +1,6 @@
 import { type dia, g } from '@joint/plus';
 import type Shape from './Shape';
+import { flipOf } from '../attributes/flip';
 
 /** How far the drawing of a shape reaches out of its model bounding box (on top of the default). */
 export interface Overflow {
@@ -70,14 +71,15 @@ export function getFootprint(cell: dia.Cell, { label = true }: FootprintOptions 
 
     // Of a shape (not the class itself: the shapes import this module through their attributes, see `attributes/label.ts`)
     const overflow = 'overflow' in element ? (element as Shape).overflow : {};
-    const sides = { ...DEFAULT_OVERFLOW, ...overflow };
-    // Flipped (see `flip.ts`): the drawing reaches out of the other side
-    const flip = String(element.attr(['directional', 'flip']) ?? '');
-    const { top = 0, right = 0, bottom = 0, left = 0 } = {
-        ...sides,
-        ...(flip.includes('x') ? { left: sides.right, right: sides.left } : {}),
-        ...(flip.includes('y') ? { top: sides.bottom, bottom: sides.top } : {})
+    // Flipped (see `flip.ts`): the drawing of the shape reaches out of the other side (not the room of its label below)
+    const flip = flipOf(element);
+    const own: Overflow = {
+        ...overflow,
+        ...(flip.includes('x') ? { left: overflow.right, right: overflow.left } : {}),
+        ...(flip.includes('y') ? { top: overflow.bottom, bottom: overflow.top } : {})
     };
+    const defined = Object.fromEntries(Object.entries(own).filter(([, value]) => value !== undefined));
+    const { top = 0, right = 0, bottom = 0, left = 0 } = { ...DEFAULT_OVERFLOW, ...defined };
     const drawing = label
         ? { top, right, bottom, left }
         : withoutLabel(element, { top, right, bottom, left });

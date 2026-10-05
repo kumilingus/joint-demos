@@ -32,7 +32,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Select Same Type** - right-click a shape: all shapes of the selected types (*Pump · 2*).
 - **Select Below** - right-click where shapes overlap: the one underneath.
 - **Move** by dragging; **resize** and **rotate** a single shape with its handles.
-- **Flip** - shapes that face a way (check valve, strainer, turbine, compressor, fan, blower, cyclone, kiln, crusher, mill, bucket elevator): *Flip* in the inspector mirrors them instead of turning them upside down. The strainer flips vertically too (its leg up).
+- **Flip** - shapes that face a way (pump, check valve, strainer, manifold, turbine, compressor, fan, blower, cyclone, kiln, crusher, mill, bucket elevator): right-click *Flip Horizontally* (`Shift` + `H`) or *Flip Vertically* (`Shift` + `V`) mirrors them instead of turning them upside down; connected pipes stay on their stubs. The strainer and the manifold flip vertically too (the leg up, the outlets up).
 - **Label** - its text and *Label position* (top, left, right, bottom) in the inspector.
 - **Control position** - the side of a valve's buttons or slider (Controls group).
 
@@ -135,6 +135,7 @@ Edit mode, not while typing. `Cmd` on macOS, `Ctrl` elsewhere.
 | Select all | `Cmd` + `A` |
 | Select elements only | `Cmd` + `Shift` + `A` |
 | Group / ungroup | `Cmd` + `G` / `Cmd` + `Shift` + `G` |
+| Flip horizontally / vertically | `Shift` + `H` / `Shift` + `V` |
 | Duplicate (drag a copy) | `Cmd` or `Alt` + drag an element |
 | Delete | `Delete`, `Backspace` |
 | Close a menu, one group level up, clear the selection | `Escape` |

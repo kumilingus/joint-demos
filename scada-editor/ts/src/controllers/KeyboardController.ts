@@ -1,11 +1,11 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { copySelection, cutSelection, groupSelection, paste, redo, removeSelection, selectAll, selectElements, selectUp, undo, ungroupSelection } from '../actions';
+import { copySelection, cutSelection, flipSelection, groupSelection, paste, redo, removeSelection, selectAll, selectElements, selectUp, undo, ungroupSelection } from '../actions';
 import { closeMenu } from '../canvas/context-menu';
 
 /**
- * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, `Escape` one level
+ * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, flip, `Escape` one level
  * up (the group of the selected member, then nothing). Active in the edit mode only.
  */
 export default class KeyboardController extends Controller {
@@ -25,7 +25,10 @@ export default class KeyboardController extends Controller {
             // The elements only (no connections)
             'ctrl+shift+a meta+shift+a': onSelectElements,
             'ctrl+g meta+g': onGroup,
-            'ctrl+shift+g meta+shift+g': onUngroup
+            'ctrl+shift+g meta+shift+g': onUngroup,
+            // Flipped horizontally, vertically (see `flipSelection()`)
+            'shift+h': (app: App, evt: dia.Event) => onFlip(app, evt, 'x'),
+            'shift+v': (app: App, evt: dia.Event) => onFlip(app, evt, 'y')
         });
     }
 }
@@ -104,4 +107,10 @@ function onUngroup(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
     evt.preventDefault();
     ungroupSelection(app);
+}
+
+function onFlip(app: App, evt: dia.Event, axis: 'x' | 'y') {
+    if (isTyping(evt)) return;
+    evt.preventDefault();
+    flipSelection(app, axis);
 }

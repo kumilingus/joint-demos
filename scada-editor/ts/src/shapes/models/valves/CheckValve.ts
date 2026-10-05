@@ -55,7 +55,7 @@ export default class CheckValve extends Shape {
                 },
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
                 directional: {
-                    flip: ''
+                    flip: true
                 },
                 // The bow tie of a valve...
                 body: {

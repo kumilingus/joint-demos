@@ -1,11 +1,12 @@
-import { dia } from '@joint/plus';
+import { dia, layout } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { GRID_SIZE, Layer } from '../../const';
 import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttributes } from './gradients';
 import { pipeAttributes } from './ports';
 import { textAttributes } from '../attributes/text-styles';
 import { labelPositionAttributes } from '../attributes/label';
-import { type Flip, flipAttributes } from '../attributes/flip';
+import { type Flip, flipAttributes, flipOf, flippablePortLayout, flippedPorts } from '../attributes/flip';
+import { DERIVED } from './routing';
 
 /** The size constraints of resizing. */
 export interface ResizeOptions {
@@ -52,7 +53,7 @@ export interface ShapeFeatures {
     resizable: Resizable;
     /** Whether the element can be rotated. */
     rotatable: boolean;
-    /** How the element can be flipped (`attrs/directional/flip`, see `flip.ts`): the parts of its markup in `directional`; `null` - not. */
+    /** How the element can be flipped (its `flip`, see `flip.ts`): the parts of its markup in `directional`; `null` - not. */
     flippable: Flip | null;
     /** The control of the element, if it has one. */
     control: ControlKind | null;
@@ -151,8 +152,25 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
+        // Its ports mirrored with its drawing (see `flip.ts`): derived, not in the history
+        if (this.flippable) {
+            this.flipPorts();
+            this.on('change:flip', (_cell: dia.Cell, _flip: unknown, options: dia.Cell.Options) => this.flipPorts(options));
+        }
         // In the layer of its kind (unless it says otherwise, e.g. in the JSON)
         if (!this.has('layer')) this.set('layer', this.graphLayer, { silent: true });
+    }
+
+    /** The flip its ports are laid out with (see `flipPorts()`): declared - set in `initialize()`, called by the constructor */
+    private declare portsFlip?: string;
+
+    /** The ports (of its defaults) laid out with the flip of the element, when it changes */
+    protected flipPorts(options: dia.Cell.Options = {}): void {
+        const flip = flipOf(this);
+        if (flip === (this.portsFlip ?? '')) return;
+        this.portsFlip = flip;
+        const { unset: _unset, ...setOptions } = options;
+        this.set('ports', flippedPorts(this.defaults().ports, flip), { ...setOptions, ...DERIVED });
     }
 
     /**
@@ -186,3 +204,6 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
         return cell instanceof Shape;
     }
 }
+
+// The port layouts of the shapes: the library's, and the one of the shapes that can be flipped (see `flip.ts`)
+(Shape.prototype as unknown as { portLayoutNamespace: object }).portLayoutNamespace = { ...layout.Port, flippable: flippablePortLayout };

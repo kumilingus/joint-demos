@@ -20,6 +20,8 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
                 finish: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
                 outline: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
                 outlineWidth: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
+                // Its directional parts mirrored, its label clear of its drawing (see `flip.ts`)
+                flip: dia.ElementView.Flags.UPDATE,
                 // Rotated: its label laid out again (horizontal, on its side - see `labelPosition`)
                 angle: [dia.ElementView.Flags.ROTATE, dia.ElementView.Flags.UPDATE],
                 ...Object.fromEntries(attributes.map(attribute => [attribute, dia.ElementView.Flags.UPDATE]))

@@ -1,7 +1,7 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from '../app';
 import {
-    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin, connectedEnds, disconnectSelection, sameTypeCells, selectAll, selectConnections, selectedTypes, selectElements, selectSameType
+    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin, connectedEnds, disconnectSelection, sameTypeCells, flipSelection, flipTargets, selectAll, selectConnections, selectedTypes, selectElements, selectSameType
 } from '../actions';
 import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
@@ -16,7 +16,9 @@ import type { Layer } from '../const';
  */
 
 /** A shortcut shown next to the item: the one of the platform */
-const MOD = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘' : 'Ctrl+';
+const MAC = /Mac|iPhone|iPad/.test(navigator.platform);
+const MOD = MAC ? '⌘' : 'Ctrl+';
+const SHIFT = MAC ? '⇧' : 'Shift+';
 
 interface MenuItem {
     action: string;
@@ -136,6 +138,8 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
             disabled: selectedTypes(app).length === 0,
             run: () => selectSameType(app)
         },
+        // Mirrored in place (the shapes that face a way, see `flip.ts`): offered for those only
+        ...flipItems(app),
         { action: 'front', label: 'Bring to Front', hint: layerHint, separated: true, run: () => bringToFront(app) },
         { action: 'back', label: 'Send to Back', hint: layerHint, run: () => sendToBack(app) },
         ...(over
@@ -160,6 +164,19 @@ export function openBlankMenu(app: App, evt: dia.Event, x: number, y: number): v
         { action: 'select-elements', label: 'Select Elements', shortcut: `${MOD}⇧A`, disabled: !cells.some(cell => cell.isElement()), run: () => selectElements(app) },
         { action: 'select-connections', label: 'Select Connections', disabled: !cells.some(cell => cell.isLink()), run: () => selectConnections(app) }
     ]);
+}
+
+/** Flip Horizontally / Vertically: of the selected shapes that can be flipped so (none - not offered) */
+function flipItems(app: App): MenuItem[] {
+    const items: MenuItem[] = [];
+    if (flipTargets(app, 'x').length > 0) {
+        items.push({ action: 'flip-x', label: 'Flip Horizontally', shortcut: `${SHIFT}H`, run: () => flipSelection(app, 'x') });
+    }
+    if (flipTargets(app, 'y').length > 0) {
+        items.push({ action: 'flip-y', label: 'Flip Vertically', shortcut: `${SHIFT}V`, run: () => flipSelection(app, 'y') });
+    }
+    if (items.length > 0) items[0].separated = true;
+    return items;
 }
 
 /** Disconnect: the links of the selected elements freed at their ends (how many), none - disabled */

@@ -2,6 +2,7 @@ import { dia, util, type mvc } from '@joint/plus';
 import Shape from '../shapes/common/Shape';
 import { besideElement, seenBBox, sideOf } from '../shapes/attributes/label';
 import { readProperty, type TagValue } from '../plant/properties';
+import { flipOf } from '../shapes/attributes/flip';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -40,8 +41,11 @@ export function isControlEvent(evt: dia.Event): boolean {
 }
 
 /** The markup of the controls (parsed once, shared by all of them) */
+// The size of the checkbox in the corner of a pump
+const CHECKBOX_SIZE = 20;
+
 const pumpControlMarkup = util.svg/* xml */`
-    <foreignObject class="${CONTROL_CLASS}" width="20" height="20">
+    <foreignObject class="${CONTROL_CLASS}" width="${CHECKBOX_SIZE}" height="${CHECKBOX_SIZE}">
         <div class="jj-checkbox" xmlns="http://www.w3.org/1999/xhtml">
             <input @selector="input" class="jj-checkbox-input" type="checkbox"/>
         </div>
@@ -132,10 +136,11 @@ abstract class Control extends dia.HighlighterView {
         this.el.setAttribute('transform', `translate(${x},${y})`);
     }
 
-    /** Place the control in the top left corner of the element as it is seen (rotated) */
+    /** Place the control in the top left corner of the element as it is seen (rotated) - flipped: the top right one */
     protected placeInCorner(element: dia.Element): void {
-        const { x, y } = seenBBox(element);
-        this.place(x + 5, y + 5);
+        const { x, y, width } = seenBBox(element);
+        const flipped = flipOf(element).includes('x');
+        this.place(flipped ? x + width - 5 - CHECKBOX_SIZE : x + 5, y + 5);
     }
 
     /**
@@ -159,8 +164,8 @@ abstract class Control extends dia.HighlighterView {
 class PumpControl extends Control {
 
     preinitialize(): void {
-        // `angle`, `size`: in the corner as it is seen
-        this.UPDATE_ATTRIBUTES = ['power', 'angle', 'size'];
+        // `angle`, `size`, `flip`: in the corner as it is seen (flipped: the other one, see `flip.ts`)
+        this.UPDATE_ATTRIBUTES = ['power', 'angle', 'size', 'flip'];
         this.tagName = 'g';
         this.children = pumpControlMarkup;
     }
@@ -187,8 +192,8 @@ class PumpControl extends Control {
 class ToggleValveControl extends Control {
 
     preinitialize(): void {
-        // `controlPosition`, `angle`, `size`: beside the valve (see `placeBeside()`)
-        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size'];
+        // `controlPosition`, `angle`, `size`, `flip`: beside the valve, clear of its drawing (see `placeBeside()`)
+        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size', 'flip'];
         this.children = toggleValveControlMarkup;
     }
 
@@ -225,8 +230,8 @@ class ToggleValveControl extends Control {
 class SliderValveControl extends Control {
 
     preinitialize(): void {
-        // `controlPosition`, `angle`, `size`: beside the valve (see `placeBeside()`)
-        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size'];
+        // `controlPosition`, `angle`, `size`, `flip`: beside the valve, clear of its drawing (see `placeBeside()`)
+        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size', 'flip'];
         this.children = sliderValveControlMarkup;
     }
 
