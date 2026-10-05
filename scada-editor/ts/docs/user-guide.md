@@ -77,10 +77,22 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 
 **Settings** in the toolbar.
 
-- **Screen** - on or off, width, height. While the settings are open, drag the screen by its edge or its name.
-- **Style** - Finish, Color, Outline, Accent for shapes without their own; Label size (Small to X-Large) and Label color.
-- **Animations** - Full, or Alarms only.
-- **Editor** - Snaplines, In Use group.
+**Screen**
+- *Enabled* - shows or hides the screen frame. Without a screen, run mode and the exported image show the whole diagram.
+- *Width*, *Height* - the screen size in pixels. While the settings are open, drag the screen by its edge or its name to move it.
+
+**Style** - the defaults for every shape that has no style of its own (Auto in its inspector).
+- *Finish* - Shaded (gradients) or Flat.
+- *Color*, *Outline*, *Accent* - the body, edge and detail colors.
+- *Label size* - Small to X-Large, for shape labels (not for the Label shape).
+- *Label color* - the text color of those labels.
+
+**Run mode**
+- *Animations* - Full: everything animates (running equipment, flames, levels). Alarms only: only the levels and the alarms move.
+
+**Editor**
+- *Snaplines* - guide lines that align a moved or resized shape with the others.
+- *In Use group* - shows or hides the In Use group in the palette.
 
 ## Run mode
 
