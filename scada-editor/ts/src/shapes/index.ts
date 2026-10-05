@@ -62,7 +62,7 @@ import Elbow from './models/piping/Elbow';
 import EndCap from './models/piping/EndCap';
 import Manifold from './models/piping/Manifold';
 import SignalLine from './models/instruments/SignalLine';
-import Arrow from './models/instruments/Arrow';
+import Arrow, { ArrowView } from './models/instruments/Arrow';
 import Screen from './models/diagram/Screen';
 import Generator from './models/electrical/Generator';
 import Transformer from './models/electrical/Transformer';
@@ -162,7 +162,9 @@ export const cellNamespace = {
     Label,
     Pipe,
     SignalLine,
+    // An arrow with a view of its own (its line ends where its arrowheads start)
     Arrow,
+    ArrowView,
     CustomImage,
     Tee,
     Cross,

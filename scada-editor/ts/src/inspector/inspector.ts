@@ -8,7 +8,7 @@ import type { ColorField } from '../shapes/common/Shape';
 import { isGroup } from '../shapes/models/diagram/Group';
 import { appearanceTargets, createAppearanceInspector } from './selection-inspector';
 import { hasFinish } from '../shapes/common/gradients';
-import { type Arrowhead, arrowheadMarker } from '../shapes/models/instruments/Arrow';
+import { type Arrowhead, ARROWHEAD_LENGTHS, arrowheadMarker } from '../shapes/models/instruments/Arrow';
 import { descriptions } from '../palette/descriptions';
 import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
 
@@ -372,16 +372,21 @@ function fieldInputs(cell: dia.Cell, field: ColorField | null, label: string, gr
     return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
 }
 
+// Where the tip of an arrowhead of a button is (see `arrowheadIcon()`)
+const ICON_TIP = 24;
+
 /** An arrowhead as a button: a short line ending with it (pointing outwards: left at the start, right at the end) */
 function arrowheadIcon(arrowhead: Arrowhead, end: 'source' | 'target'): string {
     const marker = arrowheadMarker(arrowhead);
+    // The line ends where the arrowhead starts (as on the canvas, see `ArrowView`)
+    const lineEnd = ICON_TIP - ARROWHEAD_LENGTHS[arrowhead];
     const head = marker
         ? (marker.type === 'circle'
-            ? `<circle cx="20" cy="7" r="${marker.r}" />`
-            : `<path d="${marker.d}" transform="translate(20 7) rotate(180)" fill="${marker.fill ?? 'currentColor'}" stroke-width="${marker['stroke-width']}" stroke-linejoin="round" />`)
+            ? `<circle cx="${lineEnd - Number(marker.cx ?? 0)}" cy="7" r="${marker.r}" />`
+            : `<path d="${marker.d}" transform="translate(${lineEnd} 7) rotate(180)" fill="${marker.fill ?? 'currentColor'}" stroke-width="${marker['stroke-width']}" stroke-linejoin="round" />`)
         : '';
     const flip = end === 'source' ? ' transform="matrix(-1 0 0 1 26 0)"' : '';
-    return `<svg width="26" height="14" viewBox="0 0 26 14" fill="currentColor" stroke="currentColor" aria-label="${arrowhead}"><title>${ARROWHEAD_NAMES[arrowhead]}</title><g${flip}><path d="M 2 7 H 20" stroke-width="2" stroke-linecap="round" />${head}</g></svg>`;
+    return `<svg width="26" height="14" viewBox="0 0 26 14" fill="currentColor" stroke="currentColor" aria-label="${arrowhead}"><title>${ARROWHEAD_NAMES[arrowhead]}</title><g${flip}><path d="M 2 7 H ${lineEnd}" stroke-width="2" stroke-linecap="round" />${head}</g></svg>`;
 }
 
 const ARROWHEAD_NAMES: Record<Arrowhead, string> = { none: 'None', arrow: 'Arrow', open: 'Open arrow', circle: 'Circle', diamond: 'Diamond' };
