@@ -1,6 +1,5 @@
 import { dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
-import { followRouting, routingAttributes } from '../../common/routing';
 import type { ColorField } from '../../common/Shape';
 import { styleColorAttributes } from '../../attributes/style-color';
 
@@ -56,7 +55,6 @@ export default class Conveyor extends dia.Link {
             layer: Layer.Pipes,
             z: -1,
             routing: 'straight',
-            ...routingAttributes('straight'),
             attrs: {
                 // An invisible wide stroke that makes the belt easy to grab.
                 wrapper: {
@@ -98,10 +96,5 @@ export default class Conveyor extends dia.Link {
 
     preinitialize(): void {
         this.markup = markup;
-    }
-
-    initialize(...args: Parameters<dia.Link['initialize']>): void {
-        super.initialize(...args);
-        followRouting(this);
     }
 }

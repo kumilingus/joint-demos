@@ -36,7 +36,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 Everything edited is recorded (image upload, rename, delete included). Not recorded (`historyOptions` in `config.ts`) - changes with:
 
 - `RUNTIME` (`runtime/controls.ts`) - by the plant during a run,
-- `DERIVED` (`shapes/common/routing.ts`) - derived from another change (a router, table rows taken by a resize),
+- `DERIVED` (`shapes/common/routing.ts`) - derived from another change (the taps of a busbar, table rows taken by a resize),
 - `PREFERENCE` (`palette/favorites.ts`) - favorites.
 
 Opening a diagram clears the history.
@@ -185,7 +185,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 | Palette packing (skyline, no labels) | `palette/packing.ts` |
 | Uploaded images (one `<symbol>` per paper) | `palette/images.ts` |
 | Where a link end connects | `connectionStrategy` in `canvas/connections.ts` |
-| Routing straight / orthogonal / curved | `shapes/common/routing.ts` |
+| Routing straight / orthogonal / curved (a link stores its `routing` only: the router, the connector by the paper defaults) | `shapes/common/routing.ts` |
 | Conveyor (a link drawn as a belt) | `shapes/models/bulk/Conveyor.ts` |
 | Charts (paths from model data) | `shapes/common/charts.ts` |
 | Table (own view, per-cell updates) | `shapes/models/charts/Table.ts`, `shapes/views/TableView.ts` |

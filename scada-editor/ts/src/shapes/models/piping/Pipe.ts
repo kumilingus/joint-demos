@@ -1,10 +1,10 @@
 import { dia, util } from '@joint/plus';
-import { followRouting, routingAttributes } from '../../common/routing';
 import { Layer, PIPE_COLOR, PIPE_OUTLINE } from '../../../const';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
 import { lineWidthAttributes, scaledWidth, type StrokeWidths } from '../../common/line-width';
 import { styleColorAttributes } from '../../attributes/style-color';
 import { outlineWidthOf } from '../../common/gradients';
+import { routingPresentationAttributes } from '../../common/routing';
 
 // The widths of its strokes (normal, see `lineWidth`); the outline is around the line (see `pipeOutline`)
 const STROKE_WIDTHS: StrokeWidths = { line: 10, flow: 3 };
@@ -59,7 +59,6 @@ export default class Pipe extends dia.Link {
             layer: Layer.Pipes,
             z: -1,
             routing: 'orthogonal',
-            ...routingAttributes('orthogonal'),
             attrs: {
                 // An invisible wide stroke that makes the pipe easy to grab.
                 wrapper: {
@@ -106,16 +105,12 @@ export default class Pipe extends dia.Link {
     preinitialize(): void {
         this.markup = markup;
     }
-
-    initialize(...args: Parameters<dia.Link['initialize']>): void {
-        super.initialize(...args);
-        followRouting(this);
-    }
 }
 
 /** The view of a pipe: drawn again when its style changes - its colors, its size, its outline width (see `style.ts`) */
 export const PipeView = dia.LinkView.extend({
     presentationAttributes: dia.LinkView.addPresentationAttributes({
-        style: dia.LinkView.Flags.UPDATE
+        style: dia.LinkView.Flags.UPDATE,
+        ...routingPresentationAttributes
     })
 });

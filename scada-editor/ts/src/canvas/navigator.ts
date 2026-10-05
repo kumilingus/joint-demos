@@ -1,5 +1,6 @@
 import { dia, ui, util } from '@joint/plus';
 import { paperOptions } from '../config';
+import { routingPaperOptions, routingPresentationAttributes } from '../shapes/common/routing';
 
 /*
  * The minimap. Its views are simplified: an element is a plain rectangle (the screen a tinted frame),
@@ -58,6 +59,7 @@ const navigatorLinkMarkup = util.svg`<path @selector="line" fill="none" />`;
 
 /** A pipe drawn by its `line` only (its color and width come from the model). */
 const NavigatorLinkView = dia.LinkView.extend({
+    presentationAttributes: dia.LinkView.addPresentationAttributes(routingPresentationAttributes),
     renderMarkup: function() {
         this.renderJSONMarkup(navigatorLinkMarkup);
     }
@@ -82,7 +84,7 @@ export function createNavigator(el: HTMLElement, scroller: ui.PaperScroller): ui
             // The ends of the pipes as on the canvas: from the models (the ports are not drawn here)
             defaultAnchor: paperOptions.defaultAnchor,
             defaultConnectionPoint: paperOptions.defaultConnectionPoint,
-            routerNamespace: paperOptions.routerNamespace,
+            ...routingPaperOptions,
             anchorNamespace: paperOptions.anchorNamespace,
             background: { color: 'transparent' }
         }

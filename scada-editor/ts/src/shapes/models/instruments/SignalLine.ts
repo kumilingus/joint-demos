@@ -1,6 +1,5 @@
 import { dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
-import { followRouting, routingAttributes } from '../../common/routing';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
 import { styleColorAttributes } from '../../attributes/style-color';
 
@@ -27,7 +26,6 @@ export default class SignalLine extends dia.Link {
             type: 'SignalLine',
             layer: Layer.Instruments,
             routing: 'straight',
-            ...routingAttributes('straight'),
             attrs: {
                 // An invisible wide stroke that makes the thin line easy to grab.
                 wrapper: {
@@ -50,10 +48,5 @@ export default class SignalLine extends dia.Link {
 
     preinitialize(): void {
         this.markup = markup;
-    }
-
-    initialize(...args: Parameters<dia.Link['initialize']>): void {
-        super.initialize(...args);
-        followRouting(this);
     }
 }

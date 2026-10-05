@@ -12,6 +12,7 @@ import { isFavorite, toggleFavorite } from './favorites';
 import { paletteKey } from './stencil';
 import { Animations, getAnimationLevel } from '../runtime/animations';
 import { dataOf, hasData, setData } from '../shapes/common/data';
+import { routingPaperOptions } from '../shapes/common/routing';
 
 /*
  * A shape of the palette clicked (not dragged): shown in the inspector panel with what it is,
@@ -121,6 +122,8 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         el: previewEl,
         model: createGraph(),
         cellViewNamespace: cellNamespace,
+        // The links by their routing (see `routing.ts`)
+        ...routingPaperOptions,
         // As wide as the panel (without its border)
         width: previewEl.clientWidth,
         height: PREVIEW_HEIGHT,

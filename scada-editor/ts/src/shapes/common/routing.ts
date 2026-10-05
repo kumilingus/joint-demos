@@ -1,8 +1,9 @@
-import { type dia, g, routers, util } from '@joint/plus';
+import { connectors, dia, g, routers } from '@joint/plus';
 
 /*
- * The routing of a link (a pipe, a signal line) as the user chooses it: the router and the connector
- * follow from it (as the link routing presets of `@joint/react`).
+ * The routing of a link (a pipe, a signal line) as the user chooses it (its `routing`): the router and the connector
+ * of the papers follow from it (`defaultRouter`, `defaultConnector`, see `routingPaperOptions`) - the links store
+ * neither (as the link routing presets of `@joint/react`).
  */
 
 /** How a link goes through its vertices. */
@@ -32,20 +33,8 @@ const ROUTINGS: Record<Routing, Pick<dia.Link.Attributes, 'router' | 'connector'
     }
 };
 
-/** The router and the connector of the routing (a copy: the attributes of a link are its own). */
-export function routingAttributes(routing: Routing): Pick<dia.Link.Attributes, 'router' | 'connector'> {
-    return util.cloneDeep(ROUTINGS[routing] ?? ROUTINGS.orthogonal);
-}
-
 /** A change derived from another one (not recorded in the history, see `historyOptions`). */
 export const DERIVED = { derived: true };
-
-/** The router and the connector of the link follow its routing (derived changes, not in the history). */
-export function followRouting(link: dia.Link): void {
-    link.on('change:routing', (_link: dia.Link, routing: Routing, options: dia.Cell.Options) => {
-        link.set(routingAttributes(routing), { ...options, ...DERIVED });
-    });
-}
 
 /** Whether the user chooses how the link goes (see `Routing`). */
 export function isRouted(cell: dia.Cell): boolean {
@@ -91,3 +80,30 @@ const rightAngle = ((vertices: dia.Point[], args: Record<string, unknown> = {}, 
  * so a saved diagram is the same as with the library router).
  */
 export const routerNamespace = { ...routers, rightAngle };
+
+/** The router and the connector of the routing of the link (orthogonal by default) */
+const routingOf = (link: dia.Link) => ROUTINGS[link.get('routing') as Routing] ?? ROUTINGS.orthogonal;
+
+/** The router of the papers: of the routing of the link */
+const routingRouter = ((vertices: dia.Point[], _args: unknown, linkView: dia.LinkView) => {
+    const { name, args } = routingOf(linkView.model).router as { name: keyof typeof routerNamespace; args?: object };
+    return (routerNamespace[name] as routers.Router).call(linkView, vertices, { ...args }, linkView);
+}) as routers.Router;
+
+/** The connector of the papers: of the routing of the link (its own options too: a raw path asked by the view) */
+const routingConnector = ((sourcePoint: g.Point, targetPoint: g.Point, route: g.Point[], options: object, linkView: dia.LinkView) => {
+    const { name, args } = routingOf(linkView.model).connector as { name: keyof typeof connectors; args?: object };
+    return (connectors[name] as connectors.Connector).call(linkView, sourcePoint, targetPoint, route, { ...args, ...options }, linkView);
+}) as connectors.Connector;
+
+/** The options of a paper drawing the links by their routing */
+export const routingPaperOptions = {
+    routerNamespace,
+    defaultRouter: routingRouter,
+    defaultConnector: routingConnector
+};
+
+/** The views of the links drawn again when their routing changes (as when their router, their connector change) */
+export const routingPresentationAttributes = {
+    routing: [dia.LinkView.Flags.UPDATE, dia.LinkView.Flags.CONNECTOR]
+};

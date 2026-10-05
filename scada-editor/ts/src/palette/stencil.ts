@@ -24,6 +24,7 @@ import { CLICK_THRESHOLD } from '../config';
 import { LABEL_COLOR } from '../const';
 import { type ImageEntry, type ImageLibrary, readImageFile } from './images';
 import ShapeView from '../shapes/views/ShapeView';
+import { routingPaperOptions } from '../shapes/common/routing';
 
 // The shapes are shown in the palette smaller than on the canvas.
 const STENCIL_SCALE = 0.5;
@@ -194,6 +195,8 @@ export function createStencil(
             getImages,
             clickThreshold: CLICK_THRESHOLD,
             cellViewNamespace: cellNamespace,
+            // The links by their routing (see `routing.ts`)
+            ...routingPaperOptions,
             // Rendered again when an attribute its special attributes read changes (see `ShapeView`)
             elementView: (_element, namespaceView) => namespaceView ?? ShapeView
         })

@@ -1,9 +1,9 @@
 import { dia, type g, util } from '@joint/plus';
 import { Layer, LABEL_COLOR } from '../../../const';
-import { followRouting, routingAttributes } from '../../common/routing';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
 import { styleColorAttributes } from '../../attributes/style-color';
 import { styleOf } from '../../common/style';
+import { routingPresentationAttributes } from '../../common/routing';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -70,7 +70,6 @@ export default class Arrow extends dia.Link {
             type: 'Arrow',
             layer: Layer.Instruments,
             routing: 'straight',
-            ...routingAttributes('straight'),
             sourceArrowhead: 'none',
             targetArrowhead: 'arrow',
             attrs: {
@@ -100,11 +99,6 @@ export default class Arrow extends dia.Link {
     preinitialize(): void {
         this.markup = markup;
     }
-
-    initialize(...args: Parameters<dia.Link['initialize']>): void {
-        super.initialize(...args);
-        followRouting(this);
-    }
 }
 
 /** The end of the line moved back from the point it points at (towards the next point): by the length of the arrowhead */
@@ -123,7 +117,8 @@ export const ArrowView = dia.LinkView.extend({
     presentationAttributes: dia.LinkView.addPresentationAttributes({
         sourceArrowhead: dia.LinkView.Flags.UPDATE,
         targetArrowhead: dia.LinkView.Flags.UPDATE,
-        style: dia.LinkView.Flags.UPDATE
+        style: dia.LinkView.Flags.UPDATE,
+        ...routingPresentationAttributes
     }),
     findPath(this: dia.LinkView, route: g.Point[], sourcePoint: g.Point, targetPoint: g.Point) {
         const { model } = this;
