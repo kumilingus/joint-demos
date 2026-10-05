@@ -81,12 +81,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#93C5FD"
-        }
-      },
-      "id": "0f2dbc88-648f-44b6-b7f0-6ba98a215bd8"
+      "id": "0f2dbc88-648f-44b6-b7f0-6ba98a215bd8",
+      "style": {
+        "color": "#93C5FD"
+      }
     },
     {
       "source": {
@@ -121,12 +119,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#93C5FD"
-        }
-      },
-      "id": "bfafdc8b-fdfc-4ca0-8e45-ee900da520bc"
+      "id": "bfafdc8b-fdfc-4ca0-8e45-ee900da520bc",
+      "style": {
+        "color": "#93C5FD"
+      }
     },
     {
       "source": {
@@ -166,12 +162,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#93C5FD"
-        }
-      },
-      "id": "013c0bfe-71a7-4e37-ba34-9818e719aebb"
+      "id": "013c0bfe-71a7-4e37-ba34-9818e719aebb",
+      "style": {
+        "color": "#93C5FD"
+      }
     },
     {
       "source": {
@@ -213,12 +207,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "af8455f8-49a6-4936-aa9e-2cd6862ca7eb"
+      "id": "af8455f8-49a6-4936-aa9e-2cd6862ca7eb",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -260,12 +252,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "89f2c0d6-9de7-4831-88dd-46511e035378"
+      "id": "89f2c0d6-9de7-4831-88dd-46511e035378",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -300,12 +290,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "75c4fb78-f919-4e90-ae23-c9a415fce7da"
+      "id": "75c4fb78-f919-4e90-ae23-c9a415fce7da",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -340,12 +328,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "3ff60656-3c53-425b-84ee-969c6058dcb0"
+      "id": "3ff60656-3c53-425b-84ee-969c6058dcb0",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -386,12 +372,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "36c7594e-97c2-48f9-ba94-00331ed3ea6e"
+      "id": "36c7594e-97c2-48f9-ba94-00331ed3ea6e",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -432,12 +416,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "0d72a9b0-6279-4572-82ae-1a30f3a87169"
+      "id": "0d72a9b0-6279-4572-82ae-1a30f3a87169",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -478,12 +460,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "ef9cd832-e8f7-4bcf-87dc-edea86831c4f"
+      "id": "ef9cd832-e8f7-4bcf-87dc-edea86831c4f",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -518,12 +498,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "fab80060-78de-4e3d-bfdd-938bda5eecdc"
+      "id": "fab80060-78de-4e3d-bfdd-938bda5eecdc",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -555,13 +533,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
       "id": "60441b5e-f1f5-4a7f-af53-e4f00721fdf6",
-      "vertices": []
+      "vertices": [],
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -608,18 +584,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#F87171",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "0764439f-589e-4f34-a079-56194a2bc73c",
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#F87171"
       }
     },
     {
@@ -667,18 +635,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#F87171",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "9128e9c1-e279-4c0f-a807-75271a9ab751",
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#F87171"
       }
     },
     {
@@ -726,18 +686,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#F87171",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "b49a7afd-89b0-4a53-af9c-a5476efeda48",
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#F87171"
       }
     },
     {
@@ -779,18 +731,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#F87171",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "290d23e4-ea74-470f-997c-9ebc28330c0d",
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#F87171"
       }
     },
     {
@@ -832,18 +776,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#F87171",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "02907c7a-a21c-4112-9402-a4820cec8fc9",
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#F87171"
       }
     },
     {
@@ -881,18 +817,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
       "id": "9ac03fad-3615-49ff-8091-67b17d9cdaee",
       "vertices": [
         {
           "x": 990,
           "y": 650
         }
-      ]
+      ],
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -929,12 +863,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "a75a17ca-614e-450a-b1f8-d98d7a39b8a1"
+      "id": "a75a17ca-614e-450a-b1f8-d98d7a39b8a1",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -979,18 +911,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#9aa3ab",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "e3658874-dcc3-4dfa-8aee-d2beada85c0d",
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#9aa3ab"
       }
     },
     {
@@ -1036,18 +960,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#9aa3ab",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "314733b8-9f08-44fa-96c6-8d69bf527440",
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#9aa3ab"
       }
     },
     {
@@ -1668,7 +1584,6 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {},
       "id": "4b339ca0-8d89-4279-82d7-2c21cc136a15"
     },
     {
@@ -1949,12 +1864,10 @@
       },
       "sourceArrowhead": "none",
       "targetArrowhead": "arrow",
-      "attrs": {
-        "line": {
-          "stroke": "var(--color-blue)"
-        }
-      },
-      "id": "95c6e637-0493-456b-95b9-b41974f95531"
+      "id": "95c6e637-0493-456b-95b9-b41974f95531",
+      "style": {
+        "color": "var(--color-blue)"
+      }
     },
     {
       "position": {
@@ -2044,19 +1957,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#F87171",
-          "strokeWidth": 15.0
-        },
-        "flow": {
-          "strokeWidth": 4.5
-        }
-      },
       "id": "3ae96479-2d90-4ec1-ad62-8c9acfb4b1d7",
       "vertices": [],
       "style": {
-        "lineWidth": "thick"
+        "lineWidth": "thick",
+        "color": "#F87171"
       }
     },
     {
@@ -2338,12 +2243,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "a343a516-006c-40e7-b052-c198ab1abce5"
+      "id": "a343a516-006c-40e7-b052-c198ab1abce5",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -2384,12 +2287,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "2f01c741-a430-44b8-a5bc-a6e74f89c9e9"
+      "id": "2f01c741-a430-44b8-a5bc-a6e74f89c9e9",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -2424,11 +2325,6 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
       "id": "dd39a7de-26bb-4c83-91f6-b329df5e5a60",
       "vertices": [
         {
@@ -2439,7 +2335,10 @@
           "x": 1180,
           "y": 1000
         }
-      ]
+      ],
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -2481,12 +2380,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FDBA74"
-        }
-      },
-      "id": "5d1af6e9-2a2f-4266-b3a2-5a351c3b356a"
+      "id": "5d1af6e9-2a2f-4266-b3a2-5a351c3b356a",
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "source": {
@@ -2528,18 +2425,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#C4B5FD",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "id": "07e7ac1e-6059-46c7-9ab1-1ad807c6841e",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#C4B5FD"
       }
     },
     {
@@ -2580,18 +2469,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#C4B5FD",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "id": "28f62aa4-00df-4b78-a216-f2fd6266dafd",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#C4B5FD"
       }
     },
     {
@@ -2933,19 +2814,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#9aa3ab",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "d27d7d73-ea05-427e-9ccd-bf65df3ad791",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#9aa3ab"
       }
     },
     {
@@ -2994,19 +2867,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#9aa3ab",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "f730cdca-0b63-423a-8efb-e615aebc931a",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#9aa3ab"
       }
     },
     {
@@ -3048,19 +2913,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#9aa3ab",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "444c7adb-d86f-47c6-9664-aa72bc7f7a03",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#9aa3ab"
       }
     },
     {
@@ -3101,19 +2958,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#9aa3ab",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "9479fd89-b23e-4532-a852-e00512a87bdd",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#9aa3ab"
       }
     },
     {
@@ -3159,19 +3008,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#9aa3ab",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "9ea4e574-06c5-45de-87e9-d8aa7eaed192",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#9aa3ab"
       }
     },
     {
@@ -3209,19 +3050,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FCD34D",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "a0bf37b3-ecfa-4d05-aa98-f94866a5b6c0",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#FCD34D"
       }
     },
     {
@@ -3257,19 +3090,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FCD34D",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "247b0e12-3e3f-45ea-8719-bcb7868f23d6",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#FCD34D"
       }
     },
     {
@@ -3302,19 +3127,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FCD34D",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "5d4aa907-d813-4cba-971f-fab3a892eb82",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#FCD34D"
       }
     },
     {
@@ -3373,19 +3190,11 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FCD34D",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [],
       "id": "a8e2d4c1-7b3f-4e59-8d06-2f9c1b7e3a54",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#FCD34D"
       }
     },
     {
@@ -3425,15 +3234,6 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "attrs": {
-        "line": {
-          "stroke": "#FCD34D",
-          "strokeWidth": 6.0
-        },
-        "flow": {
-          "strokeWidth": 2.0
-        }
-      },
       "vertices": [
         {
           "x": 1320,
@@ -3442,7 +3242,8 @@
       ],
       "id": "c3b7e9f2-1a6d-4c80-b5e4-9d2a6f0c8b17",
       "style": {
-        "lineWidth": "thin"
+        "lineWidth": "thin",
+        "color": "#FCD34D"
       }
     }
   ],
