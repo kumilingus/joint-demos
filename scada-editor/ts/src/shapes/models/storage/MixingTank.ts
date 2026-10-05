@@ -22,7 +22,7 @@ export default class MixingTank extends Shape {
 
     // The accent: the agitator motor
     get accentField(): ColorField {
-        return { path: ['attrs', 'motor', 'fill'] };
+        return { path: ['style', 'accent'], part: ['motor', 'fill'] };
     }
 
     // The agitator is switched on and off (it stirs while on, see `animations.ts`).
@@ -84,6 +84,8 @@ export default class MixingTank extends Shape {
                     strokeLinejoin: 'round'
                 },
                 motor: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     x: 'calc(w / 2 - 16)',
                     y: -34,
                     width: 32,

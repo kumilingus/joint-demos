@@ -21,7 +21,7 @@ const markup = util.svg/* xml */`
 export default class SolenoidValve extends Shape {
     // The accent: the coil
     get accentField(): ColorField {
-        return { path: ['attrs', 'coil', 'fill'] };
+        return { path: ['style', 'accent'], part: ['coil', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -64,6 +64,8 @@ export default class SolenoidValve extends Shape {
                 },
                 body: bowTieAttributes,
                 coil: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     x: 'calc(w / 2 - 15)',
                     y: -32,
                     width: 30,

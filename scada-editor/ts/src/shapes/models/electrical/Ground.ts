@@ -17,7 +17,7 @@ export default class Ground extends Shape {
 
     // The accent: the soil
     get accentField(): ColorField {
-        return { path: ['attrs', 'soil', 'fill'] };
+        return { path: ['style', 'accent'], part: ['soil', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -41,6 +41,8 @@ export default class Ground extends Shape {
                     magnetSelector: 'body'
                 },
                 soil: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     y: 'calc(0.45 * h)',
                     width: 'calc(w)',
                     height: 'calc(0.55 * h)',

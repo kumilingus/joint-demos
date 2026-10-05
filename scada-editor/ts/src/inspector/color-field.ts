@@ -58,7 +58,10 @@ export function accentFieldOf(cell: dia.Cell): ColorField | null {
 
 /** The default of the color field of the cell: its own, or of the defaults of its shape; none - Auto */
 export function fieldDefault(cell: dia.Cell, field: ColorField): string | undefined {
-    return field.defaultValue ?? util.getByPath(util.result(cell, 'defaults') || {}, field.path.join('/'), '/');
+    const defaults = util.result(cell, 'defaults') || {};
+    // The color of its part (its own in the defaults of the shape), or of the default of the style
+    if (field.part) return field.defaultValue ?? util.getByPath(defaults, ['attrs', ...field.part].join('/'), '/');
+    return field.defaultValue ?? util.getByPath(defaults, field.path.join('/'), '/');
 }
 
 const isHexColor = (value: unknown): value is string => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);

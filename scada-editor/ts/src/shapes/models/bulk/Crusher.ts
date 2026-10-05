@@ -46,7 +46,7 @@ export default class Crusher extends Shape {
 
     // The accent: the rocks in it
     get accentField(): ColorField {
-        return { path: ['attrs', 'rocks', 'fill'] };
+        return { path: ['style', 'accent'], part: ['rocks', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -106,6 +106,8 @@ export default class Crusher extends Shape {
                     fill: '#2b2f33'
                 },
                 rocks: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: [
                         'M calc(0.26 * w) calc(0.2 * h) l 10 -8 l 12 4 l -2 12 l -14 2 Z',
                         'M calc(0.44 * w) calc(0.16 * h) l 12 -4 l 8 10 l -10 8 l -10 -4 Z',

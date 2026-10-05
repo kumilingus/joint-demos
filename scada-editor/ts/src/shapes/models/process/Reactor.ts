@@ -19,7 +19,7 @@ export default class Reactor extends Shape {
 
     // The accent: the agitator motor
     get accentField(): ColorField {
-        return { path: ['attrs', 'motor', 'fill'] };
+        return { path: ['style', 'accent'], part: ['motor', 'fill'] };
     }
 
     // The agitator is switched on and off (it stirs while on, see `animations.ts`).
@@ -87,6 +87,8 @@ export default class Reactor extends Shape {
                     strokeLinecap: 'round'
                 },
                 motor: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     x: 'calc(w / 2 - 14)',
                     y: -30,
                     width: 28,

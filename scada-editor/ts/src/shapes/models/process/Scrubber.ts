@@ -35,7 +35,7 @@ export default class Scrubber extends Shape {
 
     // The accent: the skirt
     get accentField(): ColorField {
-        return { path: ['attrs', 'skirt', 'fill'] };
+        return { path: ['style', 'accent'], part: ['skirt', 'fill'] };
     }
 
     get overflow(): Overflow {
@@ -68,6 +68,8 @@ export default class Scrubber extends Shape {
                     strokeWidth: 2
                 },
                 skirt: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: 'M calc(0.1 * w) calc(h - 10) L 0 calc(h + 12) H calc(w) L calc(0.9 * w) calc(h - 10) Z',
                     fill: 'var(--shape-skirt)',
                     stroke: '#555',

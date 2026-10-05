@@ -27,7 +27,7 @@ export default class DieselGenerator extends Shape {
 
     // The accent: the skid
     get accentField(): ColorField {
-        return { path: ['attrs', 'skid', 'fill'] };
+        return { path: ['style', 'accent'], part: ['skid', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -86,6 +86,8 @@ export default class DieselGenerator extends Shape {
                     strokeWidth: 2
                 },
                 skid: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     y: 'calc(h - 12)',
                     width: 'calc(w)',
                     height: 12,

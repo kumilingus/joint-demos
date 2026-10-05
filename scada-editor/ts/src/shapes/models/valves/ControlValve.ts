@@ -26,7 +26,7 @@ const markup = util.svg/* xml */`
 export default class ControlValve extends Shape {
     // The accent: the actuator
     get accentField(): ColorField {
-        return { path: ['attrs', 'control', 'fill'] };
+        return { path: ['style', 'accent'], part: ['control', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -125,6 +125,8 @@ export default class ControlValve extends Shape {
                     surfaceFill: 'dark'
                 },
                 control: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: 'M 0 0 C 0 -30 60 -30 60 0 Z',
                     transform: 'translate(calc(w / 2 - 30), -20)',
                     stroke: '#333',

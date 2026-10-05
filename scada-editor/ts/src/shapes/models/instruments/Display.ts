@@ -18,7 +18,7 @@ export default class Display extends Shape {
 
     // The accent: the reading (its unit in the same color)
     get accentField(): ColorField {
-        return { path: ['attrs', 'value', 'fill'] };
+        return { path: ['style', 'accent'], part: ['value', 'fill'] };
     }
 
     get graphLayer(): Layer {
@@ -72,6 +72,8 @@ export default class Display extends Shape {
                 // The texts grow with the height of the display (a `calc()` takes a single
                 // variable, so the unit is in the corner rather than next to the value).
                 value: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     x: 'calc(w / 2)',
@@ -91,7 +93,9 @@ export default class Display extends Shape {
                     textVerticalAnchor: 'bottom',
                     fontSize: 'calc(0.2 * h)',
                     fontFamily: 'sans-serif',
-                    fillFrom: ['value', 'fill'],
+                    fill: LIQUID_COLOR,
+                    // In the accent of its style, as the value (see `style-color.ts`)
+                    styleFill: 'accent',
                     fillOpacity: 0.8
                 },
                 label: {

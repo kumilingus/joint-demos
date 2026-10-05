@@ -57,7 +57,7 @@ export default class RotaryKiln extends Shape {
 
     // The accent: the piers
     get accentField(): ColorField {
-        return { path: ['attrs', 'piers', 'fill'] };
+        return { path: ['style', 'accent'], part: ['piers', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -98,6 +98,8 @@ export default class RotaryKiln extends Shape {
                     magnetSelector: 'shell'
                 },
                 piers: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: `${pier(0.27)} ${pier(0.67)}`,
                     fill: 'var(--shape-support)',
                     stroke: '#333',

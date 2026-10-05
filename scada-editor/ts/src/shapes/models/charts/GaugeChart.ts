@@ -39,7 +39,7 @@ export default class GaugeChart extends Shape {
 
     // The accent: the arc of the value (and the number)
     get accentField(): ColorField {
-        return { path: ['attrs', 'arc', 'stroke'] };
+        return { path: ['style', 'accent'], part: ['arc', 'stroke'] };
     }
 
     get graphLayer(): Layer {
@@ -114,7 +114,7 @@ export default class GaugeChart extends Shape {
                     strokeWidth: 1
                 },
                 track: { ...arc, chartArc: 'track', stroke: '#fff', strokeOpacity: 0.12 },
-                arc: { ...arc, chartArc: 'value', stroke: LIQUID_COLOR },
+                arc: { styleStroke: 'accent', ...arc, chartArc: 'value', stroke: LIQUID_COLOR },
                 value: {
                     chartValue: 1,
                     x: 'calc(0.5 * w)',
@@ -124,7 +124,9 @@ export default class GaugeChart extends Shape {
                     fontFamily: 'monospace',
                     fontWeight: 'bold',
                     // Of the color of the arc (the accent)
-                    fillFrom: ['arc', 'stroke']
+                    fill: LIQUID_COLOR,
+                    // In the accent of its style, as the arc (see `style-color.ts`)
+                    styleFill: 'accent'
                 },
                 unit: {
                     text: 'bar',

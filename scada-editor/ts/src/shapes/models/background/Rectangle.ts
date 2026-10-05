@@ -24,12 +24,12 @@ export default class Rectangle extends Shape {
     }
 
     get colorField(): ColorField {
-        return { path: ['attrs', 'body', 'fill'] };
+        return { path: ['style', 'color'], part: ['body', 'fill'] };
     }
 
     // An outline of its own (a border of the area): none by default
     get outlineField(): ColorField {
-        return { path: ['attrs', 'body', 'stroke'] };
+        return { path: ['style', 'outline'], part: ['body', 'stroke'] };
     }
 
     get tagPrefix(): string {
@@ -46,6 +46,10 @@ export default class Rectangle extends Shape {
             },
             attrs: {
                 body: {
+                    // In the outline of its style (see `style-color.ts`)
+                    styleStroke: 'outline',
+                    // In the color of its style (see `style-color.ts`)
+                    styleFill: 'color',
                     width: 'calc(w)',
                     height: 'calc(h)',
                     rx: 8,

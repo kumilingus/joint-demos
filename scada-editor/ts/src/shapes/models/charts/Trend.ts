@@ -29,7 +29,7 @@ const markup = util.svg/* xml */`
 export default class Trend extends Shape {
     // The accent: the line
     get accentField(): ColorField {
-        return { path: ['attrs', 'line', 'stroke'] };
+        return { path: ['style', 'accent'], part: ['line', 'stroke'] };
     }
 
     get graphLayer(): Layer {
@@ -89,6 +89,8 @@ export default class Trend extends Shape {
                     strokeDasharray: '3,3'
                 },
                 line: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleStroke: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     fill: 'none',

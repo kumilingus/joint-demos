@@ -54,15 +54,15 @@ export default class Zone extends Shape {
 
     // Its color: the fill; its outline: the border; its accent: the text (of the medium of the pipe it stands for)
     get colorField(): ColorField {
-        return { path: ['attrs', 'body', 'fill'] };
+        return { path: ['style', 'color'], part: ['body', 'fill'] };
     }
 
     get outlineField(): ColorField {
-        return { path: ['attrs', 'body', 'stroke'] };
+        return { path: ['style', 'outline'], part: ['body', 'stroke'] };
     }
 
     get accentField(): ColorField {
-        return { path: ['attrs', 'label', 'fill'] };
+        return { path: ['style', 'accent'], part: ['label', 'fill'] };
     }
 
     defaults(): dia.Element.Attributes {
@@ -75,6 +75,10 @@ export default class Zone extends Shape {
             },
             attrs: {
                 body: {
+                    // In the outline of its style (see `style-color.ts`)
+                    styleStroke: 'outline',
+                    // In the color of its style (see `style-color.ts`)
+                    styleFill: 'color',
                     fill: 'var(--shape-face)',
                     stroke: 'var(--shape-zone-stroke)',
                     strokeWidth: 1,
@@ -82,6 +86,8 @@ export default class Zone extends Shape {
                     tipSide: 'left'
                 },
                 label: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // On as many lines as the zone is high, cut with an ellipsis; in the size of the labels of the diagram
                     // (its style, see `diagram-style.ts`) - all the zones alike, as off-page connectors
                     text: 'Zone',

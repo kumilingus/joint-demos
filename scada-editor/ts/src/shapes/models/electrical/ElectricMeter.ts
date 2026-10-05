@@ -19,7 +19,7 @@ export default class ElectricMeter extends Shape {
 
     // The accent: the reading (its unit in the same color)
     get accentField(): ColorField {
-        return { path: ['attrs', 'value', 'fill'] };
+        return { path: ['style', 'accent'], part: ['value', 'fill'] };
     }
 
     get graphLayer(): Layer {
@@ -75,6 +75,8 @@ export default class ElectricMeter extends Shape {
                     strokeWidth: 1
                 },
                 value: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     x: 'calc(w - 26)',
@@ -94,7 +96,9 @@ export default class ElectricMeter extends Shape {
                     textVerticalAnchor: 'middle',
                     fontSize: 14,
                     fontFamily: 'sans-serif',
-                    fillFrom: ['value', 'fill'],
+                    fill: LIQUID_COLOR,
+                    // In the accent of its style, as the value (see `style-color.ts`)
+                    styleFill: 'accent',
                 },
                 label: {
                     ...labelAttributes,

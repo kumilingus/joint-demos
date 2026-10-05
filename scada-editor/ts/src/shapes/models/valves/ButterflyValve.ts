@@ -20,7 +20,7 @@ const markup = util.svg/* xml */`
 export default class ButterflyValve extends Shape {
     // The accent: the pivot
     get accentField(): ColorField {
-        return { path: ['attrs', 'pivot', 'fill'] };
+        return { path: ['style', 'accent'], part: ['pivot', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -71,6 +71,8 @@ export default class ButterflyValve extends Shape {
                     strokeLinecap: 'round'
                 },
                 pivot: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 4,

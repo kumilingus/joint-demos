@@ -22,7 +22,7 @@ export default class Separator extends Shape {
 
     // The accent: the saddles
     get accentField(): ColorField {
-        return { path: ['attrs', 'saddles', 'fill'] };
+        return { path: ['style', 'accent'], part: ['saddles', 'fill'] };
     }
 
     get stubLength(): number {
@@ -50,6 +50,8 @@ export default class Separator extends Shape {
                     magnetSelector: 'body'
                 },
                 saddles: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: `${saddle(0.25)} ${saddle(0.75)}`,
                     fill: 'var(--shape-support)',
                     stroke: '#333',

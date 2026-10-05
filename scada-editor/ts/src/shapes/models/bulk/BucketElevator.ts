@@ -38,7 +38,7 @@ export default class BucketElevator extends Shape {
 
     // The accent: the buckets
     get accentField(): ColorField {
-        return { path: ['attrs', 'buckets', 'stroke'] };
+        return { path: ['style', 'accent'], part: ['buckets', 'stroke'] };
     }
 
     get control(): ControlKind {
@@ -92,6 +92,8 @@ export default class BucketElevator extends Shape {
                 },
                 // The buckets going up the chain: a dashed stroke from the boot to the head (see `BUCKET_PATTERN`)
                 buckets: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleStroke: 'accent',
                     d: 'M calc(0.5 * w) calc(h - 38) V 38',
                     stroke: 'var(--shape-bucket)',
                     strokeWidth: 24,

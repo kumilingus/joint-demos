@@ -17,7 +17,7 @@ export default class HandValve extends Shape {
 
     // The accent: the handwheel
     get accentField(): ColorField {
-        return { path: ['attrs', 'handwheel', 'fill'] };
+        return { path: ['style', 'accent'], part: ['handwheel', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -72,6 +72,8 @@ export default class HandValve extends Shape {
                     surfaceFill: 'dark'
                 },
                 handwheel: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     width: 60,
                     height: 10,
                     x: 'calc(w / 2 - 30)',

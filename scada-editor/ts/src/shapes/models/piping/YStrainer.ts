@@ -25,7 +25,7 @@ export default class YStrainer extends Shape {
 
     // The accent: the cap
     get accentField(): ColorField {
-        return { path: ['attrs', 'cap', 'fill'] };
+        return { path: ['style', 'accent'], part: ['cap', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -71,6 +71,8 @@ export default class YStrainer extends Shape {
                     strokeDasharray: '3,2'
                 },
                 cap: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     x: 'calc(0.52 * w)',
                     y: 'calc(h - 10)',
                     width: 'calc(0.36 * w)',

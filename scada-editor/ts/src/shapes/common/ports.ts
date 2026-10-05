@@ -6,13 +6,6 @@ import { type dia, util } from '@joint/plus';
  * from the model, its `width` and `height`), not its ends - they meet the element, a flange, another pipe.
  */
 export const pipeAttributes = {
-    // `fillFrom` in the attributes: the fill as a color of another part (its path in the attributes, e.g. `['line', 'stroke']`)
-    // - parts of one color, set on one of them (the accent of a chart, see `accentField`)
-    'fill-from': {
-        set(this: dia.ElementView, path: string[]) {
-            return { fill: this.model.attr(path) };
-        }
-    },
     // `pipeOutline` in the attributes
     'pipe-outline': {
         set(_value: boolean, refBBox: dia.BBox, _node: Element, attrs: Record<string, unknown>) {

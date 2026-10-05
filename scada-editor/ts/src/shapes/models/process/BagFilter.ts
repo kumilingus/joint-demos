@@ -40,7 +40,7 @@ export default class BagFilter extends Shape {
 
     // The accent: the legs
     get accentField(): ColorField {
-        return { path: ['attrs', 'legs', 'stroke'] };
+        return { path: ['style', 'accent'], part: ['legs', 'stroke'] };
     }
 
     get stubLength(): number {
@@ -65,6 +65,8 @@ export default class BagFilter extends Shape {
                     magnetSelector: 'body'
                 },
                 legs: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleStroke: 'accent',
                     d: 'M calc(0.06 * w) calc(0.6 * h) V calc(h) M calc(0.94 * w) calc(0.6 * h) V calc(h)',
                     stroke: 'var(--shape-legs)',
                     strokeWidth: 6,

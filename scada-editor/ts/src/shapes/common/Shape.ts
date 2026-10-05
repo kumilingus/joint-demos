@@ -7,6 +7,7 @@ import { textAttributes } from '../attributes/text-styles';
 import { labelPositionAttributes } from '../attributes/label';
 import { type Flip, flipAttributes, flipOf, flippablePortLayout, flippedPorts } from '../attributes/flip';
 import { fromDataAttributes } from '../attributes/from-data';
+import { styleColorAttributes } from '../attributes/style-color';
 import { DERIVED } from './routing';
 
 /** The size constraints of resizing. */
@@ -41,7 +42,10 @@ export type ControlKind = 'power' | 'toggle' | 'slider';
  * (none of them: it can be none of the cell's own - Auto).
  */
 export interface ColorField {
+    /** Where it is set: in the style of the cell (`['style', 'accent']`, see `style.ts`) */
     path: string[];
+    /** The part drawn in it (its selector and its attribute: `['bands', 'fill']`) - its own color the default */
+    part?: [string, 'fill' | 'stroke'];
     defaultValue?: string;
 }
 
@@ -97,7 +101,7 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     // attributes of its own adds them to these
     static attributes: typeof dia.Element.attributes = {
         ...surfaceAttributes, ...materialAttributes, ...pipeAttributes, ...textAttributes, ...labelPositionAttributes, ...flipAttributes,
-        ...fromDataAttributes
+        ...fromDataAttributes, ...styleColorAttributes
     };
 
     get resizable(): Resizable {

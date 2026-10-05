@@ -19,7 +19,7 @@ export default class FlowMeter extends Shape {
 
     // The accent: the reading
     get accentField(): ColorField {
-        return { path: ['attrs', 'value', 'fill'] };
+        return { path: ['style', 'accent'], part: ['value', 'fill'] };
     }
 
     get graphLayer(): Layer {
@@ -74,6 +74,8 @@ export default class FlowMeter extends Shape {
                 // The texts grow with the height of the meter.
                 // The value is in the middle of the screen (from 6 to 0.72 * h).
                 value: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     x: 'calc(w / 2)',

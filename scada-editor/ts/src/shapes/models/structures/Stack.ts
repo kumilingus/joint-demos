@@ -41,7 +41,7 @@ export default class Stack extends Shape {
 
     // The accent: the warning bands
     get accentField(): ColorField {
-        return { path: ['attrs', 'bands', 'fill'] };
+        return { path: ['style', 'accent'], part: ['bands', 'fill'] };
     }
 
     get overflow(): Overflow {
@@ -92,6 +92,8 @@ export default class Stack extends Shape {
                     surfaceFill: 'cylinder'
                 },
                 bands: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: `${band(0.06, 0.12)} ${band(0.18, 0.24)}`,
                     fill: BAND_COLOR,
                     fillOpacity: 0.85,

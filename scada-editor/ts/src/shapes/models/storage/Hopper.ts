@@ -16,7 +16,7 @@ export default class Hopper extends Shape {
 
     // The accent: the material in it
     get accentField(): ColorField {
-        return { path: ['attrs', 'material', 'fill'] };
+        return { path: ['style', 'accent'], part: ['material', 'fill'] };
     }
 
     get overflow(): Overflow {
@@ -44,6 +44,8 @@ export default class Hopper extends Shape {
                 },
                 // The material in the bin
                 material: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: 'M calc(0.12 * w) calc(0.2 * h) Q calc(0.5 * w) 2 calc(0.88 * w) calc(0.2 * h) Z',
                     fill: 'var(--shape-hopper-material)',
                     stroke: '#5e4f3d',

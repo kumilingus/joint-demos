@@ -71,7 +71,7 @@ const BEZEL = 1 / 12;
 export default class PressureGauge extends Shape {
     // The accent: the needle
     get accentField(): ColorField {
-        return { path: ['attrs', 'needle', 'fill'] };
+        return { path: ['style', 'accent'], part: ['needle', 'fill'] };
     }
 
     get graphLayer(): Layer {
@@ -168,6 +168,8 @@ export default class PressureGauge extends Shape {
                 },
                 // Pointing up; turned (with a CSS transform, so that it sweeps) to the value.
                 needle: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     d: 'M -3 0 L 0 -20 L 3 0 Z',

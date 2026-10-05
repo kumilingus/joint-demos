@@ -33,7 +33,7 @@ export default class AirCooler extends Shape {
 
     // The accent: the fan plenum
     get accentField(): ColorField {
-        return { path: ['attrs', 'plenum', 'fill'] };
+        return { path: ['style', 'accent'], part: ['plenum', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -77,6 +77,8 @@ export default class AirCooler extends Shape {
                 },
                 // The plenum the fans sit in
                 plenum: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     x: 6,
                     width: 'calc(w - 12)',
                     height: 'calc(0.5 * h)',

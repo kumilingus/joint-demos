@@ -41,7 +41,7 @@ export default class LineChart extends Shape {
 
     // The accent: the series (its line, the area under it)
     get accentField(): ColorField {
-        return { path: ['attrs', 'line', 'stroke'] };
+        return { path: ['style', 'accent'], part: ['line', 'stroke'] };
     }
 
     get graphLayer(): Layer {
@@ -133,10 +133,14 @@ export default class LineChart extends Shape {
                 area: {
                     chartSeries: 'area',
                     // Of the color of the line (the accent)
-                    fillFrom: ['line', 'stroke'],
+                    fill: LIQUID_COLOR,
+                    // In the accent of its style, as the line (see `style-color.ts`)
+                    styleFill: 'accent',
                     fillOpacity: 0.2
                 },
                 line: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleStroke: 'accent',
                     chartSeries: 'line',
                     fill: 'none',
                     stroke: LIQUID_COLOR,

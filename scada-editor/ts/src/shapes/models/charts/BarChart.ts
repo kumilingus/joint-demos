@@ -40,7 +40,7 @@ export default class BarChart extends Shape {
 
     // The accent: the bars
     get accentField(): ColorField {
-        return { path: ['attrs', 'bars', 'fill'] };
+        return { path: ['style', 'accent'], part: ['bars', 'fill'] };
     }
 
     get graphLayer(): Layer {
@@ -112,6 +112,8 @@ export default class BarChart extends Shape {
                     strokeOpacity: 0.12
                 },
                 bars: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     chartBars: true,
                     fill: LIQUID_COLOR,
                     fillOpacity: 0.85

@@ -26,7 +26,7 @@ export default class ReliefValve extends Shape {
 
     // The accent: the cap
     get accentField(): ColorField {
-        return { path: ['attrs', 'cap', 'fill'] };
+        return { path: ['style', 'accent'], part: ['cap', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -77,6 +77,8 @@ export default class ReliefValve extends Shape {
                     strokeLinejoin: 'round'
                 },
                 cap: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     x: 'calc(0.3 * w)',
                     y: -8,
                     width: 'calc(0.4 * w)',

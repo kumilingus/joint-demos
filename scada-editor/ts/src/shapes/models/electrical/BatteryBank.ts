@@ -26,7 +26,7 @@ const GAUGE_PADDING = 10;
 export default class BatteryBank extends Shape {
     // The accent: the bar of the charge
     get accentField(): ColorField {
-        return { path: ['attrs', 'charge', 'fill'] };
+        return { path: ['style', 'accent'], part: ['charge', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -79,6 +79,8 @@ export default class BatteryBank extends Shape {
                     fill: '#1e272e'
                 },
                 charge: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     x: GAUGE_PADDING,

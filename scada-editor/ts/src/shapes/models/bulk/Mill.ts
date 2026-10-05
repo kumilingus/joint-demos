@@ -37,7 +37,7 @@ export default class Mill extends Shape {
 
     // The accent: the piers
     get accentField(): ColorField {
-        return { path: ['attrs', 'piers', 'fill'] };
+        return { path: ['style', 'accent'], part: ['piers', 'fill'] };
     }
 
     // The liners are a stroke as wide as the drum is tall: not resized
@@ -79,6 +79,8 @@ export default class Mill extends Shape {
                     magnetSelector: 'shell'
                 },
                 piers: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: `${pier(0.08)} ${pier(0.92)}`,
                     fill: 'var(--shape-support)',
                     stroke: '#333',

@@ -23,7 +23,7 @@ const GLASS_HEIGHT = 0.6;
 export default class FuelTank extends Shape {
     // The accent: the fuel in the sight glass (its level is the plant's)
     get accentField(): ColorField {
-        return { path: ['attrs', 'fuel', 'fill'] };
+        return { path: ['style', 'accent'], part: ['fuel', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -80,6 +80,8 @@ export default class FuelTank extends Shape {
                     strokeWidth: 1.5
                 },
                 fuel: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     x: 'calc(0.44 * w + 2)',

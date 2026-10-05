@@ -20,7 +20,7 @@ export default class HorizontalTank extends Shape {
 
     // The accent: the saddles
     get accentField(): ColorField {
-        return { path: ['attrs', 'saddles', 'fill'] };
+        return { path: ['style', 'accent'], part: ['saddles', 'fill'] };
     }
 
     get overflow(): Overflow {
@@ -44,6 +44,8 @@ export default class HorizontalTank extends Shape {
                     magnetSelector: 'body'
                 },
                 saddles: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: `${saddle(0.22)} ${saddle(0.78)}`,
                     fill: 'var(--shape-support)',
                     stroke: '#333',

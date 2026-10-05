@@ -38,7 +38,7 @@ export default class Blower extends Shape {
 
     // The accent: the base
     get accentField(): ColorField {
-        return { path: ['attrs', 'base', 'fill'] };
+        return { path: ['style', 'accent'], part: ['base', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -84,6 +84,8 @@ export default class Blower extends Shape {
                     magnetSelector: 'body'
                 },
                 base: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     d: 'M calc(0.15 * w) calc(h + 6) L calc(0.3 * w) calc(0.8 * h) H calc(0.7 * w) L calc(0.85 * w) calc(h + 6) Z',
                     fill: 'var(--shape-support)',
                     stroke: '#333',

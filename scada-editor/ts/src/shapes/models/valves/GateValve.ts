@@ -24,7 +24,7 @@ const markup = util.svg/* xml */`
 export default class GateValve extends Shape {
     // The accent: the handwheel
     get accentField(): ColorField {
-        return { path: ['attrs', 'handwheel', 'fill'] };
+        return { path: ['style', 'accent'], part: ['handwheel', 'fill'] };
     }
 
     get resizable(): Resizable {
@@ -80,6 +80,8 @@ export default class GateValve extends Shape {
                     strokeWidth: 1.5
                 },
                 handwheel: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     x: 'calc(w / 2 - 20)',

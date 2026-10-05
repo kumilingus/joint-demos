@@ -25,7 +25,7 @@ export default class Boiler extends Shape {
 
     // The accent: the flames (the inner one a darker tone of it)
     get accentField(): ColorField {
-        return { path: ['attrs', 'flameOuter', 'fill'] };
+        return { path: ['style', 'accent'], part: ['flameOuter', 'fill'] };
     }
 
     static attributes = {
@@ -90,6 +90,8 @@ export default class Boiler extends Shape {
                     strokeWidth: 2
                 },
                 flameOuter: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     d: 'M -22 10 C -28 -8 -12 -14 -14 -30 C -4 -20 0 -28 2 -42 C 12 -26 26 -18 22 10 Z',

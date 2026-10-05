@@ -22,7 +22,7 @@ export default class Label extends Shape {
 
     // The color of the text
     get colorField(): ColorField {
-        return { path: ['attrs', 'label', 'fill'] };
+        return { path: ['style', 'color'], part: ['label', 'fill'] };
     }
 
     get tagPrefix(): string {
@@ -45,6 +45,8 @@ export default class Label extends Shape {
                     fill: 'transparent'
                 },
                 label: {
+                    // In the color of its style (see `style-color.ts`)
+                    styleFill: 'color',
                     text: 'Label',
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.5 * h)',

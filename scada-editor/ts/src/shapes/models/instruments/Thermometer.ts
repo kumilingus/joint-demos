@@ -4,6 +4,7 @@ import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
 import { type DataKey, dataOf } from '../../common/data';
+import { styleOf } from '../../common/style';
 
 // The default color of the outline of the thermometer (the tube and the bulb)
 const THERMOMETER_FRAME = 'var(--shape-thermometer-stroke)';
@@ -31,15 +32,15 @@ const markup = util.svg/* xml */`
 export default class Thermometer extends Shape {
     // Its color is the color of the liquid (the column, the bulb follows it); its Outline of the tube and the bulb
     get colorField(): ColorField {
-        return { path: ['attrs', 'column', 'fill'] };
+        return { path: ['style', 'color'], part: ['column', 'fill'] };
     }
 
     static attributes = {
         ...Shape.attributes,
-        // The bulb in the color of the liquid (`liquidFill` in the attributes): of the column
+        // The bulb in the color of the liquid (`liquidFill` in the attributes): of its style, else of the column
         'liquid-fill': {
             set(this: dia.ElementView) {
-                return { fill: this.model.attr(['column', 'fill']) ?? MAX_LIQUID_COLOR };
+                return { fill: styleOf<string>(this.model, 'color') ?? this.model.attr(['column', 'fill']) ?? MAX_LIQUID_COLOR };
             }
         }
     };
@@ -103,6 +104,8 @@ export default class Thermometer extends Shape {
                     strokeWidth: 2
                 },
                 column: {
+                    // In the color of its style (see `style-color.ts`)
+                    styleFill: 'color',
                     // Drawn from the data (see `dataAttributes()`)
                     fromData: true,
                     x: 'calc(w / 2 - 4)',

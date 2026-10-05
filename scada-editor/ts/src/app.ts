@@ -1,4 +1,4 @@
-import { dia, mvc, ui } from '@joint/plus';
+import { dia, mvc, ui, util } from '@joint/plus';
 import { cellNamespace } from './shapes';
 import { createStencil } from './palette/stencil';
 import { createGraph } from './canvas/layers';
@@ -42,6 +42,13 @@ import { toggleSettings } from './inspector/settings';
 import { withData } from './shapes/common/data';
 import { withoutDrawnAttributes } from './shapes/attributes/from-data';
 import { withStyle } from './shapes/common/style';
+import { withPartColorsInStyle } from './shapes/attributes/style-color';
+
+/** The color of the part of the cell in the defaults of its shape (its own color, see `withPartColorsInStyle()`) */
+function partDefault(cell: dia.Cell, [selector, attribute]: [string, string]): unknown {
+    const defaults = util.result(cell, 'defaults') as dia.Cell.Attributes | undefined;
+    return defaults?.attrs?.[selector]?.[attribute];
+}
 
 export class App {
 
@@ -175,8 +182,9 @@ export class App {
         clearSelection(this);
         // A diagram without images (or favorites) has none (not those of the previous one), all of it animated.
         this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', [STYLE_ATTRIBUTE]: {}, ...json });
-        // The parts drawn from the data: as computed, not as a diagram saved before stored them
+        // The parts drawn from the data: as computed, not as a diagram saved before stored them; their colors in the style
         this.graph.getElements().forEach(withoutDrawnAttributes);
+        this.graph.getCells().forEach(cell => withPartColorsInStyle(cell, partDefault));
         this.applyStyle();
         this.history.reset();
         zoomToFit(this);

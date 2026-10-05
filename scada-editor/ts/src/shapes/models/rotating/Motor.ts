@@ -25,7 +25,7 @@ export default class Motor extends Shape {
 
     // The accent: the terminal box
     get accentField(): ColorField {
-        return { path: ['attrs', 'terminalBox', 'fill'] };
+        return { path: ['style', 'accent'], part: ['terminalBox', 'fill'] };
     }
 
     get control(): ControlKind {
@@ -104,6 +104,8 @@ export default class Motor extends Shape {
                     strokeWidth: 2
                 },
                 terminalBox: {
+                    // In the accent of its style (see `style-color.ts`)
+                    styleFill: 'accent',
                     x: 'calc(0.35 * w)',
                     y: -12,
                     width: 'calc(0.3 * w)',
