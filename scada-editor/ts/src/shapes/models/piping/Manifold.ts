@@ -9,7 +9,7 @@ import type { Flip } from '../../attributes/flip';
 const BODY_RADIUS = 12;
 
 // Where the outlets are along the header (relative to its width)
-const OUTLETS = ['calc(0.25 * w)', 'calc(0.5 * w)', 'calc(0.75 * w)'];
+const OUTLETS = [0.25, 0.5, 0.75];
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`

@@ -1,11 +1,11 @@
-import { dia, layout } from '@joint/plus';
+import { dia } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { GRID_SIZE, Layer } from '../../const';
 import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttributes } from './gradients';
-import { pipeAttributes } from './ports';
+import { flippedPorts, pipeAttributes } from './ports';
 import { textAttributes } from '../attributes/text-styles';
 import { textFromAttributes } from '../attributes/label';
-import { type Flip, flipAttributes, flipOf, flippablePortLayout, flippedPorts } from '../attributes/flip';
+import { type Flip, flipAttributes, flipOf } from '../attributes/flip';
 import { computedAttributes } from '../attributes/computed';
 import { styleColorAttributes } from '../attributes/style-color';
 import { DERIVED } from './routing';
@@ -95,9 +95,6 @@ const minSize = (size: number) => Math.max(SIZE_STEP, Math.round(size * MIN_SIZE
  */
 export default abstract class Shape extends dia.Element implements ShapeFeatures {
 
-    /** The layouts of the ports (read by the library from the model): see below */
-    declare portLayoutNamespace: Record<string, layout.Port.LayoutFunction>;
-
     // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`), the outlines of its pipes
     // (`pipeOutline`), the styles of its texts (`textStyles`), its texts of the model (`textFrom`), the mirrored
     // parts of a flipped one (`flip`), the parts drawn from its data (`computed`); a shape with
@@ -173,7 +170,7 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     /** The flip its ports are laid out with (see `flipPorts()`): declared - set in `initialize()`, called by the constructor */
     private declare portsFlip?: string;
 
-    /** The ports (of its defaults) laid out with the flip of the element, when it changes */
+    /** The ports of its defaults with their stubs flipped as the element (see `flipStub()`), when its flip changes */
     protected flipPorts(options: dia.Cell.Options = {}): void {
         const flip = flipOf(this);
         if (flip === (this.portsFlip ?? '')) return;
@@ -220,5 +217,3 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     }
 }
 
-// The port layouts of the shapes: the library's, and the one of the shapes that can be flipped (see `flip.ts`)
-Shape.prototype.portLayoutNamespace = { ...layout.Port, flippable: flippablePortLayout };

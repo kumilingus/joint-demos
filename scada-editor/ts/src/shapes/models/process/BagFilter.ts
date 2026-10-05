@@ -122,7 +122,7 @@ export default class BagFilter extends Shape {
                 }
             },
             // The dusty gas in on the left, the clean gas out of the plenum on the right
-            ports: pipePorts(this.stubLength, { left: 'calc(0.4 * h)', right: 'calc(0.05 * h)' })
+            ports: pipePorts(this.stubLength, { left: 0.4, right: 0.05 })
         };
     }
 

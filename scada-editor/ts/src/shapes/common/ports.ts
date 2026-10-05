@@ -155,13 +155,58 @@ export function pipeThroughAttributes(ratio = 0.5, half?: 'left' | 'right') {
 }
 
 /**
+ * A pipe stub of an element: on a side, at a part of it (0 - 1 from the left, the top; the middle by default).
+ * Flipped, it is on the other side (see `flipStub()`).
+ */
+export interface Stub {
+    id: string;
+    side: Side;
+    at?: number;
+    z?: number;
+}
+
+/** A port of a pipe stub: with its stub (to be flipped, see `flippedPorts()`) */
+type StubPort = dia.Element.Port & { stub: Stub };
+
+/** The port of the stub, `length` long, in the group */
+function stubPort(stub: Stub, group: string, length: number): StubPort {
+    const { id, side, at = 0.5, z } = stub;
+    const along = side === 'left' || side === 'right' ? `calc(${at} * h)` : `calc(${at} * w)`;
+    return { ...sideStub(id, group, side, length, along, z), stub };
+}
+
+/** The stub mirrored by the flip: horizontally - on the other of the left and the right sides, the other way along the top and the bottom */
+export function flipStub(stub: Stub, flip: string): Stub {
+    let { side, at = 0.5 } = stub;
+    const vertical = side === 'left' || side === 'right';
+    if (flip.includes('x')) {
+        if (vertical) side = side === 'left' ? 'right' : 'left'; else at = 1 - at;
+    }
+    if (flip.includes('y')) {
+        if (vertical) at = 1 - at; else side = side === 'top' ? 'bottom' : 'top';
+    }
+    return { ...stub, side, at };
+}
+
+/** The ports of the stubs flipped (the other ports as they are): their ids stay, the pipes follow them */
+export function flippedPorts(ports: dia.Element.Attributes['ports'], flip: string): dia.Element.Attributes['ports'] {
+    if (!ports?.items) return ports;
+    const items = ports.items.map((item) => {
+        const { stub } = item as Partial<StubPort>;
+        const length = Number(ports.groups?.[item.group ?? '']?.size?.width) || 0;
+        return stub ? stubPort(flipStub(stub, flip), item.group ?? 'pipes', length) : item;
+    });
+    return { ...ports, items };
+}
+
+/**
  * The pipe stubs sticking out of a piece of equipment on the left and the right, `length` long,
- * in the middle of the height or at the heights (`calc()` of the height) of each side.
+ * in the middle of the height or at the parts of it (`left`, `right`); `z` of each.
  * They are drawn as ports so that pipes can attach to their ends.
  */
 export function pipePorts(
     length: number,
-    { left, right }: { left?: string; right?: string } = {},
+    { left, right }: { left?: number; right?: number } = {},
     [leftZ, rightZ]: [number, number] = [0, 0]
 ): dia.Element.Attributes['ports'] {
     return {
@@ -169,8 +214,8 @@ export function pipePorts(
             pipes: pipeStubGroup(length)
         },
         items: [
-            sideStub('left', 'pipes', 'left', length, left, leftZ),
-            sideStub('right', 'pipes', 'right', length, right, rightZ)
+            stubPort({ id: 'left', side: 'left', at: left, z: leftZ }, 'pipes', length),
+            stubPort({ id: 'right', side: 'right', at: right, z: rightZ }, 'pipes', length)
         ]
     };
 }
@@ -184,7 +229,7 @@ export function fittingPorts(sides: Side[], length: number, tuck = 0): dia.Eleme
         groups: {
             pipes: pipeStubGroup(length, tuck)
         },
-        items: sides.map(side => sideStub(side, 'pipes', side, length))
+        items: sides.map(side => stubPort({ id: side, side }, 'pipes', length))
     };
 }
 
@@ -215,12 +260,12 @@ export function terminalPorts(terminals: Terminal[]): dia.Element.Attributes['po
     };
 }
 
-/** The stubs going down from the bottom at the points (`calc()` of the width): the outlets of a manifold. */
-export function branchPorts(xs: string[], length: number): dia.Element.Attributes['ports'] {
+/** The stubs going down from the bottom at the parts of the width: the outlets of a manifold. */
+export function branchPorts(ats: number[], length: number): dia.Element.Attributes['ports'] {
     return {
         groups: {
             branches: pipeStubGroup(length, 0)
         },
-        items: xs.map((x, index) => sideStub(`out${index + 1}`, 'branches', 'bottom', length, x))
+        items: ats.map((at, index) => stubPort({ id: `out${index + 1}`, side: 'bottom', at }, 'branches', length))
     };
 }

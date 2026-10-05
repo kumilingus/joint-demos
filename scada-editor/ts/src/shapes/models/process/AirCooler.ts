@@ -125,7 +125,7 @@ export default class AirCooler extends Shape {
                 }
             },
             // The fluid runs through the tube bundle (the lower half).
-            ports: pipePorts(this.stubLength, { left: 'calc(0.75 * h)', right: 'calc(0.75 * h)' })
+            ports: pipePorts(this.stubLength, { left: 0.75, right: 0.75 })
         };
     }
 

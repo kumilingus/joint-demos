@@ -1,11 +1,11 @@
-import { type dia, layout, util } from '@joint/plus';
+import type { dia } from '@joint/plus';
 
 /*
  * A shape flipped (its `flip`, a model attribute: `x` horizontally, `y` vertically, `xy` both; none - as it is): the
  * parts that show which way it faces mirrored across the middle of the element - marked with the `flip` attribute in
  * the defaults of a shape that can be flipped (`directional`, a group selector of its markup, see `Shape.flippable`):
  * the inlet of a cyclone, the drive of a mill. The rest of it (symmetric) stays as it is, its lighting too; its label
- * stays, its pipe stubs mirror with it (see `flippedPorts()`). Not a rotation: what is on top stays on top (the arrow
+ * stays, its pipe stubs mirror with it (see `flipStub()` in `ports.ts`). Not a rotation: what is on top stays on top (the arrow
  * of a check valve).
  */
 
@@ -34,49 +34,3 @@ export const flipAttributes = {
         unset: 'transform'
     }
 };
-
-/** Whether the flip mirrors horizontally, vertically */
-const flipsX = (flip: string) => flip.includes('x');
-const flipsY = (flip: string) => flip.includes('y');
-
-/** The angle of a port mirrored by the flip (a stub pointing to the right: to the left when flipped horizontally) */
-function flippedAngle(angle: number, flip: string): number {
-    let flipped = angle;
-    if (flipsX(flip)) flipped = 180 - flipped;
-    if (flipsY(flip)) flipped = -flipped;
-    return ((flipped % 360) + 360) % 360;
-}
-
-/**
- * The layout of the ports of a shape that can be flipped (`flippable` in the namespace of the shapes, see `Shape`):
- * as `absolute`, then mirrored by the flip of the group (its `flip` argument) across the middle of the element.
- */
-export const flippablePortLayout: layout.Port.LayoutFunction<layout.Port.Options> = (ports, elBBox, { flip = '' }) => {
-    const { x, y, width, height } = elBBox;
-    return layout.Port.absolute(ports, elBBox, {}).map(({ x: px = 0, y: py = 0, angle = 0 }) => ({
-        x: flipsX(flip) ? 2 * x + width - px : px,
-        y: flipsY(flip) ? 2 * y + height - py : py,
-        angle: flippedAngle(angle, flip)
-    }));
-};
-
-/**
- * The ports of a shape (of its defaults) flipped: its groups laid out by `flippablePortLayout()` with the flip, a pipe
- * stub drawn upside down on the left only (see `sideStub()` in `ports.ts`: shaded as one on the right) - after the flip.
- */
-export function flippedPorts(ports: dia.Element.Attributes['ports'], flip: string): dia.Element.Attributes['ports'] {
-    if (!ports) return ports;
-    const flipped = util.cloneDeep(ports);
-    Object.values(flipped.groups ?? {}).forEach((group) => {
-        if (typeof group.position === 'object' && group.position.name === 'absolute') {
-            group.position = { name: 'flippable', args: { flip }};
-        }
-    });
-    (flipped.items ?? []).forEach((item) => {
-        if (!flipped.groups?.[item.group ?? '']?.attrs?.pipeBody) return;
-        const { pipeBody: _pipeBody, ...attrs } = item.attrs ?? {};
-        const angle = flippedAngle(item.position?.args?.angle ?? 0, flip);
-        item.attrs = angle === 180 ? { ...attrs, pipeBody: { transform: 'scale(1, -1)' }} : attrs;
-    });
-    return flipped;
-}

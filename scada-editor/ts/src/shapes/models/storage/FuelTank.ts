@@ -107,7 +107,7 @@ export default class FuelTank extends Shape {
                     ...labelAttributes
                 }
             },
-            ports: pipePorts(this.stubLength, { left: 'calc(0.5 * h)', right: 'calc(0.5 * h)' })
+            ports: pipePorts(this.stubLength, { left: 0.5, right: 0.5 })
         };
     }
 

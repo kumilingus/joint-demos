@@ -104,7 +104,7 @@ export default class ReliefValve extends Shape {
                 }
             },
             // The pipes enter the bottom half.
-            ports: pipePorts(this.stubLength, { left: 'calc(0.75 * h)', right: 'calc(0.75 * h)' })
+            ports: pipePorts(this.stubLength, { left: 0.75, right: 0.75 })
         };
     }
 

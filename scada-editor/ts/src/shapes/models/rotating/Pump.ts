@@ -106,7 +106,7 @@ export default class Pump extends Shape {
                 }
             },
             // The inlet (left) low and the outlet (right) high, both on the grid of the editor
-            ports: pipePorts(this.stubLength, { left: 'calc(0.7 * h)', right: 'calc(0.3 * h)' }, [1, 0])
+            ports: pipePorts(this.stubLength, { left: 0.7, right: 0.3 }, [1, 0])
         };
     }
 
