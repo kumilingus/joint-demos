@@ -13,7 +13,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **The screen** - the dashed frame (*Screen 1920 × 1080*) is what the operator sees in run mode.
 - **Pan** by dragging the blank canvas, **zoom** with the toolbar or a pinch.
 
-![The Microgrid example](images/microgrid.png)
+![The Cement Plant example](images/cement-plant.png)
 
 ## The palette
 
