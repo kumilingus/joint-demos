@@ -22,7 +22,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Search** filters the shapes (*pump*, *valve*, *tank*).
 - **Click** a shape to preview it: it runs, switching on and off. **Add to favorites** there.
 - **Drag** a shape onto the canvas to add it.
-- **Upload images** in the Custom group adds your own pictures; rename or delete one in its preview.
+- **Upload images** in the Custom group adds your own pictures; rename or delete one in its preview. On the canvas, its *Opacity* is in the inspector.
 - **In Use** lists the shapes already in the diagram (can be turned off in Settings).
 
 ## Shapes

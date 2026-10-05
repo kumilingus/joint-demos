@@ -47,7 +47,9 @@ export default class CustomImage extends Shape {
             attrs: {
                 image: {
                     width: 'calc(w)',
-                    height: 'calc(h)'
+                    height: 'calc(h)',
+                    // Set in the inspector
+                    opacity: 1
                 },
                 label: {
                     ...labelAttributes,

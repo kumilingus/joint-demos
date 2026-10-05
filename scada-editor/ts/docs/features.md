@@ -32,7 +32,7 @@ The editor builds process diagrams (P&ID-style or high-performance HMI screens) 
 | Charts | 6 - table (2 variants), line chart, bar chart, donut chart, gauge chart |
 | Background | 2 - rectangle, ellipse |
 
-Also: uploaded images (saved with the diagram), Favorites, and the shapes In Use.
+Also: uploaded images (saved with the diagram, with an opacity), Favorites, and the shapes In Use.
 
 ## Connections
 

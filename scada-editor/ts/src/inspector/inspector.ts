@@ -167,6 +167,13 @@ function getInputs(element: dia.Element): Inputs {
         });
     }
 
+    // An uploaded image: its opacity (faded: a backdrop of the diagram)
+    if (element.get('type') === 'CustomImage') {
+        util.merge(inputs, {
+            attrs: { image: { opacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, defaultValue: 1, group: 'appearance', index: index++ }}}
+        });
+    }
+
     // A zone points to the side its pipe comes from (the outline of its body, see `Zone`).
     if (element.attr('body/tipSide') !== undefined) {
         const attrs = (inputs.attrs || {}) as Record<string, Inputs>;
