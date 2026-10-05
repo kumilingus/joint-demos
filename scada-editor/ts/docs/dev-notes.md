@@ -166,7 +166,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 
 ## Log, tint, theme, style, animations
 
-- **Log** (`log/log.ts`, `LogController`) - listens to the plant's `update` and `command`, keeps the last 200 messages of a run, in a `ui.Dialog`. Tags are badge highlighters, pings are ring highlighters behind the element, the hovered message's element is tinted (`canvas/tint.ts`: a filter - gray multiplied by a theme color).
+- **Log** (`log/log.ts`, `LogController`) - listens to the plant's `update` and `command`, keeps the last 200 messages of a run, in a `ui.Dialog`. Tags are badge highlighters, pings are ring highlighters behind the element, the element of the clicked message is tinted (`canvas/tint.ts`: a filter - gray multiplied by a theme color - on the children of the view but the ping).
 - **Theme** (`theme/theme-minimal.css`, `setTheme('minimal')`) - styles the JointJS+ components, every rule scoped to `.joint-theme-minimal`, using only `theme/tokens.css` (shadcn/ui variable names). Cascade layers: `joint` → `theme` → the app (unlayered), so the app always wins. Reuse: `theme/README.md`.
 - **Shape colors** - CSS variables (`--shape-*` in `shapes/shapes.css`); the dark scheme redefines them.
 - **Diagram style** (`diagram-style.ts`, saved as `graph.get('style')`) - `finish`, `color`, `outline`, `accent` for shapes without their own; `labelSize` (`small` 12, `medium` 14, `large` 16, `x-large` 18 px), `labelColor` (theme colors only). Applied as CSS variables, so the palette and the preview follow.

@@ -132,8 +132,8 @@
     font-family: var(--font);
 }
 
-/* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color */
-.jj-tint {
+/* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - not its ping (in its view, see `LogController`) */
+.jj-tint > :not(.jj-ping) {
     filter: var(--jj-tint-filter) drop-shadow(0 0 6px var(--jj-tint-color));
 }
 
