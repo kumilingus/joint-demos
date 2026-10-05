@@ -2373,7 +2373,7 @@
       },
       "target": {
         "id": "2885cd35-ef50-435f-8e60-379428c4b32a",
-        "port": "right",
+        "port": "left",
         "connectionPoint": {
           "name": "anchor"
         }
@@ -2401,12 +2401,22 @@
           "stroke": "#FDBA74"
         }
       },
-      "id": "dd39a7de-26bb-4c83-91f6-b329df5e5a60"
+      "id": "dd39a7de-26bb-4c83-91f6-b329df5e5a60",
+      "vertices": [
+        {
+          "x": 1180,
+          "y": 960
+        },
+        {
+          "x": 1180,
+          "y": 1000
+        }
+      ]
     },
     {
       "source": {
         "id": "2885cd35-ef50-435f-8e60-379428c4b32a",
-        "port": "left",
+        "port": "right",
         "connectionPoint": {
           "name": "anchor"
         }
@@ -2555,7 +2565,7 @@
     {
       "position": {
         "x": 1740,
-        "y": 940
+        "y": 980
       },
       "size": {
         "width": 160,
@@ -2575,8 +2585,8 @@
     },
     {
       "position": {
-        "x": 1380,
-        "y": 920
+        "x": 1400,
+        "y": 960
       },
       "size": {
         "width": 160,
@@ -2596,14 +2606,14 @@
     },
     {
       "position": {
-        "x": 1200,
+        "x": 1240,
         "y": 930
       },
       "size": {
         "width": 100,
         "height": 100
       },
-      "angle": 180,
+      "angle": 0,
       "type": "Pump",
       "power": 0,
       "attrs": {
@@ -2614,7 +2624,8 @@
       "id": "3857a824-2555-4e16-a89a-fcbef16b6cfb",
       "layer": "equipment",
       "z": 3,
-      "tag": "P-103"
+      "tag": "P-103",
+      "flip": "x"
     },
     {
       "position": {
@@ -2631,15 +2642,13 @@
         "label": {
           "labelPosition": "top",
           "text": "NRV 3"
-        },
-        "directional": {
-          "flip": "x"
         }
       },
       "id": "2885cd35-ef50-435f-8e60-379428c4b32a",
       "layer": "equipment",
       "z": 4,
-      "tag": "NRV-103"
+      "tag": "NRV-103",
+      "flip": "x"
     },
     {
       "position": {
