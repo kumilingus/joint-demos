@@ -5,6 +5,7 @@ import { JAW_PIVOT } from '../shapes/models/bulk/Crusher';
 import { LINER_PATTERN } from '../shapes/models/bulk/Mill';
 import { BUCKET_PATTERN } from '../shapes/models/bulk/BucketElevator';
 import { BAGS } from '../shapes/models/process/BagFilter';
+import { type DataKey, dataOf, hasData } from '../shapes/common/data';
 
 /*
  * The animations of the runtime mode (the Web Animations API on the views of the cells):
@@ -161,13 +162,13 @@ const at = (cellView: dia.CellView, { x, y }: { x: number; y: number }): [number
     return [x * width, y * height];
 };
 
-const isOn = (model: dia.Cell) => Boolean(model.get('power'));
+const isOn = (model: dia.Cell) => Boolean(dataOf(model, 'power'));
 
 /** Whether the liquid passes the element: a switched off pump or a closed valve stops it. */
 function isPassing(element: dia.Element | null): boolean {
     if (!element) return true;
-    if (element.has('power') && element.get('type') !== 'Beacon') return isOn(element);
-    if (element.has('open')) return Boolean(element.get('open'));
+    if (hasData(element, 'power') && element.get('type') !== 'Beacon') return isOn(element);
+    if (hasData(element, 'open')) return Boolean(dataOf(element, 'open'));
     return true;
 }
 
@@ -288,7 +289,7 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'flow',
         animate: view => {
             const target = node(view, 'flow');
-            if (!target || !view.model.get('open')) return [];
+            if (!target || !dataOf(view.model, 'open')) return [];
             return [flowAlong(target)];
         }
     },
@@ -396,7 +397,7 @@ const LEVEL_DURATION = 1000;
  * (see `animateLevel()`) - the property of the value, the keyframe of each part (by its selector) at a value
  */
 export interface Gliding {
-    glideProperty: string;
+    glideProperty: DataKey;
     glideKeyframes(value: number): Record<string, Keyframe>;
 }
 
@@ -456,10 +457,10 @@ export class Animations {
         this.levels.delete(element.id);
         if (!isGliding(element) || !this.allows('level')) return;
         const view = element.findView(this.paper);
-        const previous = Number(element.previous(element.glideProperty));
+        const previous = Number((element.previous('data') as Record<string, unknown> | undefined)?.[element.glideProperty]);
         if (!view || !Number.isFinite(previous)) return;
         const from = element.glideKeyframes(previous);
-        const to = element.glideKeyframes(Number(element.get(element.glideProperty)) || 0);
+        const to = element.glideKeyframes(Number(dataOf(element, element.glideProperty)) || 0);
         const animations = Object.keys(to).flatMap((selector) => {
             const target = view.findNode(selector) as SVGElement | null;
             return target ? [target.animate([from[selector], to[selector]], { duration: LEVEL_DURATION, easing: 'ease-in-out' })] : [];

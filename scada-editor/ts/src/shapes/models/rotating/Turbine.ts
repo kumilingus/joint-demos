@@ -49,12 +49,15 @@ export default class Turbine extends Shape {
         return {
             ...super.defaults,
             type: 'Turbine',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 120,
                 height: 80
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
                 directional: {

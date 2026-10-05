@@ -3,6 +3,7 @@ import { labelAttributes } from '../../attributes/label';
 import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import { type DataKey, dataOf } from '../../common/data';
 
 // The default color of the outline of the thermometer (the tube and the bulb)
 const THERMOMETER_FRAME = 'var(--shape-thermometer-stroke)';
@@ -70,12 +71,15 @@ export default class Thermometer extends Shape {
         return {
             ...super.defaults,
             type: 'Thermometer',
+            // What it shows (see `data.ts`)
+            data: {
+                // The height of the column in % of the scale
+                value: 60
+            },
             size: {
                 width: WIDTH,
                 height: 120
             },
-            // The height of the column in % of the scale
-            value: 60,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -134,11 +138,11 @@ export default class Thermometer extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateColumn();
-        this.on('change:value', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateColumn(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateColumn(options));
     }
 
     // The column (and its reading) glides to a new value (see `animateLevel()` in `animations.ts`)
-    get glideProperty(): string {
+    get glideProperty(): DataKey {
         return 'value';
     }
 
@@ -157,7 +161,7 @@ export default class Thermometer extends Shape {
      * the reading (in °C, the scale is 0 - 100 °C) is next to its top.
      */
     updateColumn(options?: dia.Cell.Options): void {
-        const value = Math.max(0, Math.min(100, this.get('value') || 0));
+        const value = Math.max(0, Math.min(100, dataOf(this, 'value') || 0));
         const top = g.scale.linear([0, 100], [0.68, 0.08], value).toFixed(3);
         this.attr({
             column: {

@@ -65,12 +65,15 @@ export default class Blower extends Shape {
         return {
             ...super.defaults,
             type: 'Blower',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 100,
                 height: 100
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)

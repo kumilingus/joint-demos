@@ -2,6 +2,7 @@ import { type dia, g, util, V } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR } from '../../../const';
 import Shape from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** A slice of a donut chart: what it is, how much of it and its color */
 export interface Slice {
@@ -51,7 +52,7 @@ function sliceValue(slice: Slice): number {
 
 /** The slices of the model (at most `MAX_SLICES`) */
 function getSlices(model: dia.Cell): Slice[] {
-    const slices = model.get('slices');
+    const slices = dataOf(model, 'slices');
     return Array.isArray(slices) ? slices.slice(0, MAX_SLICES) : [];
 }
 
@@ -142,16 +143,19 @@ export default class DonutChart extends Shape {
         return {
             ...super.defaults,
             type: 'DonutChart',
+            // What it shows (see `data.ts`)
+            data: {
+                slices: [
+                    // Generic parts: the app (the inspector, the plant data) says what they are
+                    { label: 'Part A', value: 50, color: '#60a5fa' },
+                    { label: 'Part B', value: 30, color: MAX_LIQUID_COLOR },
+                    { label: 'Part C', value: 20, color: LIQUID_COLOR }
+                ]
+            },
             size: {
                 width: 240,
                 height: 120
             },
-            slices: [
-                // Generic parts: the app (the inspector, the plant data) says what they are
-                { label: 'Part A', value: 50, color: '#60a5fa' },
-                { label: 'Part B', value: 30, color: MAX_LIQUID_COLOR },
-                { label: 'Part C', value: 20, color: LIQUID_COLOR }
-            ],
             attrs: {
                 root: {
                     magnetSelector: 'body'

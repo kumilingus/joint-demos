@@ -56,12 +56,15 @@ export default class ConveyorBelt extends Shape {
         return {
             ...super.defaults,
             type: 'ConveyorBelt',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 200,
                 height: 40
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 root: {
                     magnetSelector: 'body'

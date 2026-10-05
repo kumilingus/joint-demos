@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type ControlKind } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 // The flames are drawn around the bottom center of the firebox.
 const flamesTransform = 'translate(calc(w / 2), calc(h - 18))';
@@ -47,12 +48,15 @@ export default class Boiler extends Shape {
         return {
             ...super.defaults,
             type: 'Boiler',
+            // What it shows (see `data.ts`)
+            data: {
+                // The burner: 1 = on (firing, by default), 0 = off
+                power: 1
+            },
             size: {
                 width: 120,
                 height: 160
             },
-            // The burner: 1 = on (firing, by default), 0 = off
-            power: 1,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -112,12 +116,12 @@ export default class Boiler extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateFlames();
-        this.on('change:power', (_element: dia.Element, _power: unknown, options: dia.Cell.Options) => this.updateFlames(options));
+        this.on('change:data', (_element: dia.Element, _power: unknown, options: dia.Cell.Options) => this.updateFlames(options));
     }
 
     /** The flames shown while the burner is on (out: the firebox dark) */
     updateFlames(options?: dia.Cell.Options): void {
-        const display = this.get('power') ? 'block' : 'none';
+        const display = dataOf(this, 'power') ? 'block' : 'none';
         this.attr({ flameOuter: { display }, flameInner: { display }}, options);
     }
 }

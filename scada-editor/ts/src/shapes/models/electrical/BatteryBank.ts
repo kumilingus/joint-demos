@@ -3,6 +3,7 @@ import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import { LIQUID_COLOR } from '../../../const';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import { type DataKey, dataOf } from '../../common/data';
 
 // The cells in the cabinet: 2 rows of 5
 const cells = Array.from({ length: 10 }, (_, i) => ({ column: i % 5, row: Math.floor(i / 5) }));
@@ -46,12 +47,15 @@ export default class BatteryBank extends Shape {
         return {
             ...super.defaults,
             type: 'BatteryBank',
+            // What it shows (see `data.ts`)
+            data: {
+                // The charge (0 - 100)
+                level: 80
+            },
             size: {
                 width: 160,
                 height: 100
             },
-            // The charge (0 - 100)
-            level: 80,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -99,11 +103,11 @@ export default class BatteryBank extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateCharge();
-        this.on('change:level', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCharge(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCharge(options));
     }
 
     // The bar glides to a new charge (see `animateLevel()` in `animations.ts`)
-    get glideProperty(): string {
+    get glideProperty(): DataKey {
         return 'level';
     }
 
@@ -114,7 +118,7 @@ export default class BatteryBank extends Shape {
 
     /** The bar of the gauge as long as the charge */
     updateCharge(options?: dia.Cell.Options): void {
-        const ratio = Math.max(0, Math.min(100, Number(this.get('level')) || 0)) / 100;
+        const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         this.attr('charge/width', `calc(${ratio} * w - ${2 * GAUGE_PADDING * ratio})`, options);
     }
 }

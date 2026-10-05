@@ -44,12 +44,15 @@ export default class Conveyor extends dia.Link {
         return {
             ...super.defaults,
             type: 'Conveyor',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = stopped, 1 = running
+                power: 1
+            },
             layer: Layer.Pipes,
             z: -1,
             routing: 'straight',
             ...routingAttributes('straight'),
-            // 0 = stopped, 1 = running
-            power: 1,
             attrs: {
                 // An invisible wide stroke that makes the belt easy to grab.
                 wrapper: {

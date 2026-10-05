@@ -4,6 +4,7 @@ import { labelAttributes } from '../../attributes/label';
 import { bowTieAttributes, leverAttributes } from '../../common/valve-body';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type Resizable, type ControlKind } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -38,11 +39,14 @@ export default class BallValve extends Shape {
         return {
             ...super.defaults,
             type: 'BallValve',
+            // What it shows (see `data.ts`)
+            data: {
+                open: true
+            },
             size: {
                 width: 60,
                 height: 40
             },
-            open: true,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 root: {
@@ -82,11 +86,11 @@ export default class BallValve extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateBore();
-        this.on('change:open', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateBore(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateBore(options));
     }
 
     updateBore(options?: dia.Cell.Options): void {
-        const angle = this.get('open') ? 0 : 90;
+        const angle = dataOf(this, 'open') ? 0 : 90;
         this.attr('bore/transform', `translate(calc(w / 2), calc(h / 2)) rotate(${angle})`, options);
     }
 }

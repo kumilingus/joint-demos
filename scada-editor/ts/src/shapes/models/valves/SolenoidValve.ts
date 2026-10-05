@@ -5,6 +5,7 @@ import { bowTieAttributes } from '../../common/valve-body';
 import { LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -44,11 +45,14 @@ export default class SolenoidValve extends Shape {
         return {
             ...super.defaults,
             type: 'SolenoidValve',
+            // What it shows (see `data.ts`)
+            data: {
+                open: true
+            },
             size: {
                 width: 60,
                 height: 40
             },
-            open: true,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 root: {
@@ -99,10 +103,10 @@ export default class SolenoidValve extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateCoil();
-        this.on('change:open', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCoil(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCoil(options));
     }
 
     updateCoil(options?: dia.Cell.Options): void {
-        this.attr('coilLabel/fill', this.get('open') ? LIQUID_COLOR : '#bbb', options);
+        this.attr('coilLabel/fill', dataOf(this, 'open') ? LIQUID_COLOR : '#bbb', options);
     }
 }

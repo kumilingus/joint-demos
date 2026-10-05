@@ -3,6 +3,7 @@ import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR } from '../../../const';
 import { arcPath, getScale, scaleFraction } from '../../common/charts';
 import Shape, { type ColorField } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 // The arc of the scale: from the bottom left, clockwise, to the bottom right (degrees, clockwise from the right)
 const START = 135;
@@ -27,7 +28,7 @@ function dial(bbox: dia.BBox): { center: g.Point; radius: number } {
 
 /** How much of the scale the value takes (0 - 1) */
 function fraction(model: dia.Cell): number {
-    return scaleFraction(getScale(model), Number(model.get('value')) || 0);
+    return scaleFraction(getScale(model), Number(dataOf(model, 'value')) || 0);
 }
 
 /**
@@ -66,7 +67,7 @@ export default class GaugeChart extends Shape {
         // The value of the model as a text
         'chart-value': {
             set(this: dia.ElementView, digits: number, _refBBox: dia.BBox, node: Element) {
-                V(node as SVGElement).text((Number(this.model.get('value')) || 0).toFixed(digits), { textVerticalAnchor: 'middle' });
+                V(node as SVGElement).text((Number(dataOf(this.model, 'value')) || 0).toFixed(digits), { textVerticalAnchor: 'middle' });
                 return {};
             }
         }
@@ -77,14 +78,17 @@ export default class GaugeChart extends Shape {
         return {
             ...super.defaults,
             type: 'GaugeChart',
+            // What it shows (see `data.ts`)
+            data: {
+                // The scale (bar): the feedwater pressure of the plant fits (see `plant/mock/mock-plant.ts`)
+                min: 0,
+                max: 16,
+                value: 10.5
+            },
             size: {
                 width: 130,
                 height: 130
             },
-            // The scale (bar): the feedwater pressure of the plant fits (see `plant/mock/mock-plant.ts`)
-            min: 0,
-            max: 16,
-            value: 10.5,
             attrs: {
                 root: {
                     magnetSelector: 'body'

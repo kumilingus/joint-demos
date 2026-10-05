@@ -40,11 +40,14 @@ export default class HandValve extends Shape {
         return {
             ...super.defaults,
             type: 'HandValve',
+            // What it shows (see `data.ts`)
+            data: {
+                open: true
+            },
             size: {
                 width: 60,
                 height: 60
             },
-            open: true,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 root: {

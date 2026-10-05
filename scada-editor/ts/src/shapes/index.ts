@@ -206,13 +206,13 @@ export const cellNamespace = {
     TableView,
     // The charts, with the views rendering them again when their data changes (a view is looked up by the type)
     LineChart,
-    LineChartView: shapeView(['values', 'thresholds', 'min', 'max']),
+    LineChartView: shapeView(['data']),
     BarChart,
-    BarChartView: shapeView(['values', 'min', 'max']),
+    BarChartView: shapeView(['data']),
     DonutChart,
-    DonutChartView: shapeView(['slices']),
+    DonutChartView: shapeView(['data']),
     GaugeChart,
-    GaugeChartView: shapeView(['value', 'min', 'max']),
+    GaugeChartView: shapeView(['data']),
     Rectangle,
     Ellipse,
     Group

@@ -3,6 +3,7 @@ import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR } from '../../../const';
 import { getScale, GRID, plotArea, plotAttributes, plotY, type Scale, scaleAttributes, scaleMarkup } from '../../common/charts';
 import Shape, { type ColorField } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 // The bar takes this part of its slot of the plot
 const BAR_WIDTH = 0.6;
@@ -59,7 +60,7 @@ export default class BarChart extends Shape {
         // The bars of the values of the model (`chartBars` in the attributes)
         'chart-bars': {
             set(this: dia.ElementView, _value: unknown, refBBox: dia.BBox) {
-                return { d: barsPath(this.model.get('values') || [], getScale(this.model), refBBox) };
+                return { d: barsPath(dataOf(this.model, 'values') || [], getScale(this.model), refBBox) };
             }
         },
         ...plotAttributes
@@ -69,15 +70,18 @@ export default class BarChart extends Shape {
         return {
             ...super.defaults,
             type: 'BarChart',
+            // What it shows (see `data.ts`)
+            data: {
+                // The scale of the values
+                min: 0,
+                max: 100,
+                // The values of the periods, the oldest first
+                values: [62, 70, 55, 81, 74, 66, 88, 72]
+            },
             size: {
                 width: 240,
                 height: 140
             },
-            // The scale of the values
-            min: 0,
-            max: 100,
-            // The values of the periods, the oldest first
-            values: [62, 70, 55, 81, 74, 66, 88, 72],
             attrs: {
                 root: {
                     magnetSelector: 'body'

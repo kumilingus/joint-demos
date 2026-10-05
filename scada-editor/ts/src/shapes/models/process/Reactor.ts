@@ -35,7 +35,10 @@ export default class Reactor extends Shape {
         return {
             ...super.defaults,
             type: 'Reactor',
-            power: 1,
+            // What it shows (see `data.ts`)
+            data: {
+                power: 1
+            },
             size: {
                 width: 100,
                 height: 160

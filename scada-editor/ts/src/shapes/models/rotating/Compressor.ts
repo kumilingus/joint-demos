@@ -44,12 +44,15 @@ export default class Compressor extends Shape {
         return {
             ...super.defaults,
             type: 'Compressor',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 80,
                 height: 80
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)

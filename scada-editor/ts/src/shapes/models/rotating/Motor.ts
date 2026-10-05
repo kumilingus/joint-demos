@@ -40,12 +40,15 @@ export default class Motor extends Shape {
         return {
             ...super.defaults,
             type: 'Motor',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 100,
                 height: 60
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 root: {
                     magnetSelector: 'body'

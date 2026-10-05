@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, MAX_LIQUID_COLOR } from '../../../const';
 import Shape, { type Resizable, type ControlKind } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 const LAMP_OFF_COLOR = '#9aa3ab';
 
@@ -41,12 +42,15 @@ export default class Beacon extends Shape {
         return {
             ...super.defaults,
             type: 'Beacon',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 40,
                 height: 50
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -99,11 +103,11 @@ export default class Beacon extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateLamp();
-        this.on('change:power', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLamp(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLamp(options));
     }
 
     updateLamp(options?: dia.Cell.Options): void {
-        const on = Boolean(this.get('power'));
+        const on = Boolean(dataOf(this, 'power'));
         this.attr({
             lamp: { fill: on ? MAX_LIQUID_COLOR : LAMP_OFF_COLOR },
             glow: { display: on ? 'block' : 'none' }

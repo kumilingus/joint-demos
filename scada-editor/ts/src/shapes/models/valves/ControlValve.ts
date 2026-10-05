@@ -4,6 +4,7 @@ import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 // The cover slides over the frame opening (the frame is 30 wide with 3 on each side).
 const COVER_MAX_WIDTH = 24;
@@ -49,12 +50,15 @@ export default class ControlValve extends Shape {
         return {
             ...super.defaults,
             type: 'ControlValve',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = closed, 1 = fully open
+                open: 1
+            },
             size: {
                 width: 60,
                 height: 60
             },
-            // 0 = closed, 1 = fully open
-            open: 1,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 root: {
@@ -144,12 +148,12 @@ export default class ControlValve extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateCover();
-        this.on('change:open', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCover(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCover(options));
     }
 
     /** The more the valve is closed, the wider the cover. */
     updateCover(options?: dia.Cell.Options): void {
-        const open = Math.max(0, Math.min(1, this.get('open') ?? 1));
+        const open = Math.max(0, Math.min(1, dataOf(this, 'open') ?? 1));
         this.attr('cover/width', Math.round(COVER_MAX_WIDTH * (1 - open)), options);
     }
 }

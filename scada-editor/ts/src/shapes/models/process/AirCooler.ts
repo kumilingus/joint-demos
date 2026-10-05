@@ -56,12 +56,15 @@ export default class AirCooler extends Shape {
         return {
             ...super.defaults,
             type: 'AirCooler',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 160,
                 height: 80
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 root: {
                     magnetSelector: 'body'

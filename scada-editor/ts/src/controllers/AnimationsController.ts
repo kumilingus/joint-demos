@@ -2,6 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { Animations, getAnimationLevel } from '../runtime/animations';
+import { dataChanged } from '../shapes/common/data';
 
 /**
  * Animates the plant (see `animations.ts`) and keeps the animations in sync with its state:
@@ -27,8 +28,11 @@ export default class AnimationsController extends Controller {
         this.animations.start();
 
         this.listenTo(graph, {
-            'change:power change:open': (_app: App, cell: dia.Cell) => onStateChange(this.animations, cell),
-            'change:level change:value': (_app: App, element: dia.Element) => this.animations.animateLevel(element)
+            // Switched on or off, opened or closed; a value glides to its new one (see `Gliding`)
+            'change:data': (_app: App, cell: dia.Cell) => {
+                if (dataChanged(cell, 'power', 'open')) onStateChange(this.animations, cell);
+                if (cell.isElement() && dataChanged(cell, 'level', 'value')) this.animations.animateLevel(cell);
+            }
         });
     }
 

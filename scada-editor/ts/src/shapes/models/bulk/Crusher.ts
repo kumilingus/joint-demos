@@ -69,12 +69,15 @@ export default class Crusher extends Shape {
         return {
             ...super.defaults,
             type: 'Crusher',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 140,
                 height: 120
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
                 directional: {

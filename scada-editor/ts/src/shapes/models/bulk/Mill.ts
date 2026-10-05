@@ -61,12 +61,15 @@ export default class Mill extends Shape {
         return {
             ...super.defaults,
             type: 'Mill',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 240,
                 height: 100
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
                 directional: {

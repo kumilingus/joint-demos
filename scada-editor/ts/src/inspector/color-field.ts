@@ -1,6 +1,7 @@
 import { type dia, type ui, util } from '@joint/plus';
 import type { ColorField } from '../shapes/common/Shape';
 import { renderLabel } from './help';
+import { dataOf } from '../shapes/common/data';
 
 /*
  * The color fields of the inspector: the native color input (with its eyedropper), and the colors
@@ -107,7 +108,7 @@ function diagramColors(graph: dia.Graph): string[] {
             const value = field && cell.prop(field.path);
             if (isHexColor(value)) colors.add(value.toLowerCase());
         });
-        const slices = cell.get('slices');
+        const slices = dataOf(cell, 'slices');
         if (Array.isArray(slices)) slices.forEach(slice => isHexColor(slice?.color) && colors.add(slice.color.toLowerCase()));
     });
     return [...colors];

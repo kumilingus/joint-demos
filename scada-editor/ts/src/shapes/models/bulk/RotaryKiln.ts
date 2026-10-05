@@ -80,12 +80,15 @@ export default class RotaryKiln extends Shape {
         return {
             ...super.defaults,
             type: 'RotaryKiln',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 420,
                 height: 100
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
                 directional: {

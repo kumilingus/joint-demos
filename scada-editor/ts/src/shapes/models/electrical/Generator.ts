@@ -34,11 +34,14 @@ export default class Generator extends Shape {
         return {
             ...super.defaults,
             type: 'Generator',
+            // What it shows (see `data.ts`)
+            data: {
+                power: 1
+            },
             size: {
                 width: 120,
                 height: 80
             },
-            power: 1,
             attrs: {
                 root: {
                     magnetSelector: 'body'

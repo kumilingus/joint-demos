@@ -1,4 +1,5 @@
 import type { dia } from '@joint/plus';
+import { dataOf } from '../shapes/common/data';
 
 /*
  * The properties of the equipment as the plant knows them: by the tag of an element and the name of a property
@@ -19,32 +20,32 @@ interface Property {
 
 /** Running or not (a pump, a motor, an alarm) */
 const power: Property = {
-    read: element => Boolean(element.get('power')),
-    write: (_element, value) => ({ power: value ? 1 : 0 })
+    read: element => Boolean(dataOf(element, 'power')),
+    write: (_element, value) => ({ 'data/power': value ? 1 : 0 })
 };
 
 /** Open or closed (a valve, a breaker) */
 const open: Property = {
-    read: element => Boolean(element.get('open')),
-    write: (_element, value) => ({ open: Boolean(value) })
+    read: element => Boolean(dataOf(element, 'open')),
+    write: (_element, value) => ({ 'data/open': Boolean(value) })
 };
 
 /** How much open, in % (a control valve) */
 const opening: Property = {
-    read: element => Math.round((element.get('open') ?? 0) * 100),
-    write: (_element, value) => ({ open: Number(value) / 100 })
+    read: element => Math.round((dataOf<number>(element, 'open') ?? 0) * 100),
+    write: (_element, value) => ({ 'data/open': Number(value) / 100 })
 };
 
 /** A level, in % (a tank, a battery) */
 const level: Property = {
-    read: element => element.get('level') ?? 0,
-    write: (_element, value) => ({ level: Number(value) })
+    read: element => dataOf<number>(element, 'level') ?? 0,
+    write: (_element, value) => ({ 'data/level': Number(value) })
 };
 
 /** A value on a scale (a gauge, a thermometer) */
 const scaled: Property = {
-    read: element => element.get('value') ?? 0,
-    write: (_element, value) => ({ value: Number(value) })
+    read: element => dataOf<number>(element, 'value') ?? 0,
+    write: (_element, value) => ({ 'data/value': Number(value) })
 };
 
 /** A reading shown as a number (a display, a meter): with one decimal */
@@ -56,10 +57,10 @@ const reading: Property = {
 /** The newest value of a history (a trend): on the right, the oldest one drops out on the left */
 const newest: Property = {
     read: (element) => {
-        const values: number[] = element.get('values') ?? [];
+        const values = dataOf<number[]>(element, 'values') ?? [];
         return values[values.length - 1] ?? 0;
     },
-    write: (element, value) => ({ values: [...(element.get('values') ?? []).slice(1), Number(value)] })
+    write: (element, value) => ({ 'data/values': [...(dataOf<number[]>(element, 'values') ?? []).slice(1), Number(value)] })
 };
 
 const RUNNING = [
@@ -99,6 +100,7 @@ export function readProperty(element: dia.Element, name: string): TagValue | und
 export function writeProperty(element: dia.Element, name: string, value: TagValue, options?: dia.Cell.Options): boolean {
     const property = properties[element.get('type')]?.[name];
     if (!property) return false;
-    Object.entries(property.write(element, value)).forEach(([path, change]) => element.prop(path, change, options));
+    // Replaced (an array of values not merged into the one before)
+    Object.entries(property.write(element, value)).forEach(([path, change]) => element.prop(path, change, { ...options, rewrite: true }));
     return true;
 }

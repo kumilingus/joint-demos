@@ -11,6 +11,7 @@ import { deleteImage, refreshPalette } from '../actions';
 import { isFavorite, toggleFavorite } from './favorites';
 import { paletteKey } from './stencil';
 import { Animations, getAnimationLevel } from '../runtime/animations';
+import { dataOf, hasData, setData } from '../shapes/common/data';
 
 /*
  * A shape of the palette clicked (not dragged): shown in the inspector panel with what it is,
@@ -46,16 +47,16 @@ type PreviewState = (cell: dia.Cell, view: dia.CellView, on: boolean) => string 
  * or a reading of the plant (a level, a value) going up and down
  */
 function previewState(cell: dia.Cell): PreviewState | null {
-    if (cell.has('power')) {
+    if (hasData(cell, 'power')) {
         return (c, _view, on) => {
-            c.set('power', on ? 1 : 0);
+            setData(c, 'power', on ? 1 : 0);
             return on ? 'Running' : 'Stopped';
         };
     }
-    const open = cell.get('open');
+    const open = dataOf(cell, 'open');
     if (typeof open === 'boolean' || typeof open === 'number') {
         return (c, _view, on) => {
-            c.set('open', typeof open === 'boolean' ? on : Number(on));
+            setData(c, 'open', typeof open === 'boolean' ? on : Number(on));
             return on ? 'Open' : 'Closed';
         };
     }

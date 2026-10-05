@@ -3,6 +3,7 @@ import Shape from '../shapes/common/Shape';
 import { besideElement, seenBBox, sideOf } from '../shapes/attributes/label';
 import { readProperty, type TagValue } from '../plant/properties';
 import { flipOf } from '../shapes/attributes/flip';
+import { dataOf } from '../shapes/common/data';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -165,7 +166,7 @@ class PumpControl extends Control {
 
     preinitialize(): void {
         // `angle`, `size`, `flip`: in the corner as it is seen (flipped: the other one, see `flip.ts`)
-        this.UPDATE_ATTRIBUTES = ['power', 'angle', 'size', 'flip'];
+        this.UPDATE_ATTRIBUTES = ['data', 'angle', 'size', 'flip'];
         this.tagName = 'g';
         this.children = pumpControlMarkup;
     }
@@ -177,7 +178,7 @@ class PumpControl extends Control {
     protected highlight(cellView: dia.CellView): void {
         this.renderChildren();
         this.placeInCorner(cellView.model as dia.Element);
-        (this.nodes.input as HTMLInputElement).checked = Boolean(cellView.model.get('power'));
+        (this.nodes.input as HTMLInputElement).checked = Boolean(dataOf(cellView.model, 'power'));
         this.updatePending(cellView.model as dia.Element);
         this.updateInert(cellView);
     }
@@ -193,7 +194,7 @@ class ToggleValveControl extends Control {
 
     preinitialize(): void {
         // `controlPosition`, `angle`, `size`, `flip`: beside the valve, clear of its drawing (see `placeBeside()`)
-        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size', 'flip'];
+        this.UPDATE_ATTRIBUTES = ['data', 'controlPosition', 'angle', 'size', 'flip'];
         this.children = toggleValveControlMarkup;
     }
 
@@ -204,7 +205,7 @@ class ToggleValveControl extends Control {
     protected highlight(cellView: dia.CellView): void {
         this.renderChildren();
         const model = cellView.model as dia.Element;
-        const isOpen = Boolean(model.get('open'));
+        const isOpen = Boolean(dataOf(model, 'open'));
         const { buttonOn, buttonOff } = this.nodes;
         this.placeBeside(model, TOGGLE_SIZE.width, TOGGLE_SIZE.height);
         // The state it is in: pressed (a segmented control, see `runtime.css`)
@@ -231,7 +232,7 @@ class SliderValveControl extends Control {
 
     preinitialize(): void {
         // `controlPosition`, `angle`, `size`, `flip`: beside the valve, clear of its drawing (see `placeBeside()`)
-        this.UPDATE_ATTRIBUTES = ['open', 'controlPosition', 'angle', 'size', 'flip'];
+        this.UPDATE_ATTRIBUTES = ['data', 'controlPosition', 'angle', 'size', 'flip'];
         this.children = sliderValveControlMarkup;
     }
 
@@ -245,7 +246,7 @@ class SliderValveControl extends Control {
 
     protected highlight(cellView: dia.CellView): void {
         const model = cellView.model as dia.Element;
-        const open = model.get('open') ?? 0;
+        const open = dataOf<number>(model, 'open') ?? 0;
         if (!this.childNodes) {
             // Render the slider only once so that the user can keep dragging it.
             this.renderChildren();

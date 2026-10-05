@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type ControlKind, type Resizable } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -36,11 +37,14 @@ export default class CircuitBreaker extends Shape {
         return {
             ...super.defaults,
             type: 'CircuitBreaker',
+            // What it shows (see `data.ts`)
+            data: {
+                open: false
+            },
             size: {
                 width: 60,
                 height: 80
             },
-            open: false,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -120,12 +124,12 @@ export default class CircuitBreaker extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateState();
-        this.on('change:open', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateState(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateState(options));
     }
 
     /** The lever up (closed) or down (open), the state in its color in the window */
     updateState(options?: dia.Cell.Options): void {
-        const open = Boolean(this.get('open'));
+        const open = Boolean(dataOf(this, 'open'));
         this.attr({
             lever: { y: open ? 'calc(0.4 * h)' : 'calc(0.2 * h)' },
             window: { fill: open ? 'var(--shape-breaker-open)' : 'var(--shape-breaker-closed)' },

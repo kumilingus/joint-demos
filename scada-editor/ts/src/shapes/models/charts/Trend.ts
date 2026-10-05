@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR } from '../../../const';
 import Shape, { type ColorField } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 // The margins of the chart in the screen (the screen is 6 inside the bezel)
 const CHART_X = 12;
@@ -48,12 +49,15 @@ export default class Trend extends Shape {
         return {
             ...super.defaults,
             type: 'Trend',
+            // What it shows (see `data.ts`)
+            data: {
+                // The recent values (0 - 100), the oldest first
+                values: [42, 45, 44, 50, 55, 52, 58, 61, 57, 60, 64, 62]
+            },
             size: {
                 width: 160,
                 height: 80
             },
-            // The recent values (0 - 100), the oldest first
-            values: [42, 45, 44, 50, 55, 52, 58, 61, 57, 60, 64, 62],
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -107,12 +111,12 @@ export default class Trend extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateLine();
-        this.on('change:values', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLine(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLine(options));
     }
 
     /** The line through the values, across the whole width of the chart. */
     updateLine(options?: dia.Cell.Options): void {
-        const values: number[] = this.get('values') || [];
+        const values: number[] = dataOf(this, 'values') || [];
         const last = Math.max(1, values.length - 1);
         const d = values.map((value, index) => {
             const x = chartCoordinate(index / last, CHART_X, 'w');

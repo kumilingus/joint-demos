@@ -6,6 +6,7 @@ import { propertiesOf, readProperty, type TagValue } from '../properties';
 import { getEnergized } from './energized';
 import { CHART_POINTS, getScale } from '../../shapes/common/charts';
 import type { Slice } from '../../shapes/models/charts/DonutChart';
+import { dataChanged, dataOf, hasData } from '../../shapes/common/data';
 
 /*
  * A mock of the plant: in random intervals it sends random updates of the plant data - the new value of a property
@@ -78,7 +79,7 @@ function follow(value: number, target: number, noise: number): number {
 
 /** How many feed pumps are running */
 function pumpsRunning(graph: dia.Graph): number {
-    return graph.getElements().filter(element => element.get('type') === 'Pump' && element.get('power')).length;
+    return graph.getElements().filter(element => element.get('type') === 'Pump' && dataOf(element, 'power')).length;
 }
 
 /** The target of a value of the plant with the pumps running (of the values with no, one or both pumps) */
@@ -220,9 +221,9 @@ const chartGenerators: Record<string, ChartGenerator> = {
     // The steam flow (or its own value drifting): the newest value on the right, the oldest one drops out on the left
     LineChart: (element, graph) => {
         const { min, max } = getScale(element);
-        const values: number[] = element.get('values') || [];
+        const values = dataOf<number[]>(element, 'values') || [];
         const next = hasSteam(graph) ? roundTo(steamFlow(graph), max - min) : driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max);
-        return { values: [...values, next].slice(-CHART_POINTS) };
+        return { 'data/values': [...values, next].slice(-CHART_POINTS) };
     },
     // The steam produced in the last period (the mean flow; or near the last bar): a new bar on the right
     BarChart: (element, graph, tick) => {
@@ -230,8 +231,8 @@ const chartGenerators: Record<string, ChartGenerator> = {
             // A new bar now and then, near the last one
             if (tick % BAR_PERIOD !== 0) return null;
             const { min, max } = getScale(element);
-            const values: number[] = element.get('values') || [];
-            return { values: [...values.slice(1), driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max, 0.08)] };
+            const values = dataOf<number[]>(element, 'values') || [];
+            return { 'data/values': [...values.slice(1), driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max, 0.08)] };
         }
         const sum = (periodFlows.get(element.id as string) ?? 0) + steamFlow(graph);
         if (tick % BAR_PERIOD !== 0) {
@@ -240,19 +241,19 @@ const chartGenerators: Record<string, ChartGenerator> = {
         }
         periodFlows.delete(element.id as string);
         const { min, max } = getScale(element);
-        const values: number[] = element.get('values') || [];
-        return { values: [...values.slice(1), roundTo(sum / BAR_PERIOD, max - min)] };
+        const values = dataOf<number[]>(element, 'values') || [];
+        return { 'data/values': [...values.slice(1), roundTo(sum / BAR_PERIOD, max - min)] };
     },
     // The fuels burnt: the first one up to the base load, the second one above it, the others steadily (or each drifting)
     DonutChart: (element, graph) => {
-        const slices: Slice[] = element.get('slices') || [];
+        const slices = dataOf<Slice[]>(element, 'slices') || [];
         // Without steam: each part a little more or less (the shares stay close)
         if (!hasSteam(graph)) {
-            return { slices: slices.map(slice => ({ ...slice, value: Number(drift(Number(slice.value) || 0, (Number(slice.value) || 0) * 0.03, 0, Number.MAX_VALUE).toFixed(1)) })) };
+            return { 'data/slices': slices.map(slice => ({ ...slice, value: Number(drift(Number(slice.value) || 0, (Number(slice.value) || 0) * 0.03, 0, Number.MAX_VALUE).toFixed(1)) })) };
         }
         const flow = steamFlow(graph);
         return {
-            slices: slices.map((slice, index) => {
+            'data/slices': slices.map((slice, index) => {
                 // The others as they are
                 if (index > 1) return slice;
                 const value = index === 0 ? Math.min(flow, BASE_LOAD) : Math.max(0, flow - BASE_LOAD);
@@ -265,10 +266,10 @@ const chartGenerators: Record<string, ChartGenerator> = {
         const { min, max } = getScale(element);
         // Without the feed pumps: its own value drifting
         if (!graph.getElements().some(other => other.get('type') === 'Pump')) {
-            return { value: driftOnScale(Number(element.get('value')) || 0, min, max, 0.02) };
+            return { 'data/value': driftOnScale(Number(dataOf(element, 'value')) || 0, min, max, 0.02) };
         }
-        const value = follow(Number(element.get('value')) || 0, withPumps(graph, PUMP_PRESSURE), 0.1);
-        return { value: roundTo(Math.max(min, Math.min(max, value)), max - min) };
+        const value = follow(Number(dataOf(element, 'value')) || 0, withPumps(graph, PUMP_PRESSURE), 0.1);
+        return { 'data/value': roundTo(Math.max(min, Math.min(max, value)), max - min) };
     }
 };
 
@@ -283,8 +284,8 @@ const SWITCHES = ['CircuitBreaker', 'Disconnector'];
 
 /** Whether the element runs: switched on (a pump, a generator), open (a valve) or closed (a breaker), or neither */
 function isRunning(element: dia.Element): boolean {
-    if (element.has('power')) return Boolean(element.get('power'));
-    if (element.has('open')) return SWITCHES.includes(element.get('type')) ? !element.get('open') : Boolean(element.get('open'));
+    if (hasData(element, 'power')) return Boolean(dataOf(element, 'power'));
+    if (hasData(element, 'open')) return SWITCHES.includes(element.get('type')) ? !dataOf(element, 'open') : Boolean(dataOf(element, 'open'));
     return true;
 }
 
@@ -395,7 +396,8 @@ function createRandomUpdate(graph: dia.Graph): PlantUpdate | TagUpdate | null {
 function applyUpdate(graph: dia.Graph, { tag, changes }: TagUpdate): void {
     const element = findByTag(graph, tag);
     if (!element) return;
-    Object.entries(changes).forEach(([path, value]) => element.prop(path, value, RUNTIME));
+    // Replaced (an array of values not merged into the one before)
+    Object.entries(changes).forEach(([path, value]) => element.prop(path, value, { ...RUNTIME, rewrite: true }));
 }
 
 export class MockPlant {
@@ -424,10 +426,9 @@ export class MockPlant {
         // The energized circuits and the states of the readouts of the equipment: now, and again when a generator,
         // a pump or a switch changes
         this.updateEnergized();
-        this.graph.on('change:power change:open', this.updateEnergized, this);
+        this.graph.on('change:data', this.onDataChange, this);
         fillTables(this.graph);
         readoutStates(this.graph);
-        this.graph.on('change:power change:open', this.updateReadouts, this);
         this.schedule();
         // The charts on a timer of their own: they move steadily
         this.chartTimer = window.setInterval(() => {
@@ -440,8 +441,7 @@ export class MockPlant {
         this.plant?.off('command', this.respond, this);
         this.responses.forEach(timer => window.clearTimeout(timer));
         this.responses.clear();
-        this.graph.off('change:power change:open', this.updateEnergized, this);
-        this.graph.off('change:power change:open', this.updateReadouts, this);
+        this.graph.off('change:data', this.onDataChange, this);
         restoreReadouts(this.graph);
         // Not a part of the diagram: not saved with it
         this.graph.getCells().forEach(cell => cell.removeProp('energized', RUNTIME));
@@ -467,6 +467,13 @@ export class MockPlant {
     }
 
     /** The states of the readouts follow their sources (see `readoutStates()`) */
+    /** A generator, a pump or a switch changed (on, off, open, closed): the energized circuits, the states of the readouts */
+    protected onDataChange(cell: dia.Cell): void {
+        if (!dataChanged(cell, 'power', 'open')) return;
+        this.updateEnergized();
+        this.updateReadouts();
+    }
+
     protected updateReadouts(): void {
         readoutStates(this.graph);
     }

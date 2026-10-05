@@ -4,6 +4,7 @@ import { labelAttributes } from '../../attributes/label';
 import { bowTieAttributes } from '../../common/valve-body';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 // How high the handwheel is above the valve: the stem rises when the valve opens.
 const HANDWHEEL_OPEN = -36;
@@ -51,11 +52,14 @@ export default class GateValve extends Shape {
         return {
             ...super.defaults,
             type: 'GateValve',
+            // What it shows (see `data.ts`)
+            data: {
+                open: true
+            },
             size: {
                 width: 60,
                 height: 40
             },
-            open: true,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 root: {
@@ -103,11 +107,11 @@ export default class GateValve extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateStem();
-        this.on('change:open', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateStem(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateStem(options));
     }
 
     updateStem(options?: dia.Cell.Options): void {
-        const top = this.get('open') ? HANDWHEEL_OPEN : HANDWHEEL_CLOSED;
+        const top = dataOf(this, 'open') ? HANDWHEEL_OPEN : HANDWHEEL_CLOSED;
         this.attr({
             stem: { d: `M calc(w / 2) calc(h / 2) V ${top}` },
             handwheel: { y: top - 4 }

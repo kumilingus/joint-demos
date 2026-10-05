@@ -12,6 +12,7 @@ import { type Arrowhead, ARROWHEAD_LENGTHS, arrowheadMarker } from '../shapes/mo
 import { descriptions } from '../palette/descriptions';
 import { hasLineWidth, lineWidthField } from '../shapes/common/line-width';
 import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
+import { type DataKey, dataOf, hasData } from '../shapes/common/data';
 
 const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
@@ -68,6 +69,9 @@ function sourceOptions(table: dia.Element): Array<{ value: string; content: stri
         })
         .sort((a, b) => a.value.localeCompare(b.value));
 }
+
+// The inputs of the values of an element (see `data.ts`)
+const DATA_KEYS: DataKey[] = ['power', 'open', 'level', 'value', 'values', 'min', 'max', 'thresholds', 'slices'];
 
 /** The inputs for what the element has: its texts, its values and its control. */
 function getInputs(element: dia.Element): Inputs {
@@ -197,19 +201,19 @@ function getInputs(element: dia.Element): Inputs {
         };
     }
 
-    if (element.has('power')) {
+    if (hasData(element, 'power')) {
         inputs.power = { type: 'toggle', label: 'Power', group: 'values', index: index++ };
     }
 
     // A valve is either open or closed, or (a control valve) open by a part.
-    const open = element.get('open');
+    const open = dataOf(element, 'open');
     if (typeof open === 'boolean') {
         inputs.open = { type: 'toggle', label: 'Open', group: 'values', index: index++ };
     } else if (typeof open === 'number') {
         inputs.open = { type: 'range', label: 'Open', min: 0, max: 1, step: 0.25, group: 'values', index: index++ };
     }
 
-    if (element.has('level')) {
+    if (hasData(element, 'level')) {
         inputs.level = { type: 'range', label: 'Level', min: 0, max: 100, step: 1, unit: '%', group: 'values', index: index++ };
     }
 
@@ -220,7 +224,7 @@ function getInputs(element: dia.Element): Inputs {
             high: { type: 'number', label: 'High (warn above)', group: 'thresholds', index: index++ }
         };
     // The levels at which a gauge turns to the warning colors.
-    } else if (element.has('thresholds')) {
+    } else if (hasData(element, 'thresholds')) {
         inputs.thresholds = {
             low: { type: 'range', label: 'Low (warn below)', min: 0, max: 100, step: 1, unit: '%', group: 'thresholds', index: index++ },
             high: { type: 'range', label: 'High (warn above)', min: 0, max: 100, step: 1, unit: '%', group: 'thresholds', index: index++ }
@@ -291,7 +295,7 @@ function getInputs(element: dia.Element): Inputs {
     }
 
     // The slices of a donut chart: the parts of the whole (their shares are computed)
-    if (element.has('slices')) {
+    if (hasData(element, 'slices')) {
         inputs.slices = {
             type: 'list',
             addButtonLabel: 'Add slice',
@@ -328,6 +332,11 @@ function getInputs(element: dia.Element): Inputs {
             };
         }
     }
+
+    // The values (see `data.ts`): at the paths of the data
+    const data = Object.fromEntries(DATA_KEYS.filter(key => key in inputs).map(key => [key, inputs[key]]));
+    DATA_KEYS.forEach(key => delete inputs[key]);
+    if (Object.keys(data).length > 0) inputs.data = data;
 
     return inputs;
 }
@@ -519,7 +528,7 @@ function inspectorInputs(cell: dia.Cell): Inputs {
         cell.get('type') === 'Arrow' ? arrowheadInputs : {},
         hasLineWidth(cell) ? lineWidthInputs(cell) : {},
         // A conveyor runs or stands still
-        cell.has('power') ? { power: { type: 'toggle', label: 'Power', group: 'link', index: 5 }} : {},
+        hasData(cell, 'power') ? { data: { power: { type: 'toggle', label: 'Power', group: 'link', index: 5 }}} : {},
         layerInput('link')
     ) as Inputs;
 }

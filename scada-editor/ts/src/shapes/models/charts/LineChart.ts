@@ -3,6 +3,7 @@ import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../../../const';
 import { CHART_POINTS, getScale, GRID, plotArea, plotAttributes, plotY, type Scale, scaleAttributes, scaleMarkup } from '../../common/charts';
 import Shape, { type ColorField } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -60,14 +61,14 @@ export default class LineChart extends Shape {
         // The line through the values of the model (`chartSeries` in the attributes: 'line' or 'area')
         'chart-series': {
             set(this: dia.ElementView, kind: 'line' | 'area', refBBox: dia.BBox) {
-                return { d: seriesPath(this.model.get('values') || [], getScale(this.model), refBBox, kind === 'area') };
+                return { d: seriesPath(dataOf(this.model, 'values') || [], getScale(this.model), refBBox, kind === 'area') };
             }
         },
         // A horizontal line at the threshold of the model (`chartLevel` in the attributes: 'low' or 'high'),
         // none without it (a field cleared in the inspector); the lower one of the two is the low one.
         'chart-level': {
             set(this: dia.ElementView, which: 'low' | 'high', refBBox: dia.BBox) {
-                const [low, high] = ['low', 'high'].map(key => thresholdValue(this.model.prop(['thresholds', key])));
+                const [low, high] = ['low', 'high'].map(key => thresholdValue(this.model.prop(['data', 'thresholds', key])));
                 // One of them only: it is where it is.
                 const both = Number.isFinite(low) && Number.isFinite(high);
                 const value = !both ? (which === 'low' ? low : high) : which === 'low' ? Math.min(low, high) : Math.max(low, high);
@@ -86,17 +87,20 @@ export default class LineChart extends Shape {
         return {
             ...super.defaults,
             type: 'LineChart',
+            // What it shows (see `data.ts`)
+            data: {
+                // The scale of the values
+                min: 0,
+                max: 100,
+                // The recent values, the oldest first
+                values: Array.from({ length: CHART_POINTS }, (_, i) => Math.round(50 + 20 * Math.sin(i / 2))),
+                // The warning levels (on the scale), dashed lines across the chart
+                thresholds: { low: 20, high: 80 }
+            },
             size: {
                 width: 280,
                 height: 140
             },
-            // The scale of the values
-            min: 0,
-            max: 100,
-            // The recent values, the oldest first
-            values: Array.from({ length: CHART_POINTS }, (_, i) => Math.round(50 + 20 * Math.sin(i / 2))),
-            // The warning levels (on the scale), dashed lines across the chart
-            thresholds: { low: 20, high: 80 },
             attrs: {
                 root: {
                     magnetSelector: 'body'

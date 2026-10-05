@@ -39,6 +39,7 @@ import {
 import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
 import { toggleSettings } from './inspector/settings';
+import { withData } from './shapes/common/data';
 
 export class App {
 
@@ -163,7 +164,9 @@ export class App {
      * Load a diagram saved with `saveDiagram()`: its cells, its images (see `images.ts`) and the favorite
      * shapes of the palette (see `favorites.ts`), into the layers of the app.
      */
-    loadJSON(json: dia.Graph.JSON): void {
+    loadJSON(saved: dia.Graph.JSON): void {
+        // Saved before the values of the cells were their data (see `data.ts`)
+        const json = withData(saved);
         // Tried on a graph of its own first (an unknown type of a shape, an unknown layer, ...):
         // the diagram is not replaced by a part of the file.
         createGraph().fromJSON(json);

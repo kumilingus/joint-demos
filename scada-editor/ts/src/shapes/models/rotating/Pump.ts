@@ -49,12 +49,15 @@ export default class Pump extends Shape {
         return {
             ...super.defaults,
             type: 'Pump',
+            // What it shows (see `data.ts`)
+            data: {
+                // 0 = off, 1 = on
+                power: 0
+            },
             size: {
                 width: 100,
                 height: 100
             },
-            // 0 = off, 1 = on
-            power: 0,
             attrs: {
                 // The pipes to the stubs: the inlet over the casing, the outlet behind it
                 inlet: pipeThroughAttributes(0.7, 'left'),

@@ -1,4 +1,5 @@
 import { type dia, g, V } from '@joint/plus';
+import { dataOf } from './data';
 
 /*
  * What the charts (see `LineChart`, `BarChart`, `DonutChart`, `GaugeChart`) have in common. A chart is
@@ -24,8 +25,8 @@ export interface Scale {
 
 /** The scale of the chart: a max not above the min (or none) is taken as the min and one more */
 export function getScale(model: dia.Cell): Scale {
-    const min = Number(model.get('min')) || 0;
-    const max = model.get('max') === null ? NaN : Number(model.get('max'));
+    const min = Number(dataOf(model, 'min')) || 0;
+    const max = dataOf(model, 'max') === null ? NaN : Number(dataOf(model, 'max'));
     return { min, max: Number.isFinite(max) && max > min ? max : min + 1 };
 }
 

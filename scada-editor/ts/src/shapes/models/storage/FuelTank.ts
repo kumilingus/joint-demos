@@ -3,6 +3,7 @@ import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
 import { SURFACE_INK } from '../../../const';
+import { type DataKey, dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -42,11 +43,14 @@ export default class FuelTank extends Shape {
         return {
             ...super.defaults,
             type: 'FuelTank',
+            // What it shows (see `data.ts`)
+            data: {
+                level: 70
+            },
             size: {
                 width: 160,
                 height: 80
             },
-            level: 70,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -110,11 +114,11 @@ export default class FuelTank extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateFuel();
-        this.on('change:level', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateFuel(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateFuel(options));
     }
 
     // The fuel glides to a new level (see `animateLevel()` in `animations.ts`)
-    get glideProperty(): string {
+    get glideProperty(): DataKey {
         return 'level';
     }
 
@@ -126,7 +130,7 @@ export default class FuelTank extends Shape {
 
     /** The fuel in the sight glass as high as the level (from its bottom) */
     updateFuel(options?: dia.Cell.Options): void {
-        const ratio = Math.max(0, Math.min(100, Number(this.get('level')) || 0)) / 100;
+        const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         const height = GLASS_HEIGHT * ratio;
         this.attr({
             fuel: {

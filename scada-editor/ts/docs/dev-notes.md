@@ -28,7 +28,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `RuntimeController` | runtime | paper: a cell drag pans |
 | `MockPlantController` | runtime | the mock plant (`plant/mock/`) |
 | `LogController` | runtime | Log button; plant messages; element clicks filter the log |
-| `AnimationsController` | runtime | graph: `power`, `open`, `level`, `value` |
+| `AnimationsController` | runtime | graph: `data` (`power`, `open`, `level`, `value`) |
 | `ElectricalController` | runtime | graph: `energized` |
 
 ### History
@@ -94,6 +94,7 @@ A shape showing a value by a part (level panel, battery bank, fuel tank, thermom
 
 Special attributes:
 
+- `data` (`shapes/common/data.ts`) - what an element shows, in one model attribute: the plant's values (`power`, `open`, `level`, `value`, `values`) and their scale (`min`, `max`, `thresholds`, `slices`). Read with `dataOf()`, set with `setData()` (arrays replaced, not merged); the shapes and the view follow `change:data` (one presentation attribute for all the charts). A diagram saved with the values at the top level is converted on load (`withData()`). A table keeps its own `values` (its view updates single cells).
 - `labelPosition` (`shapes/attributes/label.ts`) - `top`, `left`, `right`, `bottom`; laid out clear of the drawing, horizontal on a rotated shape. Labels spread `labelAttributes` (class `jj-label`: the diagram's label size and color).
 - `textStyles` (`shapes/attributes/text-styles.ts`) - italic, underline, strike (Label).
 - `flip` (`shapes/attributes/flip.ts`) - the model attribute `flip` (`x`, `y`, `xy`): one `transform` mirroring the node across the middle of the element, by the special attribute `flip: true` on the parts that show a direction only, marked `<g @group-selector='directional'>` in the markup (the inlet of a cyclone, the chutes of an elevator), so the symmetric rest keeps its lighting; the view renders them again when `flip` changes (`ShapeView`). A shape opts in with `flippable` (`'x'`, `'xy'`); its overflow mirrors in `footprint.ts`. The ports mirror with it: a flipped shape lays them out with the `flippable` port layout (`absolute`, then mirrored by the flip; in `Shape.portLayoutNamespace`), rebuilt from its defaults when the flip changes (derived, `Shape.flipPorts()`) - the port ids stay, so the pipes follow their stubs (the suction of a pump stays the suction).
@@ -121,7 +122,7 @@ app.plant.on('command', ({ tag, property, value }) => { /* ... */ });   // an op
 app.plant.on('update', ({ tag, property, value }) => { /* ... */ });    // an update applied
 ```
 
-Commands: a control triggers `command` on its element, `ControlsController` passes it to `plant.send()`, and the element changes only when the plant answers with an update (the mock after 0.3-0.8 s). Until then the control shows it pending (5 s at most). Properties per element type are in `plant/properties.ts` (`power`, `open`, `level`, `value`).
+Commands: a control triggers `command` on its element, `ControlsController` passes it to `plant.send()`, and the element changes only when the plant answers with an update (the mock after 0.3-0.8 s). Until then the control shows it pending (5 s at most). Properties per element type are in `plant/properties.ts` (`power`, `open`, `level`, `value`): they are the keys of the element's `data` (see below).
 
 In the console during a run: `plant.update('LI-101', 'level', 90)` (`window.plant`).
 

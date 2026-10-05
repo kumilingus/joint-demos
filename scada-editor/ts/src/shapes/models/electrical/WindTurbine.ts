@@ -51,11 +51,14 @@ export default class WindTurbine extends Shape {
         return {
             ...super.defaults,
             type: 'WindTurbine',
+            // What it shows (see `data.ts`)
+            data: {
+                power: 1
+            },
             size: {
                 width: 140,
                 height: 220
             },
-            power: 1,
             attrs: {
                 root: {
                     magnetSelector: 'tower'

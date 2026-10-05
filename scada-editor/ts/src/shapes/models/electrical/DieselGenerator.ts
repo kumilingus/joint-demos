@@ -57,11 +57,14 @@ export default class DieselGenerator extends Shape {
         return {
             ...super.defaults,
             type: 'DieselGenerator',
+            // What it shows (see `data.ts`)
+            data: {
+                power: 1
+            },
             size: {
                 width: 200,
                 height: 100
             },
-            power: 1,
             attrs: {
                 root: {
                     magnetSelector: 'engine'

@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type ControlKind, type Resizable } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 // How high the blade is (and the terminals): on the grid, the shape is not resized
 const BLADE_Y = 20;
@@ -54,11 +55,14 @@ export default class Disconnector extends Shape {
         return {
             ...super.defaults,
             type: 'Disconnector',
+            // What it shows (see `data.ts`)
+            data: {
+                open: false
+            },
             size: {
                 width: 100,
                 height: 60
             },
-            open: false,
             attrs: {
                 root: {
                     magnetSelector: 'body'
@@ -122,10 +126,10 @@ export default class Disconnector extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateBlade();
-        this.on('change:open', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateBlade(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateBlade(options));
     }
 
     updateBlade(options?: dia.Cell.Options): void {
-        this.attr('blade/d', this.get('open') ? OPEN_BLADE : CLOSED_BLADE, options);
+        this.attr('blade/d', dataOf(this, 'open') ? OPEN_BLADE : CLOSED_BLADE, options);
     }
 }

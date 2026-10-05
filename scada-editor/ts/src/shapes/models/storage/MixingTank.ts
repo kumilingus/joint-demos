@@ -42,7 +42,10 @@ export default class MixingTank extends Shape {
         return {
             ...super.defaults,
             type: 'MixingTank',
-            power: 1,
+            // What it shows (see `data.ts`)
+            data: {
+                power: 1
+            },
             size: {
                 width: 120,
                 height: 160

@@ -1,5 +1,6 @@
 import type { dia } from '@joint/plus';
 import Wire from '../../shapes/models/electrical/Wire';
+import { dataOf } from '../../shapes/common/data';
 
 /*
  * The electrical circuits of the mock plant: which elements and wires are energized (a real plant sends it
@@ -13,14 +14,14 @@ import Wire from '../../shapes/models/electrical/Wire';
 function isSource(element: dia.Element): boolean {
     const type = element.get('type');
     if (['Battery', 'BatteryBank', 'SolarArray'].includes(type)) return true;
-    if (['Generator', 'DieselGenerator', 'WindTurbine'].includes(type)) return Boolean(element.get('power'));
+    if (['Generator', 'DieselGenerator', 'WindTurbine'].includes(type)) return Boolean(dataOf(element, 'power'));
     return false;
 }
 
 /** Whether the current passes the element (to its other terminals) */
 function isPassing(element: dia.Element): boolean {
     const type = element.get('type');
-    if (type === 'CircuitBreaker' || type === 'Disconnector') return !element.get('open');
+    if (type === 'CircuitBreaker' || type === 'Disconnector') return !dataOf(element, 'open');
     return true;
 }
 

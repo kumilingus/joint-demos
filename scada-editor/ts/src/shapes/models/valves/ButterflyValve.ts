@@ -4,6 +4,7 @@ import { labelAttributes } from '../../attributes/label';
 import { bowTieAttributes, leverAttributes } from '../../common/valve-body';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -47,11 +48,14 @@ export default class ButterflyValve extends Shape {
         return {
             ...super.defaults,
             type: 'ButterflyValve',
+            // What it shows (see `data.ts`)
+            data: {
+                open: true
+            },
             size: {
                 width: 60,
                 height: 40
             },
-            open: true,
             attrs: {
                 pipe: pipeThroughAttributes(),
                 root: {
@@ -89,11 +93,11 @@ export default class ButterflyValve extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateDisc();
-        this.on('change:open', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateDisc(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateDisc(options));
     }
 
     updateDisc(options?: dia.Cell.Options): void {
-        const angle = this.get('open') ? 90 : 0;
+        const angle = dataOf(this, 'open') ? 90 : 0;
         this.attr('disc/transform', `translate(calc(w / 2), calc(h / 2)) rotate(${angle})`, options);
     }
 }

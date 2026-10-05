@@ -4,6 +4,7 @@ import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
 import type { Thresholds } from './Panel';
 import { Layer, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../../../const';
+import { dataOf } from '../../common/data';
 
 // The size the dial is drawn for: it is scaled to the size of the element (kept square, see `resizable`)
 const DIAL_SIZE = 60;
@@ -97,14 +98,17 @@ export default class PressureGauge extends Shape {
         return {
             ...super.defaults,
             type: 'PressureGauge',
+            // What it shows (see `data.ts`)
+            data: {
+                // The pressure in % of the scale
+                value: 60,
+                // The warning zones: below the low threshold (none by default) and above the high one
+                thresholds: { ...DEFAULT_THRESHOLDS }
+            },
             size: {
                 width: 60,
                 height: 60
             },
-            // The pressure in % of the scale
-            value: 60,
-            // The warning zones: below the low threshold (none by default) and above the high one
-            thresholds: { ...DEFAULT_THRESHOLDS },
             attrs: {
                 root: {
                     magnetSelector: 'bezel'
@@ -198,13 +202,13 @@ export default class PressureGauge extends Shape {
         super.initialize(...args);
         this.updateNeedle();
         this.updateZones();
-        this.on('change:value', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateNeedle(options));
-        this.on('change:thresholds', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateZones(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateNeedle(options));
+        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateZones(options));
     }
 
     /** The thresholds, with the low one never above the high one. */
     get thresholds(): Thresholds {
-        const { low, high } = { ...DEFAULT_THRESHOLDS, ...this.get('thresholds') };
+        const { low, high } = { ...DEFAULT_THRESHOLDS, ...dataOf<Thresholds>(this, 'thresholds') };
         const clampedLow = clamp(low);
         return { low: clampedLow, high: Math.max(clampedLow, clamp(high)) };
     }
@@ -220,7 +224,7 @@ export default class PressureGauge extends Shape {
 
     /** The needle points to the value on the scale (it's drawn pointing up: at 270°). */
     updateNeedle(options?: dia.Cell.Options): void {
-        const angle = scaleAngle(clamp(this.get('value'))) - 270;
+        const angle = scaleAngle(clamp(dataOf(this, 'value'))) - 270;
         this.attr('needle/style/transform', `rotate(${angle.toFixed(1)}deg)`, options);
     }
 }

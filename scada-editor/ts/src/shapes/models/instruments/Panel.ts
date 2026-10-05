@@ -3,6 +3,7 @@ import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../../.
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField } from '../../common/Shape';
 import { finishOf } from '../../common/gradients';
+import { type DataKey, dataOf } from '../../common/data';
 
 // The track of the liquid: below the value, fixed margins - the track takes the rest of the height
 const WINDOW_TOP = 50;
@@ -147,12 +148,15 @@ export default class Panel extends Shape {
         return {
             ...super.defaults,
             type: 'Panel',
+            // What it shows (see `data.ts`)
+            data: {
+                level: 0,
+                thresholds: { ...DEFAULT_THRESHOLDS }
+            },
             size: {
                 width: 100,
                 height: 240
             },
-            level: 0,
-            thresholds: { ...DEFAULT_THRESHOLDS },
             attrs: {
                 root: {
                     magnetSelector: 'panelBody'
@@ -237,16 +241,16 @@ export default class Panel extends Shape {
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
         this.updateLiquid();
-        this.on('change:level change:thresholds change:liquidColor', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLiquid(options));
+        this.on('change:data change:liquidColor', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLiquid(options));
     }
 
     get level(): number {
-        return clampLevel(this.get('level'));
+        return clampLevel(dataOf(this, 'level'));
     }
 
     /** The thresholds, with the low one never above the high one. */
     get thresholds(): Thresholds {
-        const { low, high } = { ...DEFAULT_THRESHOLDS, ...this.get('thresholds') };
+        const { low, high } = { ...DEFAULT_THRESHOLDS, ...dataOf<Thresholds>(this, 'thresholds') };
         const clampedLow = clampLevel(low);
         return { low: clampedLow, high: Math.max(clampedLow, clampLevel(high)) };
     }
@@ -284,7 +288,7 @@ export default class Panel extends Shape {
 
     /** The liquid at the level (0 - 100), as `updateLiquid()` draws it, for the current size. */
     // Its liquid glides to a new level (see `animateLevel()` in `animations.ts`)
-    get glideProperty(): string {
+    get glideProperty(): DataKey {
         return 'level';
     }
 
