@@ -122,7 +122,6 @@ const markup = util.svg/* xml */`
  * Everything but the text scales with the size of the element.
  */
 export default class Panel extends Shape {
-
     // The accent: the color of the liquid in range (not the warnings: below the low threshold, above the high one)
     get accentField(): ColorField {
         return { path: ['liquidColor'], defaultValue: LIQUID_COLOR };
@@ -184,6 +183,8 @@ export default class Panel extends Shape {
                 },
                 // The level as a number, above the track
                 value: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(0.5 * w)',
                     y: 30,
                     textAnchor: 'middle',
@@ -198,6 +199,8 @@ export default class Panel extends Shape {
                     fill: TRACK_COLOR
                 },
                 liquid: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: TRACK_LEFT,
                     width: `calc(${TRACK_WIDTH} * w)`,
                     rx: `calc(${TRACK_WIDTH / 2} * w)`,
@@ -217,8 +220,16 @@ export default class Panel extends Shape {
                     strokeLinecap: 'round'
                 },
                 ...Object.fromEntries(LABELED.map(i => [`value${i}`, valueAttributes(i)])),
-                lowMark: { fill: MIN_LIQUID_COLOR },
-                highMark: { fill: MAX_LIQUID_COLOR }
+                lowMark: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
+                    fill: MIN_LIQUID_COLOR
+                },
+                highMark: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
+                    fill: MAX_LIQUID_COLOR
+                }
             }
         };
     }
@@ -240,8 +251,6 @@ export default class Panel extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateLiquid();
-        this.on('change:data change:liquidColor', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLiquid(options));
     }
 
     get level(): number {
@@ -255,27 +264,6 @@ export default class Panel extends Shape {
         return { low: clampedLow, high: Math.max(clampedLow, clampLevel(high)) };
     }
 
-    /**
-     * The liquid rises from the bottom of the track to the level (the number above it);
-     * its color warns when the tank is almost empty (below the low threshold)
-     * or full (above the high one). The thresholds are arrows beside the track.
-     */
-    updateLiquid(options?: dia.Cell.Options): void {
-        const { level } = this;
-        const { low, high } = this.thresholds;
-        const ratio = level / 100;
-        this.attr({
-            liquid: {
-                y: windowY(1 - ratio),
-                height: windowHeight(ratio),
-                fill: this.liquidColor(level)
-            },
-            value: { text: `${Math.round(level)} %` },
-            lowMark: { d: thresholdMarker(low) },
-            highMark: { d: thresholdMarker(high) }
-        }, options);
-    }
-
     /** The color of the liquid at the level: it warns when the tank is almost empty or full (its own color otherwise, the accent). */
     liquidColor(level: number): string {
         const { low, high } = this.thresholds;
@@ -286,7 +274,7 @@ export default class Panel extends Shape {
                 : this.get('liquidColor') ?? LIQUID_COLOR;
     }
 
-    /** The liquid at the level (0 - 100), as `updateLiquid()` draws it, for the current size. */
+    /** The liquid at the level (0 - 100), as `dataAttributes()` draws it, for the current size. */
     // Its liquid glides to a new level (see `animateLevel()` in `animations.ts`)
     get glideProperty(): DataKey {
         return 'level';
@@ -302,6 +290,25 @@ export default class Panel extends Shape {
         const height = windowSize * clampLevel(level) / 100;
         return { y: WINDOW_TOP + windowSize - height, height, fill: this.liquidColor(clampLevel(level)) };
     }
+
+    /**
+     * The liquid rises from the bottom of the track to the level (the number above it); its color warns when the tank
+     * is almost empty (below the low threshold) or full (above the high one). The thresholds are arrows beside the
+     * track (see `from-data.ts`).
+     */
+    dataAttributes(selector: string): Record<string, unknown> {
+        const { level } = this;
+        const { low, high } = this.thresholds;
+        const ratio = level / 100;
+        switch (selector) {
+            case 'liquid': return { y: windowY(1 - ratio), height: windowHeight(ratio), fill: this.liquidColor(level) };
+            case 'value': return { text: `${Math.round(level)} %` };
+            case 'lowMark': return { d: thresholdMarker(low) };
+            case 'highMark': return { d: thresholdMarker(high) };
+            default: return {};
+        }
+    }
+
 }
 
 /** The liquid at a level (0 - 100) in the coordinates of the element, computed from the model (see `animations.ts`). */

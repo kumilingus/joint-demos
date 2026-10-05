@@ -21,7 +21,6 @@ const GLASS_HEIGHT = 0.6;
 
 /** A fuel tank (the day tank of a generator): the fuel level in its sight glass, the fuel out by the pipes. */
 export default class FuelTank extends Shape {
-
     // The accent: the fuel in the sight glass (its level is the plant's)
     get accentField(): ColorField {
         return { path: ['attrs', 'fuel', 'fill'] };
@@ -81,6 +80,8 @@ export default class FuelTank extends Shape {
                     strokeWidth: 1.5
                 },
                 fuel: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(0.44 * w + 2)',
                     width: 'calc(0.12 * w - 4)',
                     rx: 2,
@@ -113,8 +114,6 @@ export default class FuelTank extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateFuel();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateFuel(options));
     }
 
     // The fuel glides to a new level (see `animateLevel()` in `animations.ts`)
@@ -128,15 +127,15 @@ export default class FuelTank extends Shape {
         return { fuel: { y: `${(GLASS_Y + GLASS_HEIGHT - height) * h}px`, height: `${height * h}px` }};
     }
 
-    /** The fuel in the sight glass as high as the level (from its bottom) */
-    updateFuel(options?: dia.Cell.Options): void {
+    /** The fuel in the sight glass as high as the level, from its bottom (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        if (selector !== 'fuel') return {};
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         const height = GLASS_HEIGHT * ratio;
-        this.attr({
-            fuel: {
-                y: `calc(${(GLASS_Y + GLASS_HEIGHT - height).toFixed(4)} * h)`,
-                height: `calc(${height.toFixed(4)} * h)`
-            }
-        }, options);
+        return {
+            y: `calc(${(GLASS_Y + GLASS_HEIGHT - height).toFixed(4)} * h)`,
+            height: `calc(${height.toFixed(4)} * h)`
+        };
     }
+
 }

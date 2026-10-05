@@ -12,7 +12,6 @@ const DIAL_SIZE = 60;
 // The dial is drawn around the center of the element, scaled to its size.
 const dialTransform = `translate(calc(w / 2), calc(h / 2)) scale(calc(w / ${DIAL_SIZE}))`;
 
-
 // The scale: 270° from the bottom left (0 %) to the bottom right (100 %), clockwise
 const SCALE_START = 135;
 const SCALE_SWEEP = 270;
@@ -70,7 +69,6 @@ const BEZEL = 1 / 12;
  * as of the surfaces of the equipment), the needle pointing to the value.
  */
 export default class PressureGauge extends Shape {
-
     // The accent: the needle
     get accentField(): ColorField {
         return { path: ['attrs', 'needle', 'fill'] };
@@ -148,14 +146,18 @@ export default class PressureGauge extends Shape {
                     strokeWidth: 2,
                     strokeLinecap: 'round'
                 },
-                // The warning zones of the scale (see `updateZones()`)
+                // The warning zones of the scale (see `dataAttributes()`)
                 lowZone: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     transform: dialTransform,
                     fill: 'none',
                     stroke: MIN_LIQUID_COLOR,
                     strokeWidth: 3
                 },
                 highZone: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     transform: dialTransform,
                     fill: 'none',
                     stroke: MAX_LIQUID_COLOR,
@@ -166,6 +168,8 @@ export default class PressureGauge extends Shape {
                 },
                 // Pointing up; turned (with a CSS transform, so that it sweeps) to the value.
                 needle: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     d: 'M -3 0 L 0 -20 L 3 0 Z',
                     fill: 'var(--color-red)',
                     style: { transition: 'transform 0.6s ease-out' }
@@ -200,10 +204,6 @@ export default class PressureGauge extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateNeedle();
-        this.updateZones();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateNeedle(options));
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateZones(options));
     }
 
     /** The thresholds, with the low one never above the high one. */
@@ -213,18 +213,18 @@ export default class PressureGauge extends Shape {
         return { low: clampedLow, high: Math.max(clampedLow, clamp(high)) };
     }
 
-    /** The yellow zone from the start of the scale to the low threshold, the red one from the high threshold to the end. */
-    updateZones(options?: dia.Cell.Options): void {
+    /**
+     * The yellow zone from the start of the scale to the low threshold, the red one from the high threshold to the end;
+     * the needle points to the value on the scale - drawn pointing up, at 270° (see `from-data.ts`)
+     */
+    dataAttributes(selector: string): Record<string, unknown> {
         const { low, high } = this.thresholds;
-        this.attr({
-            lowZone: { d: zone(0, low) },
-            highZone: { d: zone(high, 100) }
-        }, options);
+        switch (selector) {
+            case 'lowZone': return { d: zone(0, low) };
+            case 'highZone': return { d: zone(high, 100) };
+            case 'needle': return { style: { transform: `rotate(${(scaleAngle(clamp(dataOf(this, 'value'))) - 270).toFixed(1)}deg)` }};
+            default: return {};
+        }
     }
 
-    /** The needle points to the value on the scale (it's drawn pointing up: at 270°). */
-    updateNeedle(options?: dia.Cell.Options): void {
-        const angle = scaleAngle(clamp(dataOf(this, 'value'))) - 270;
-        this.attr('needle/style/transform', `rotate(${angle.toFixed(1)}deg)`, options);
-    }
 }

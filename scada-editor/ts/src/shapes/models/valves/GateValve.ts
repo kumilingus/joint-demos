@@ -22,7 +22,6 @@ const markup = util.svg/* xml */`
 
 /** A gate valve with a rising stem: the handwheel is up while the valve is open. */
 export default class GateValve extends Shape {
-
     // The accent: the handwheel
     get accentField(): ColorField {
         return { path: ['attrs', 'handwheel', 'fill'] };
@@ -66,6 +65,8 @@ export default class GateValve extends Shape {
                     magnetSelector: 'body'
                 },
                 stem: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     stroke: '#555',
                     strokeWidth: 4
                 },
@@ -79,6 +80,8 @@ export default class GateValve extends Shape {
                     strokeWidth: 1.5
                 },
                 handwheel: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(w / 2 - 20)',
                     width: 40,
                     height: 8,
@@ -106,15 +109,14 @@ export default class GateValve extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateStem();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateStem(options));
     }
 
-    updateStem(options?: dia.Cell.Options): void {
+    /** The stem and the handwheel up (open) or down (closed), see `from-data.ts` */
+    dataAttributes(selector: string): Record<string, unknown> {
         const top = dataOf(this, 'open') ? HANDWHEEL_OPEN : HANDWHEEL_CLOSED;
-        this.attr({
-            stem: { d: `M calc(w / 2) calc(h / 2) V ${top}` },
-            handwheel: { y: top - 4 }
-        }, options);
+        if (selector === 'stem') return { d: `M calc(w / 2) calc(h / 2) V ${top}` };
+        if (selector === 'handwheel') return { y: top - 4 };
+        return {};
     }
+
 }

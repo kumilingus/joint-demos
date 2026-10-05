@@ -24,7 +24,6 @@ const GAUGE_PADDING = 10;
 
 /** A battery bank (a UPS, a storage of the energy): a source of the power, its charge on a gauge. */
 export default class BatteryBank extends Shape {
-
     // The accent: the bar of the charge
     get accentField(): ColorField {
         return { path: ['attrs', 'charge', 'fill'] };
@@ -80,6 +79,8 @@ export default class BatteryBank extends Shape {
                     fill: '#1e272e'
                 },
                 charge: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: GAUGE_PADDING,
                     y: 'calc(0.8 * h)',
                     height: 'calc(0.12 * h)',
@@ -102,8 +103,6 @@ export default class BatteryBank extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateCharge();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCharge(options));
     }
 
     // The bar glides to a new charge (see `animateLevel()` in `animations.ts`)
@@ -116,9 +115,11 @@ export default class BatteryBank extends Shape {
         return { charge: { width: `${ratio * (this.size().width - 2 * GAUGE_PADDING)}px` }};
     }
 
-    /** The bar of the gauge as long as the charge */
-    updateCharge(options?: dia.Cell.Options): void {
+    /** The bar of the gauge as long as the charge (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        if (selector !== 'charge') return {};
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
-        this.attr('charge/width', `calc(${ratio} * w - ${2 * GAUGE_PADDING * ratio})`, options);
+        return { width: `calc(${ratio} * w - ${2 * GAUGE_PADDING * ratio})` };
     }
+
 }

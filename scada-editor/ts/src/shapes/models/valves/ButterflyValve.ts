@@ -18,7 +18,6 @@ const markup = util.svg/* xml */`
 
 /** A quarter-turn valve with a disc: along the flow when open, across it when closed. */
 export default class ButterflyValve extends Shape {
-
     // The accent: the pivot
     get accentField(): ColorField {
         return { path: ['attrs', 'pivot', 'fill'] };
@@ -64,6 +63,8 @@ export default class ButterflyValve extends Shape {
                 lever: leverAttributes,
                 body: bowTieAttributes,
                 disc: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     d: 'M 0 -16 V 16',
                     stroke: '#333',
                     strokeWidth: 5,
@@ -92,12 +93,13 @@ export default class ButterflyValve extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateDisc();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateDisc(options));
     }
 
-    updateDisc(options?: dia.Cell.Options): void {
+    /** The disc along the flow (open) or across it (closed), see `from-data.ts` */
+    dataAttributes(selector: string): Record<string, unknown> {
+        if (selector !== 'disc') return {};
         const angle = dataOf(this, 'open') ? 90 : 0;
-        this.attr('disc/transform', `translate(calc(w / 2), calc(h / 2)) rotate(${angle})`, options);
+        return { transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})` };
     }
+
 }

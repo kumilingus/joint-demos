@@ -19,7 +19,6 @@ const markup = util.svg/* xml */`
 
 /** An electrically operated valve: the coil on top lights up when the valve is open. */
 export default class SolenoidValve extends Shape {
-
     // The accent: the coil
     get accentField(): ColorField {
         return { path: ['attrs', 'coil', 'fill'] };
@@ -76,6 +75,8 @@ export default class SolenoidValve extends Shape {
                     strokeWidth: 2
                 },
                 coilLabel: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     text: 'S',
                     x: 'calc(w / 2)',
                     y: -20,
@@ -102,11 +103,11 @@ export default class SolenoidValve extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateCoil();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCoil(options));
     }
 
-    updateCoil(options?: dia.Cell.Options): void {
-        this.attr('coilLabel/fill', dataOf(this, 'open') ? LIQUID_COLOR : '#bbb', options);
+    /** The coil lit while the valve is open (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        return selector === 'coilLabel' ? { fill: dataOf(this, 'open') ? LIQUID_COLOR : '#bbb' } : {};
     }
+
 }

@@ -24,7 +24,6 @@ const markup = util.svg/* xml */`
 `;
 
 export default class ControlValve extends Shape {
-
     // The accent: the actuator
     get accentField(): ColorField {
         return { path: ['attrs', 'control', 'fill'] };
@@ -95,6 +94,8 @@ export default class ControlValve extends Shape {
                     strokeLinecap: 'round'
                 },
                 cover: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(w / 2 - 12)',
                     y: 'calc(h / 2 - 12)',
                     width: 0,
@@ -147,13 +148,13 @@ export default class ControlValve extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateCover();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateCover(options));
     }
 
-    /** The more the valve is closed, the wider the cover. */
-    updateCover(options?: dia.Cell.Options): void {
-        const open = Math.max(0, Math.min(1, dataOf(this, 'open') ?? 1));
-        this.attr('cover/width', Math.round(COVER_MAX_WIDTH * (1 - open)), options);
+    /** The more the valve is closed, the wider the cover (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        if (selector !== 'cover') return {};
+        const open = Math.max(0, Math.min(1, dataOf<number>(this, 'open') ?? 1));
+        return { width: Math.round(COVER_MAX_WIDTH * (1 - open)) };
     }
+
 }

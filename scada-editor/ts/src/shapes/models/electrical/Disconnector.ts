@@ -38,7 +38,6 @@ const OPEN_BLADE = `M calc(0.2 * w) ${BLADE_Y} L calc(0.7 * w) 0`;
 
 /** A disconnector: a knife switch on two insulators isolating a part of the circuit (its blade lifts off when open). */
 export default class Disconnector extends Shape {
-
     get resizable(): Resizable {
         return false;
     }
@@ -93,6 +92,8 @@ export default class Disconnector extends Shape {
                     strokeWidth: 4
                 },
                 blade: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     d: CLOSED_BLADE,
                     stroke: 'var(--shape-copper-2)',
                     strokeWidth: 6,
@@ -125,11 +126,11 @@ export default class Disconnector extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateBlade();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateBlade(options));
     }
 
-    updateBlade(options?: dia.Cell.Options): void {
-        this.attr('blade/d', dataOf(this, 'open') ? OPEN_BLADE : CLOSED_BLADE, options);
+    /** The blade open or closed (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        return selector === 'blade' ? { d: dataOf(this, 'open') ? OPEN_BLADE : CLOSED_BLADE } : {};
     }
+
 }

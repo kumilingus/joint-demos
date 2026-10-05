@@ -20,7 +20,6 @@ const markup = util.svg/* xml */`
  * open it cuts the circuit (the lever down, OFF in green); opened and closed in the runtime mode.
  */
 export default class CircuitBreaker extends Shape {
-
     get resizable(): Resizable {
         return false;
     }
@@ -79,6 +78,8 @@ export default class CircuitBreaker extends Shape {
                     fill: '#1a1f24'
                 },
                 lever: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(0.5 * w - 8)',
                     width: 16,
                     height: 'calc(0.16 * h)',
@@ -89,6 +90,8 @@ export default class CircuitBreaker extends Shape {
                     strokeWidth: 1.5
                 },
                 window: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(0.25 * w)',
                     y: 'calc(0.64 * h)',
                     width: 'calc(0.5 * w)',
@@ -97,6 +100,8 @@ export default class CircuitBreaker extends Shape {
                     ry: 2
                 },
                 state: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.72 * h)',
                     textAnchor: 'middle',
@@ -123,17 +128,17 @@ export default class CircuitBreaker extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateState();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateState(options));
     }
 
-    /** The lever up (closed) or down (open), the state in its color in the window */
-    updateState(options?: dia.Cell.Options): void {
+    /** The lever up (closed) or down (open), the state in its color in the window (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
         const open = Boolean(dataOf(this, 'open'));
-        this.attr({
-            lever: { y: open ? 'calc(0.4 * h)' : 'calc(0.2 * h)' },
-            window: { fill: open ? 'var(--shape-breaker-open)' : 'var(--shape-breaker-closed)' },
-            state: { text: open ? 'OFF' : 'ON' }
-        }, options);
+        switch (selector) {
+            case 'lever': return { y: open ? 'calc(0.4 * h)' : 'calc(0.2 * h)' };
+            case 'window': return { fill: open ? 'var(--shape-breaker-open)' : 'var(--shape-breaker-closed)' };
+            case 'state': return { text: open ? 'OFF' : 'ON' };
+            default: return {};
+        }
     }
+
 }

@@ -29,7 +29,6 @@ const markup = util.svg/* xml */`
 
 /** A liquid-in-glass thermometer showing a temperature from 0 to 100 %. */
 export default class Thermometer extends Shape {
-
     // Its color is the color of the liquid (the column, the bulb follows it); its Outline of the tube and the bulb
     get colorField(): ColorField {
         return { path: ['attrs', 'column', 'fill'] };
@@ -104,6 +103,8 @@ export default class Thermometer extends Shape {
                     strokeWidth: 2
                 },
                 column: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(w / 2 - 4)',
                     width: 8,
                     fill: MAX_LIQUID_COLOR
@@ -113,8 +114,10 @@ export default class Thermometer extends Shape {
                     stroke: 'var(--shape-scale)',
                     strokeWidth: 1.5
                 },
-                // The temperature, next to the top of the column (see `updateColumn()`)
+                // The temperature, next to the top of the column (see `dataAttributes()`)
                 reading: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     x: 'calc(w + 14)',
                     textVerticalAnchor: 'middle',
                     fontSize: 14,
@@ -137,8 +140,6 @@ export default class Thermometer extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateColumn();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateColumn(options));
     }
 
     // The column (and its reading) glides to a new value (see `animateLevel()` in `animations.ts`)
@@ -157,24 +158,15 @@ export default class Thermometer extends Shape {
     }
 
     /**
-     * The column rises from the bulb to the value on the scale (the scale spans 8% to 68% of the height),
-     * the reading (in °C, the scale is 0 - 100 °C) is next to its top.
+     * The column rises from the bulb to the value on the scale (the scale spans 8% to 68% of the height), the reading
+     * (in °C, the scale is 0 - 100 °C) is next to its top - by a transform, as it glides (see `glideKeyframes()`)
      */
-    updateColumn(options?: dia.Cell.Options): void {
-        const value = Math.max(0, Math.min(100, dataOf(this, 'value') || 0));
-        const top = g.scale.linear([0, 100], [0.68, 0.08], value).toFixed(3);
-        this.attr({
-            column: {
-                y: `calc(${top} * h)`,
-                height: `calc(${(0.95 - Number(top)).toFixed(3)} * h - 8)`
-            },
-            // At the top of the column by a transform (glides with it, see `glideKeyframes()`); not by its `y` (of
-            // a diagram saved before: none)
-            reading: {
-                y: 0,
-                transform: `translate(0, calc(${top} * h))`,
-                text: `${Math.round(value)} °C`
-            }
-        }, options);
+    dataAttributes(selector: string): Record<string, unknown> {
+        const value = Math.max(0, Math.min(100, Number(dataOf(this, 'value')) || 0));
+        const top = Number(g.scale.linear([0, 100], [0.68, 0.08], value).toFixed(3));
+        if (selector === 'column') return { y: `calc(${top} * h)`, height: `calc(${(0.95 - top).toFixed(3)} * h - 8)` };
+        if (selector === 'reading') return { y: 0, transform: `translate(0, calc(${top} * h))`, text: `${Math.round(value)} °C` };
+        return {};
     }
+
 }

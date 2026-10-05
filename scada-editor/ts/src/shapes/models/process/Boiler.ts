@@ -19,7 +19,6 @@ const markup = util.svg/* xml */`
 
 /** A boiler: its burner on (the flames in the firebox) or off (`power`, switched by the operator and the plant). */
 export default class Boiler extends Shape {
-
     get control(): ControlKind {
         return 'power';
     }
@@ -91,11 +90,15 @@ export default class Boiler extends Shape {
                     strokeWidth: 2
                 },
                 flameOuter: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     d: 'M -22 10 C -28 -8 -12 -14 -14 -30 C -4 -20 0 -28 2 -42 C 12 -26 26 -18 22 10 Z',
                     transform: flamesTransform,
                     fill: 'var(--shape-flame)'
                 },
                 flameInner: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     d: 'M -10 10 C -14 -2 -4 -6 -4 -16 C 2 -10 4 -16 6 -24 C 12 -14 16 -6 12 10 Z',
                     transform: flamesTransform,
                     // Darker than the outer one: of its color
@@ -115,13 +118,12 @@ export default class Boiler extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateFlames();
-        this.on('change:data', (_element: dia.Element, _power: unknown, options: dia.Cell.Options) => this.updateFlames(options));
     }
 
-    /** The flames shown while the burner is on (out: the firebox dark) */
-    updateFlames(options?: dia.Cell.Options): void {
-        const display = dataOf(this, 'power') ? 'block' : 'none';
-        this.attr({ flameOuter: { display }, flameInner: { display }}, options);
+    /** The flames shown while the burner is on - out: the firebox dark (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        if (selector !== 'flameOuter' && selector !== 'flameInner') return {};
+        return { display: dataOf(this, 'power') ? 'block' : 'none' };
     }
+
 }

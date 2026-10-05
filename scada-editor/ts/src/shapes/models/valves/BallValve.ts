@@ -18,7 +18,6 @@ const markup = util.svg/* xml */`
 
 /** A quarter-turn valve with a ball: the bore is along the flow when open, across it when closed. */
 export default class BallValve extends Shape {
-
     get resizable(): Resizable {
         return false;
     }
@@ -63,6 +62,8 @@ export default class BallValve extends Shape {
                     strokeWidth: 2
                 },
                 bore: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     d: 'M -7 0 H 7',
                     stroke: '#333',
                     strokeWidth: 4,
@@ -85,12 +86,13 @@ export default class BallValve extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateBore();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateBore(options));
     }
 
-    updateBore(options?: dia.Cell.Options): void {
+    /** The bore across the flow (closed) or along it (open), see `from-data.ts` */
+    dataAttributes(selector: string): Record<string, unknown> {
+        if (selector !== 'bore') return {};
         const angle = dataOf(this, 'open') ? 0 : 90;
-        this.attr('bore/transform', `translate(calc(w / 2), calc(h / 2)) rotate(${angle})`, options);
+        return { transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})` };
     }
+
 }

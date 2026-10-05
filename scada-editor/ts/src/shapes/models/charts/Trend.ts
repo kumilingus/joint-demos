@@ -27,7 +27,6 @@ const markup = util.svg/* xml */`
 
 /** A panel showing the recent history of a value (0 - 100): the newest on the right. */
 export default class Trend extends Shape {
-
     // The accent: the line
     get accentField(): ColorField {
         return { path: ['attrs', 'line', 'stroke'] };
@@ -90,6 +89,8 @@ export default class Trend extends Shape {
                     strokeDasharray: '3,3'
                 },
                 line: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     fill: 'none',
                     stroke: LIQUID_COLOR,
                     strokeWidth: 2,
@@ -110,19 +111,19 @@ export default class Trend extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateLine();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLine(options));
     }
 
-    /** The line through the values, across the whole width of the chart. */
-    updateLine(options?: dia.Cell.Options): void {
-        const values: number[] = dataOf(this, 'values') || [];
+    /** The line through the values, across the whole width of the chart (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
+        if (selector !== 'line') return {};
+        const values = dataOf<number[]>(this, 'values') || [];
         const last = Math.max(1, values.length - 1);
         const d = values.map((value, index) => {
             const x = chartCoordinate(index / last, CHART_X, 'w');
             const y = chartCoordinate(1 - Math.max(0, Math.min(100, value)) / 100, CHART_Y, 'h');
             return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
         }).join(' ');
-        this.attr('line/d', d || 'M 0 0', options);
+        return { d: d || 'M 0 0' };
     }
+
 }

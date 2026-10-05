@@ -17,7 +17,6 @@ const markup = util.svg/* xml */`
 
 /** An alarm beacon: the lamp glows while it's on. */
 export default class Beacon extends Shape {
-
     get graphLayer(): Layer {
         return Layer.Instruments;
     }
@@ -57,6 +56,8 @@ export default class Beacon extends Shape {
                 },
                 // Around the lamp, over its surroundings (not a part of the footprint of the shape: shown while it's on only)
                 glow: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     cx: 'calc(w / 2)',
                     cy: 'calc(0.4 * w)',
                     r: 'calc(0.9 * w)',
@@ -65,6 +66,8 @@ export default class Beacon extends Shape {
                 },
                 // The dome from the top of the element (its center `0.4 * w` below it)
                 lamp: {
+                    // Drawn from the data (see `dataAttributes()`)
+                    fromData: true,
                     d: 'M calc(0.1 * w) calc(0.7 * h) V calc(0.4 * w) A calc(0.4 * w) calc(0.4 * w) 0 0 1 calc(0.9 * w) calc(0.4 * w) V calc(0.7 * h) Z',
                     stroke: '#333',
                     strokeWidth: 2
@@ -102,15 +105,14 @@ export default class Beacon extends Shape {
 
     initialize(...args: Parameters<dia.Element['initialize']>): void {
         super.initialize(...args);
-        this.updateLamp();
-        this.on('change:data', (_element: dia.Element, _value: unknown, options: dia.Cell.Options) => this.updateLamp(options));
     }
 
-    updateLamp(options?: dia.Cell.Options): void {
+    /** The lamp lit and glowing while the alarm is on (see `from-data.ts`) */
+    dataAttributes(selector: string): Record<string, unknown> {
         const on = Boolean(dataOf(this, 'power'));
-        this.attr({
-            lamp: { fill: on ? MAX_LIQUID_COLOR : LAMP_OFF_COLOR },
-            glow: { display: on ? 'block' : 'none' }
-        }, options);
+        if (selector === 'lamp') return { fill: on ? MAX_LIQUID_COLOR : LAMP_OFF_COLOR };
+        if (selector === 'glow') return { display: on ? 'block' : 'none' };
+        return {};
     }
+
 }

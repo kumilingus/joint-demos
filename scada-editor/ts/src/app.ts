@@ -40,6 +40,7 @@ import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
 import { toggleSettings } from './inspector/settings';
 import { withData } from './shapes/common/data';
+import { withoutDrawnAttributes } from './shapes/attributes/from-data';
 
 export class App {
 
@@ -173,6 +174,8 @@ export class App {
         clearSelection(this);
         // A diagram without images (or favorites) has none (not those of the previous one), all of it animated.
         this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', [STYLE_ATTRIBUTE]: {}, ...json });
+        // The parts drawn from the data: as computed, not as a diagram saved before stored them
+        this.graph.getElements().forEach(withoutDrawnAttributes);
         this.applyStyle();
         this.history.reset();
         zoomToFit(this);
