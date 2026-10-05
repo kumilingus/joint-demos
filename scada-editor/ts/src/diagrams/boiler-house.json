@@ -2373,7 +2373,7 @@
       },
       "target": {
         "id": "2885cd35-ef50-435f-8e60-379428c4b32a",
-        "port": "left",
+        "port": "right",
         "connectionPoint": {
           "name": "anchor"
         }
@@ -2406,7 +2406,7 @@
     {
       "source": {
         "id": "2885cd35-ef50-435f-8e60-379428c4b32a",
-        "port": "right",
+        "port": "left",
         "connectionPoint": {
           "name": "anchor"
         }
@@ -2625,12 +2625,15 @@
         "width": 60,
         "height": 40
       },
-      "angle": 180,
+      "angle": 0,
       "type": "CheckValve",
       "attrs": {
         "label": {
           "labelPosition": "top",
           "text": "NRV 3"
+        },
+        "directional": {
+          "flip": "x"
         }
       },
       "id": "2885cd35-ef50-435f-8e60-379428c4b32a",
