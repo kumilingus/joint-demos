@@ -11,18 +11,14 @@
       },
       "angle": 0,
       "type": "CustomImage",
-      "attrs": {
-        "image": {
-          "imageId": "image-jointjs-badge"
-        },
-        "label": {
-          "text": ""
-        }
-      },
       "tag": "IMG-101",
       "id": "397cb3f0-9155-4215-af0e-c52c2a2892b6",
       "layer": "background",
-      "z": -1
+      "z": -1,
+      "label": {
+        "text": ""
+      },
+      "imageId": "image-jointjs-badge"
     },
     {
       "position": {
@@ -912,18 +908,14 @@
       },
       "angle": 0,
       "type": "Zone",
-      "attrs": {
-        "body": {
-          "tipSide": "bottom"
-        },
-        "label": {
-          "text": "From Quarry"
-        }
-      },
       "id": "46895847-9a71-40a9-adba-d461cab8f33a",
       "layer": "equipment",
       "z": 1,
-      "tag": "Z-101"
+      "tag": "Z-101",
+      "label": {
+        "text": "From Quarry"
+      },
+      "tipSide": "bottom"
     },
     {
       "position": {
@@ -955,17 +947,15 @@
       },
       "angle": 0,
       "type": "Mill",
-      "attrs": {
-        "label": {
-          "text": "Raw Mill"
-        }
-      },
       "id": "616af48d-dbbb-406d-aa46-f310ea5c821e",
       "layer": "equipment",
       "z": 3,
       "tag": "ML-101",
       "data": {
         "power": 1
+      },
+      "label": {
+        "text": "Raw Mill"
       }
     },
     {
@@ -979,17 +969,15 @@
       },
       "angle": 0,
       "type": "BucketElevator",
-      "attrs": {
-        "label": {
-          "text": "Elevator"
-        }
-      },
       "id": "24afda56-f38c-460c-ad4f-996b11dc375d",
       "layer": "equipment",
       "z": 4,
       "tag": "BE-101",
       "data": {
         "power": 1
+      },
+      "label": {
+        "text": "Elevator"
       }
     },
     {
@@ -1003,16 +991,18 @@
       },
       "angle": 0,
       "type": "Silo",
-      "attrs": {
-        "label": {
-          "y": "calc(h + 50)",
-          "text": "Raw Meal 1"
-        }
-      },
       "id": "80cc6f6a-588c-4de8-9d52-401a261c9228",
       "layer": "equipment",
       "z": 5,
-      "tag": "SL-101"
+      "tag": "SL-101",
+      "label": {
+        "text": "Raw Meal 1"
+      },
+      "attrs": {
+        "label": {
+          "y": "calc(h + 50)"
+        }
+      }
     },
     {
       "position": {
@@ -1025,16 +1015,18 @@
       },
       "angle": 0,
       "type": "Silo",
-      "attrs": {
-        "label": {
-          "y": "calc(h + 50)",
-          "text": "Raw Meal 2"
-        }
-      },
       "id": "e4c421d7-8899-4435-ba30-fd814b416dfc",
       "layer": "equipment",
       "z": 6,
-      "tag": "SL-102"
+      "tag": "SL-102",
+      "label": {
+        "text": "Raw Meal 2"
+      },
+      "attrs": {
+        "label": {
+          "y": "calc(h + 50)"
+        }
+      }
     },
     {
       "position": {
@@ -1063,16 +1055,14 @@
       },
       "angle": 0,
       "type": "Cyclone",
-      "attrs": {
-        "label": {
-          "text": "Stage 1",
-          "labelPosition": "right"
-        }
-      },
       "id": "b30e4bb5-2163-4a81-a2ff-d980d5daa22f",
       "layer": "equipment",
       "z": 8,
-      "tag": "CY-101"
+      "tag": "CY-101",
+      "label": {
+        "text": "Stage 1",
+        "position": "right"
+      }
     },
     {
       "position": {
@@ -1085,16 +1075,14 @@
       },
       "angle": 0,
       "type": "Cyclone",
-      "attrs": {
-        "label": {
-          "text": "Stage 2",
-          "labelPosition": "right"
-        }
-      },
       "id": "cd0c12ee-2052-4061-83ab-3c1562aeaa3e",
       "layer": "equipment",
       "z": 9,
-      "tag": "CY-102"
+      "tag": "CY-102",
+      "label": {
+        "text": "Stage 2",
+        "position": "right"
+      }
     },
     {
       "position": {
@@ -1142,17 +1130,15 @@
       },
       "angle": 0,
       "type": "Blower",
-      "attrs": {
-        "label": {
-          "text": "ID Fan"
-        }
-      },
       "id": "88f966cb-fd44-41b5-8701-d87a66c3d928",
       "layer": "equipment",
       "z": 12,
       "tag": "BL-101",
       "data": {
         "power": 1
+      },
+      "label": {
+        "text": "ID Fan"
       }
     },
     {
@@ -1182,16 +1168,14 @@
       },
       "angle": 0,
       "type": "Silo",
-      "attrs": {
-        "label": {
-          "text": "Clinker",
-          "labelPosition": "right"
-        }
-      },
       "id": "61852fd0-fe54-4a84-a46f-9bbe1f4983b6",
       "layer": "equipment",
       "z": 14,
-      "tag": "SL-103"
+      "tag": "SL-103",
+      "label": {
+        "text": "Clinker",
+        "position": "right"
+      }
     },
     {
       "position": {
@@ -1204,15 +1188,13 @@
       },
       "angle": 0,
       "type": "Zone",
-      "attrs": {
-        "label": {
-          "text": "To Cement Mill"
-        }
-      },
       "id": "ee9a419c-7dc6-4415-8467-0eba18e531bd",
       "layer": "equipment",
       "z": 15,
-      "tag": "Z-102"
+      "tag": "Z-102",
+      "label": {
+        "text": "To Cement Mill"
+      }
     },
     {
       "position": {
@@ -1225,18 +1207,14 @@
       },
       "angle": 0,
       "type": "Zone",
-      "attrs": {
-        "body": {
-          "tipSide": "bottom"
-        },
-        "label": {
-          "text": "Coal"
-        }
-      },
       "id": "3202d67d-c3d3-45d5-b3b4-a023f3b76ddb",
       "layer": "equipment",
       "z": 16,
-      "tag": "Z-103"
+      "tag": "Z-103",
+      "label": {
+        "text": "Coal"
+      },
+      "tipSide": "bottom"
     },
     {
       "position": {
@@ -1457,12 +1435,6 @@
       },
       "angle": 0,
       "type": "Label",
-      "attrs": {
-        "label": {
-          "text": "Cement Plant",
-          "fontSize": 60
-        }
-      },
       "id": "3a8ef731-33ce-41e5-9324-6518e441da91",
       "layer": "background",
       "z": 1,
@@ -1470,6 +1442,10 @@
       "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
       "style": {
         "color": "var(--color-blue)"
+      },
+      "label": {
+        "text": "Cement Plant",
+        "size": 60
       }
     },
     {
@@ -1483,11 +1459,6 @@
       },
       "angle": 0,
       "type": "Trend",
-      "attrs": {
-        "label": {
-          "text": "Kiln Feed (t/h)"
-        }
-      },
       "id": "53ecd45b-5812-49bb-a2bf-174d57ba9027",
       "layer": "instruments",
       "z": 2,
@@ -1507,6 +1478,9 @@
           64,
           62
         ]
+      },
+      "label": {
+        "text": "Kiln Feed (t/h)"
       }
     },
     {
@@ -1520,21 +1494,17 @@
       },
       "angle": 0,
       "type": "Display",
-      "attrs": {
-        "unit": {
-          "text": "t/h"
-        },
-        "label": {
-          "text": "Kiln Feed"
-        }
-      },
       "id": "fcda14dc-2d8b-4323-8607-c9e926c52a06",
       "layer": "instruments",
       "z": 3,
       "tag": "DI-101",
       "data": {
         "value": 162.0
-      }
+      },
+      "label": {
+        "text": "Kiln Feed"
+      },
+      "unit": "t/h"
     },
     {
       "position": {
@@ -1547,21 +1517,17 @@
       },
       "angle": 0,
       "type": "Display",
-      "attrs": {
-        "unit": {
-          "text": "°C"
-        },
-        "label": {
-          "text": "Preheater Exit"
-        }
-      },
       "id": "f3f93a5b-65e5-4984-a687-b58cfa641e59",
       "layer": "instruments",
       "z": 4,
       "tag": "DI-102",
       "data": {
         "value": 340.0
-      }
+      },
+      "label": {
+        "text": "Preheater Exit"
+      },
+      "unit": "°C"
     },
     {
       "position": {
@@ -1574,18 +1540,14 @@
       },
       "angle": 0,
       "type": "Rectangle",
-      "attrs": {
-        "body": {
-          "fillOpacity": 0.15
-        }
-      },
       "id": "3780f686-b46c-4597-8906-a71287027d11",
       "layer": "background",
       "z": 0,
       "tag": "BG-102",
       "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
       "style": {
-        "color": "var(--color-slate)"
+        "color": "var(--color-slate)",
+        "opacity": 0.15
       }
     },
     {
@@ -1599,19 +1561,15 @@
       },
       "angle": 0,
       "type": "CustomImage",
-      "attrs": {
-        "image": {
-          "imageId": "image-cement-plant"
-        },
-        "label": {
-          "text": ""
-        }
-      },
       "id": "d43845c3-514f-43d5-8242-9835e32f5b16",
       "layer": "background",
       "z": 21,
       "tag": "IMG-104",
-      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc"
+      "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
+      "label": {
+        "text": ""
+      },
+      "imageId": "image-cement-plant"
     },
     {
       "position": {
@@ -1676,17 +1634,15 @@
       },
       "angle": 0,
       "type": "Label",
-      "attrs": {
-        "label": {
-          "text": "Kiln Gas",
-          "fontSize": 14
-        }
-      },
       "tag": "TXT-102",
       "id": "d2fc8ffc-bffc-4174-b02c-1781296b895e",
       "layer": "instruments",
       "style": {
         "color": "var(--color-amber)"
+      },
+      "label": {
+        "text": "Kiln Gas",
+        "size": 14
       }
     },
     {
@@ -1700,17 +1656,15 @@
       },
       "angle": 0,
       "type": "Label",
-      "attrs": {
-        "label": {
-          "text": "Raw Meal",
-          "fontSize": 14
-        }
-      },
       "tag": "TXT-103",
       "id": "a34205eb-cfc9-4c89-8199-677915e69671",
       "layer": "instruments",
       "style": {
         "color": "var(--color-amber)"
+      },
+      "label": {
+        "text": "Raw Meal",
+        "size": 14
       }
     },
     {
@@ -1784,17 +1738,15 @@
       },
       "angle": 0,
       "type": "Label",
-      "attrs": {
-        "label": {
-          "text": "Exhaust",
-          "fontSize": 14
-        }
-      },
       "tag": "TXT-104",
       "id": "c02bda7e-2271-46de-b4f8-8bd69b5e7876",
       "layer": "instruments",
       "style": {
         "color": "var(--color-amber)"
+      },
+      "label": {
+        "text": "Exhaust",
+        "size": 14
       }
     },
     {
@@ -1898,17 +1850,15 @@
       },
       "angle": 0,
       "type": "Label",
-      "attrs": {
-        "label": {
-          "text": "Clinker",
-          "fontSize": 14
-        }
-      },
       "tag": "TXT-105",
       "id": "e217674f-94bb-442c-8a36-c576d14864a5",
       "layer": "instruments",
       "style": {
         "color": "var(--color-amber)"
+      },
+      "label": {
+        "text": "Clinker",
+        "size": 14
       }
     },
     {
@@ -2014,11 +1964,6 @@
       },
       "angle": 0,
       "type": "DonutChart",
-      "attrs": {
-        "label": {
-          "text": "Raw Mix"
-        }
-      },
       "tag": "MIX-101",
       "id": "61e8662e-5f87-4703-9ce3-11aed1ab9634",
       "layer": "instruments",
@@ -2040,6 +1985,9 @@
             "color": "#ef4444"
           }
         ]
+      },
+      "label": {
+        "text": "Raw Mix"
       }
     },
     {
@@ -2053,14 +2001,6 @@
       },
       "angle": 0,
       "type": "GaugeChart",
-      "attrs": {
-        "label": {
-          "text": "Mill Load"
-        },
-        "unit": {
-          "text": "%"
-        }
-      },
       "tag": "PI-101",
       "id": "2b3b13bf-9fab-4583-aca5-95f0e5dfc139",
       "layer": "instruments",
@@ -2068,7 +2008,11 @@
         "value": 82,
         "min": 0,
         "max": 100
-      }
+      },
+      "label": {
+        "text": "Mill Load"
+      },
+      "unit": "%"
     },
     {
       "position": {
@@ -2081,11 +2025,6 @@
       },
       "angle": 0,
       "type": "BarChart",
-      "attrs": {
-        "label": {
-          "text": "Clinker Output (t/day)"
-        }
-      },
       "tag": "BAR-101",
       "id": "2f7edc0b-6e50-47b6-aca4-f5efd94499fa",
       "layer": "instruments",
@@ -2102,6 +2041,9 @@
         ],
         "min": 0,
         "max": 4000
+      },
+      "label": {
+        "text": "Clinker Output (t/day)"
       }
     },
     {
@@ -2115,11 +2057,6 @@
       },
       "angle": 0,
       "type": "Thermometer",
-      "attrs": {
-        "label": {
-          "text": "Kiln Shell"
-        }
-      },
       "tag": "TI-101",
       "id": "37fa0322-0d8e-4436-9207-9d60ac28c12d",
       "layer": "instruments",
@@ -2128,6 +2065,9 @@
       },
       "style": {
         "color": "var(--color-red)"
+      },
+      "label": {
+        "text": "Kiln Shell"
       }
     }
   ],
