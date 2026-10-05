@@ -108,7 +108,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
   - *Show the tags* - the IDs on the diagram.
   - *Ping the changes* - an element pings when its message arrives (blue update, amber command).
   - Filter by words, by All / Updates / Commands, or by clicking elements on the diagram.
-  - Point at a message to highlight its element.
+  - Click a message to highlight its element (and mark its messages); click it again to clear.
 
 ## Files
 

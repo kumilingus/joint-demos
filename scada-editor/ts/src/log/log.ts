@@ -23,8 +23,8 @@ const KIND_ARROWS: Record<PlantEvent, string> = {
 
 /** What the log shows on the diagram (see `LogController`) */
 export interface LogHooks {
-    /** The element of the tag highlighted (the pointer on a message of it), or none */
-    hover: (tag: string | null) => void;
+    /** The element of the tag highlighted (a message of it clicked), or none */
+    highlight: (tag: string | null) => void;
     /** The tags of the elements shown on the diagram, or not */
     showTags: (shown: boolean) => void;
     /** The elements pinged when a message of them comes, or not */
@@ -47,6 +47,8 @@ const options = { tags: false, pings: false };
 let list: HTMLElement | null = null;
 /** The button opening the log: active while it is open */
 let button: Element | null = null;
+/** The tag of the message clicked: its messages marked, its element highlighted (not by the pointer: the list moves) */
+let selectedTag: string | null = null;
 
 /** Log a message of an event of the plant (see `LogController`): shown at the top of the log (if it is open) */
 export function logMessage(kind: PlantEvent, plantMessage: PlantMessage): void {
@@ -100,6 +102,7 @@ export function isLogOpen(): boolean {
 export function clearLog(): void {
     messages.length = 0;
     list?.replaceChildren();
+    selectTag(null);
 }
 
 /** Open the log (the messages so far, the new ones as they come), or close it; the button active while it is open */
@@ -132,12 +135,11 @@ function openLog(container: HTMLElement, logHooks: LogHooks, toggle?: Element): 
     list = document.createElement('div');
     list.className = 'jj-log-list';
     renderList();
-    // The element of a message highlighted while the pointer is on it
-    list.addEventListener('pointerover', (evt) => {
+    // A message clicked: the messages of its tag marked, its element highlighted - clicked again: none
+    list.addEventListener('click', (evt) => {
         const row = (evt.target as Element).closest<HTMLElement>('.jj-log-message');
-        hooks?.hover(row?.dataset.tag ?? null);
+        if (row) selectTag(row.dataset.tag === selectedTag ? null : row.dataset.tag ?? null);
     });
-    list.addEventListener('pointerleave', () => hooks?.hover(null));
     content.append(intro, settings, renderFilter(), list);
     hooks.showTags(options.tags);
     hooks.pingChanges(options.pings);
@@ -151,7 +153,7 @@ function openLog(container: HTMLElement, logHooks: LogHooks, toggle?: Element): 
         modal: false
     });
     dialog.on('close', () => {
-        hooks?.hover(null);
+        selectTag(null);
         hooks?.showTags(false);
         hooks?.pingChanges(false);
         hooks = null;
@@ -162,6 +164,13 @@ function openLog(container: HTMLElement, logHooks: LogHooks, toggle?: Element): 
         button = null;
     });
     dialog.open(container);
+}
+
+/** The messages of the tag marked (the new ones too), its element highlighted - or none */
+function selectTag(tag: string | null): void {
+    selectedTag = tag;
+    list?.querySelectorAll<HTMLElement>('.jj-log-message').forEach(row => row.classList.toggle('selected', row.dataset.tag === tag));
+    hooks?.highlight(tag);
 }
 
 export function closeLog(): void {
@@ -219,6 +228,7 @@ function renderMessage({ kind, tag, property, value, time }: LogEntry): HTMLElem
     row.className = 'jj-log-message';
     row.dataset.kind = kind;
     row.dataset.tag = tag;
+    row.classList.toggle('selected', tag === selectedTag);
     const cells: Array<[string, string]> = [
         ['time', time.toLocaleTimeString([], { hour12: false }) + `.${String(time.getMilliseconds()).padStart(3, '0')}`],
         ['kind', `${KIND_ARROWS[kind]} ${kind}`],

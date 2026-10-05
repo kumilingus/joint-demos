@@ -10,7 +10,7 @@ import { setTint } from '../canvas/tint';
 /**
  * The log of the messages between the diagram and the plant (see `log/log.ts`): opened by the Log button.
  * Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open, the element
- * of a message under the pointer is tinted blue; the tags of the elements are shown, the elements of the messages pinged if asked.
+ * of the message clicked is tinted blue; the tags of the elements are shown, the elements of the messages pinged if asked.
  */
 export default class LogController extends Controller {
 
@@ -98,7 +98,7 @@ function logHooks(app: App): LogHooks {
     let focused: dia.Element | null = null;
     let stopPinging: (() => void) | null = null;
     return {
-        hover: (tag) => {
+        highlight: (tag) => {
             const element = tag ? findByTag(graph, tag) ?? null : null;
             if (element === focused) return;
             if (focused) setTint(paper, focused, null);
@@ -145,7 +145,7 @@ const PING_REACH = 24;
 
 /**
  * A ping: two rings out of the middle of the element, behind it (the first child of its view), growing and fading
- * (`.jj-ping` in `log.css`) - an update of the plant in the color of the selection (as the element under the pointer, see `tint.ts`), a command in amber (as in the log)
+ * (`.jj-ping` in `log.css`) - an update of the plant in the color of the selection (as the element of the message clicked, see `tint.ts`), a command in amber (as in the log)
  */
 const Ping = dia.HighlighterView.extend({
     tagName: 'g',

@@ -93,9 +93,17 @@
     accent-color: var(--primary);
 }
 
-/* The element of the message is framed on the diagram */
+.jj-log-list .jj-log-message {
+    cursor: pointer;
+}
+
 .jj-log-list .jj-log-message:hover {
-    background: color-mix(in srgb, var(--selection) 18%, transparent);
+    background: color-mix(in srgb, var(--selection) 10%, transparent);
+}
+
+/* The messages of the tag clicked: its element highlighted on the diagram */
+.jj-log-list .jj-log-message.selected {
+    background: color-mix(in srgb, var(--selection) 22%, transparent);
 }
 
 .jj-log-list {
