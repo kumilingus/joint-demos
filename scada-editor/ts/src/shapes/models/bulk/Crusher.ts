@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type ControlKind, type Resizable } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 // The spokes of the flywheel, around its hub
 const SPOKES = Array.from({ length: 6 }, (_, i) => {
@@ -18,14 +19,16 @@ export const JAW_PIVOT = { x: 0.7, y: 0.08 };
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
     <path @selector='base' />
-    <path @selector='body' />
-    <path @selector='chamber' />
-    <path @selector='rocks' />
-    <path @selector='fixedJaw' />
-    <path @selector='movingJaw' />
-    <circle @selector='flywheel' />
-    <g @selector='spokesGroup'>
-        <path @selector='spokes' />
+    <g @group-selector='directional'>
+        <path @selector='body' />
+        <path @selector='chamber' />
+        <path @selector='rocks' />
+        <path @selector='fixedJaw' />
+        <path @selector='movingJaw' />
+        <circle @selector='flywheel' />
+        <g @selector='spokesGroup'>
+            <path @selector='spokes' />
+        </g>
     </g>
     <text @selector='label' />
 `;
@@ -35,6 +38,11 @@ const markup = util.svg/* xml */`
  * swings the moving jaw (in the runtime mode, while it runs).
  */
 export default class Crusher extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     // The accent: the rocks in it
     get accentField(): ColorField {
@@ -68,6 +76,10 @@ export default class Crusher extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'body'
                 },

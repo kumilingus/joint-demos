@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type ControlKind, type Resizable } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 // The shell of the kiln: its top and its height (relative to the height of the element)
 const SHELL_Y = 0.12;
@@ -26,17 +27,19 @@ const pier = (x: number) => `M calc(${x} * w - 18) calc(h) L calc(${x} * w - 10)
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
-    <path @selector='piers' />
-    <rect @selector='shell' />
-    <rect @selector='hotZone' />
-    <rect @selector='tyre1' />
-    <rect @selector='tyre2' />
-    <rect @selector='girthGear' />
-    <rect @selector='inlet' />
-    <rect @selector='hood' />
-    <rect @selector='burner' />
-    <path @selector='flameOuter' />
-    <path @selector='flameInner' />
+    <g @group-selector='directional'>
+        <path @selector='piers' />
+        <rect @selector='shell' />
+        <rect @selector='hotZone' />
+        <rect @selector='tyre1' />
+        <rect @selector='tyre2' />
+        <rect @selector='girthGear' />
+        <rect @selector='inlet' />
+        <rect @selector='hood' />
+        <rect @selector='burner' />
+        <path @selector='flameOuter' />
+        <path @selector='flameInner' />
+    </g>
     <text @selector='label' />
 `;
 
@@ -46,6 +49,11 @@ const markup = util.svg/* xml */`
  * and the hot zone glows in the runtime mode.
  */
 export default class RotaryKiln extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     // The accent: the piers
     get accentField(): ColorField {
@@ -79,6 +87,10 @@ export default class RotaryKiln extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'shell'
                 },

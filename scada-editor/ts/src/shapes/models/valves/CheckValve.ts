@@ -3,18 +3,26 @@ import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type Resizable } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
     <rect @selector='pipe' />
-    <path @selector='body' />
-    <path @selector='inlet' />
-    <path @selector='arrow' />
+    <g @group-selector='directional'>
+        <path @selector='body' />
+        <path @selector='inlet' />
+        <path @selector='arrow' />
+    </g>
     <text @selector='label' />
 `;
 
-/** A valve letting the liquid flow in one direction only (from left to right). */
+/** A valve letting the liquid flow in one direction only (from left to right; flipped: from right to left). */
 export default class CheckValve extends Shape {
+
+    // The flow the other way, the arrow still above it (see `flip.ts`)
+    get flippable(): Flip {
+        return 'x';
+    }
 
     get resizable(): Resizable {
         return { preserveAspectRatio: true };
@@ -44,6 +52,10 @@ export default class CheckValve extends Shape {
                 pipe: pipeThroughAttributes(),
                 root: {
                     magnetSelector: 'body'
+                },
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
                 },
                 // The bow tie of a valve...
                 body: {

@@ -96,6 +96,7 @@ Special attributes:
 
 - `labelPosition` (`shapes/attributes/label.ts`) - `top`, `left`, `right`, `bottom`; laid out clear of the drawing, horizontal on a rotated shape. Labels spread `labelAttributes` (class `jj-label`: the diagram's label size and color).
 - `textStyles` (`shapes/attributes/text-styles.ts`) - italic, underline, strike (Label).
+- `flip` (`shapes/attributes/flip.ts`) - `x`, `y`, `xy`: one `transform` mirroring the node across the middle of the element. On the parts that show a direction only, marked `<g @group-selector='directional'>` in the markup (the inlet of a cyclone, the chutes of an elevator), so the symmetric rest keeps its lighting; set at `attrs/directional/flip`. A shape opts in with `flippable` (`'x'`, `'xy'`); its overflow mirrors in `footprint.ts`. The pipe stubs stay: only shapes with symmetric stubs flip (a pump would need its ports mirrored).
 - `surfaceFill`, `surfaceStroke`, `materialFill` (`shapes/common/gradients.ts`) - metal shading with the element's color mixed in.
 - `pipePorts()`, `terminalPorts()`, `pipeThroughAttributes()` (`shapes/common/ports.ts`).
 

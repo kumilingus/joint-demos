@@ -5,6 +5,7 @@ import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttri
 import { pipeAttributes } from './ports';
 import { textAttributes } from '../attributes/text-styles';
 import { labelPositionAttributes } from '../attributes/label';
+import { type Flip, flipAttributes } from '../attributes/flip';
 
 /** The size constraints of resizing. */
 export interface ResizeOptions {
@@ -51,6 +52,8 @@ export interface ShapeFeatures {
     resizable: Resizable;
     /** Whether the element can be rotated. */
     rotatable: boolean;
+    /** How the element can be flipped (`attrs/directional/flip`, see `flip.ts`): the parts of its markup in `directional`; `null` - not. */
+    flippable: Flip | null;
     /** The control of the element, if it has one. */
     control: ControlKind | null;
     /** Where a pipe end can be anchored on the element (unless it has pipe stubs to connect to). */
@@ -87,10 +90,11 @@ const minSize = (size: number) => Math.max(SIZE_STEP, Math.round(size * MIN_SIZE
 export default abstract class Shape extends dia.Element implements ShapeFeatures {
 
     // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`), the outlines of its pipes
-    // (`pipeOutline`), the styles of its texts (`textStyles`), the position of its label (`labelPosition`); a shape with
+    // (`pipeOutline`), the styles of its texts (`textStyles`), the position of its label (`labelPosition`), the mirrored
+    // parts of a flipped one (`flip`); a shape with
     // attributes of its own adds them to these
     static attributes: typeof dia.Element.attributes = {
-        ...surfaceAttributes, ...materialAttributes, ...pipeAttributes, ...textAttributes, ...labelPositionAttributes
+        ...surfaceAttributes, ...materialAttributes, ...pipeAttributes, ...textAttributes, ...labelPositionAttributes, ...flipAttributes
     };
 
     get resizable(): Resizable {
@@ -99,6 +103,10 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
 
     get rotatable(): boolean {
         return true;
+    }
+
+    get flippable(): Flip | null {
+        return null;
     }
 
     get control(): ControlKind | null {

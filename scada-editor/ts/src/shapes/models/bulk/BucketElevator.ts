@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type ControlKind } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 /** The pattern of the buckets on the chain: their height along it and the gap after each (see `animations.ts`) */
 export const BUCKET_PATTERN = [10, 14];
@@ -11,10 +12,14 @@ const markup = util.svg/* xml */`
     <rect @selector='casing' />
     <rect @selector='window' />
     <path @selector='buckets' />
-    <path @selector='discharge' />
+    <g @group-selector='directional'>
+        <path @selector='discharge' />
+    </g>
     <rect @selector='head' />
     <circle @selector='headPulley' />
-    <path @selector='feed' />
+    <g @group-selector='directional'>
+        <path @selector='feed' />
+    </g>
     <rect @selector='boot' />
     <circle @selector='bootPulley' />
     <text @selector='label' />
@@ -25,6 +30,11 @@ const markup = util.svg/* xml */`
  * it pours out of the discharge chute (top right). While it runs (`power`) the buckets go up in the runtime mode.
  */
 export default class BucketElevator extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     // The accent: the buckets
     get accentField(): ColorField {
@@ -54,6 +64,10 @@ export default class BucketElevator extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'casing'
                 },

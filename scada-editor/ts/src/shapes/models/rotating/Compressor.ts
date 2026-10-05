@@ -2,18 +2,26 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
     <rect @selector='pipe' />
-    <path @selector='base' />
-    <circle @selector='body' />
-    <circle @selector='rotor' />
-    <path @selector='symbol' />
+    <g @group-selector='directional'>
+        <path @selector='base' />
+        <circle @selector='body' />
+        <circle @selector='rotor' />
+        <path @selector='symbol' />
+    </g>
     <text @selector='label' />
 `;
 
 export default class Compressor extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     // The accent: the base
     get accentField(): ColorField {
@@ -44,6 +52,10 @@ export default class Compressor extends Shape {
             power: 0,
             attrs: {
                 pipe: pipeThroughAttributes(),
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'body'
                 },

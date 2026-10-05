@@ -3,6 +3,7 @@ import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 // The spokes of the impeller, around the center of the casing
 const SPOKES = Array.from({ length: 8 }, (_, i) => {
@@ -14,17 +15,26 @@ const SPOKES = Array.from({ length: 8 }, (_, i) => {
 const markup = util.svg/* xml */`
     <rect @selector='pipe' />
     <path @selector='base' />
-    <rect @selector='outlet' />
+    <g @group-selector='directional'>
+        <rect @selector='outlet' />
+    </g>
     <circle @selector='body' />
     <circle @selector='impeller' />
-    <g @selector='spokesGroup'>
-        <path @selector='spokes' />
+    <g @group-selector='directional'>
+        <g @selector='spokesGroup'>
+            <path @selector='spokes' />
+        </g>
     </g>
     <text @selector='label' />
 `;
 
 /** A centrifugal blower: the air leaves the casing through the outlet on the top. */
 export default class Blower extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     // The accent: the base
     get accentField(): ColorField {
@@ -63,6 +73,10 @@ export default class Blower extends Shape {
             power: 0,
             attrs: {
                 pipe: pipeThroughAttributes(),
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'body'
                 },

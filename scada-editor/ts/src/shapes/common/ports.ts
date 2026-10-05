@@ -29,7 +29,7 @@ const pipeStubMarkup = util.svg`
 `;
 
 // The thickness of a pipe stub (its flange is a little taller, see `pipeEnd`)
-const STUB_THICKNESS = 30;
+export const STUB_THICKNESS = 30;
 
 // How far a pipe stub reaches under a piece of equipment (its body: no gap at a round side); a fitting is flat
 // where its stubs meet it (none needed)

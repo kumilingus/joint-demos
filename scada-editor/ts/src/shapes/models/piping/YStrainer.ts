@@ -1,19 +1,27 @@
 import { type dia, util } from '@joint/plus';
-import { pipePorts } from '../../common/ports';
+import { pipePorts, STUB_THICKNESS } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
-    <path @selector='leg' />
-    <path @selector='screen' />
-    <rect @selector='cap' />
+    <g @group-selector='directional'>
+        <path @selector='leg' />
+        <path @selector='screen' />
+        <rect @selector='cap' />
+    </g>
     <rect @selector='body' />
     <text @selector='label' />
 `;
 
 /** An inline strainer: the dirt is caught by the screen in the leg of the Y. */
 export default class YStrainer extends Shape {
+
+    // Its leg mirrored: horizontally (the flow the other way), vertically (the leg up) or both (see `flip.ts`)
+    get flippable(): Flip {
+        return 'xy';
+    }
 
     // The accent: the cap
     get accentField(): ColorField {
@@ -41,6 +49,10 @@ export default class YStrainer extends Shape {
                 height: 60
             },
             attrs: {
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'body'
                 },
@@ -69,10 +81,11 @@ export default class YStrainer extends Shape {
                     stroke: '#333',
                     strokeWidth: 1.5
                 },
+                // As thick as its pipe stubs (see `ports.ts`)
                 body: {
-                    y: 'calc(0.5 * h - 14)',
+                    y: `calc(0.5 * h - ${STUB_THICKNESS / 2})`,
                     width: 'calc(w)',
-                    height: 28,
+                    height: STUB_THICKNESS,
                     rx: 6,
                     ry: 6,
                     surfaceStroke: 'edge',

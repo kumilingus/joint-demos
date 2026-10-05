@@ -4,6 +4,7 @@ import { isRouted } from '../shapes/common/routing';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, rememberColor, renderColorField } from './color-field';
+import type Shape from '../shapes/common/Shape';
 import type { ColorField } from '../shapes/common/Shape';
 import { isGroup } from '../shapes/models/diagram/Group';
 import { appearanceTargets, createAppearanceInspector, OUTLINE_WIDTH_OPTIONS } from './selection-inspector';
@@ -164,6 +165,20 @@ function getInputs(element: dia.Element): Inputs {
     if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
         util.merge(inputs, {
             attrs: { body: { fillOpacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, group: 'appearance', index: index++ }}}
+        });
+    }
+
+    // Mirrored (see `flip.ts`): the ways the shape can be flipped - after the label position, before the layer
+    const { flippable } = element as Partial<Pick<Shape, 'flippable'>>;
+    if (flippable) {
+        const ways = [
+            { value: '', content: 'None' },
+            ...(flippable.includes('x') ? [{ value: 'x', content: 'Horizontal' }] : []),
+            ...(flippable.includes('y') ? [{ value: 'y', content: 'Vertical' }] : []),
+            ...(flippable === 'xy' ? [{ value: 'xy', content: 'Both' }] : [])
+        ];
+        util.merge(inputs, {
+            attrs: { directional: { flip: { type: 'select-button-group', label: 'Flip', options: ways, defaultValue: '', group: 'appearance', index: 91 }}}
         });
     }
 

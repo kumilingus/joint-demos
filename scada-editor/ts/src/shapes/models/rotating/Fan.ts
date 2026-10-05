@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type Resizable, type ControlKind } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 // One blade pointing up from the hub; the other two are rotated copies.
 const BLADE = 'M 0 0 C 4 -8 16 -20 6 -30 C -2 -26 -8 -14 0 0 Z';
@@ -16,16 +17,23 @@ const markup = util.svg/* xml */`
     <rect @selector='pipe' />
     <circle @selector='body' />
     <circle @selector='guard' />
-    <g @selector='blades'>
-        <path @selector='blade1' />
-        <path @selector='blade2' />
-        <path @selector='blade3' />
+    <g @group-selector='directional'>
+        <g @selector='blades'>
+            <path @selector='blade1' />
+            <path @selector='blade2' />
+            <path @selector='blade3' />
+        </g>
     </g>
     <circle @selector='hub' />
     <text @selector='label' />
 `;
 
 export default class Fan extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     get resizable(): Resizable {
         return false;
@@ -55,6 +63,10 @@ export default class Fan extends Shape {
             power: 0,
             attrs: {
                 pipe: pipeThroughAttributes(),
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'body'
                 },

@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type ControlKind } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 // The stages of blades, growing with the casing (relative x positions)
 const BLADES = [0.25, 0.45, 0.65, 0.85]
@@ -15,15 +16,22 @@ const BLADES = [0.25, 0.45, 0.65, 0.85]
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
-    <path @selector='shaft' />
-    <path @selector='body' />
-    <path @selector='blades' />
-    <path @selector='steam' />
+    <g @group-selector='directional'>
+        <path @selector='shaft' />
+        <path @selector='body' />
+        <path @selector='blades' />
+        <path @selector='steam' />
+    </g>
     <text @selector='label' />
 `;
 
 /** A steam turbine: the casing widens as the steam expands from the left to the right. */
 export default class Turbine extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     get control(): ControlKind {
         return 'power';
@@ -48,6 +56,10 @@ export default class Turbine extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'body'
                 },

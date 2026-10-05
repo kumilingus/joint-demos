@@ -32,6 +32,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Select Same Type** - right-click a shape: all shapes of the selected types (*Pump · 2*).
 - **Select Below** - right-click where shapes overlap: the one underneath.
 - **Move** by dragging; **resize** and **rotate** a single shape with its handles.
+- **Flip** - shapes that face a way (check valve, strainer, turbine, compressor, fan, blower, cyclone, kiln, crusher, mill, bucket elevator): *Flip* in the inspector mirrors them instead of turning them upside down. The strainer flips vertically too (its leg up).
 - **Label** - its text and *Label position* (top, left, right, bottom) in the inspector.
 - **Control position** - the side of a valve's buttons or slider (Controls group).
 

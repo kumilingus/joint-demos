@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type ControlKind, type Resizable } from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 /** The pattern of the liners inside the drum: their width along it and the gap after each (see `animations.ts`) */
 export const LINER_PATTERN = [4, 16];
@@ -15,9 +16,11 @@ const markup = util.svg/* xml */`
     <rect @selector='trunnions' />
     <rect @selector='shell' />
     <path @selector='liners' />
-    <rect @selector='girthGear' />
-    <rect @selector='inlet' />
-    <rect @selector='outlet' />
+    <g @group-selector='directional'>
+        <rect @selector='girthGear' />
+        <rect @selector='inlet' />
+        <rect @selector='outlet' />
+    </g>
     <text @selector='label' />
 `;
 
@@ -26,6 +29,11 @@ const markup = util.svg/* xml */`
  * out on the right. While it runs (`power`) the liners inside move round with the drum in the runtime mode.
  */
 export default class Mill extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     // The accent: the piers
     get accentField(): ColorField {
@@ -60,6 +68,10 @@ export default class Mill extends Shape {
             // 0 = off, 1 = on
             power: 0,
             attrs: {
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'shell'
                 },

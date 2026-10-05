@@ -2,10 +2,13 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape from '../../common/Shape';
+import type { Flip } from '../../attributes/flip';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
-    <rect @selector='inlet' />
+    <g @group-selector='directional'>
+        <rect @selector='inlet' />
+    </g>
     <rect @selector='outlet' />
     <path @selector='cone' />
     <rect @selector='body' />
@@ -15,6 +18,11 @@ const markup = util.svg/* xml */`
 
 /** A cyclone separator: the dust spins down the cone, the clean gas leaves through the top. */
 export default class Cyclone extends Shape {
+
+    // Mirrored horizontally (see `flip.ts`): facing the other way
+    get flippable(): Flip {
+        return 'x';
+    }
 
     get overflow(): Overflow {
         return { top: 18, left: 24 };
@@ -33,6 +41,10 @@ export default class Cyclone extends Shape {
                 height: 160
             },
             attrs: {
+                // The parts showing which way it faces: mirrored when it is flipped (see `flip.ts`)
+                directional: {
+                    flip: ''
+                },
                 root: {
                     magnetSelector: 'body'
                 },
