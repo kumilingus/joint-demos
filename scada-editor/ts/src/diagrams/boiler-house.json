@@ -1070,7 +1070,6 @@
       },
       "angle": 0,
       "type": "HandValve",
-      "open": true,
       "attrs": {
         "label": {
           "text": "Inlet Valve",
@@ -1080,7 +1079,10 @@
       "tag": "HV-101",
       "id": "37a68821-71c8-475e-ae95-32a4ae7c75ff",
       "layer": "equipment",
-      "controlPosition": "top"
+      "controlPosition": "top",
+      "data": {
+        "open": true
+      }
     },
     {
       "position": {
@@ -1137,7 +1139,6 @@
       },
       "angle": 0,
       "type": "Pump",
-      "power": 1,
       "attrs": {
         "label": {
           "text": "Feed Pump 1"
@@ -1145,7 +1146,10 @@
       },
       "tag": "P-101",
       "id": "b61fa3c3-f74b-49ee-a725-05b14d4e0fb7",
-      "layer": "equipment"
+      "layer": "equipment",
+      "data": {
+        "power": 1
+      }
     },
     {
       "position": {
@@ -1158,7 +1162,6 @@
       },
       "angle": 0,
       "type": "Pump",
-      "power": 0,
       "attrs": {
         "label": {
           "text": "Feed Pump 2"
@@ -1167,7 +1170,10 @@
       "tag": "P-102",
       "id": "19798285-91a4-4270-b36c-c2b0563f2981",
       "layer": "equipment",
-      "color": "var(--shape-metal-3)"
+      "color": "var(--shape-metal-3)",
+      "data": {
+        "power": 0
+      }
     },
     {
       "position": {
@@ -1237,7 +1243,6 @@
       },
       "angle": 0,
       "type": "ControlValve",
-      "open": 0.75,
       "attrs": {
         "cover": {
           "width": 6
@@ -1248,7 +1253,10 @@
       },
       "tag": "CV-101",
       "id": "510e490b-1493-44ed-8387-aca25a40ae2c",
-      "layer": "equipment"
+      "layer": "equipment",
+      "data": {
+        "open": 0.75
+      }
     },
     {
       "position": {
@@ -1442,11 +1450,6 @@
       },
       "angle": 0,
       "type": "Panel",
-      "level": 65,
-      "thresholds": {
-        "low": 20,
-        "high": 80
-      },
       "attrs": {
         "liquid": {
           "fill": "#0EAD69",
@@ -1463,7 +1466,14 @@
       "tag": "LI-101",
       "id": "f5d65fb4-7195-49e5-b6e1-97e172cfa5a1",
       "layer": "instruments",
-      "parent": "d91c9b17-7083-4163-b361-1e7499bd5cae"
+      "parent": "d91c9b17-7083-4163-b361-1e7499bd5cae",
+      "data": {
+        "level": 65,
+        "thresholds": {
+          "low": 20,
+          "high": 80
+        }
+      }
     },
     {
       "position": {
@@ -1544,11 +1554,6 @@
       },
       "angle": 0,
       "type": "PressureGauge",
-      "value": 60,
-      "thresholds": {
-        "low": 0,
-        "high": 75
-      },
       "attrs": {
         "lowZone": {
           "d": "M 0 0"
@@ -1569,7 +1574,14 @@
       "tag": "PG-101",
       "id": "b6830c2e-7065-41bd-bdcb-265849d8b909",
       "layer": "instruments",
-      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30"
+      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30",
+      "data": {
+        "value": 60,
+        "thresholds": {
+          "low": 0,
+          "high": 75
+        }
+      }
     },
     {
       "position": {
@@ -1582,7 +1594,6 @@
       },
       "angle": 0,
       "type": "Beacon",
-      "power": 0,
       "attrs": {
         "glow": {
           "display": "none"
@@ -1598,7 +1609,10 @@
       "tag": "AL-101",
       "id": "726dd0a3-f351-4851-9fe7-24a2a0bb0a96",
       "layer": "instruments",
-      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30"
+      "parent": "f1d4c5e8-513b-42fb-991a-21bc814c0c30",
+      "data": {
+        "power": 0
+      }
     },
     {
       "position": {
@@ -1611,7 +1625,6 @@
       },
       "angle": 0,
       "type": "Thermometer",
-      "value": 75,
       "attrs": {
         "column": {
           "y": "calc(0.230 * h)",
@@ -1627,7 +1640,10 @@
       },
       "tag": "TI-101",
       "id": "1731c148-59b4-440b-87cc-a4a38964522b",
-      "layer": "instruments"
+      "layer": "instruments",
+      "data": {
+        "value": 75
+      }
     },
     {
       "source": {
@@ -1687,25 +1703,27 @@
       "tag": "TRD-101",
       "id": "3ad14e5b-bf70-4a16-aca0-cf7882856e8f",
       "layer": "instruments",
-      "min": 0,
-      "max": 40,
-      "values": [
-        17.2,
-        17.8,
-        18.4,
-        18.1,
-        17.6,
-        18.3,
-        18.9,
-        18.5,
-        17.9,
-        18.2,
-        18.7,
-        18.6
-      ],
-      "thresholds": {
-        "low": 5,
-        "high": 35
+      "data": {
+        "values": [
+          17.2,
+          17.8,
+          18.4,
+          18.1,
+          17.6,
+          18.3,
+          18.9,
+          18.5,
+          17.9,
+          18.2,
+          18.7,
+          18.6
+        ],
+        "min": 0,
+        "max": 40,
+        "thresholds": {
+          "low": 5,
+          "high": 35
+        }
       }
     },
     {
@@ -1728,18 +1746,20 @@
       "tag": "BAR-101",
       "id": "de93c146-a98c-4dee-9197-3412ec8fbc71",
       "layer": "instruments",
-      "min": 0,
-      "max": 40,
-      "values": [
-        17.5,
-        18.2,
-        17.9,
-        18.4,
-        18.1,
-        17.7,
-        18.3,
-        18.2
-      ]
+      "data": {
+        "values": [
+          17.5,
+          18.2,
+          17.9,
+          18.4,
+          18.1,
+          17.7,
+          18.3,
+          18.2
+        ],
+        "min": 0,
+        "max": 40
+      }
     },
     {
       "position": {
@@ -1760,23 +1780,25 @@
       "tag": "MIX-101",
       "id": "9a0cc4e6-cd44-495b-9fcb-82c132335306",
       "layer": "instruments",
-      "slices": [
-        {
-          "label": "Natural Gas",
-          "value": 18,
-          "color": "#60a5fa"
-        },
-        {
-          "label": "Fuel Oil",
-          "value": 0,
-          "color": "#ed2637"
-        },
-        {
-          "label": "Biomass",
-          "value": 5,
-          "color": "#0ead69"
-        }
-      ]
+      "data": {
+        "slices": [
+          {
+            "label": "Natural Gas",
+            "value": 18,
+            "color": "#60a5fa"
+          },
+          {
+            "label": "Fuel Oil",
+            "value": 0,
+            "color": "#ed2637"
+          },
+          {
+            "label": "Biomass",
+            "value": 5,
+            "color": "#0ead69"
+          }
+        ]
+      }
     },
     {
       "position": {
@@ -1797,9 +1819,11 @@
       "tag": "PI-101",
       "id": "afc0ceb2-bae1-47cb-9d11-847a0200cdd9",
       "layer": "instruments",
-      "min": 0,
-      "max": 16,
-      "value": 10.5
+      "data": {
+        "value": 10.5,
+        "min": 0,
+        "max": 16
+      }
     },
     {
       "position": {
@@ -2615,7 +2639,6 @@
       },
       "angle": 0,
       "type": "Pump",
-      "power": 0,
       "attrs": {
         "label": {
           "text": "Condensate Pump"
@@ -2625,7 +2648,10 @@
       "layer": "equipment",
       "z": 3,
       "tag": "P-103",
-      "flip": "x"
+      "flip": "x",
+      "data": {
+        "power": 0
+      }
     },
     {
       "position": {
@@ -2661,7 +2687,6 @@
       },
       "angle": 0,
       "type": "MixingTank",
-      "power": 1,
       "attrs": {
         "label": {
           "text": "Dosing Tank"
@@ -2670,7 +2695,10 @@
       "id": "59cd6456-3156-4005-9fed-239bbbcecb44",
       "layer": "equipment",
       "z": 5,
-      "tag": "MX-101"
+      "tag": "MX-101",
+      "data": {
+        "power": 1
+      }
     },
     {
       "position": {
@@ -2683,7 +2711,6 @@
       },
       "angle": 0,
       "type": "Pump",
-      "power": 0,
       "attrs": {
         "label": {
           "text": "Dosing Pump"
@@ -2692,7 +2719,10 @@
       "id": "846f03e9-e733-4aac-984c-12ad2558e80d",
       "layer": "equipment",
       "z": 6,
-      "tag": "P-104"
+      "tag": "P-104",
+      "data": {
+        "power": 0
+      }
     },
     {
       "position": {
@@ -2721,7 +2751,6 @@
       },
       "angle": 0,
       "type": "BallValve",
-      "open": true,
       "attrs": {
         "bore": {
           "transform": "translate(calc(w / 2), calc(h / 2)) rotate(0)"
@@ -2734,7 +2763,10 @@
       "id": "06fe2a44-f3bc-40cc-b7cc-6d9025bf211f",
       "layer": "equipment",
       "z": 8,
-      "tag": "BV-101"
+      "tag": "BV-101",
+      "data": {
+        "open": true
+      }
     },
     {
       "position": {
@@ -2813,7 +2845,6 @@
       },
       "angle": 0,
       "type": "ControlValve",
-      "open": 1,
       "attrs": {
         "liquid": {
           "stroke": "#FCD34D"
@@ -2827,7 +2858,10 @@
       "id": "b57aebf6-5278-48d6-9800-b0eb2919a22e",
       "layer": "equipment",
       "z": 13,
-      "tag": "CV-102"
+      "tag": "CV-102",
+      "data": {
+        "open": 1
+      }
     },
     {
       "position": {

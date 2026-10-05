@@ -104,8 +104,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "power": 1,
-      "id": "d6f7b32d-776e-4d8c-9e28-0b6f09f4c86e"
+      "id": "d6f7b32d-776e-4d8c-9e28-0b6f09f4c86e",
+      "data": {
+        "power": 1
+      }
     },
     {
       "source": {
@@ -151,8 +153,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "power": 1,
-      "id": "2a535481-6ab8-480f-b291-593210146721"
+      "id": "2a535481-6ab8-480f-b291-593210146721",
+      "data": {
+        "power": 1
+      }
     },
     {
       "source": {
@@ -199,8 +203,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "power": 1,
-      "id": "b2ddbf3b-f7b9-44d1-8309-7c36294e9a69"
+      "id": "b2ddbf3b-f7b9-44d1-8309-7c36294e9a69",
+      "data": {
+        "power": 1
+      }
     },
     {
       "source": {
@@ -237,8 +243,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "power": 1,
-      "id": "2dffcbf1-1deb-4864-9e2d-ee3f41cbf017"
+      "id": "2dffcbf1-1deb-4864-9e2d-ee3f41cbf017",
+      "data": {
+        "power": 1
+      }
     },
     {
       "source": {
@@ -821,14 +829,16 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "power": 1,
       "vertices": [
         {
           "x": 1380,
           "y": 760
         }
       ],
-      "id": "dcf11b1d-9129-4a2b-ae3a-7d9d1c1d6e8e"
+      "id": "dcf11b1d-9129-4a2b-ae3a-7d9d1c1d6e8e",
+      "data": {
+        "power": 1
+      }
     },
     {
       "source": {
@@ -875,8 +885,10 @@
           "cornerPreserveAspectRatio": true
         }
       },
-      "power": 1,
-      "id": "4b261895-32a9-40c3-a5ac-179b25941182"
+      "id": "4b261895-32a9-40c3-a5ac-179b25941182",
+      "data": {
+        "power": 1
+      }
     },
     {
       "source": {
@@ -971,11 +983,13 @@
       },
       "angle": 0,
       "type": "Crusher",
-      "power": 1,
       "id": "6eb2fec9-707a-489f-be81-d2df72462ef2",
       "layer": "equipment",
       "z": 2,
-      "tag": "CR-101"
+      "tag": "CR-101",
+      "data": {
+        "power": 1
+      }
     },
     {
       "position": {
@@ -988,7 +1002,6 @@
       },
       "angle": 0,
       "type": "Mill",
-      "power": 1,
       "attrs": {
         "label": {
           "text": "Raw Mill"
@@ -997,7 +1010,10 @@
       "id": "616af48d-dbbb-406d-aa46-f310ea5c821e",
       "layer": "equipment",
       "z": 3,
-      "tag": "ML-101"
+      "tag": "ML-101",
+      "data": {
+        "power": 1
+      }
     },
     {
       "position": {
@@ -1010,7 +1026,6 @@
       },
       "angle": 0,
       "type": "BucketElevator",
-      "power": 1,
       "attrs": {
         "label": {
           "text": "Elevator"
@@ -1019,7 +1034,10 @@
       "id": "24afda56-f38c-460c-ad4f-996b11dc375d",
       "layer": "equipment",
       "z": 4,
-      "tag": "BE-101"
+      "tag": "BE-101",
+      "data": {
+        "power": 1
+      }
     },
     {
       "position": {
@@ -1136,11 +1154,13 @@
       },
       "angle": 0,
       "type": "RotaryKiln",
-      "power": 1,
       "id": "c2b9629e-0f11-4c8b-8c6b-02410a4fec1d",
       "layer": "equipment",
       "z": 10,
-      "tag": "KL-101"
+      "tag": "KL-101",
+      "data": {
+        "power": 1
+      }
     },
     {
       "position": {
@@ -1169,7 +1189,6 @@
       },
       "angle": 0,
       "type": "Blower",
-      "power": 1,
       "attrs": {
         "label": {
           "text": "ID Fan"
@@ -1178,7 +1197,10 @@
       "id": "88f966cb-fd44-41b5-8701-d87a66c3d928",
       "layer": "equipment",
       "z": 12,
-      "tag": "BL-101"
+      "tag": "BL-101",
+      "data": {
+        "power": 1
+      }
     },
     {
       "position": {
@@ -1490,20 +1512,6 @@
       },
       "angle": 0,
       "type": "Trend",
-      "values": [
-        42,
-        45,
-        44,
-        50,
-        55,
-        52,
-        58,
-        61,
-        57,
-        60,
-        64,
-        62
-      ],
       "attrs": {
         "line": {
           "d": "M calc(0 * w + 12) calc(0.58 * h - 2.24) L calc(0.091 * w + 9.818) calc(0.55 * h - 1.4) L calc(0.182 * w + 7.636) calc(0.56 * h - 1.68) L calc(0.273 * w + 5.455) calc(0.5 * h + 0) L calc(0.364 * w + 3.273) calc(0.45 * h + 1.4) L calc(0.455 * w + 1.091) calc(0.48 * h + 0.56) L calc(0.545 * w - 1.091) calc(0.42 * h + 2.24) L calc(0.636 * w - 3.273) calc(0.39 * h + 3.08) L calc(0.727 * w - 5.455) calc(0.43 * h + 1.96) L calc(0.818 * w - 7.636) calc(0.4 * h + 2.8) L calc(0.909 * w - 9.818) calc(0.36 * h + 3.92) L calc(1 * w - 12) calc(0.38 * h + 3.36)"
@@ -1515,7 +1523,23 @@
       "id": "53ecd45b-5812-49bb-a2bf-174d57ba9027",
       "layer": "instruments",
       "z": 2,
-      "tag": "TRD-101"
+      "tag": "TRD-101",
+      "data": {
+        "values": [
+          42,
+          45,
+          44,
+          50,
+          55,
+          52,
+          58,
+          61,
+          57,
+          60,
+          64,
+          62
+        ]
+      }
     },
     {
       "position": {
@@ -2038,23 +2062,25 @@
       "tag": "MIX-101",
       "id": "61e8662e-5f87-4703-9ce3-11aed1ab9634",
       "layer": "instruments",
-      "slices": [
-        {
-          "label": "Limestone",
-          "value": 80,
-          "color": "#94a3b8"
-        },
-        {
-          "label": "Clay",
-          "value": 15,
-          "color": "#f59e0b"
-        },
-        {
-          "label": "Iron Ore",
-          "value": 5,
-          "color": "#ef4444"
-        }
-      ]
+      "data": {
+        "slices": [
+          {
+            "label": "Limestone",
+            "value": 80,
+            "color": "#94a3b8"
+          },
+          {
+            "label": "Clay",
+            "value": 15,
+            "color": "#f59e0b"
+          },
+          {
+            "label": "Iron Ore",
+            "value": 5,
+            "color": "#ef4444"
+          }
+        ]
+      }
     },
     {
       "position": {
@@ -2078,9 +2104,11 @@
       "tag": "PI-101",
       "id": "2b3b13bf-9fab-4583-aca5-95f0e5dfc139",
       "layer": "instruments",
-      "min": 0,
-      "max": 100,
-      "value": 82
+      "data": {
+        "value": 82,
+        "min": 0,
+        "max": 100
+      }
     },
     {
       "position": {
@@ -2101,18 +2129,20 @@
       "tag": "BAR-101",
       "id": "2f7edc0b-6e50-47b6-aca4-f5efd94499fa",
       "layer": "instruments",
-      "min": 0,
-      "max": 4000,
-      "values": [
-        3100,
-        3250,
-        2980,
-        3320,
-        3400,
-        3150,
-        3290,
-        3380
-      ]
+      "data": {
+        "values": [
+          3100,
+          3250,
+          2980,
+          3320,
+          3400,
+          3150,
+          3290,
+          3380
+        ],
+        "min": 0,
+        "max": 4000
+      }
     },
     {
       "position": {
@@ -2142,7 +2172,9 @@
       "tag": "TI-101",
       "id": "37fa0322-0d8e-4436-9207-9d60ac28c12d",
       "layer": "instruments",
-      "value": 70
+      "data": {
+        "value": 70
+      }
     }
   ],
   "images": {
