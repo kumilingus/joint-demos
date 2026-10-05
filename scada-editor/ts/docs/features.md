@@ -37,7 +37,7 @@ Also: uploaded images (saved with the diagram), Favorites, and the shapes In Use
 ## Connections
 
 - Pipes connect to pipe stubs, wires to electrical terminals only, signal lines and arrows to shapes, conveyors to bulk equipment.
-- Routing straight, orthogonal or curved; split a connection, insert a join into a pipe.
+- Routing straight, orthogonal or curved; split a connection, insert a join into a pipe, disconnect a shape.
 - A pipe takes the color of its medium.
 
 ## Layers and groups
