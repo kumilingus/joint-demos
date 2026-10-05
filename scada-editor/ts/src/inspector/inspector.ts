@@ -424,7 +424,8 @@ const arrowheadInputs: Inputs = {
 
 /** The width of a pipe (its size), a wire (its thickness), see `line-width.ts` */
 const lineWidthInputs = (cell: dia.Cell): Inputs => ({
-    lineWidth: { type: 'select-button-group', ...lineWidthField([cell.get('type')]), defaultValue: 'normal', group: 'link', index: 5 }
+    // First: what the link is (its routing and its colors are how it is drawn)
+    lineWidth: { type: 'select-button-group', ...lineWidthField([cell.get('type')]), defaultValue: 'normal', group: 'link', index: 0 }
 });
 
 /** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow points, a conveyor carries the bulk material. */
