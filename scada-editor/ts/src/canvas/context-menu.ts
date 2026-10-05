@@ -114,7 +114,7 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
             }]),
         ...(cell.isLink()
             ? [{ action: 'split', label: 'Split Here', separated: true, run: () => splitLink(app, cell, { x, y }) }]
-            : [disconnectItem(app)]),
+            : []),
         // A join is a fitting of the pipes.
         ...(cell.get('type') === 'Pipe'
             ? [{ action: 'join', label: 'Insert Join', run: () => insertJoin(app, cell as dia.Link, { x, y }) }]
@@ -144,7 +144,9 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
         ...(under
             ? [{ action: 'layer-down', label: `Move to ${LAYER_NAMES[under]}`, hint: 'under what it covers', run: () => moveToLayer(app, under, { back: true }) }]
             : []),
-        { action: 'delete', label: 'Delete', shortcut: 'Del', separated: true, run: () => removeSelection(app) }
+        // What goes away: the connections of an element, the selection
+        ...(cell.isLink() ? [] : [disconnectItem(app)]),
+        { action: 'delete', label: 'Delete', shortcut: 'Del', separated: cell.isLink(), run: () => removeSelection(app) }
     ]);
 }
 
