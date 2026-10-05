@@ -20,9 +20,9 @@ export function flipTargets(app: App, axis: FlipAxis): Shape[] {
 /** The flip of the element with the axis turned on or off (`x`, `y`, `xy` or none) */
 function toggled(element: dia.Element, axis: FlipAxis): string {
     const flip = flipOf(element);
-    const axes = new Set<string>(flip.split('').filter(a => a === 'x' || a === 'y'));
-    if (axes.has(axis)) axes.delete(axis); else axes.add(axis);
-    return ['x', 'y'].filter(a => axes.has(a)).join('');
+    const x = flip.includes('x') !== (axis === 'x');
+    const y = flip.includes('y') !== (axis === 'y');
+    return `${x ? 'x' : ''}${y ? 'y' : ''}`;
 }
 
 /** Flip the selected shapes along the axis (those that can be) */
