@@ -1244,9 +1244,6 @@
       "angle": 0,
       "type": "ControlValve",
       "attrs": {
-        "cover": {
-          "width": 6
-        },
         "label": {
           "text": "Feed Valve"
         }
@@ -1450,19 +1447,7 @@
       },
       "angle": 0,
       "type": "Panel",
-      "attrs": {
-        "liquid": {
-          "fill": "#0EAD69",
-          "y": "calc(0.35 * h + 4.5)",
-          "height": "calc(0.65 * h - 19.5)"
-        },
-        "lowMark": {
-          "d": "M calc(0.1 * w) calc(0.8 * h - 9) H calc(0.5 * w)"
-        },
-        "highMark": {
-          "d": "M calc(0.1 * w) calc(0.2 * h + 9) H calc(0.5 * w)"
-        }
-      },
+      "attrs": {},
       "tag": "LI-101",
       "id": "f5d65fb4-7195-49e5-b6e1-97e172cfa5a1",
       "layer": "instruments",
@@ -1555,17 +1540,6 @@
       "angle": 0,
       "type": "PressureGauge",
       "attrs": {
-        "lowZone": {
-          "d": "M 0 0"
-        },
-        "highZone": {
-          "d": "M 20.33 -8.42 A 22 22 0 0 1 15.56 15.56"
-        },
-        "needle": {
-          "style": {
-            "transform": "rotate(27.0deg)"
-          }
-        },
         "label": {
           "text": "Header",
           "labelPosition": "top"
@@ -1595,12 +1569,6 @@
       "angle": 0,
       "type": "Beacon",
       "attrs": {
-        "glow": {
-          "display": "none"
-        },
-        "lamp": {
-          "fill": "#9aa3ab"
-        },
         "label": {
           "text": "High Pressure",
           "labelPosition": "top"
@@ -1626,14 +1594,6 @@
       "angle": 0,
       "type": "Thermometer",
       "attrs": {
-        "column": {
-          "y": "calc(0.230 * h)",
-          "height": "calc(0.720 * h - 8)"
-        },
-        "reading": {
-          "y": "calc(0.230 * h)",
-          "text": "75 °C"
-        },
         "label": {
           "text": "Steam Temp."
         }
@@ -2752,9 +2712,6 @@
       "angle": 0,
       "type": "BallValve",
       "attrs": {
-        "bore": {
-          "transform": "translate(calc(w / 2), calc(h / 2)) rotate(0)"
-        },
         "label": {
           "text": ""
         }

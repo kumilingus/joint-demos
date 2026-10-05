@@ -1513,9 +1513,6 @@
       "angle": 0,
       "type": "Trend",
       "attrs": {
-        "line": {
-          "d": "M calc(0 * w + 12) calc(0.58 * h - 2.24) L calc(0.091 * w + 9.818) calc(0.55 * h - 1.4) L calc(0.182 * w + 7.636) calc(0.56 * h - 1.68) L calc(0.273 * w + 5.455) calc(0.5 * h + 0) L calc(0.364 * w + 3.273) calc(0.45 * h + 1.4) L calc(0.455 * w + 1.091) calc(0.48 * h + 0.56) L calc(0.545 * w - 1.091) calc(0.42 * h + 2.24) L calc(0.636 * w - 3.273) calc(0.39 * h + 3.08) L calc(0.727 * w - 5.455) calc(0.43 * h + 1.96) L calc(0.818 * w - 7.636) calc(0.4 * h + 2.8) L calc(0.909 * w - 9.818) calc(0.36 * h + 3.92) L calc(1 * w - 12) calc(0.38 * h + 3.36)"
-        },
         "label": {
           "text": "Kiln Feed (t/h)"
         }
@@ -2157,13 +2154,7 @@
       "type": "Thermometer",
       "attrs": {
         "column": {
-          "fill": "var(--color-red)",
-          "y": "calc(0.260 * h)",
-          "height": "calc(0.690 * h - 8)"
-        },
-        "reading": {
-          "y": "calc(0.260 * h)",
-          "text": "70 °C"
+          "fill": "var(--color-red)"
         },
         "label": {
           "text": "Kiln Shell"

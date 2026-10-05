@@ -904,15 +904,6 @@
       "angle": 0,
       "type": "CircuitBreaker",
       "attrs": {
-        "lever": {
-          "y": "calc(0.2 * h)"
-        },
-        "window": {
-          "fill": "var(--shape-breaker-closed)"
-        },
-        "state": {
-          "text": "ON"
-        },
         "label": {
           "text": "CB-W"
         }
@@ -953,15 +944,6 @@
       "angle": 0,
       "type": "CircuitBreaker",
       "attrs": {
-        "lever": {
-          "y": "calc(0.2 * h)"
-        },
-        "window": {
-          "fill": "var(--shape-breaker-closed)"
-        },
-        "state": {
-          "text": "ON"
-        },
         "label": {
           "text": "CB-S"
         }
@@ -1010,10 +992,6 @@
       "angle": 0,
       "type": "FuelTank",
       "attrs": {
-        "fuel": {
-          "y": "calc(0.3800 * h)",
-          "height": "calc(0.4200 * h)"
-        },
         "label": {
           "text": "Day Tank"
         }
@@ -1038,15 +1016,6 @@
       "angle": 0,
       "type": "CircuitBreaker",
       "attrs": {
-        "lever": {
-          "y": "calc(0.2 * h)"
-        },
-        "window": {
-          "fill": "var(--shape-breaker-closed)"
-        },
-        "state": {
-          "text": "ON"
-        },
         "label": {
           "text": "CB-D"
         }
@@ -1070,11 +1039,7 @@
       },
       "angle": 0,
       "type": "BatteryBank",
-      "attrs": {
-        "charge": {
-          "width": "calc(0.8 * w - 16)"
-        }
-      },
+      "attrs": {},
       "id": "ed1fffe5-acf0-433e-b1af-22c2a31e07a0",
       "layer": "equipment",
       "z": 9,
@@ -1095,15 +1060,6 @@
       "angle": 0,
       "type": "CircuitBreaker",
       "attrs": {
-        "lever": {
-          "y": "calc(0.2 * h)"
-        },
-        "window": {
-          "fill": "var(--shape-breaker-closed)"
-        },
-        "state": {
-          "text": "ON"
-        },
         "label": {
           "text": "CB-B"
         }
@@ -1354,15 +1310,6 @@
       "angle": 0,
       "type": "CircuitBreaker",
       "attrs": {
-        "lever": {
-          "y": "calc(0.2 * h)"
-        },
-        "window": {
-          "fill": "var(--shape-breaker-closed)"
-        },
-        "state": {
-          "text": "ON"
-        },
         "label": {
           "text": "CB-L"
         }
@@ -1642,9 +1589,6 @@
       "angle": 0,
       "type": "Trend",
       "attrs": {
-        "line": {
-          "d": "M calc(0 * w + 12) calc(0.58 * h - 2.24) L calc(0.091 * w + 9.818) calc(0.55 * h - 1.4) L calc(0.182 * w + 7.636) calc(0.56 * h - 1.68) L calc(0.273 * w + 5.455) calc(0.5 * h + 0) L calc(0.364 * w + 3.273) calc(0.45 * h + 1.4) L calc(0.455 * w + 1.091) calc(0.48 * h + 0.56) L calc(0.545 * w - 1.091) calc(0.42 * h + 2.24) L calc(0.636 * w - 3.273) calc(0.39 * h + 3.08) L calc(0.727 * w - 5.455) calc(0.43 * h + 1.96) L calc(0.818 * w - 7.636) calc(0.4 * h + 2.8) L calc(0.909 * w - 9.818) calc(0.36 * h + 3.92) L calc(1 * w - 12) calc(0.38 * h + 3.36)"
-        },
         "label": {
           "text": "Load (kW)"
         }
