@@ -44,6 +44,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Signal lines** and **arrows** - to a shape; an arrow can also point from a Label. Its ends and color are in the inspector.
 - **Conveyors** - to the body of the equipment.
 - **Routing** - Straight, Orthogonal or Curved in the inspector; drag the handles to move ends and bends.
+- **Size** of a pipe (Small, Medium, Large), **Thickness** of a wire (Thin, Normal, Thick) - in the inspector.
 - **Split Here** / **Insert Join** - right-click a connection / a pipe.
 - **Disconnect** - right-click a shape: its connections stay, their ends freed where they were; the shape moves off them.
 
@@ -52,7 +53,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 ![The inspector of a valve](images/inspector.png)
 
 - **ID** - the tag the plant uses (*HV-101*), and the texts.
-- **Appearance** - Finish (Auto, Shaded, Flat), Color, Outline, Accent (the slashed swatch is Auto), Label position, Layer.
+- **Appearance** - Finish (Auto, Shaded, Flat), Color, Outline, Outline width, Accent (the slashed swatch is Auto), Label position, Layer. *Outline width* shows while the shape is outlined: an outline color of its own, or flat.
 - **Values**, **Thresholds**, **Slices**, **Columns** - the data of the shape.
 - **Controls** - *Use controls* and *Control position*.
 
@@ -85,6 +86,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 **Style** - the defaults for every shape that has no style of its own (Auto in its inspector).
 - *Finish* - Shaded (gradients) or Flat.
 - *Color*, *Outline*, *Accent* - the body, edge and detail colors.
+- *Outline width* - Thin, Normal or Thick: the outlines of outlined shapes and the borders of the pipes.
 - *Label size* - Small to X-Large, for shape labels (not for the Label shape).
 - *Label color* - the text color of those labels.
 - *Canvas* - the background color (White / Black, Blue, Green, Violet, Gray as in ISA-101, Sand; each with a light and a dark tone); the grid follows.

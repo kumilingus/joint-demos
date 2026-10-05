@@ -7,6 +7,7 @@ import { renderLabel } from './help';
 import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from '../runtime/animations';
 import { type DiagramStyle, getStyle, LABEL_SIZES, STYLE_ATTRIBUTE } from '../diagram-style';
 import { CANVAS_COLORS, getColorFieldValue, renderColorField } from './color-field';
+import { OUTLINE_WIDTHS, type OutlineWidth } from '../shapes/common/gradients';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
@@ -144,6 +145,15 @@ export function openSettings(app: App): void {
                 },
                 color: { type: 'color', label: 'Color', auto: true, graph, group: 'style', index: 1 },
                 outline: { type: 'color', label: 'Outline', auto: true, graph, group: 'style', index: 2 },
+                // Of the shapes outlined (an outline color, flat), of the borders of the pipes
+                outlineWidth: {
+                    type: 'select-button-group',
+                    label: 'Outline width',
+                    options: (Object.keys(OUTLINE_WIDTHS) as OutlineWidth[]).map(value => ({ value, content: OUTLINE_WIDTHS[value].name })),
+                    defaultValue: 'normal',
+                    group: 'style',
+                    index: 2.5
+                },
                 accent: { type: 'color', label: 'Accent', auto: true, graph, group: 'style', index: 3 },
                 // The labels of the elements: a size, a color of the theme (a text readable in both schemes)
                 labelSize: {

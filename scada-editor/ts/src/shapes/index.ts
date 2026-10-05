@@ -45,7 +45,7 @@ import WaterTower from './models/storage/WaterTower';
 import Trend from './models/charts/Trend';
 import Zone from './models/piping/Zone';
 import Join from './models/piping/Join';
-import Pipe from './models/piping/Pipe';
+import Pipe, { PipeView } from './models/piping/Pipe';
 import Conveyor from './models/bulk/Conveyor';
 import RotaryKiln from './models/bulk/RotaryKiln';
 import Table from './models/charts/Table';
@@ -160,7 +160,9 @@ export const cellNamespace = {
     Zone,
     Join,
     Label,
+    // A pipe with a view of its own (its outline drawn again with its outline width)
     Pipe,
+    PipeView,
     SignalLine,
     // An arrow with a view of its own (its line ends where its arrowheads start)
     Arrow,

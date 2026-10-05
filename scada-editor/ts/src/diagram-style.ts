@@ -1,5 +1,5 @@
 import type { dia } from '@joint/plus';
-import { setStyleFinish, type SurfaceFinish } from './shapes/common/gradients';
+import { type OutlineWidth, setStyleFinish, setStyleOutlineWidth, type SurfaceFinish } from './shapes/common/gradients';
 
 /*
  * The style of the diagram (in the settings, saved with it): the finish of all the equipment (shaded, flat), one color
@@ -15,6 +15,8 @@ export interface DiagramStyle {
     finish?: SurfaceFinish;
     color?: string;
     outline?: string;
+    /** The width of the outlines (of the shapes outlined: an outline color, the flat finish; the borders of the pipes) */
+    outlineWidth?: OutlineWidth;
     accent?: string;
     /** The labels of the elements (not the Label and Zone shapes: texts of their own): their size, their color */
     labelSize?: LabelSize;
@@ -42,7 +44,7 @@ export function getStyle(graph: dia.Graph): DiagramStyle {
 }
 
 // The CSS variables of the colors of the style (see `shapes.css`)
-const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize' | 'canvasGradient'>, string> = {
+const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize' | 'canvasGradient' | 'outlineWidth'>, string> = {
     color: '--style-color',
     outline: '--style-outline',
     accent: '--style-accent',
@@ -56,6 +58,7 @@ const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize' | 'ca
  */
 export function applyStyle(style: DiagramStyle): void {
     setStyleFinish(style.finish === 'flat' ? 'flat' : 'shaded');
+    setStyleOutlineWidth(style.outlineWidth);
     const { style: css } = document.documentElement;
     (Object.keys(VARIABLES) as (keyof typeof VARIABLES)[]).forEach((key) => {
         const value = style[key];

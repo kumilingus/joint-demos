@@ -6,10 +6,11 @@ import { renderLabel } from './help';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, rememberColor, renderColorField } from './color-field';
 import type { ColorField } from '../shapes/common/Shape';
 import { isGroup } from '../shapes/models/diagram/Group';
-import { appearanceTargets, createAppearanceInspector } from './selection-inspector';
-import { hasFinish } from '../shapes/common/gradients';
+import { appearanceTargets, createAppearanceInspector, OUTLINE_WIDTH_OPTIONS } from './selection-inspector';
+import { getStyleFinish, hasFinish } from '../shapes/common/gradients';
 import { type Arrowhead, ARROWHEAD_LENGTHS, arrowheadMarker } from '../shapes/models/instruments/Arrow';
 import { descriptions } from '../palette/descriptions';
+import { hasLineWidth, lineWidthField } from '../shapes/common/line-width';
 import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
 
 const groups: ui.Inspector.Options['groups'] = {
@@ -150,8 +151,9 @@ function getInputs(element: dia.Element): Inputs {
     // The color the user sets (see `ColorField`): of the fills of the surfaces
     util.merge(inputs, colorInputs(element, 'appearance', index++));
 
-    // Their outline (none of its own: as the shape draws it)
+    // Their outline (none of its own: as the shape draws it), its width
     util.merge(inputs, outlineInputs(element, 'appearance', index++));
+    util.merge(inputs, outlineWidthInputs(element, 'appearance', index++));
     util.merge(inputs, accentInputs(element, 'appearance', index++));
     // The accent of a table: its head - only while the names of the columns are shown
     if (element.get('type') === 'Table') {
@@ -358,6 +360,21 @@ function outlineInputs(cell: dia.Cell, group: string, index: number): Inputs {
     return fieldInputs(cell, outlineFieldOf(cell), 'Outline', group, index);
 }
 
+/**
+ * The Outline width field of the cell: of a pipe (its border), of a shape with outlined surfaces - shown while it is
+ * outlined (an outline color of its own, the flat finish: its own, or of the diagram); nothing otherwise (the shape
+ * draws its outlines, each as wide as it is drawn)
+ */
+function outlineWidthInputs(cell: dia.Cell, group: string, index: number): Inputs {
+    const input = { type: 'select-button-group', label: 'Outline width', options: OUTLINE_WIDTH_OPTIONS, defaultValue: 'auto', group, index };
+    if (cell.get('type') === 'Pipe') return { outlineWidth: input };
+    if (outlineFieldOf(cell)?.path.join('/') !== 'outline') return {};
+    const flat = cell.isElement() && hasFinish(cell)
+        ? [{ eq: { finish: 'flat' }}, ...(getStyleFinish() === 'flat' ? [{ nin: { finish: ['shaded'] }}] : [])]
+        : [];
+    return { outlineWidth: { ...input, when: { or: [{ regex: { outline: '^(#|var\\()' }}, ...flat] }}};
+}
+
 /** The Accent field of the cell (a marking of it: the bands of a stack, a handwheel, see `accentField`); nothing if none */
 function accentInputs(cell: dia.Cell, group: string, index: number): Inputs {
     return fieldInputs(cell, accentFieldOf(cell), 'Accent', group, index);
@@ -404,6 +421,11 @@ const arrowheadInputs: Inputs = {
     sourceArrowhead: arrowheadInput('source', 'Start', 3),
     targetArrowhead: arrowheadInput('target', 'End', 4)
 };
+
+/** The width of a pipe (its size), a wire (its thickness), see `line-width.ts` */
+const lineWidthInputs = (cell: dia.Cell): Inputs => ({
+    lineWidth: { type: 'select-button-group', ...lineWidthField([cell.get('type')]), defaultValue: 'normal', group: 'link', index: 5 }
+});
 
 /** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow points, a conveyor carries the bulk material. */
 const LINK_NAMES: Record<string, string> = {
@@ -484,8 +506,10 @@ function inspectorInputs(cell: dia.Cell): Inputs {
         isRouted(cell) ? linkInputs : {},
         colorInputs(cell, 'link', 2),
         outlineInputs(cell, 'link', 3),
+        outlineWidthInputs(cell, 'link', 3.5),
         accentInputs(cell, 'link', 4),
         cell.get('type') === 'Arrow' ? arrowheadInputs : {},
+        hasLineWidth(cell) ? lineWidthInputs(cell) : {},
         // A conveyor runs or stands still
         cell.has('power') ? { power: { type: 'toggle', label: 'Power', group: 'link', index: 5 }} : {},
         layerInput('link')

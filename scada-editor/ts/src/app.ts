@@ -318,7 +318,11 @@ export class App {
         applyStyle(getStyle(this.graph));
         const papers: dia.Paper[] = [this.paper];
         if (this.stencil) papers.push(...Object.keys(this.stencil.options.groups ?? {}).map(group => this.stencil!.getPaper(group)));
-        papers.forEach(paper => paper.model.getElements().forEach(element => element.findView(paper)?.render()));
+        // The elements (their surfaces) rendered again, the links updated (the borders of the pipes)
+        papers.forEach((paper) => {
+            paper.model.getElements().forEach(element => element.findView(paper)?.render());
+            paper.model.getLinks().forEach(link => (link.findView(paper) as dia.LinkView | undefined)?.update());
+        });
     }
 
     protected destroyStencil(): void {

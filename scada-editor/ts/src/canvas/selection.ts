@@ -1,5 +1,5 @@
 import { dia, highlighters, type mvc, ui, V } from '@joint/plus';
-import Pipe from '../shapes/models/piping/Pipe';
+import Pipe, { pipeOutlineWidth } from '../shapes/models/piping/Pipe';
 import { isGroup } from '../shapes/models/diagram/Group';
 import { SELECTION_COLOR, SELECTION_PADDING } from '../const';
 
@@ -16,10 +16,14 @@ import { SELECTION_COLOR, SELECTION_PADDING } from '../const';
  */
 export class SelectionFrame extends highlighters.stroke {
 
+    // A link framed again when it gets wider or narrower (see `linkFrameWidth()`)
+    UPDATE_ATTRIBUTES = ['lineWidth', 'outlineWidth'];
+
     protected highlight(cellView: dia.CellView, node: SVGElement): void {
         const { model } = cellView;
         if (!model.isElement()) {
             super.highlight(cellView, node);
+            this.vel.attr('stroke-width', linkFrameWidth(model));
             return;
         }
         const { padding = 0, rx, ry, attrs } = this.options;
@@ -36,17 +40,22 @@ export class SelectionFrame extends highlighters.stroke {
     }
 }
 
+/** The width of the frame of a link: wider than the link (a pipe: its outline) on each side */
+function linkFrameWidth(link: dia.Cell): number {
+    const width = link instanceof Pipe ? pipeOutlineWidth(link) : Number(link.attr('line/strokeWidth')) || 0;
+    return width + 6;
+}
+
 /** A link is outlined: a wider stroke behind it, in its own view (drawn in its layer, not under all of the cells). */
 function frameOptions(cell: dia.Cell): highlighters.StrokeHighlighterArguments {
     if (cell.isLink()) {
-        const lineWidth = Number(cell.attr(cell instanceof Pipe ? 'outline/strokeWidth' : 'line/strokeWidth')) || 0;
         return {
             // The first child of the view: behind the paths of the link
             layer: null,
             z: 0,
             attrs: {
                 stroke: SELECTION_COLOR,
-                strokeWidth: lineWidth + 6,
+                strokeWidth: linkFrameWidth(cell),
                 strokeLinejoin: 'round',
                 strokeLinecap: 'square'
             }

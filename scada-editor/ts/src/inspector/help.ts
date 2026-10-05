@@ -46,6 +46,11 @@ const FIELD_HELP: Record<string, string> = {
         the edges of a pipe).
         <strong class="tooltip-heading">Auto</strong>
         As the shape draws it (in the finish <em>Flat</em>: the edge of the metal).`,
+    outlineWidth: `
+        <strong>Outline width</strong> - the width of the outline: of a shape while it is outlined (an outline color of
+        its own, or the finish <em>Flat</em>), of the border of a pipe.
+        <strong class="tooltip-heading">Auto</strong>
+        The outline width of the diagram (Settings - Style).`,
     accent: `
         <strong>Accent</strong> - a marking of the shape in a color of its own: the bands of a stack, the handwheel
         of a valve, the motor of a pump, the needle of a gauge, the reading of a meter, the liquid of a level panel.
@@ -69,6 +74,8 @@ const FIELD_HELP: Record<string, string> = {
         Mixed into the metal of the equipment (the shading stays).
         <strong class="tooltip-heading">Outline, Accent</strong>
         The outlines; the markings (bands, handwheels, motors, caps, ...).
+        <strong class="tooltip-heading">Outline width</strong>
+        Of the outlined shapes and the borders of the pipes without one of their own (their <em>Auto</em>).
         <strong class="tooltip-heading">Auto</strong>
         The colors of the shapes themselves.`,
     screen: `

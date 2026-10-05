@@ -194,8 +194,36 @@ export function finishOf(model: dia.Cell): SurfaceFinish {
     return finish === 'shaded' || finish === 'flat' ? finish : styleFinish;
 }
 
-// The width of the outlines of an element outlined (its `outline`, the flat finish): one for all its surfaces
-const OUTLINE_WIDTH = 2;
+/**
+ * The width of the outlines of an element outlined (its `outline`, the flat finish): one for all its surfaces -
+ * its own (`outlineWidth`, set in the inspector), else of the diagram (Auto). The border of a pipe too (see `Pipe`).
+ */
+export type OutlineWidth = 'thin' | 'normal' | 'thick';
+
+/** The widths to pick: their names, their widths (px) */
+export const OUTLINE_WIDTHS: Record<OutlineWidth, { name: string; px: number }> = {
+    thin: { name: 'Thin', px: 1 },
+    normal: { name: 'Normal', px: 2 },
+    thick: { name: 'Thick', px: 3 }
+};
+
+/** The outline width of the diagram (its style): of the cells without one of their own */
+let styleOutlineWidth: OutlineWidth = 'normal';
+
+export function setStyleOutlineWidth(width: OutlineWidth | undefined): void {
+    styleOutlineWidth = width && width in OUTLINE_WIDTHS ? width : 'normal';
+}
+
+/** The outline width of the cell: its own (`outlineWidth` set), else of the diagram (Auto: none, or `auto`) */
+export function outlineWidthOf(model: dia.Cell): number {
+    const width = model.get('outlineWidth');
+    return OUTLINE_WIDTHS[width in OUTLINE_WIDTHS ? width as OutlineWidth : styleOutlineWidth].px;
+}
+
+/** The finish of the diagram (its style) */
+export function getStyleFinish(): SurfaceFinish {
+    return styleFinish;
+}
 
 /**
  * The outline of the surfaces of the element, if it is outlined: its own (`outline`, a color set in the inspector),
@@ -240,7 +268,7 @@ export const surfaceAttributes = {
         set(this: dia.ElementView, fill: SurfaceFill) {
             // Outlined: every surface (one without an outline of its own too)
             const outline = outlineOf(this.model);
-            const outlined = outline ? { stroke: outline, 'stroke-width': OUTLINE_WIDTH } : {};
+            const outlined = outline ? { stroke: outline, 'stroke-width': outlineWidthOf(this.model) } : {};
             return { fill: surfaceFillOf(this, fill), ...outlined };
         }
     },
@@ -248,7 +276,7 @@ export const surfaceAttributes = {
     'surface-stroke': {
         set(this: dia.ElementView, stroke: SurfaceStroke) {
             const outline = outlineOf(this.model);
-            if (outline) return isColorOutline(this.model) ? { stroke: outline } : { stroke: outline, 'stroke-width': OUTLINE_WIDTH };
+            if (outline) return isColorOutline(this.model) ? { stroke: outline } : { stroke: outline, 'stroke-width': outlineWidthOf(this.model) };
             const color = this.model.get('color');
             const base = isSurfaceColor(stroke) ? stroke : SURFACE_STROKES[stroke];
             return { stroke: isTint(color) ? tint(color, base) : base };

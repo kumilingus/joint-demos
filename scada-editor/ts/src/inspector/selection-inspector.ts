@@ -1,15 +1,16 @@
 import { dia, ui, util } from '@joint/plus';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, renderColorField } from './color-field';
-import { hasFinish, type SurfaceFinish } from '../shapes/common/gradients';
+import { hasFinish, OUTLINE_WIDTHS, type OutlineWidth, type SurfaceFinish } from '../shapes/common/gradients';
 import { isGroup } from '../shapes/models/diagram/Group';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
+import { hasLineWidth, lineWidthField, type LineWidth } from '../shapes/common/line-width';
 
 /*
  * The appearance of several cells at once (a selection of them, the members of a group): an inspector
  * of a cell standing in for them all, with the fields they share - the color (of each its own: the metal
  * of a pump, the line of a pipe, the text of a label, see `ColorField`), the finish and the outline (of those with surfaces),
- * their layer.
+ * the width (of the pipes, the wires), their layer.
  * A field shows the value they all have, or none ("mixed") if they differ; a change sets it on all of them,
  * one step of the history.
  */
@@ -24,6 +25,12 @@ export function appearanceTargets(cells: dia.Cell[]): dia.Cell[] {
         : [cell]));
     return [...new Set(targets)];
 }
+
+/** The outline widths to pick (see `OutlineWidth`): Auto (none of its own - of the diagram), thin, normal, thick */
+export const OUTLINE_WIDTH_OPTIONS = [
+    { value: 'auto', content: 'Auto' },
+    ...(Object.keys(OUTLINE_WIDTHS) as OutlineWidth[]).map(value => ({ value, content: OUTLINE_WIDTHS[value].name }))
+];
 
 /** The default color of the cell (of its shape) */
 function defaultColorOf(cell: dia.Cell): unknown {
@@ -85,6 +92,10 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     const surfaced = cells.filter(cell => cell.isElement() && hasFinish(cell));
     const outlined = cells.filter(cell => outlineFieldOf(cell));
     const accented = cells.filter(cell => accentFieldOf(cell));
+    const widened = cells.filter(hasLineWidth);
+    // Outlined as one (see `outlineWidthInputs()` in `inspector.ts`): the pipes, the shapes that can be outlined - set
+    // on those not outlined now too (it applies once they are: an outline color, flat)
+    const bordered = cells.filter(cell => cell.get('type') === 'Pipe' || outlineFieldOf(cell)?.path.join('/') === 'outline');
     if (cells.length === 0) return null;
     const { graph } = cells[0];
 
@@ -96,6 +107,9 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         finish: common(surfaced.map(finishOf)),
         outline: common(outlines),
         accent: common(accented.map(accentOf)),
+        // Of different widths: none of them selected
+        lineWidth: common(widened.map(cell => cell.get('lineWidth') ?? 'normal')),
+        outlineWidth: common(bordered.map(cell => cell.get('outlineWidth') ?? 'auto')),
         // In different ones: none of them (see the input)
         layer: common(cells.map(cell => graph.getCellLayerId(cell))) ?? ''
     });
@@ -158,11 +172,38 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
             index: 4
         };
     }
+    if (bordered.length > 0) {
+        inputs.outlineWidth = {
+            type: 'select-button-group',
+            label: 'Outline width',
+            options: OUTLINE_WIDTH_OPTIONS,
+            group: 'appearance',
+            index: 3.5
+        };
+    }
+    standIn.on('change:outlineWidth', (_cell: dia.Cell, width: string) => {
+        if (width) changeAll(bordered, cell => (width === 'auto' ? cell.unset('outlineWidth') : cell.set('outlineWidth', width)));
+    });
     standIn.on('change:accent', (_cell: dia.Cell, accent: string) => {
         changeAll(accented, cell => cell.prop(accentFieldOf(cell)!.path, accent));
     });
     standIn.on('change:outline', (_cell: dia.Cell, outline: string | undefined) => {
         changeAll(outlined, cell => setOutline(cell, outline));
+    });
+    if (widened.length > 0) {
+        // Of what (a selection has elements too): the size of the pipes, the thickness of the wires (of both too)
+        const types = [...new Set(widened.map(cell => String(cell.get('type'))))];
+        const { label, options } = lineWidthField(types);
+        inputs.lineWidth = {
+            type: 'select-button-group',
+            label: types.length === 1 ? `${types[0] === 'Wire' ? 'Wire thickness' : 'Pipe size'}` : label,
+            options,
+            group: 'appearance',
+            index: 5
+        };
+    }
+    standIn.on('change:lineWidth', (_cell: dia.Cell, lineWidth: LineWidth) => {
+        if (lineWidth) changeAll(widened, cell => cell.set('lineWidth', lineWidth));
     });
     // Their layer: the one they are all in, or none (mixed); last, as of a single cell (see `inspector.ts`)
     inputs.layer = {

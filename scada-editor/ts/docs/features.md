@@ -37,7 +37,7 @@ Also: uploaded images (saved with the diagram), Favorites, and the shapes In Use
 ## Connections
 
 - Pipes connect to pipe stubs, wires to electrical terminals only, signal lines and arrows to shapes, conveyors to bulk equipment.
-- Routing straight, orthogonal or curved; split a connection, insert a join into a pipe, disconnect a shape.
+- Routing straight, orthogonal or curved; pipe sizes and wire thicknesses; split a connection, insert a join into a pipe, disconnect a shape.
 - A pipe takes the color of its medium.
 
 ## Layers and groups
@@ -53,6 +53,7 @@ Also: uploaded images (saved with the diagram), Favorites, and the shapes In Use
   <img src="images/finish-shaded.png" alt="The shaded finish" width="49%" /> <img src="images/finish-flat.png" alt="The flat finish" width="49%" />
 
 - Color, outline, accent - per shape or for the diagram; theme colors adapt to light and dark.
+- Outline width (thin, normal, thick) for outlined shapes and pipe borders - per shape or for the diagram.
 - Label size and color for the whole diagram (theme colors only).
 - Canvas color - a light and a dark tone, flat or in a subtle gradient; the grid follows.
 - Light and dark themes: the editor, the canvas and the shapes, switched in the toolbar (the system setting by default).

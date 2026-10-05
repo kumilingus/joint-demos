@@ -3,7 +3,7 @@ import { CANVAS_COLOR } from '../../const';
 
 /**
  * A view of a shape rendered again when the attributes of its model change (their special attributes
- * read them): the color, the finish and the outline of its surfaces (see `surfaceAttributes`), the data of a chart, ...
+ * read them): the color, the finish and the outline (its color, its width) of its surfaces (see `surfaceAttributes`), the data of a chart, ...
  */
 export function shapeView(attributes: string[] = []): typeof dia.ElementView {
     return dia.ElementView.extend({
@@ -19,6 +19,7 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
                 color: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
                 finish: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
                 outline: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
+                outlineWidth: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
                 // Rotated: its label laid out again (horizontal, on its side - see `labelPosition`)
                 angle: [dia.ElementView.Flags.ROTATE, dia.ElementView.Flags.UPDATE],
                 ...Object.fromEntries(attributes.map(attribute => [attribute, dia.ElementView.Flags.UPDATE]))

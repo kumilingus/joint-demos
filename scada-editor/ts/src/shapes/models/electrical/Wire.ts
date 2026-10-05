@@ -2,6 +2,10 @@ import { dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
 import { followRouting, routingAttributes } from '../../common/routing';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
+import { followLineWidth, type StrokeWidths } from '../../common/line-width';
+
+// The width of its line (normal, see `lineWidth`)
+const STROKE_WIDTHS: StrokeWidths = { line: 3 };
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -18,6 +22,11 @@ export default class Wire extends dia.Link {
     // The color of its line (see `ColorField`)
     get colorField(): ColorField {
         return LINE_COLOR_FIELD;
+    }
+
+    // Thin, normal or thick (see `line-width.ts`)
+    get strokeWidths(): StrokeWidths {
+        return STROKE_WIDTHS;
     }
 
     defaults(): dia.Link.Attributes {
@@ -39,7 +48,7 @@ export default class Wire extends dia.Link {
                 line: {
                     connection: true,
                     stroke: 'var(--shape-wire)',
-                    strokeWidth: 3,
+                    strokeWidth: STROKE_WIDTHS.line,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round',
                     pointerEvents: 'none'
@@ -55,5 +64,6 @@ export default class Wire extends dia.Link {
     initialize(...args: Parameters<dia.Link['initialize']>): void {
         super.initialize(...args);
         followRouting(this);
+        followLineWidth(this, STROKE_WIDTHS);
     }
 }
