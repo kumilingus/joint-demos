@@ -618,7 +618,9 @@
         }
       },
       "id": "0764439f-589e-4f34-a079-56194a2bc73c",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -675,7 +677,9 @@
         }
       },
       "id": "9128e9c1-e279-4c0f-a807-75271a9ab751",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -732,7 +736,9 @@
         }
       },
       "id": "b49a7afd-89b0-4a53-af9c-a5476efeda48",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -783,7 +789,9 @@
         }
       },
       "id": "290d23e4-ea74-470f-997c-9ebc28330c0d",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -834,7 +842,9 @@
         }
       },
       "id": "02907c7a-a21c-4112-9402-a4820cec8fc9",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -979,7 +989,9 @@
         }
       },
       "id": "e3658874-dcc3-4dfa-8aee-d2beada85c0d",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -1034,7 +1046,9 @@
         }
       },
       "id": "314733b8-9f08-44fa-96c6-8d69bf527440",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "position": {
@@ -1170,9 +1184,11 @@
       "tag": "P-102",
       "id": "19798285-91a4-4270-b36c-c2b0563f2981",
       "layer": "equipment",
-      "color": "var(--shape-metal-3)",
       "data": {
         "power": 0
+      },
+      "style": {
+        "color": "var(--shape-metal-3)"
       }
     },
     {
@@ -1230,7 +1246,9 @@
       "tag": "J-101",
       "id": "7fd8e00c-fa4e-4c14-abd4-b1a569468a81",
       "layer": "equipment",
-      "color": "#FDBA74"
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "position": {
@@ -1274,7 +1292,9 @@
       "tag": "B-101",
       "id": "d2e97f11-f42a-41d0-8b87-3fd404bd0b6e",
       "layer": "equipment",
-      "color": "var(--color-green)"
+      "style": {
+        "color": "var(--color-green)"
+      }
     },
     {
       "position": {
@@ -1298,7 +1318,9 @@
       "tag": "ST-101",
       "id": "7756cf04-61db-4ae9-aab5-abb234a61d68",
       "layer": "equipment",
-      "color": "#e9e9e9"
+      "style": {
+        "color": "#e9e9e9"
+      }
     },
     {
       "position": {
@@ -1319,7 +1341,9 @@
       "tag": "B-102",
       "id": "5eb21bfc-fc24-46dd-9eaa-7cf120239722",
       "layer": "equipment",
-      "color": "var(--color-blue)"
+      "style": {
+        "color": "var(--color-blue)"
+      }
     },
     {
       "position": {
@@ -1343,7 +1367,9 @@
       "tag": "ST-102",
       "id": "386baf6b-b77e-4fb3-bbfd-926d870e29aa",
       "layer": "equipment",
-      "color": "#e9e9e9"
+      "style": {
+        "color": "#e9e9e9"
+      }
     },
     {
       "position": {
@@ -1360,7 +1386,9 @@
       "tag": "J-103",
       "id": "2a4d1325-8b87-478b-a5cf-66829c20699f",
       "layer": "equipment",
-      "color": "var(--color-green)"
+      "style": {
+        "color": "var(--color-green)"
+      }
     },
     {
       "position": {
@@ -1377,7 +1405,9 @@
       "tag": "J-104",
       "id": "69f139ed-4688-49dc-a0bd-1cec5396222a",
       "layer": "equipment",
-      "color": "var(--color-blue)"
+      "style": {
+        "color": "var(--color-blue)"
+      }
     },
     {
       "position": {
@@ -1434,7 +1464,9 @@
       "id": "41a02eed-c945-43eb-9488-bf7160b05068",
       "tag": "TEE-101",
       "layer": "equipment",
-      "color": "#FDBA74"
+      "style": {
+        "color": "#FDBA74"
+      }
     },
     {
       "position": {
@@ -2021,7 +2053,9 @@
       },
       "id": "3ae96479-2d90-4ec1-ad62-8c9acfb4b1d7",
       "vertices": [],
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "position": {
@@ -2502,7 +2536,9 @@
         }
       },
       "id": "07e7ac1e-6059-46c7-9ab1-1ad807c6841e",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -2552,7 +2588,9 @@
         }
       },
       "id": "28f62aa4-00df-4b78-a216-f2fd6266dafd",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "position": {
@@ -2904,7 +2942,9 @@
       },
       "vertices": [],
       "id": "d27d7d73-ea05-427e-9ccd-bf65df3ad791",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -2963,7 +3003,9 @@
       },
       "vertices": [],
       "id": "f730cdca-0b63-423a-8efb-e615aebc931a",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -3015,7 +3057,9 @@
       },
       "vertices": [],
       "id": "444c7adb-d86f-47c6-9664-aa72bc7f7a03",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -3066,7 +3110,9 @@
       },
       "vertices": [],
       "id": "9479fd89-b23e-4532-a852-e00512a87bdd",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -3122,7 +3168,9 @@
       },
       "vertices": [],
       "id": "9ea4e574-06c5-45de-87e9-d8aa7eaed192",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -3170,7 +3218,9 @@
       },
       "vertices": [],
       "id": "a0bf37b3-ecfa-4d05-aa98-f94866a5b6c0",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -3216,7 +3266,9 @@
       },
       "vertices": [],
       "id": "247b0e12-3e3f-45ea-8719-bcb7868f23d6",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -3259,7 +3311,9 @@
       },
       "vertices": [],
       "id": "5d4aa907-d813-4cba-971f-fab3a892eb82",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "position": {
@@ -3276,7 +3330,9 @@
       "id": "6f1c2b9e-3d47-4a8e-9b21-5c0e7a4d8f13",
       "tag": "TEE-102",
       "layer": "equipment",
-      "color": "#FCD34D"
+      "style": {
+        "color": "#FCD34D"
+      }
     },
     {
       "source": {
@@ -3326,7 +3382,9 @@
       },
       "vertices": [],
       "id": "a8e2d4c1-7b3f-4e59-8d06-2f9c1b7e3a54",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "source": {
@@ -3381,7 +3439,9 @@
         }
       ],
       "id": "c3b7e9f2-1a6d-4c80-b5e4-9d2a6f0c8b17",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     }
   ],
   "images": {

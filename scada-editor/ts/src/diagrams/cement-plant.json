@@ -520,7 +520,9 @@
         }
       },
       "id": "cc016e4d-9795-49f8-9819-0d54b57d56aa",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -638,7 +640,9 @@
         }
       ],
       "id": "2f6c3c21-ee94-482e-af7c-85dbfc26d136",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -692,7 +696,9 @@
         }
       ],
       "id": "c4b1ddc3-a2ab-42aa-8a81-78092814acb1",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -731,7 +737,9 @@
         }
       },
       "id": "63b27cbb-21ad-422b-a9c7-83182575719b",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -780,7 +788,9 @@
         }
       },
       "id": "4d0867d5-720d-4db2-aac5-ce1b26b165cd",
-      "lineWidth": "thick"
+      "style": {
+        "lineWidth": "thick"
+      }
     },
     {
       "source": {
@@ -946,7 +956,9 @@
         }
       },
       "id": "cc5b93a2-f33c-4678-aeab-1521bc763272",
-      "lineWidth": "thin"
+      "style": {
+        "lineWidth": "thin"
+      }
     },
     {
       "position": {
@@ -1315,9 +1327,6 @@
         }
       ],
       "rows": 1,
-      "fill": "var(--shape-face)",
-      "stroke": "var(--shape-table-line)",
-      "headerFill": "var(--shape-table-header)",
       "id": "75f57af8-6425-4275-8c08-e1a7e55f826c",
       "layer": "equipment",
       "z": 17,
@@ -1331,6 +1340,11 @@
             "t/h"
           ]
         ]
+      },
+      "style": {
+        "color": "var(--shape-face)",
+        "outline": "var(--shape-table-line)",
+        "accent": "var(--shape-table-header)"
       }
     },
     {
@@ -1363,9 +1377,6 @@
         }
       ],
       "rows": 1,
-      "fill": "var(--shape-face)",
-      "stroke": "var(--shape-table-line)",
-      "headerFill": "var(--shape-table-header)",
       "id": "5fcb055b-3c9f-48ba-8909-bb9ce5ee014f",
       "layer": "equipment",
       "z": 18,
@@ -1379,6 +1390,11 @@
             "t/h"
           ]
         ]
+      },
+      "style": {
+        "color": "var(--shape-face)",
+        "outline": "var(--shape-table-line)",
+        "accent": "var(--shape-table-header)"
       }
     },
     {
@@ -1411,9 +1427,6 @@
         }
       ],
       "rows": 1,
-      "fill": "var(--shape-face)",
-      "stroke": "var(--shape-table-line)",
-      "headerFill": "var(--shape-table-header)",
       "id": "3a6ee97e-c447-480a-8483-e2deb28d4287",
       "layer": "equipment",
       "z": 19,
@@ -1427,6 +1440,11 @@
             "%"
           ]
         ]
+      },
+      "style": {
+        "color": "var(--shape-face)",
+        "outline": "var(--shape-table-line)",
+        "accent": "var(--shape-table-header)"
       }
     },
     {
@@ -1458,9 +1476,6 @@
         }
       ],
       "rows": 3,
-      "fill": "var(--shape-face)",
-      "stroke": "var(--shape-table-line)",
-      "headerFill": "var(--shape-table-header)",
       "id": "e28654fc-5981-443f-9c7f-02e590780b10",
       "layer": "equipment",
       "z": 20,
@@ -1483,6 +1498,11 @@
             "3120"
           ]
         ]
+      },
+      "style": {
+        "color": "var(--shape-face)",
+        "outline": "var(--shape-table-line)",
+        "accent": "var(--shape-table-header)"
       }
     },
     {
