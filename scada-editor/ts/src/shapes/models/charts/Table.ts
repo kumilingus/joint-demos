@@ -85,15 +85,15 @@ export default class Table extends Shape {
     // Its color: the fill; its outline: the border and the grid; its accent: the head with the names of the columns
     // (the defaults in its `defaults()`)
     get colorField(): ColorField {
-        return { path: ['fill'] };
+        return { path: ['style', 'color'] };
     }
 
     get outlineField(): ColorField {
-        return { path: ['stroke'] };
+        return { path: ['style', 'outline'] };
     }
 
     get accentField(): ColorField {
-        return { path: ['headerFill'] };
+        return { path: ['style', 'accent'] };
     }
 
     get columns(): Column[] {
@@ -132,9 +132,12 @@ export default class Table extends Shape {
                 values: [['Pump 1', '12.4'], ['Pump 2', '8.1'], ['Pump 3', '0.0']]
             },
             // Its colors (see `TableView`)
-            fill: 'var(--shape-face)',
-            stroke: 'var(--shape-table-line)',
-            headerFill: 'var(--shape-table-header)'
+            // Its colors (see `style.ts`): the body, the lines, the head
+            style: {
+                color: 'var(--shape-face)',
+                outline: 'var(--shape-table-line)',
+                accent: 'var(--shape-table-header)'
+            }
         };
     }
 

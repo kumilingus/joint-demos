@@ -1,4 +1,5 @@
 import { type dia, util } from '@joint/plus';
+import { styleOf } from './style';
 
 /*
  * The shading of the equipment: brushed steel lit from the top left.
@@ -190,7 +191,7 @@ export function setStyleFinish(finish: SurfaceFinish): void {
 
 /** The finish of the element: its own (`finish` set, shaded or flat), else of the diagram (Auto: none, or `auto`) */
 export function finishOf(model: dia.Cell): SurfaceFinish {
-    const finish = model.get('finish');
+    const finish = styleOf(model, 'finish');
     return finish === 'shaded' || finish === 'flat' ? finish : styleFinish;
 }
 
@@ -216,7 +217,7 @@ export function setStyleOutlineWidth(width: OutlineWidth | undefined): void {
 
 /** The outline width of the cell: its own (`outlineWidth` set), else of the diagram (Auto: none, or `auto`) */
 export function outlineWidthOf(model: dia.Cell): number {
-    const width = model.get('outlineWidth');
+    const width = String(styleOf(model, 'outlineWidth'));
     return OUTLINE_WIDTHS[width in OUTLINE_WIDTHS ? width as OutlineWidth : styleOutlineWidth].px;
 }
 
@@ -231,14 +232,14 @@ export function getStyleFinish(): SurfaceFinish {
  * The color of the element is of the fills.
  */
 function outlineOf(model: dia.Cell): string | null {
-    const outline = model.get('outline');
+    const outline = styleOf(model, 'outline');
     if (typeof outline === 'string' && outline !== '') return outline;
     // Flat: of an element with a finish only (a gauge, a thermometer has none - not restyled by the diagram's finish)
     return model.isElement() && hasFinish(model) && finishOf(model) === 'flat' ? FLAT_STROKE : null;
 }
 
 /** Whether the color of the element is its outline (a gauge: its frame) - drawn as wide as the shape draws it */
-const isColorOutline = (model: dia.Cell) => (model as dia.Cell & { colorField?: { path: string[] } | null }).colorField?.path[0] === 'outline';
+const isColorOutline = (model: dia.Cell) => (model as dia.Cell & { colorField?: { path: string[] } | null }).colorField?.path.join('/') === 'style/outline';
 
 // A shaded surface made flat: the middle tone of its shading
 const FLAT_SHADING = 'var(--shape-metal-5)';
@@ -277,7 +278,7 @@ export const surfaceAttributes = {
         set(this: dia.ElementView, stroke: SurfaceStroke) {
             const outline = outlineOf(this.model);
             if (outline) return isColorOutline(this.model) ? { stroke: outline } : { stroke: outline, 'stroke-width': outlineWidthOf(this.model) };
-            const color = this.model.get('color');
+            const color = styleOf(this.model, 'color');
             const base = isSurfaceColor(stroke) ? stroke : SURFACE_STROKES[stroke];
             return { stroke: isTint(color) ? tint(color, base) : base };
         }
@@ -287,7 +288,7 @@ export const surfaceAttributes = {
 /** The fill of the surface of the element view: in its finish and its color */
 function surfaceFillOf(view: dia.ElementView, fill: SurfaceFill): string {
     const { model } = view;
-    const color = model.get('color');
+    const color = styleOf(model, 'color');
     // Flat: the color as it is (nothing to shade) - a detail keeps its darker tone of it
     if (finishOf(model) === 'flat' && isTint(color) && !DETAILS.has(fill)) return color;
     // A flat one (a color of the shape, the flat metal), or a shaded one made flat

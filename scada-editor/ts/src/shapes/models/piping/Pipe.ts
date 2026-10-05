@@ -111,6 +111,7 @@ export default class Pipe extends dia.Link {
 /** The view of a pipe: its outline drawn again when its outline width changes (see `pipeOutline`) */
 export const PipeView = dia.LinkView.extend({
     presentationAttributes: dia.LinkView.addPresentationAttributes({
-        outlineWidth: dia.LinkView.Flags.UPDATE
+        // Its outline width (see `style.ts`)
+        style: dia.LinkView.Flags.UPDATE
     })
 });

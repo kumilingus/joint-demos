@@ -4,6 +4,7 @@ import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField } from '../../common/Shape';
 import { finishOf } from '../../common/gradients';
 import { type DataKey, dataOf } from '../../common/data';
+import { styleOf } from '../../common/style';
 
 // The track of the liquid: below the value, fixed margins - the track takes the rest of the height
 const WINDOW_TOP = 50;
@@ -124,7 +125,7 @@ const markup = util.svg/* xml */`
 export default class Panel extends Shape {
     // The accent: the color of the liquid in range (not the warnings: below the low threshold, above the high one)
     get accentField(): ColorField {
-        return { path: ['liquidColor'], defaultValue: LIQUID_COLOR };
+        return { path: ['style', 'accent'], defaultValue: LIQUID_COLOR };
     }
 
     get graphLayer(): Layer {
@@ -271,7 +272,7 @@ export default class Panel extends Shape {
             ? MAX_LIQUID_COLOR
             : level < low
                 ? MIN_LIQUID_COLOR
-                : this.get('liquidColor') ?? LIQUID_COLOR;
+                : styleOf<string>(this, 'accent') ?? LIQUID_COLOR;
     }
 
     /** The liquid at the level (0 - 100), as `dataAttributes()` draws it, for the current size. */

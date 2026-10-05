@@ -204,8 +204,6 @@ export const cellNamespace = {
     // A table with a view of its own (a change of a value updates its cell only)
     Table,
     TableView,
-    // A level panel drawn again with the color of its liquid (its accent, see `Panel.dataAttributes()`)
-    PanelView: shapeView(['liquidColor']),
     // The charts, with the views rendering them again when their data changes (a view is looked up by the type)
     LineChart,
     LineChartView: shapeView(['data']),

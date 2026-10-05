@@ -17,7 +17,7 @@ import { SELECTION_COLOR, SELECTION_PADDING } from '../const';
 export class SelectionFrame extends highlighters.stroke {
 
     // A link framed again when it gets wider or narrower (see `linkFrameWidth()`)
-    UPDATE_ATTRIBUTES = ['lineWidth', 'outlineWidth'];
+    UPDATE_ATTRIBUTES = ['style'];
 
     protected highlight(cellView: dia.CellView, node: SVGElement): void {
         const { model } = cellView;

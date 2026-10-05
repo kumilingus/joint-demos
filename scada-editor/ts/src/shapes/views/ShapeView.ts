@@ -1,9 +1,10 @@
 import { dia } from '@joint/plus';
 import { CANVAS_COLOR } from '../../const';
+import { styleOf } from '../common/style';
 
 /**
  * A view of a shape rendered again when the attributes of its model change (their special attributes
- * read them): the color, the finish and the outline (its color, its width) of its surfaces (see `surfaceAttributes`), the data of a chart, ...
+ * read them): its style - the color, the finish and the outline (its color, its width) of its surfaces (see `surfaceAttributes`), the data of a chart, ...
  */
 export function shapeView(attributes: string[] = []): typeof dia.ElementView {
     return dia.ElementView.extend({
@@ -11,15 +12,13 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
         // (see `--shape-surface-ink` in `shapes.css`)
         update(this: dia.ElementView, ...args: unknown[]) {
             (dia.ElementView.prototype.update as (...updateArgs: unknown[]) => void).apply(this, args);
-            this.el.toggleAttribute('data-canvas', this.model.get('color') === CANVAS_COLOR);
+            this.el.toggleAttribute('data-canvas', styleOf(this.model, 'color') === CANVAS_COLOR);
         },
         presentationAttributes: dia.ElementView.addPresentationAttributes(
             {
                 // The surfaces of the element and of its pipe stubs (ports)
-                color: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
-                finish: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
-                outline: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
-                outlineWidth: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
+                // Its style (see `style.ts`): the surfaces of the element and of its pipe stubs (ports)
+                style: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
                 // Its parts drawn from its data (see `from-data.ts`)
                 data: dia.ElementView.Flags.UPDATE,
                 // Its directional parts mirrored, its label clear of its drawing (see `flip.ts`)

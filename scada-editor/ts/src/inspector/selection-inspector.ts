@@ -5,6 +5,7 @@ import { isGroup } from '../shapes/models/diagram/Group';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { hasLineWidth, lineWidthField, type LineWidth } from '../shapes/common/line-width';
+import { setStyle, styleOf, unsetStyle } from '../shapes/common/style';
 
 /*
  * The appearance of several cells at once (a selection of them, the members of a group): an inspector
@@ -42,7 +43,7 @@ function defaultColorOf(cell: dia.Cell): unknown {
 const colorOf = (cell: dia.Cell): unknown => cell.prop(colorFieldOf(cell)!.path) ?? defaultColorOf(cell);
 
 // Its own finish, or Auto (none of its own)
-const finishOf = (cell: dia.Cell): string => cell.get('finish') ?? 'auto';
+const finishOf = (cell: dia.Cell): string => styleOf<string>(cell, 'finish') ?? 'auto';
 
 const AUTO = 'auto';
 
@@ -95,7 +96,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     const widened = cells.filter(hasLineWidth);
     // Outlined as one (see `outlineWidthInputs()` in `inspector.ts`): the pipes, the shapes that can be outlined - set
     // on those not outlined now too (it applies once they are: an outline color, flat)
-    const bordered = cells.filter(cell => cell.get('type') === 'Pipe' || outlineFieldOf(cell)?.path.join('/') === 'outline');
+    const bordered = cells.filter(cell => cell.get('type') === 'Pipe' || outlineFieldOf(cell)?.path.join('/') === 'style/outline');
     if (cells.length === 0) return null;
     const { graph } = cells[0];
 
@@ -108,8 +109,8 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         outline: common(outlines),
         accent: common(accented.map(accentOf)),
         // Of different widths: none of them selected
-        lineWidth: common(widened.map(cell => cell.get('lineWidth') ?? 'normal')),
-        outlineWidth: common(bordered.map(cell => cell.get('outlineWidth') ?? 'auto')),
+        lineWidth: common(widened.map(cell => styleOf(cell, 'lineWidth') ?? 'normal')),
+        outlineWidth: common(bordered.map(cell => styleOf(cell, 'outlineWidth') ?? 'auto')),
         // In different ones: none of them (see the input)
         layer: common(cells.map(cell => graph.getCellLayerId(cell))) ?? ''
     });
@@ -158,7 +159,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         changeAll(colored, cell => cell.prop(colorFieldOf(cell)!.path, color));
     });
     standIn.on('change:finish', (_cell: dia.Cell, finish: SurfaceFinish | 'auto') => {
-        changeAll(surfaced, cell => (finish === 'auto' ? cell.unset('finish') : cell.set('finish', finish)));
+        changeAll(surfaced, cell => (finish === 'auto' ? unsetStyle(cell, 'finish') : setStyle(cell, 'finish', finish)));
     });
     // A color, or none (Auto): removed
     if (accented.length > 0) {
@@ -176,13 +177,14 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         inputs.outlineWidth = {
             type: 'select-button-group',
             label: 'Outline width',
+            help: 'outlineWidth',
             options: OUTLINE_WIDTH_OPTIONS,
             group: 'appearance',
             index: 3.5
         };
     }
     standIn.on('change:outlineWidth', (_cell: dia.Cell, width: string) => {
-        if (width) changeAll(bordered, cell => (width === 'auto' ? cell.unset('outlineWidth') : cell.set('outlineWidth', width)));
+        if (width) changeAll(bordered, cell => (width === 'auto' ? unsetStyle(cell, 'outlineWidth') : setStyle(cell, 'outlineWidth', width)));
     });
     standIn.on('change:accent', (_cell: dia.Cell, accent: string) => {
         changeAll(accented, cell => cell.prop(accentFieldOf(cell)!.path, accent));
@@ -203,7 +205,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
         };
     }
     standIn.on('change:lineWidth', (_cell: dia.Cell, lineWidth: LineWidth) => {
-        if (lineWidth) changeAll(widened, cell => cell.set('lineWidth', lineWidth));
+        if (lineWidth) changeAll(widened, cell => setStyle(cell, 'lineWidth', lineWidth));
     });
     // Their layer: the one they are all in, or none (mixed); last, as of a single cell (see `inspector.ts`)
     inputs.layer = {

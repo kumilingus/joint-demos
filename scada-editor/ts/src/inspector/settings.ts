@@ -143,7 +143,7 @@ export function openSettings(app: App): void {
                     group: 'style',
                     index: 0
                 },
-                color: { type: 'color', label: 'Color', auto: true, graph, group: 'style', index: 1 },
+                color: { type: 'color', label: 'Color', auto: true, graph, group: 'style', index: 1, help: 'diagram-style' },
                 outline: { type: 'color', label: 'Outline', auto: true, graph, group: 'style', index: 2 },
                 // Of the shapes outlined (an outline color, flat), of the borders of the pipes
                 outlineWidth: {

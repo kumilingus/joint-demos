@@ -1,5 +1,6 @@
 import type { dia } from '@joint/plus';
 import { DERIVED } from './routing';
+import { styleChanged, styleOf } from './style';
 
 /*
  * The width of a link (a pipe, a wire): thin, normal or thick - its strokes scaled together (the line, the dashes of
@@ -41,9 +42,11 @@ export function lineWidthAttrs(strokeWidths: StrokeWidths, width: LineWidth): di
         .map(([selector, strokeWidth]) => [selector, { strokeWidth: Math.round(strokeWidth * scale * 2) / 2 }]));
 }
 
-/** The strokes of the link follow its width (`lineWidth`: derived changes, not in the history). */
+/** The strokes of the link follow its width (its `lineWidth`, see `style.ts`: derived changes, not in the history). */
 export function followLineWidth(link: dia.Link, strokeWidths: StrokeWidths): void {
-    link.on('change:lineWidth', (_link: dia.Link, width: LineWidth, options: dia.Cell.Options) => {
+    link.on('change:style', (_link: dia.Link, _style: unknown, options: dia.Cell.Options) => {
+        if (!styleChanged(link, 'lineWidth')) return;
+        const width = styleOf<LineWidth>(link, 'lineWidth') ?? 'normal';
         // Unset (undone to none): the strokes set back to normal, not unset with it
         const { unset: _unset, ...setOptions } = options;
         link.attr(lineWidthAttrs(strokeWidths, width), { ...setOptions, ...DERIVED });

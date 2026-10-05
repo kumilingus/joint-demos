@@ -136,9 +136,10 @@ function getInputs(element: dia.Element): Inputs {
 
     // The finish of the surfaces (see `SurfaceFinish`): first, it decides how their color is drawn
     if (hasFinish(element)) {
-        inputs.finish = {
+        inputs.style = { ...(inputs.style as Inputs), finish: {
             type: 'select-button-group',
             label: 'Finish',
+            help: 'finish',
             // Auto: none of its own - the finish of the diagram (its style)
             options: [
                 { value: 'auto', content: 'Auto' },
@@ -148,7 +149,7 @@ function getInputs(element: dia.Element): Inputs {
             defaultValue: 'auto',
             group: 'appearance',
             index: index++
-        };
+        }};
     }
 
     // The color the user sets (see `ColorField`): of the fills of the surfaces
@@ -386,13 +387,13 @@ function outlineInputs(cell: dia.Cell, group: string, index: number): Inputs {
  * draws its outlines, each as wide as it is drawn)
  */
 function outlineWidthInputs(cell: dia.Cell, group: string, index: number): Inputs {
-    const input = { type: 'select-button-group', label: 'Outline width', options: OUTLINE_WIDTH_OPTIONS, defaultValue: 'auto', group, index };
-    if (cell.get('type') === 'Pipe') return { outlineWidth: input };
-    if (outlineFieldOf(cell)?.path.join('/') !== 'outline') return {};
+    const input = { type: 'select-button-group', label: 'Outline width', help: 'outlineWidth', options: OUTLINE_WIDTH_OPTIONS, defaultValue: 'auto', group, index };
+    if (cell.get('type') === 'Pipe') return { style: { outlineWidth: input }};
+    if (outlineFieldOf(cell)?.path.join('/') !== 'style/outline') return {};
     const flat = cell.isElement() && hasFinish(cell)
-        ? [{ eq: { finish: 'flat' }}, ...(getStyleFinish() === 'flat' ? [{ nin: { finish: ['shaded'] }}] : [])]
+        ? [{ eq: { 'style/finish': 'flat' }}, ...(getStyleFinish() === 'flat' ? [{ nin: { 'style/finish': ['shaded'] }}] : [])]
         : [];
-    return { outlineWidth: { ...input, when: { or: [{ regex: { outline: '^(#|var\\()' }}, ...flat] }}};
+    return { style: { outlineWidth: { ...input, when: { or: [{ regex: { 'style/outline': '^(#|var\\()' }}, ...flat] }}}};
 }
 
 /** The Accent field of the cell (a marking of it: the bands of a stack, a handwheel, see `accentField`); nothing if none */
@@ -445,7 +446,7 @@ const arrowheadInputs: Inputs = {
 /** The width of a pipe (its size), a wire (its thickness), see `line-width.ts` */
 const lineWidthInputs = (cell: dia.Cell): Inputs => ({
     // First: what the link is (its routing and its colors are how it is drawn)
-    lineWidth: { type: 'select-button-group', ...lineWidthField([cell.get('type')]), defaultValue: 'normal', group: 'link', index: 0 }
+    style: { lineWidth: { type: 'select-button-group', ...lineWidthField([cell.get('type')]), defaultValue: 'normal', group: 'link', index: 0 }}
 });
 
 /** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow points, a conveyor carries the bulk material. */

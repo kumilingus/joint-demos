@@ -139,12 +139,12 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
 
     /** The color of the surfaces of the element, if it has any (see `surfaceAttributes`): the metal of the theme by default */
     get colorField(): ColorField | null {
-        return hasSurface(this) ? { path: ['color'], defaultValue: SURFACE_COLOR } : null;
+        return hasSurface(this) ? { path: ['style', 'color'], defaultValue: SURFACE_COLOR } : null;
     }
 
     /** The color of the outlines of its surfaces, if it has any: none of its own by default (Auto - as the shape draws them) */
     get outlineField(): ColorField | null {
-        return hasOutline(this) ? { path: ['outline'] } : null;
+        return hasOutline(this) ? { path: ['style', 'outline'] } : null;
     }
 
     /** The color of the accent of the element (a marking of it), if it has one: none by default */
@@ -183,7 +183,13 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     toJSON(options?: dia.Cell.ExportOptions): dia.Cell.JSON {
         const { ports: _ports, ...json } = super.toJSON(options);
         // No finish of its own (Auto: of the diagram, see `finishOf()`)
-        if (json.finish === 'auto') delete json.finish;
+        const style = json.style as Record<string, unknown> | undefined;
+        if (style?.finish === 'auto') delete style.finish;
+        // No style, no data of its own: none (an empty one left by a value removed)
+        (['style', 'data'] as const).forEach((key) => {
+            const value = json[key];
+            if (value && typeof value === 'object' && Object.keys(value).length === 0) delete json[key];
+        });
         return json;
     }
 

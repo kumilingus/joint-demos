@@ -65,7 +65,8 @@ const FIELD_HELP: Record<string, string> = {
         for what needs attention - the alarms. A level still glides to its new value.
         <strong class="tooltip-heading">Reduced motion</strong>
         A system set to reduce motion gets the alarms only.`,
-    'style/color': `
+    // The style of the diagram (in the settings: on its color, see `settings.ts`)
+    'diagram-style': `
         <strong>Style</strong> - the colors of the whole diagram: of every shape without a color of its own, in the
         palette too. Saved with the diagram.
         <strong class="tooltip-heading">Finish</strong>
@@ -89,8 +90,9 @@ const FIELD_HELP: Record<string, string> = {
 };
 
 /** The label of a field of an inspector: with the question mark if it has a help (the default label otherwise) */
-export function renderLabel(options: { label?: string }, path: string): HTMLElement | undefined {
-    const help = FIELD_HELP[path];
+export function renderLabel(options: { label?: string; help?: string }, path: string): HTMLElement | undefined {
+    // By its own key (a field of the style of a cell, of the diagram: the same path), else by its path
+    const help = FIELD_HELP[options.help ?? path];
     if (!help) return undefined;
     const label = document.createElement('label');
     label.textContent = options.label ?? path;

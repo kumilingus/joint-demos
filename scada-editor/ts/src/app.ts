@@ -41,6 +41,7 @@ import Snaplines from './canvas/Snaplines';
 import { toggleSettings } from './inspector/settings';
 import { withData } from './shapes/common/data';
 import { withoutDrawnAttributes } from './shapes/attributes/from-data';
+import { withStyle } from './shapes/common/style';
 
 export class App {
 
@@ -166,8 +167,8 @@ export class App {
      * shapes of the palette (see `favorites.ts`), into the layers of the app.
      */
     loadJSON(saved: dia.Graph.JSON): void {
-        // Saved before the values of the cells were their data (see `data.ts`)
-        const json = withData(saved);
+        // Saved before the values of the cells were their data, their style (see `data.ts`, `style.ts`)
+        const json = withStyle(withData(saved));
         // Tried on a graph of its own first (an unknown type of a shape, an unknown layer, ...):
         // the diagram is not replaced by a part of the file.
         createGraph().fromJSON(json);
