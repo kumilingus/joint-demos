@@ -6,13 +6,17 @@ import '@fontsource/inter/latin-400-italic.css';
 import '@fontsource/inter/latin-600-italic.css';
 import '@fontsource/inter/latin-700-italic.css';
 import './styles.css';
-import { setTheme } from '@joint/plus';
+import { config, setTheme } from '@joint/plus';
 import { init } from './app';
 import type { Plant } from './plant/plant';
 
 // A theme of its own, styled from scratch in `theme/theme-minimal.css` (and the app in `styles.css`): none of the
 // built-in theme styles apply to it.
 setTheme('minimal');
+
+// The members of a group known by their `parent` only (not stored on the group too: no `embeds`, see `Group`).
+// Not in the typings of the library yet.
+(config as typeof config & { storeEmbeds: boolean }).storeEmbeds = false;
 
 declare global {
     interface Window {

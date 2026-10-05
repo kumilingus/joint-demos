@@ -70,7 +70,7 @@ src/
 - **File names** - a class default export: PascalCase (`Shape.ts`); otherwise kebab-case (`mock-plant.ts`). Attribute keys camelCase.
 - **Change options** - `RUNTIME`, `DERIVED`, `PREFERENCE` (see [History](#history)). An operator command is not a change but an event (see [Connecting a plant](#connecting-a-plant)).
 - **Model geometry** - routes, positions and sizes come from the models (`getFootprint()`, the getters), never from the rendered DOM.
-- **Embedding** - listen to `change:parent`, not the deprecated `change:embeds`.
+- **Embedding** - `config.storeEmbeds = false` (`main.ts`): the members of a group are known by their `parent` only, no `embeds` stored; listen to `change:parent`.
 - **Example JSON** - when edited by a script, set only what the inspector can set (fields, positions, sizes, link ends, vertices).
 
 ## Shapes
