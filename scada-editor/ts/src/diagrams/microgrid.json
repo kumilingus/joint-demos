@@ -937,7 +937,7 @@
     {
       "position": {
         "x": 1260,
-        "y": 250
+        "y": 230
       },
       "size": {
         "width": 160,
@@ -1128,7 +1128,7 @@
     {
       "position": {
         "x": 1270,
-        "y": 210
+        "y": 200
       },
       "size": {
         "width": 140,
@@ -1699,5 +1699,10 @@
     "Lamp"
   ],
   "animations": "full",
-  "style": {}
+  "style": {
+    "canvas": "var(--canvas-sand)",
+    "canvasGradient": true,
+    "labelSize": "large",
+    "labelColor": "var(--color-slate)"
+  }
 }
