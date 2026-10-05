@@ -6,7 +6,7 @@ import { propertiesOf, readProperty, type TagValue } from '../properties';
 import { getEnergized } from './energized';
 import { CHART_POINTS, getScale } from '../../shapes/common/charts';
 import type { Slice } from '../../shapes/models/charts/DonutChart';
-import { dataChanged, dataOf, hasData } from '../../shapes/common/data';
+import { dataChanged, dataOf, hasData, setData } from '../../shapes/common/data';
 
 /*
  * A mock of the plant: in random intervals it sends random updates of the plant data - the new value of a property
@@ -178,7 +178,7 @@ const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph)
     // A value of a table changes: a state switches now and then, a number (as many decimals as it has) drifts.
     // A table of a source (an element): its states follow it (see `readoutStates()`), its numbers drift while it runs.
     Table: (element, graph) => {
-        const values: string[][] = element.get('values') ?? [];
+        const values = dataOf<string[][]>(element, 'values') ?? [];
         const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
         const source = sourceOf(element, graph);
         if (source && !isRunning(source)) return null;
@@ -199,7 +199,7 @@ const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph)
             // By its share, at least five of its last digit (a whole number from 0 gets going)
             next = drift(number, Math.max(5 * 10 ** -decimals, Math.abs(number) * 0.05), 0, Number.MAX_VALUE).toFixed(decimals);
         }
-        return { values: values.map((row, index) => (index === rowIndex ? row.map((cell, c) => (c === column ? next : cell)) : row)) };
+        return { 'data/values': values.map((row, index) => (index === rowIndex ? row.map((cell, c) => (c === column ? next : cell)) : row)) };
     }
 };
 
@@ -305,7 +305,7 @@ function readoutStates(graph: dia.Graph): void {
         if (!source) return;
         const running = isRunning(source);
         const kinds: Array<string | undefined> = (table.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
-        const values: string[][] = table.get('values') ?? [];
+        const values = dataOf<string[][]>(table, 'values') ?? [];
         let numbers = values;
         if (running) {
             numbers = runningValues.get(table) ?? values;
@@ -318,7 +318,7 @@ function readoutStates(graph: dia.Graph): void {
         }
         const state = running ? 'on' : 'off';
         const next = numbers.map(row => row.map((value, column) => (kinds[column] === 'state' && value !== 'alarm' ? state : value)));
-        if (JSON.stringify(next) !== JSON.stringify(values)) table.set('values', next, RUNTIME);
+        if (JSON.stringify(next) !== JSON.stringify(values)) setData(table, 'values', next, RUNTIME);
     });
 }
 
@@ -329,7 +329,7 @@ function readoutStates(graph: dia.Graph): void {
 function fillTables(graph: dia.Graph): void {
     graph.getElements().filter(element => element.get('type') === 'Table').forEach((table) => {
         const kinds: Array<string | undefined> = (table.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
-        const values: string[][] = table.get('values') ?? [];
+        const values = dataOf<string[][]>(table, 'values') ?? [];
         if (values.every(row => row.every(value => value !== ''))) return;
         const filled = values.map((row, r) => row.map((value, c) => {
             if (value !== '') return value;
@@ -342,7 +342,7 @@ function fillTables(graph: dia.Graph): void {
             }
             return `Row ${r + 1}`;
         }));
-        table.set('values', filled, RUNTIME);
+        setData(table, 'values', filled, RUNTIME);
     });
 }
 
@@ -354,8 +354,8 @@ function restoreReadouts(graph: dia.Graph): void {
         runningValues.delete(element);
         // The numbers only: the states as they are (of the source now)
         const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
-        const values: string[][] = element.get('values') ?? [];
-        element.set('values', values.map((row, r) => row.map((value, c) => (kinds[c] === 'number' ? numbers[r]?.[c] ?? value : value))), RUNTIME);
+        const values = dataOf<string[][]>(element, 'values') ?? [];
+        setData(element, 'values', values.map((row, r) => row.map((value, c) => (kinds[c] === 'number' ? numbers[r]?.[c] ?? value : value))), RUNTIME);
     });
 }
 

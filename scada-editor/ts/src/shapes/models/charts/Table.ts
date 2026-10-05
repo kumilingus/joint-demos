@@ -3,6 +3,7 @@ import { GRID_SIZE } from '../../../const';
 import type { Overflow } from '../../common/footprint';
 import { DERIVED } from '../../common/routing';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import { dataOf, setData } from '../../common/data';
 
 /**
  * The heights of the parts of a table: its title (if it has a header), the names of the columns (if shown), a row -
@@ -100,7 +101,7 @@ export default class Table extends Shape {
     }
 
     get values(): CellValue[][] {
-        return this.get('values') ?? [];
+        return dataOf<CellValue[][]>(this, 'values') ?? [];
     }
 
     /** The height of the title and the names of the columns of the table (those it shows) */
@@ -126,7 +127,10 @@ export default class Table extends Shape {
             names: true,
             columns: [{ name: 'Name', kind: 'text' }, { name: 'Value', kind: 'number' }],
             rows: 3,
-            values: [['Pump 1', '12.4'], ['Pump 2', '8.1'], ['Pump 3', '0.0']],
+            // What it shows (see `data.ts`): the values of its rows
+            data: {
+                values: [['Pump 1', '12.4'], ['Pump 2', '8.1'], ['Pump 3', '0.0']]
+            },
             // Its colors (see `TableView`)
             fill: 'var(--shape-face)',
             stroke: 'var(--shape-table-line)',
@@ -167,7 +171,7 @@ export default class Table extends Shape {
         const { columns, values } = this;
         const rows: number = this.get('rows') ?? 0;
         const fitted = Array.from({ length: rows }, (_, row) => Array.from({ length: columns.length }, (_, column) => values[row]?.[column] ?? ''));
-        if (JSON.stringify(fitted) !== JSON.stringify(values)) this.set('values', fitted, DERIVED);
+        if (JSON.stringify(fitted) !== JSON.stringify(values)) setData(this, 'values', fitted, DERIVED);
         const size = this.size();
         const minWidth = Math.ceil(minWidthOf(columns) / (2 * GRID_SIZE)) * 2 * GRID_SIZE;
         const fittedWidth = Math.max(size.width, minWidth);

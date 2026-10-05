@@ -83,7 +83,8 @@ export default class TableView extends dia.ElementView {
             header: [Flags.TABLE],
             names: [Flags.TABLE],
             title: [Flags.TABLE],
-            values: [Flags.VALUES],
+            // Its values (see `data.ts`): the cells that changed
+            data: [Flags.VALUES],
             fill: [Flags.COLORS],
             stroke: [Flags.COLORS],
             headerFill: [Flags.COLORS]
