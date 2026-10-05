@@ -922,8 +922,7 @@
           "tipSide": "bottom"
         },
         "label": {
-          "text": "From Quarry",
-          "fontSize": 30
+          "text": "From Quarry"
         }
       },
       "id": "46895847-9a71-40a9-adba-d461cab8f33a",
@@ -1202,8 +1201,7 @@
       "type": "Zone",
       "attrs": {
         "label": {
-          "text": "To Cement Mill",
-          "fontSize": 30
+          "text": "To Cement Mill"
         }
       },
       "id": "ee9a419c-7dc6-4415-8467-0eba18e531bd",
@@ -1227,8 +1225,7 @@
           "tipSide": "bottom"
         },
         "label": {
-          "text": "Coal",
-          "fontSize": 30
+          "text": "Coal"
         }
       },
       "id": "3202d67d-c3d3-45d5-b3b4-a023f3b76ddb",

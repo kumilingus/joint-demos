@@ -87,7 +87,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - *Finish* - Shaded (gradients) or Flat.
 - *Color*, *Outline*, *Accent* - the body, edge and detail colors.
 - *Outline width* - Thin, Normal or Thick: the outlines of outlined shapes and the borders of the pipes.
-- *Label size* - Small to X-Large, for shape labels (not for the Label shape).
+- *Label size* - Small to X-Large, for shape labels and zones (not for the Label shape).
 - *Label color* - the text color of those labels.
 - *Canvas* - the background color (White / Black, Blue, Green, Violet, Gray as in ISA-101, Sand; each with a light and a dark tone); the grid follows.
 - *Canvas gradient* - the canvas lighter at the top, darker at the bottom (the exported image too).

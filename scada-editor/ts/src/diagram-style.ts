@@ -18,7 +18,7 @@ export interface DiagramStyle {
     /** The width of the outlines (of the shapes outlined: an outline color, the flat finish; the borders of the pipes) */
     outlineWidth?: OutlineWidth;
     accent?: string;
-    /** The labels of the elements (not the Label and Zone shapes: texts of their own): their size, their color */
+    /** The labels of the elements (not the Label shape: a text of its own; of a zone the size only): their size, their color */
     labelSize?: LabelSize;
     labelColor?: string;
     /** The background of the paper (`--shape-canvas`: the surfaces in the color of the canvas too, its grid) */

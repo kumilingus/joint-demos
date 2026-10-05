@@ -95,7 +95,7 @@ A shape showing a value by a part (level panel, battery bank, fuel tank, thermom
 Special attributes:
 
 - `labelPosition` (`shapes/attributes/label.ts`) - `top`, `left`, `right`, `bottom`; laid out clear of the drawing, horizontal on a rotated shape. Labels spread `labelAttributes` (class `jj-label`: the diagram's label size and color).
-- `textStyles` (`shapes/attributes/text-styles.ts`) - italic, underline, strike (Label, Zone).
+- `textStyles` (`shapes/attributes/text-styles.ts`) - italic, underline, strike (Label).
 - `surfaceFill`, `surfaceStroke`, `materialFill` (`shapes/common/gradients.ts`) - metal shading with the element's color mixed in.
 - `pipePorts()`, `terminalPorts()`, `pipeThroughAttributes()` (`shapes/common/ports.ts`).
 

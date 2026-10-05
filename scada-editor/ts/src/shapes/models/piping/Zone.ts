@@ -82,14 +82,15 @@ export default class Zone extends Shape {
                     tipSide: 'left'
                 },
                 label: {
-                    // On one line in the zone, cut with an ellipsis; its size set in the inspector
+                    // On as many lines as the zone is high, cut with an ellipsis; in the size of the labels of the diagram
+                    // (its style, see `diagram-style.ts`) - all the zones alike, as off-page connectors
                     text: 'Zone',
                     textWrap: {
-                        width: 'calc(w - 6)',
-                        maxLineCount: 1,
+                        width: 'calc(w - 10)',
+                        height: 'calc(h - 4)',
                         ellipsis: true
                     },
-                    fontSize: 14,
+                    style: { fontSize: 'var(--style-label-size, 14px)' },
                     fontFamily: 'sans-serif',
                     fontWeight: 700,
                     fill: LIQUID_COLOR,

@@ -94,8 +94,8 @@ function getInputs(element: dia.Element): Inputs {
     });
     if (Object.keys(attrs).length > 0) inputs.attrs = attrs;
 
-    // A label (a text on its own) and a zone have a size, a style and a weight of the text too.
-    if (['Label', 'Zone'].includes(element.get('type'))) {
+    // A label (a text on its own) has a size, a style and a weight of the text too (a zone: the label size of the diagram).
+    if (element.get('type') === 'Label') {
         inputs.attrs = {
             ...(inputs.attrs as Inputs),
             label: {
