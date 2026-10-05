@@ -2,7 +2,7 @@
 
 An editor of SCADA plant diagrams built with JointJS+, with a run mode where a simulated plant drives the diagram and the operator controls the equipment. A real plant connects through a tag / property / value interface. The shapes are based on the [SCADA demo](../../scada/).
 
-![The SCADA Editor with the Boiler House example](docs/images/editor-overview.png)
+<img src="docs/images/editor-light.png" alt="The Boiler House example in the light theme" width="49%" /> <img src="docs/images/editor-dark.png" alt="The Cement Plant example in the dark theme" width="49%" />
 
 - [User guide](docs/user-guide.md) - how to use it.
 - [Feature list](docs/features.md) - what it does.

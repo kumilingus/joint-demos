@@ -49,9 +49,14 @@ Also: uploaded images (saved with the diagram), Favorites, and the shapes In Use
 ## Styling
 
 - Finish: shaded metal, or flat (the ISA-101 high-performance HMI look) - per shape or for the diagram.
+
+  <img src="images/finish-shaded.png" alt="The shaded finish" width="49%" /> <img src="images/finish-flat.png" alt="The flat finish" width="49%" />
+
 - Color, outline, accent - per shape or for the diagram; theme colors adapt to light and dark.
 - Label size and color for the whole diagram (theme colors only).
-- Light and dark themes.
+- Light and dark themes: the editor, the canvas and the shapes, switched in the toolbar (the system setting by default).
+
+![The Cement Plant example in the dark theme](images/editor-dark.png)
 
 ## Run mode
 
@@ -59,6 +64,8 @@ Also: uploaded images (saved with the diagram), Favorites, and the shapes In Use
 - Animations: pumps spin, belts carry, flames burn, liquid flows, live circuits light up. "Alarms only" keeps the steady plant still (ISA-101); also used when the system asks for reduced motion.
 - Operator controls: start / stop, open / close, a valve position slider. A control sends a command and shows it pending until the plant confirms the new state (request / confirm, as in real SCADA systems).
 - A log of plant messages (time, tag, property, value): filter by text, direction or element; show tags on the diagram; ping elements as their messages arrive.
+
+![Run mode with the log](images/run-mode-log.png)
 
 ## Integration
 
