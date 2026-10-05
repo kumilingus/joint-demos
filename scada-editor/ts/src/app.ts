@@ -43,6 +43,8 @@ import { withData } from './shapes/common/data';
 import { withoutDrawnAttributes } from './shapes/attributes/from-data';
 import { withStyle } from './shapes/common/style';
 import { withPartColorsInStyle } from './shapes/attributes/style-color';
+import { withoutStoredWidths } from './shapes/common/line-width';
+import { withoutStoredMarkers } from './shapes/models/instruments/Arrow';
 
 /** The color of the part of the cell in the defaults of its shape (its own color, see `withPartColorsInStyle()`) */
 function partDefault(cell: dia.Cell, [selector, attribute]: [string, string]): unknown {
@@ -184,7 +186,13 @@ export class App {
         this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', [STYLE_ATTRIBUTE]: {}, ...json });
         // The parts drawn from the data: as computed, not as a diagram saved before stored them; their colors in the style
         this.graph.getElements().forEach(withoutDrawnAttributes);
-        this.graph.getCells().forEach(cell => withPartColorsInStyle(cell, partDefault));
+        this.graph.getCells().forEach((cell) => {
+            withPartColorsInStyle(cell, partDefault);
+            // The widths of the strokes of a link: at its size (see `line-width.ts`), not as stored
+            withoutStoredWidths(cell);
+            // The arrowheads of an arrow: of its `sourceArrowhead`, `targetArrowhead` (see `Arrow`)
+            withoutStoredMarkers(cell);
+        });
         this.applyStyle();
         this.history.reset();
         zoomToFit(this);

@@ -46,6 +46,7 @@ import Trend from './models/charts/Trend';
 import Zone from './models/piping/Zone';
 import Join from './models/piping/Join';
 import Pipe, { PipeView } from './models/piping/Pipe';
+import { StyledLinkView } from './common/line-width';
 import Conveyor from './models/bulk/Conveyor';
 import RotaryKiln from './models/bulk/RotaryKiln';
 import Table from './models/charts/Table';
@@ -160,6 +161,10 @@ export const cellNamespace = {
     Zone,
     Join,
     Label,
+    // The links drawn again when their style changes (see `style.ts`)
+    WireView: StyledLinkView,
+    SignalLineView: StyledLinkView,
+    ConveyorView: StyledLinkView,
     // A pipe with a view of its own (its outline drawn again with its outline width)
     Pipe,
     PipeView,

@@ -2,6 +2,7 @@ import { dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
 import { followRouting, routingAttributes } from '../../common/routing';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
+import { styleColorAttributes } from '../../attributes/style-color';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -11,6 +12,9 @@ const markup = util.svg/* xml */`
 
 /** A signal line: an instrument (a transmitter) connected to what it measures or controls. */
 export default class SignalLine extends dia.Link {
+
+    // Its color (see `style.ts`)
+    static attributes: typeof dia.Link.attributes = { ...styleColorAttributes };
 
     // The color of its line (see `ColorField`)
     get colorField(): ColorField {
@@ -35,6 +39,7 @@ export default class SignalLine extends dia.Link {
                 line: {
                     connection: true,
                     stroke: 'var(--shape-signal-line)',
+                    styleStroke: 'color',
                     strokeWidth: 1.5,
                     strokeDasharray: '4 3',
                     pointerEvents: 'none'

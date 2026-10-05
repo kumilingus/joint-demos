@@ -1,6 +1,7 @@
 import { anchors, type dia, g } from '@joint/plus';
 import { GRID_SIZE, PIPE_COLOR } from '../const';
 import Shape from '../shapes/common/Shape';
+import { styleOf } from '../shapes/common/style';
 
 /*
  * Where the end of a pipe connects (when its arrowhead is dropped or snapped):
@@ -95,5 +96,6 @@ export function pipeColorAt(graph: dia.Graph, element: dia.Element): string {
     const pipes = graph.getConnectedLinks(element).filter(link => link.get('type') === 'Pipe');
     const incoming = pipes.find(pipe => pipe.target().id === element.id);
     const pipe = incoming ?? pipes.find(pipe => pipe.source().id === element.id);
-    return pipe ? String(pipe.attr('line/stroke') ?? PIPE_COLOR) : PIPE_COLOR;
+    // Its color (of its style, see `style.ts`), else its own
+    return pipe ? String(styleOf(pipe, 'color') ?? pipe.attr('line/stroke') ?? PIPE_COLOR) : PIPE_COLOR;
 }

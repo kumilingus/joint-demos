@@ -1,10 +1,9 @@
-import type { dia } from '@joint/plus';
-import { DERIVED } from './routing';
-import { styleChanged, styleOf } from './style';
+import { dia } from '@joint/plus';
+import { styleOf } from './style';
 
 /*
  * The width of a link (a pipe, a wire): thin, normal or thick - its strokes scaled together (the line, the dashes of
- * the flow), set in the inspector. The outline of a pipe is around its line (see `Pipe`). A pipe stays within its
+ * the flow: `strokeWidthBase` on them) when it is drawn, set in the inspector. The outline of a pipe is around its line (see `Pipe`). A pipe stays within its
  * pipe stubs (see `ports.ts`).
  */
 
@@ -35,25 +34,38 @@ export function lineWidthField(types: string[]): { label: string; options: Array
 /** The widths of the strokes of a link (normal), by their selectors */
 export type StrokeWidths = Record<string, number>;
 
-/** The attributes of the strokes at the width (to half a pixel) */
-export function lineWidthAttrs(strokeWidths: StrokeWidths, width: LineWidth): dia.Cell.Selectors {
-    const { scale } = LINE_WIDTHS[width] ?? LINE_WIDTHS.normal;
-    return Object.fromEntries(Object.entries(strokeWidths)
-        .map(([selector, strokeWidth]) => [selector, { strokeWidth: Math.round(strokeWidth * scale * 2) / 2 }]));
+/** A width of a stroke (normal) at the size of the link (its `lineWidth`, see `style.ts`), to half a pixel */
+export function scaledWidth(cell: dia.Cell, strokeWidth: number): number {
+    const { scale } = LINE_WIDTHS[styleOf<LineWidth>(cell, 'lineWidth') ?? 'normal'] ?? LINE_WIDTHS.normal;
+    return Math.round(strokeWidth * scale * 2) / 2;
 }
 
-/** The strokes of the link follow its width (its `lineWidth`, see `style.ts`: derived changes, not in the history). */
-export function followLineWidth(link: dia.Link, strokeWidths: StrokeWidths): void {
-    link.on('change:style', (_link: dia.Link, _style: unknown, options: dia.Cell.Options) => {
-        if (!styleChanged(link, 'lineWidth')) return;
-        const width = styleOf<LineWidth>(link, 'lineWidth') ?? 'normal';
-        // Unset (undone to none): the strokes set back to normal, not unset with it
-        const { unset: _unset, ...setOptions } = options;
-        link.attr(lineWidthAttrs(strokeWidths, width), { ...setOptions, ...DERIVED });
+export const lineWidthAttributes = {
+    // `strokeWidthBase` in the attributes: the width of the stroke at the normal size, scaled by the size of the link
+    'stroke-width-base': {
+        set(this: dia.CellView, strokeWidth: number) {
+            return { 'stroke-width': scaledWidth(this.model, Number(strokeWidth) || 0) };
+        }
+    }
+};
+
+/** The widths of the strokes removed from the link (silently): stored by a diagram saved before they were scaled */
+export function withoutStoredWidths(cell: dia.Cell): void {
+    const strokeWidths = (cell as dia.Cell & { strokeWidths?: StrokeWidths }).strokeWidths;
+    if (!strokeWidths) return;
+    Object.keys(strokeWidths).forEach((selector) => {
+        if (cell.attr([selector, 'strokeWidth']) !== undefined) cell.removeAttr([selector, 'strokeWidth'], { silent: true });
     });
 }
 
-/** Whether the user chooses the width of the link (see `followLineWidth()`) */
+/** Whether the user chooses the width of the link (see `lineWidthAttributes`) */
 export function hasLineWidth(cell: dia.Cell): boolean {
     return (cell as dia.Cell & { strokeWidths?: StrokeWidths }).strokeWidths !== undefined;
 }
+
+/** The view of a link drawn again when its style changes: its color, its size (see `style.ts`) */
+export const StyledLinkView = dia.LinkView.extend({
+    presentationAttributes: dia.LinkView.addPresentationAttributes({
+        style: dia.LinkView.Flags.UPDATE
+    })
+});

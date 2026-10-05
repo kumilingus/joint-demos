@@ -50,7 +50,7 @@ export interface ColorField {
 }
 
 /** The color of a link: of its line (a pipe, a wire, a signal line, an arrow) */
-export const LINE_COLOR_FIELD: ColorField = { path: ['attrs', 'line', 'stroke'] };
+export const LINE_COLOR_FIELD: ColorField = { path: ['style', 'color'], part: ['line', 'stroke'] };
 
 /** What the editor needs to know about a shape. */
 export interface ShapeFeatures {

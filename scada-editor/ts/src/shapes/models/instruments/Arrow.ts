@@ -1,7 +1,9 @@
 import { dia, type g, util } from '@joint/plus';
 import { Layer, LABEL_COLOR } from '../../../const';
-import { DERIVED, followRouting, routingAttributes } from '../../common/routing';
+import { followRouting, routingAttributes } from '../../common/routing';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
+import { styleColorAttributes } from '../../attributes/style-color';
+import { styleOf } from '../../common/style';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -36,6 +38,27 @@ export const arrowheadMarker = (arrowhead: Arrowhead): dia.SVGSimpleMarkerJSON |
  */
 export default class Arrow extends dia.Link {
 
+    static attributes: typeof dia.Link.attributes = {
+        // Its color (see `style.ts`)
+        ...styleColorAttributes,
+        // `arrowheads` in the attributes of the line: its arrowheads (`sourceArrowhead`, `targetArrowhead`) in its color
+        // (of its style, else its own) - the markers defined here: the library takes the color of a marker from the
+        // `stroke` set on the line, not from one computed
+        arrowheads: {
+            set(this: dia.LinkView, _arrowheads: boolean, _refBBox: dia.BBox, _node: Element, attrs: Record<string, unknown>) {
+                const color = styleOf<string>(this.model, 'color') ?? String(attrs.stroke ?? LABEL_COLOR);
+                const marker = (end: 'source' | 'target', turned: boolean) => {
+                    const head = arrowheadMarker(this.model.get(`${end}Arrowhead`) as Arrowhead);
+                    if (!head) return 'none';
+                    // As the library defines them: in the color of the line, the one at the end turned around
+                    const definition = { stroke: color, fill: color, ...(turned ? { transform: 'rotate(180)' } : {}), ...head };
+                    return `url(#${this.paper!.defineMarker(definition as dia.SVGMarkerJSON)})`;
+                };
+                return { 'marker-start': marker('source', false), 'marker-end': marker('target', true) };
+            }
+        }
+    };
+
     // The color of its line (see `ColorField`)
     get colorField(): ColorField {
         return LINE_COLOR_FIELD;
@@ -62,12 +85,13 @@ export default class Arrow extends dia.Link {
                 line: {
                     connection: true,
                     stroke: LABEL_COLOR,
+                    styleStroke: 'color',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round',
                     pointerEvents: 'none',
-                    sourceMarker: arrowheadMarker('none'),
-                    targetMarker: arrowheadMarker('arrow')
+                    // Of `sourceArrowhead`, `targetArrowhead`
+                    arrowheads: true
                 }
             }
         };
@@ -80,13 +104,6 @@ export default class Arrow extends dia.Link {
     initialize(...args: Parameters<dia.Link['initialize']>): void {
         super.initialize(...args);
         followRouting(this);
-        // The markers follow the arrowheads (derived changes, not in the history).
-        // Replaced (not merged: an arrow keeps no `fill` of an open one).
-        (['source', 'target'] as const).forEach((end) => {
-            this.on(`change:${end}Arrowhead`, (_line: dia.Link, arrowhead: Arrowhead, options: dia.Cell.Options) => {
-                this.prop(['attrs', 'line', `${end}Marker`], arrowheadMarker(arrowhead), { ...options, ...DERIVED, rewrite: true });
-            });
-        });
     }
 }
 
@@ -102,6 +119,12 @@ function shorten(point: g.Point, next: g.Point, length: number): g.Point {
  * `MARKERS`), their tips at the ends (where it points, connected or not; the tools of the ends there too).
  */
 export const ArrowView = dia.LinkView.extend({
+    // Drawn again when its arrowheads or its style change (see `arrowheads`)
+    presentationAttributes: dia.LinkView.addPresentationAttributes({
+        sourceArrowhead: dia.LinkView.Flags.UPDATE,
+        targetArrowhead: dia.LinkView.Flags.UPDATE,
+        style: dia.LinkView.Flags.UPDATE
+    }),
     findPath(this: dia.LinkView, route: g.Point[], sourcePoint: g.Point, targetPoint: g.Point) {
         const { model } = this;
         const length = (end: 'source' | 'target') => ARROWHEAD_LENGTHS[model.get(`${end}Arrowhead`) as Arrowhead] ?? 0;
@@ -110,3 +133,11 @@ export const ArrowView = dia.LinkView.extend({
         return dia.LinkView.prototype.findPath.call(this, route, source, target);
     }
 });
+
+/** The markers of the line removed from the arrow (silently): stored by a diagram saved before they were its `arrowheads` */
+export function withoutStoredMarkers(cell: dia.Cell): void {
+    if (cell.get('type') !== 'Arrow') return;
+    ['sourceMarker', 'targetMarker'].forEach((name) => {
+        if (cell.attr(['line', name]) !== undefined) cell.removeAttr(['line', name], { silent: true });
+    });
+}

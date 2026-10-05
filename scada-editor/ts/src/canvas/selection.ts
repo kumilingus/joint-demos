@@ -2,6 +2,7 @@ import { dia, highlighters, type mvc, ui, V } from '@joint/plus';
 import Pipe, { pipeOutlineWidth } from '../shapes/models/piping/Pipe';
 import { isGroup } from '../shapes/models/diagram/Group';
 import { SELECTION_COLOR, SELECTION_PADDING } from '../const';
+import { scaledWidth } from '../shapes/common/line-width';
 
 /*
  * The selection on the canvas (`ui.Selection` over the collection of the app): the region
@@ -42,7 +43,9 @@ export class SelectionFrame extends highlighters.stroke {
 
 /** The width of the frame of a link: wider than the link (a pipe: its outline) on each side */
 function linkFrameWidth(link: dia.Cell): number {
-    const width = link instanceof Pipe ? pipeOutlineWidth(link) : Number(link.attr('line/strokeWidth')) || 0;
+    // A pipe: its outline; a wire: its line at its size (see `line-width.ts`); another link: its line
+    const base = Number(link.attr('line/strokeWidthBase'));
+    const width = link instanceof Pipe ? pipeOutlineWidth(link) : base ? scaledWidth(link, base) : Number(link.attr('line/strokeWidth')) || 0;
     return width + 6;
 }
 

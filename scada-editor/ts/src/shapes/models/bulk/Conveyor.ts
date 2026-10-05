@@ -2,6 +2,7 @@ import { dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
 import { followRouting, routingAttributes } from '../../common/routing';
 import type { ColorField } from '../../common/Shape';
+import { styleColorAttributes } from '../../attributes/style-color';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -25,19 +26,22 @@ export const CLEAT_PATTERN = [3, 13];
  */
 export default class Conveyor extends dia.Link {
 
+    // Its colors (see `style.ts`)
+    static attributes: typeof dia.Link.attributes = { ...styleColorAttributes };
+
     // The color of the belt (see `ColorField`)
     get colorField(): ColorField {
-        return { path: ['attrs', 'belt', 'stroke'], defaultValue: 'var(--shape-belt)' };
+        return { path: ['style', 'color'], part: ['belt', 'stroke'], defaultValue: 'var(--shape-belt)' };
     }
 
     // The color of its outline: the dark of the theme by default
     get outlineField(): ColorField {
-        return { path: ['attrs', 'outline', 'stroke'], defaultValue: 'var(--shape-belt-outline)' };
+        return { path: ['style', 'outline'], part: ['outline', 'stroke'], defaultValue: 'var(--shape-belt-outline)' };
     }
 
     // The accent: the cleats across the belt
     get accentField(): ColorField {
-        return { path: ['attrs', 'cleats', 'stroke'], defaultValue: 'var(--shape-belt-cleat)' };
+        return { path: ['style', 'accent'], part: ['cleats', 'stroke'], defaultValue: 'var(--shape-belt-cleat)' };
     }
 
     defaults(): dia.Link.Attributes {
@@ -66,6 +70,7 @@ export default class Conveyor extends dia.Link {
                 outline: {
                     connection: true,
                     stroke: 'var(--shape-belt-outline)',
+                    styleStroke: 'outline',
                     strokeWidth: OUTLINE_WIDTH,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'square'
@@ -73,6 +78,7 @@ export default class Conveyor extends dia.Link {
                 belt: {
                     connection: true,
                     stroke: 'var(--shape-belt)',
+                    styleStroke: 'color',
                     strokeWidth: BELT_WIDTH,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'square'
@@ -81,6 +87,7 @@ export default class Conveyor extends dia.Link {
                 cleats: {
                     connection: true,
                     stroke: 'var(--shape-belt-cleat)',
+                    styleStroke: 'accent',
                     strokeWidth: BELT_WIDTH,
                     strokeDasharray: CLEAT_PATTERN.join(' '),
                     pointerEvents: 'none'

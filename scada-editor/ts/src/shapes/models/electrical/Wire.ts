@@ -2,7 +2,8 @@ import { dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
 import { followRouting, routingAttributes } from '../../common/routing';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
-import { followLineWidth, type StrokeWidths } from '../../common/line-width';
+import { lineWidthAttributes, type StrokeWidths } from '../../common/line-width';
+import { styleColorAttributes } from '../../attributes/style-color';
 
 // The width of its line (normal, see `lineWidth`)
 const STROKE_WIDTHS: StrokeWidths = { line: 3 };
@@ -18,6 +19,9 @@ const markup = util.svg/* xml */`
  * In the runtime mode it shows whether it is live (see `electrical.ts`).
  */
 export default class Wire extends dia.Link {
+
+    // Its color and its thickness (see `style.ts`)
+    static attributes: typeof dia.Link.attributes = { ...styleColorAttributes, ...lineWidthAttributes };
 
     // The color of its line (see `ColorField`)
     get colorField(): ColorField {
@@ -48,7 +52,8 @@ export default class Wire extends dia.Link {
                 line: {
                     connection: true,
                     stroke: 'var(--shape-wire)',
-                    strokeWidth: STROKE_WIDTHS.line,
+                    styleStroke: 'color',
+                    strokeWidthBase: STROKE_WIDTHS.line,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round',
                     pointerEvents: 'none'
@@ -64,6 +69,5 @@ export default class Wire extends dia.Link {
     initialize(...args: Parameters<dia.Link['initialize']>): void {
         super.initialize(...args);
         followRouting(this);
-        followLineWidth(this, STROKE_WIDTHS);
     }
 }
