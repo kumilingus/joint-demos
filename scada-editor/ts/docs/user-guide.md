@@ -45,6 +45,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Conveyors** - to the body of the equipment.
 - **Routing** - Straight, Orthogonal or Curved in the inspector; drag the handles to move ends and bends.
 - **Split Here** / **Insert Join** - right-click a connection / a pipe.
+- **Disconnect** - right-click a shape: its connections stay, their ends freed where they were; the shape moves off them.
 
 ## The inspector
 

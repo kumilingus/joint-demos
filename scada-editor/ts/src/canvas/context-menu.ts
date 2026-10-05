@@ -1,7 +1,7 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from '../app';
 import {
-    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin, sameTypeCells, selectAll, selectConnections, selectedTypes, selectElements, selectSameType
+    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin, connectedEnds, disconnectSelection, sameTypeCells, selectAll, selectConnections, selectedTypes, selectElements, selectSameType
 } from '../actions';
 import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
@@ -11,7 +11,7 @@ import type { Layer } from '../const';
 /*
  * The context menus of the canvas (`ui.ContextToolbar`, in the edit mode): of a cell - the clipboard,
  * the order in its layer and the removal of the selection (the cell selected first if it is not), the split
- * of a link at the pointer (a join inserted into a pipe there), the selection of the element below at the pointer;
+ * of a link at the pointer (a join inserted into a pipe there), the disconnection of the elements from their links, the selection of the element below at the pointer;
  * of the blank canvas - the paste at the pointer.
  */
 
@@ -114,7 +114,7 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
             }]),
         ...(cell.isLink()
             ? [{ action: 'split', label: 'Split Here', separated: true, run: () => splitLink(app, cell, { x, y }) }]
-            : []),
+            : [disconnectItem(app)]),
         // A join is a fitting of the pipes.
         ...(cell.get('type') === 'Pipe'
             ? [{ action: 'join', label: 'Insert Join', run: () => insertJoin(app, cell as dia.Link, { x, y }) }]
@@ -158,6 +158,19 @@ export function openBlankMenu(app: App, evt: dia.Event, x: number, y: number): v
         { action: 'select-elements', label: 'Select Elements', shortcut: `${MOD}⇧A`, disabled: !cells.some(cell => cell.isElement()), run: () => selectElements(app) },
         { action: 'select-connections', label: 'Select Connections', disabled: !cells.some(cell => cell.isLink()), run: () => selectConnections(app) }
     ]);
+}
+
+/** Disconnect: the links of the selected elements freed at their ends (how many), none - disabled */
+function disconnectItem(app: App): MenuItem {
+    const count = connectedEnds(app).length;
+    return {
+        action: 'disconnect',
+        label: 'Disconnect',
+        hint: count > 0 ? `${count} ${count === 1 ? 'connection' : 'connections'}` : undefined,
+        disabled: count === 0,
+        separated: true,
+        run: () => disconnectSelection(app)
+    };
 }
 
 /** The hint of Select Same Type: the type (its name in the palette) or how many types, and how many cells */

@@ -6,7 +6,7 @@ export { selectCell, selectCells, selectAll, selectElements, selectConnections, 
 export { undo, redo } from './history';
 export { copySelection, cutSelection, duplicate, paste, pasteAt } from './clipboard';
 export { bringToFront, sendToBack, layerOver, layerUnder, moveToLayer, menuCell, elementBelow } from './order';
-export { splitLink, insertJoin } from './pipes';
+export { splitLink, insertJoin, connectedEnds, disconnectSelection } from './pipes';
 export { topGroup, groupable, fitGroups, groupSelection, ungroupSelection } from './groups';
 export { saveDiagram, exportImage, confirmReplace, newDiagram, openDiagram } from './file';
 export { addImages, refreshPalette, deleteImage } from './palette';

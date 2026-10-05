@@ -5,7 +5,7 @@ import Join from '../shapes/models/piping/Join';
 import { selectCell } from './selection';
 
 /*
- * A pipe split at a point: into two pipes, or with a join inserted.
+ * A pipe split at a point: into two pipes, or with a join inserted. The elements disconnected from their links.
  */
 
 /** A link split at a point (see `splitLink()`, `insertJoin()`): its halves, not in the graph yet */
@@ -78,4 +78,41 @@ export function insertJoin(app: App, link: dia.Link, point: dia.Point): void {
     graph.addCells([join, first, second]);
     graph.stopBatch('insert-join');
     selectCell(app, join);
+}
+
+/** The ends of the links attached to the selected elements (to their members too: a group) */
+export function connectedEnds(app: App): Array<[dia.Link, 'source' | 'target']> {
+    const { graph, selection } = app;
+    const elements = selection.filter(cell => cell.isElement()) as dia.Element[];
+    const ids = new Set(elements.flatMap(element => [element, ...element.getEmbeddedCells({ deep: true })]).map(cell => cell.id));
+    const links = new Set(elements.flatMap(element => graph.getConnectedLinks(element, { deep: true })));
+    return [...links].flatMap(link => (['source', 'target'] as const)
+        .filter((end) => {
+            const id = link.get(end)?.id;
+            return id !== undefined && ids.has(id);
+        })
+        .map(end => [link, end] as [dia.Link, 'source' | 'target']));
+}
+
+// How far the disconnected elements move: off the freed ends (a gap shows they are not connected)
+const DISCONNECT_SHIFT = 2 * GRID_SIZE;
+
+/**
+ * The selected elements disconnected: the ends of their links freed where they are drawn (the end points of the
+ * rendered links - the element is under the pointer), the elements moved off them. One step of the history.
+ */
+export function disconnectSelection(app: App): void {
+    const { graph, paper } = app;
+    const ends = connectedEnds(app).flatMap(([link, end]) => {
+        const view = link.findView(paper) as dia.LinkView | undefined;
+        const point = view && (end === 'source' ? view.sourcePoint : view.targetPoint);
+        return point ? [{ link, end, point: point.toJSON() }] : [];
+    });
+    if (ends.length === 0) return;
+    graph.startBatch('disconnect');
+    ends.forEach(({ link, end, point }) => link.prop(end, point, { rewrite: true }));
+    // The members of a selected group move with it
+    app.selection.filter(cell => cell.isElement() && !cell.getParentCell())
+        .forEach(element => (element as dia.Element).translate(DISCONNECT_SHIFT, DISCONNECT_SHIFT));
+    graph.stopBatch('disconnect');
 }
