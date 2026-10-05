@@ -610,10 +610,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#F87171"
+          "stroke": "#F87171",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "0764439f-589e-4f34-a079-56194a2bc73c"
+      "id": "0764439f-589e-4f34-a079-56194a2bc73c",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -662,10 +667,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#F87171"
+          "stroke": "#F87171",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "9128e9c1-e279-4c0f-a807-75271a9ab751"
+      "id": "9128e9c1-e279-4c0f-a807-75271a9ab751",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -714,10 +724,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#F87171"
+          "stroke": "#F87171",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "b49a7afd-89b0-4a53-af9c-a5476efeda48"
+      "id": "b49a7afd-89b0-4a53-af9c-a5476efeda48",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -760,10 +775,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#F87171"
+          "stroke": "#F87171",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "290d23e4-ea74-470f-997c-9ebc28330c0d"
+      "id": "290d23e4-ea74-470f-997c-9ebc28330c0d",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -806,10 +826,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#F87171"
+          "stroke": "#F87171",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "02907c7a-a21c-4112-9402-a4820cec8fc9"
+      "id": "02907c7a-a21c-4112-9402-a4820cec8fc9",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -946,10 +971,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "e3658874-dcc3-4dfa-8aee-d2beada85c0d"
+      "id": "e3658874-dcc3-4dfa-8aee-d2beada85c0d",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -996,10 +1026,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "314733b8-9f08-44fa-96c6-8d69bf527440"
+      "id": "314733b8-9f08-44fa-96c6-8d69bf527440",
+      "lineWidth": "thick"
     },
     {
       "position": {
@@ -1993,11 +2028,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#F87171"
+          "stroke": "#F87171",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
       "id": "3ae96479-2d90-4ec1-ad62-8c9acfb4b1d7",
-      "vertices": []
+      "vertices": [],
+      "lineWidth": "thick"
     },
     {
       "position": {
@@ -2452,10 +2492,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#C4B5FD"
+          "stroke": "#C4B5FD",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
-      "id": "07e7ac1e-6059-46c7-9ab1-1ad807c6841e"
+      "id": "07e7ac1e-6059-46c7-9ab1-1ad807c6841e",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -2497,10 +2542,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#C4B5FD"
+          "stroke": "#C4B5FD",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
-      "id": "28f62aa4-00df-4b78-a216-f2fd6266dafd"
+      "id": "28f62aa4-00df-4b78-a216-f2fd6266dafd",
+      "lineWidth": "thin"
     },
     {
       "position": {
@@ -2834,11 +2884,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "d27d7d73-ea05-427e-9ccd-bf65df3ad791"
+      "id": "d27d7d73-ea05-427e-9ccd-bf65df3ad791",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -2888,11 +2943,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "f730cdca-0b63-423a-8efb-e615aebc931a"
+      "id": "f730cdca-0b63-423a-8efb-e615aebc931a",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -2935,11 +2995,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "444c7adb-d86f-47c6-9664-aa72bc7f7a03"
+      "id": "444c7adb-d86f-47c6-9664-aa72bc7f7a03",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -2981,11 +3046,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "9479fd89-b23e-4532-a852-e00512a87bdd"
+      "id": "9479fd89-b23e-4532-a852-e00512a87bdd",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -3032,11 +3102,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "9ea4e574-06c5-45de-87e9-d8aa7eaed192"
+      "id": "9ea4e574-06c5-45de-87e9-d8aa7eaed192",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -3075,11 +3150,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#FCD34D"
+          "stroke": "#FCD34D",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "a0bf37b3-ecfa-4d05-aa98-f94866a5b6c0"
+      "id": "a0bf37b3-ecfa-4d05-aa98-f94866a5b6c0",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -3116,11 +3196,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#FCD34D"
+          "stroke": "#FCD34D",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "247b0e12-3e3f-45ea-8719-bcb7868f23d6"
+      "id": "247b0e12-3e3f-45ea-8719-bcb7868f23d6",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -3154,11 +3239,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#FCD34D"
+          "stroke": "#FCD34D",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "5d4aa907-d813-4cba-971f-fab3a892eb82"
+      "id": "5d4aa907-d813-4cba-971f-fab3a892eb82",
+      "lineWidth": "thin"
     },
     {
       "position": {
@@ -3216,11 +3306,16 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#FCD34D"
+          "stroke": "#FCD34D",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [],
-      "id": "a8e2d4c1-7b3f-4e59-8d06-2f9c1b7e3a54"
+      "id": "a8e2d4c1-7b3f-4e59-8d06-2f9c1b7e3a54",
+      "lineWidth": "thin"
     },
     {
       "source": {
@@ -3261,7 +3356,11 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#FCD34D"
+          "stroke": "#FCD34D",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
       "vertices": [
@@ -3270,7 +3369,8 @@
           "y": 120
         }
       ],
-      "id": "c3b7e9f2-1a6d-4c80-b5e4-9d2a6f0c8b17"
+      "id": "c3b7e9f2-1a6d-4c80-b5e4-9d2a6f0c8b17",
+      "lineWidth": "thin"
     }
   ],
   "images": {

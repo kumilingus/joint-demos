@@ -504,10 +504,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "cc016e4d-9795-49f8-9819-0d54b57d56aa"
+      "id": "cc016e4d-9795-49f8-9819-0d54b57d56aa",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -611,7 +616,11 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
       "vertices": [
@@ -620,7 +629,8 @@
           "y": 370
         }
       ],
-      "id": "2f6c3c21-ee94-482e-af7c-85dbfc26d136"
+      "id": "2f6c3c21-ee94-482e-af7c-85dbfc26d136",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -660,7 +670,11 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
       "vertices": [
@@ -669,7 +683,8 @@
           "y": 80
         }
       ],
-      "id": "c4b1ddc3-a2ab-42aa-8a81-78092814acb1"
+      "id": "c4b1ddc3-a2ab-42aa-8a81-78092814acb1",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -700,10 +715,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "63b27cbb-21ad-422b-a9c7-83182575719b"
+      "id": "63b27cbb-21ad-422b-a9c7-83182575719b",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -744,10 +764,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#9aa3ab"
+          "stroke": "#9aa3ab",
+          "strokeWidth": 15.0
+        },
+        "flow": {
+          "strokeWidth": 4.5
         }
       },
-      "id": "4d0867d5-720d-4db2-aac5-ce1b26b165cd"
+      "id": "4d0867d5-720d-4db2-aac5-ce1b26b165cd",
+      "lineWidth": "thick"
     },
     {
       "source": {
@@ -901,10 +926,15 @@
       },
       "attrs": {
         "line": {
-          "stroke": "#57534e"
+          "stroke": "#57534e",
+          "strokeWidth": 6.0
+        },
+        "flow": {
+          "strokeWidth": 2.0
         }
       },
-      "id": "cc5b93a2-f33c-4678-aeab-1521bc763272"
+      "id": "cc5b93a2-f33c-4678-aeab-1521bc763272",
+      "lineWidth": "thin"
     },
     {
       "position": {
