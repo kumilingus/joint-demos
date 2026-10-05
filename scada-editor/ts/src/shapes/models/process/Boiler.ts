@@ -47,6 +47,8 @@ export default class Boiler extends Shape {
         return {
             ...super.defaults,
             type: 'Boiler',
+            // Its label (see `text-from`)
+            label: { text: 'Boiler' },
             // What it shows (see `data.ts`)
             data: {
                 // The burner: 1 = on (firing, by default), 0 = off
@@ -92,23 +94,22 @@ export default class Boiler extends Shape {
                 flameOuter: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     d: 'M -22 10 C -28 -8 -12 -14 -14 -30 C -4 -20 0 -28 2 -42 C 12 -26 26 -18 22 10 Z',
                     transform: flamesTransform,
                     fill: 'var(--shape-flame)'
                 },
                 flameInner: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     d: 'M -10 10 C -14 -2 -4 -6 -4 -16 C 2 -10 4 -16 6 -24 C 12 -14 16 -6 12 10 Z',
                     transform: flamesTransform,
                     // Darker than the outer one: of its color
                     innerFlame: true
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Boiler'
+                    ...labelAttributes
                 }
             }
         };
@@ -122,8 +123,8 @@ export default class Boiler extends Shape {
         super.initialize(...args);
     }
 
-    /** The flames shown while the burner is on - out: the firebox dark (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The flames shown while the burner is on - out: the firebox dark (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         if (selector !== 'flameOuter' && selector !== 'flameInner') return {};
         return { display: dataOf(this, 'power') ? 'block' : 'none' };
     }

@@ -184,8 +184,8 @@ export default class Panel extends Shape {
                 },
                 // The level as a number, above the track
                 value: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(0.5 * w)',
                     y: 30,
                     textAnchor: 'middle',
@@ -200,8 +200,8 @@ export default class Panel extends Shape {
                     fill: TRACK_COLOR
                 },
                 liquid: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: TRACK_LEFT,
                     width: `calc(${TRACK_WIDTH} * w)`,
                     rx: `calc(${TRACK_WIDTH / 2} * w)`,
@@ -222,13 +222,13 @@ export default class Panel extends Shape {
                 },
                 ...Object.fromEntries(LABELED.map(i => [`value${i}`, valueAttributes(i)])),
                 lowMark: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     fill: MIN_LIQUID_COLOR
                 },
                 highMark: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     fill: MAX_LIQUID_COLOR
                 }
             }
@@ -275,7 +275,7 @@ export default class Panel extends Shape {
                 : styleOf<string>(this, 'accent') ?? LIQUID_COLOR;
     }
 
-    /** The liquid at the level (0 - 100), as `dataAttributes()` draws it, for the current size. */
+    /** The liquid at the level (0 - 100), as `attrsOf()` draws it, for the current size. */
     // Its liquid glides to a new level (see `animateLevel()` in `animations.ts`)
     get glideProperty(): DataKey {
         return 'level';
@@ -295,9 +295,9 @@ export default class Panel extends Shape {
     /**
      * The liquid rises from the bottom of the track to the level (the number above it); its color warns when the tank
      * is almost empty (below the low threshold) or full (above the high one). The thresholds are arrows beside the
-     * track (see `from-data.ts`).
+     * track (see `computed.ts`).
      */
-    dataAttributes(selector: string): Record<string, unknown> {
+    attrsOf(selector: string): Record<string, unknown> {
         const { level } = this;
         const { low, high } = this.thresholds;
         const ratio = level / 100;

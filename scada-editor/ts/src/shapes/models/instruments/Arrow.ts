@@ -133,11 +133,3 @@ export const ArrowView = dia.LinkView.extend({
         return dia.LinkView.prototype.findPath.call(this, route, source, target);
     }
 });
-
-/** The markers of the line removed from the arrow (silently): stored by a diagram saved before they were its `arrowheads` */
-export function withoutStoredMarkers(cell: dia.Cell): void {
-    if (cell.get('type') !== 'Arrow') return;
-    ['sourceMarker', 'targetMarker'].forEach((name) => {
-        if (cell.attr(['line', name]) !== undefined) cell.removeAttr(['line', name], { silent: true });
-    });
-}

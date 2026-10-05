@@ -45,6 +45,8 @@ export default class Manifold extends Shape {
         return {
             ...super.defaults,
             type: 'Manifold',
+            // Its label (see `text-from`)
+            label: { text: 'Manifold', position: 'top' },
             size: {
                 width: 160,
                 height: 40
@@ -64,9 +66,7 @@ export default class Manifold extends Shape {
                 },
                 // Above it (the pipes leave below): clear of its stubs on any side (flipped: the outlets up)
                 label: {
-                    ...labelAttributes,
-                    text: 'Manifold',
-                    labelPosition: 'top'
+                    ...labelAttributes
                 }
             },
             ports: {

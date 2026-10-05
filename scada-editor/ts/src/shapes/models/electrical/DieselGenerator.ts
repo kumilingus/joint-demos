@@ -57,6 +57,8 @@ export default class DieselGenerator extends Shape {
         return {
             ...super.defaults,
             type: 'DieselGenerator',
+            // Its label (see `text-from`)
+            label: { text: 'Diesel Generator' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1
@@ -134,8 +136,7 @@ export default class DieselGenerator extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Diesel Generator'
+                    ...labelAttributes
                 }
             },
             ports: {

@@ -80,6 +80,8 @@ export default class RotaryKiln extends Shape {
         return {
             ...super.defaults,
             type: 'RotaryKiln',
+            // Its label (see `text-from`)
+            label: { text: 'Rotary Kiln' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -183,8 +185,7 @@ export default class RotaryKiln extends Shape {
                     pointerEvents: 'none'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Rotary Kiln'
+                    ...labelAttributes
                 }
             }
         };

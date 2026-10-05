@@ -96,6 +96,9 @@ export default class PressureGauge extends Shape {
         return {
             ...super.defaults,
             type: 'PressureGauge',
+            // Its label (see `text-from`)
+            label: { text: 'Gauge' },
+            unit: 'bar',
             // What it shows (see `data.ts`)
             data: {
                 // The pressure in % of the scale
@@ -146,18 +149,18 @@ export default class PressureGauge extends Shape {
                     strokeWidth: 2,
                     strokeLinecap: 'round'
                 },
-                // The warning zones of the scale (see `dataAttributes()`)
+                // The warning zones of the scale (see `attrsOf()`)
                 lowZone: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     transform: dialTransform,
                     fill: 'none',
                     stroke: MIN_LIQUID_COLOR,
                     strokeWidth: 3
                 },
                 highZone: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     transform: dialTransform,
                     fill: 'none',
                     stroke: MAX_LIQUID_COLOR,
@@ -170,8 +173,8 @@ export default class PressureGauge extends Shape {
                 needle: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     d: 'M -3 0 L 0 -20 L 3 0 Z',
                     fill: 'var(--color-red)',
                     style: { transition: 'transform 0.6s ease-out' }
@@ -182,7 +185,8 @@ export default class PressureGauge extends Shape {
                     fill: 'var(--shape-gauge-ink)'
                 },
                 unit: {
-                    text: 'bar',
+                    // The text of the model (see `text-from`)
+                    textFrom: ['unit'],
                     transform: dialTransform,
                     y: 15,
                     textAnchor: 'middle',
@@ -193,7 +197,6 @@ export default class PressureGauge extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Gauge',
                     y: 'calc(h + 20)'
                 }
             }
@@ -217,9 +220,9 @@ export default class PressureGauge extends Shape {
 
     /**
      * The yellow zone from the start of the scale to the low threshold, the red one from the high threshold to the end;
-     * the needle points to the value on the scale - drawn pointing up, at 270° (see `from-data.ts`)
+     * the needle points to the value on the scale - drawn pointing up, at 270° (see `computed.ts`)
      */
-    dataAttributes(selector: string): Record<string, unknown> {
+    attrsOf(selector: string): Record<string, unknown> {
         const { low, high } = this.thresholds;
         switch (selector) {
             case 'lowZone': return { d: zone(0, low) };

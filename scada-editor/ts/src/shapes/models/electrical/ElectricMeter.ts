@@ -42,6 +42,9 @@ export default class ElectricMeter extends Shape {
         return {
             ...super.defaults,
             type: 'ElectricMeter',
+            // Its label (see `text-from`)
+            label: { text: 'Voltmeter' },
+            unit: 'V',
             // What it shows (see `data.ts`): the reading
             data: {
                 value: 230.0
@@ -77,8 +80,8 @@ export default class ElectricMeter extends Shape {
                 value: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(w - 26)',
                     y: 'calc(0.5 * h)',
                     textAnchor: 'end',
@@ -89,7 +92,8 @@ export default class ElectricMeter extends Shape {
                     fill: LIQUID_COLOR
                 },
                 unit: {
-                    text: 'V',
+                    // The text of the model (see `text-from`)
+                    textFrom: ['unit'],
                     x: 'calc(w - 12)',
                     y: 'calc(0.5 * h)',
                     textAnchor: 'end',
@@ -101,8 +105,7 @@ export default class ElectricMeter extends Shape {
                     styleFill: 'accent',
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Voltmeter'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'in', side: 'left' }, { id: 'out', side: 'right' }])
@@ -113,8 +116,8 @@ export default class ElectricMeter extends Shape {
         this.markup = markup;
     }
 
-    /** The reading with one decimal (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The reading with one decimal (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
     }
 

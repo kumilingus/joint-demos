@@ -56,6 +56,8 @@ export default class AirCooler extends Shape {
         return {
             ...super.defaults,
             type: 'AirCooler',
+            // Its label (see `text-from`)
+            label: { text: 'Air Cooler' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -119,7 +121,6 @@ export default class AirCooler extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Air Cooler',
                     y: 'calc(h + 16)'
                 }
             },

@@ -56,6 +56,8 @@ export default class Rectangle extends Shape {
                     ry: 8,
                     fill: BACKGROUND_FILL,
                     fillOpacity: 0.3,
+                    // Of its style, else its own (see `style-color.ts`)
+                    styleFillOpacity: 'opacity',
                     stroke: 'none',
                     strokeWidth: 2
                 }

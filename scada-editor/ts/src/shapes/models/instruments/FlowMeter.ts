@@ -38,6 +38,9 @@ export default class FlowMeter extends Shape {
         return {
             ...super.defaults,
             type: 'FlowMeter',
+            // Its label (see `text-from`)
+            label: { text: 'Flow Meter' },
+            unit: 'm³/h',
             // What it shows (see `data.ts`): the reading
             data: {
                 value: 12.5
@@ -76,8 +79,8 @@ export default class FlowMeter extends Shape {
                 value: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(w / 2)',
                     y: 'calc(0.36 * h + 3)',
                     textAnchor: 'middle',
@@ -88,7 +91,8 @@ export default class FlowMeter extends Shape {
                     fill: LIQUID_COLOR
                 },
                 unit: {
-                    text: 'm³/h',
+                    // The text of the model (see `text-from`)
+                    textFrom: ['unit'],
                     x: 'calc(w / 2)',
                     // In the middle of the strip below the screen
                     y: 'calc(0.86 * h)',
@@ -99,8 +103,7 @@ export default class FlowMeter extends Shape {
                     fill: SURFACE_INK
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Flow Meter'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)
@@ -111,8 +114,8 @@ export default class FlowMeter extends Shape {
         this.markup = markup;
     }
 
-    /** The reading with one decimal (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The reading with one decimal (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
     }
 

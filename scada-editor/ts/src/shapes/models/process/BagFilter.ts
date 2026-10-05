@@ -56,6 +56,8 @@ export default class BagFilter extends Shape {
         return {
             ...super.defaults,
             type: 'BagFilter',
+            // Its label (see `text-from`)
+            label: { text: 'Bag Filter' },
             size: {
                 width: 160,
                 height: 200
@@ -116,8 +118,7 @@ export default class BagFilter extends Shape {
                     strokeWidth: 2
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Bag Filter'
+                    ...labelAttributes
                 }
             },
             // The dusty gas in on the left, the clean gas out of the plenum on the right

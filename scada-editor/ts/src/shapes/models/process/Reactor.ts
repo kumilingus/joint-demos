@@ -35,6 +35,8 @@ export default class Reactor extends Shape {
         return {
             ...super.defaults,
             type: 'Reactor',
+            // Its label (see `text-from`)
+            label: { text: 'Reactor' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1
@@ -101,7 +103,6 @@ export default class Reactor extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Reactor',
                     y: 'calc(h + 16)'
                 }
             }

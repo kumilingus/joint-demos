@@ -51,6 +51,8 @@ export default class WindTurbine extends Shape {
         return {
             ...super.defaults,
             type: 'WindTurbine',
+            // Its label (see `text-from`)
+            label: { text: 'Wind Turbine' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1
@@ -96,7 +98,6 @@ export default class WindTurbine extends Shape {
                 // Beside the base of the tower (the wire leaves it down)
                 label: {
                     ...labelAttributes,
-                    text: 'Wind Turbine',
                     x: 'calc(0.5 * w + 16)',
                     y: 'calc(h)',
                     textAnchor: 'start',

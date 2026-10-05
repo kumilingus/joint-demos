@@ -56,6 +56,8 @@ export default class Ellipse extends Shape {
                     ry: 'calc(0.5 * h)',
                     fill: BACKGROUND_FILL,
                     fillOpacity: 0.3,
+                    // Of its style, else its own (see `style-color.ts`)
+                    styleFillOpacity: 'opacity',
                     stroke: 'none',
                     strokeWidth: 2
                 }

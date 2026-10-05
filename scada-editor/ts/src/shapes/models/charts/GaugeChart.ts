@@ -78,6 +78,9 @@ export default class GaugeChart extends Shape {
         return {
             ...super.defaults,
             type: 'GaugeChart',
+            // Its label (see `text-from`)
+            label: { text: 'Gauge' },
+            unit: 'bar',
             // What it shows (see `data.ts`)
             data: {
                 // The scale (bar): the feedwater pressure of the plant fits (see `plant/mock/mock-plant.ts`)
@@ -129,7 +132,8 @@ export default class GaugeChart extends Shape {
                     styleFill: 'accent'
                 },
                 unit: {
-                    text: 'bar',
+                    // The text of the model (see `text-from`)
+                    textFrom: ['unit'],
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.5 * h + 26)',
                     textAnchor: 'middle',
@@ -139,8 +143,7 @@ export default class GaugeChart extends Shape {
                     fill: '#9aa5b1'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Gauge'
+                    ...labelAttributes
                 }
             }
         };

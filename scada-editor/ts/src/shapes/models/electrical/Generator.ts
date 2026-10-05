@@ -34,6 +34,8 @@ export default class Generator extends Shape {
         return {
             ...super.defaults,
             type: 'Generator',
+            // Its label (see `text-from`)
+            label: { text: 'Generator' },
             // What it shows (see `data.ts`)
             data: {
                 power: 1
@@ -111,8 +113,7 @@ export default class Generator extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Generator'
+                    ...labelAttributes
                 }
             },
             // The cables out of the terminal box on the top

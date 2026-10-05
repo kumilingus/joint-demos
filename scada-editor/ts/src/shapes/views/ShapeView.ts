@@ -19,7 +19,12 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
                 // The surfaces of the element and of its pipe stubs (ports)
                 // Its style (see `style.ts`): the surfaces of the element and of its pipe stubs (ports)
                 style: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
-                // Its parts drawn from its data (see `from-data.ts`)
+                // Its texts (see `text-from`)
+                label: dia.ElementView.Flags.UPDATE,
+                unit: dia.ElementView.Flags.UPDATE,
+                function: dia.ElementView.Flags.UPDATE,
+                loop: dia.ElementView.Flags.UPDATE,
+                // Its parts drawn from its data (see `computed.ts`)
                 data: dia.ElementView.Flags.UPDATE,
                 // Its directional parts mirrored, its label clear of its drawing (see `flip.ts`)
                 flip: dia.ElementView.Flags.UPDATE,

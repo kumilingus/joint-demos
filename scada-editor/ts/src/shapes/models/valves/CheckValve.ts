@@ -44,6 +44,8 @@ export default class CheckValve extends Shape {
         return {
             ...super.defaults,
             type: 'CheckValve',
+            // Its label (see `text-from`)
+            label: { text: 'Check Valve' },
             size: {
                 width: 60,
                 height: 40
@@ -79,8 +81,7 @@ export default class CheckValve extends Shape {
                     strokeLinecap: 'round'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Check Valve'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)

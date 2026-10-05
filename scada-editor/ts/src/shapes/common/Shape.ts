@@ -6,7 +6,7 @@ import { pipeAttributes } from './ports';
 import { textAttributes } from '../attributes/text-styles';
 import { labelPositionAttributes } from '../attributes/label';
 import { type Flip, flipAttributes, flipOf, flippablePortLayout, flippedPorts } from '../attributes/flip';
-import { fromDataAttributes } from '../attributes/from-data';
+import { computedAttributes } from '../attributes/computed';
 import { styleColorAttributes } from '../attributes/style-color';
 import { DERIVED } from './routing';
 
@@ -97,11 +97,11 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
 
     // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`), the outlines of its pipes
     // (`pipeOutline`), the styles of its texts (`textStyles`), the position of its label (`labelPosition`), the mirrored
-    // parts of a flipped one (`flip`), the parts drawn from its data (`fromData`); a shape with
+    // parts of a flipped one (`flip`), the parts drawn from its data (`computed`); a shape with
     // attributes of its own adds them to these
     static attributes: typeof dia.Element.attributes = {
         ...surfaceAttributes, ...materialAttributes, ...pipeAttributes, ...textAttributes, ...labelPositionAttributes, ...flipAttributes,
-        ...fromDataAttributes, ...styleColorAttributes
+        ...computedAttributes, ...styleColorAttributes
     };
 
     get resizable(): Resizable {

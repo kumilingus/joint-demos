@@ -40,6 +40,8 @@ export default class Motor extends Shape {
         return {
             ...super.defaults,
             type: 'Motor',
+            // Its label (see `text-from`)
+            label: { text: 'Motor' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -118,7 +120,6 @@ export default class Motor extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Motor',
                     y: 'calc(h + 16)'
                 }
             }

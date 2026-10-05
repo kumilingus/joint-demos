@@ -24,8 +24,9 @@ const PORT_END_OVERHANG = 3;
  * the label is the last thing below (above, or on the right of) the shape - the drawing ends where the label starts.
  */
 function withoutLabel(element: dia.Element, overflow: Required<Overflow>): Required<Overflow> {
-    const { x, y, text } = element.attr('label') || {};
-    if (text === undefined) return overflow;
+    const { x, y } = element.attr('label') || {};
+    // A label of the model (see `text-from`)
+    if (element.prop(['label', 'text']) === undefined) return overflow;
     // On the right: `calc(w + 10)` (from the start of the text)
     const right = typeof x === 'string' ? x.match(/^calc\(w\s*\+\s*(\d+(?:\.\d+)?)\)$/) : null;
     if (right) return { ...overflow, right: Math.min(overflow.right, Number(right[1])) };

@@ -40,6 +40,8 @@ export default class HandValve extends Shape {
         return {
             ...super.defaults,
             type: 'HandValve',
+            // Its label (see `text-from`)
+            label: { text: 'Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 open: true
@@ -87,8 +89,6 @@ export default class HandValve extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Valve'
                 }
             },
             ports: pipePorts(this.stubLength)

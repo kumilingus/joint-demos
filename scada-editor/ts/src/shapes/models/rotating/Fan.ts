@@ -55,6 +55,8 @@ export default class Fan extends Shape {
         return {
             ...super.defaults,
             type: 'Fan',
+            // Its label (see `text-from`)
+            label: { text: 'Fan' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -105,8 +107,7 @@ export default class Fan extends Shape {
                     fill: '#333'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Fan'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)

@@ -49,6 +49,8 @@ export default class ControlValve extends Shape {
         return {
             ...super.defaults,
             type: 'ControlValve',
+            // Its label (see `text-from`)
+            label: { text: 'Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = closed, 1 = fully open
@@ -94,8 +96,8 @@ export default class ControlValve extends Shape {
                     strokeLinecap: 'round'
                 },
                 cover: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(w / 2 - 12)',
                     y: 'calc(h / 2 - 12)',
                     width: 0,
@@ -136,8 +138,6 @@ export default class ControlValve extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Valve'
                 }
             },
             ports: pipePorts(this.stubLength)
@@ -152,11 +152,22 @@ export default class ControlValve extends Shape {
         super.initialize(...args);
     }
 
-    /** The more the valve is closed, the wider the cover (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The more the valve is closed, the wider the cover (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         if (selector !== 'cover') return {};
         const open = Math.max(0, Math.min(1, dataOf<number>(this, 'open') ?? 1));
         return { width: Math.round(COVER_MAX_WIDTH * (1 - open)) };
+    }
+
+    /** Without the color of the pipe in its window: of the pipe it sits on, set again on load (see `PipeColorController`) */
+    toJSON(options?: dia.Cell.ExportOptions): dia.Cell.JSON {
+        const json = super.toJSON(options);
+        const liquid = (json.attrs as Record<string, Record<string, unknown>> | undefined)?.liquid;
+        if (liquid) {
+            delete liquid.stroke;
+            if (Object.keys(liquid).length === 0) delete (json.attrs as Record<string, unknown>).liquid;
+        }
+        return json;
     }
 
 }

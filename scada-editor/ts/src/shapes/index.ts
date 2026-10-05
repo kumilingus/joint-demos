@@ -161,6 +161,10 @@ export const cellNamespace = {
     Zone,
     Join,
     Label,
+    // A zone drawn again when its tip moves (see `Zone`)
+    ZoneView: shapeView(['tipSide']),
+    // A busbar drawn again when its taps change (its bolts, see `Busbar.attrsOf()`)
+    BusbarView: shapeView(['taps']),
     // The links drawn again when their style changes (see `style.ts`)
     WireView: StyledLinkView,
     SignalLineView: StyledLinkView,

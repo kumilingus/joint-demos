@@ -57,6 +57,8 @@ export default class BucketElevator extends Shape {
         return {
             ...super.defaults,
             type: 'BucketElevator',
+            // Its label (see `text-from`)
+            label: { text: 'Bucket Elevator' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -151,8 +153,7 @@ export default class BucketElevator extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Bucket Elevator'
+                    ...labelAttributes
                 }
             }
         };

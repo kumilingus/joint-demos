@@ -87,6 +87,8 @@ export default class LineChart extends Shape {
         return {
             ...super.defaults,
             type: 'LineChart',
+            // Its label (see `text-from`)
+            label: { text: 'Line Chart' },
             // What it shows (see `data.ts`)
             data: {
                 // The scale of the values
@@ -151,8 +153,7 @@ export default class LineChart extends Shape {
                 lowMark: { ...mark, chartLevel: 'low', stroke: MIN_LIQUID_COLOR },
                 ...scaleAttributes(),
                 label: {
-                    ...labelAttributes,
-                    text: 'Line Chart'
+                    ...labelAttributes
                 }
             }
         };

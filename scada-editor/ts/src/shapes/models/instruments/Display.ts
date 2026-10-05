@@ -37,6 +37,9 @@ export default class Display extends Shape {
         return {
             ...super.defaults,
             type: 'Display',
+            // Its label (see `text-from`)
+            label: { text: 'Display' },
+            unit: 'bar',
             // What it shows (see `data.ts`): the reading
             data: {
                 value: 42.7
@@ -74,8 +77,8 @@ export default class Display extends Shape {
                 value: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(w / 2)',
                     y: 'calc(0.42 * h)',
                     textAnchor: 'middle',
@@ -86,7 +89,8 @@ export default class Display extends Shape {
                     fill: LIQUID_COLOR
                 },
                 unit: {
-                    text: 'bar',
+                    // The text of the model (see `text-from`)
+                    textFrom: ['unit'],
                     x: 'calc(w - 12)',
                     y: 'calc(h - 9)',
                     textAnchor: 'end',
@@ -99,8 +103,7 @@ export default class Display extends Shape {
                     fillOpacity: 0.8
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Display'
+                    ...labelAttributes
                 }
             }
         };
@@ -110,8 +113,8 @@ export default class Display extends Shape {
         this.markup = markup;
     }
 
-    /** The reading with one decimal (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The reading with one decimal (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
     }
 

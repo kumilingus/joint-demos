@@ -51,6 +51,8 @@ export default class DistillationColumn extends Shape {
         return {
             ...super.defaults,
             type: 'DistillationColumn',
+            // Its label (see `text-from`)
+            label: { text: 'Column' },
             size: {
                 width: 60,
                 height: 260
@@ -95,7 +97,6 @@ export default class DistillationColumn extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Column',
                     y: 'calc(h + 18)'
                 }
             }

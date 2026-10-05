@@ -33,6 +33,8 @@ export default class Label extends Shape {
         return {
             ...super.defaults,
             type: 'Label',
+            // Its label (see `text-from`)
+            label: { text: 'Label', size: 20, weight: 600 },
             size: {
                 width: 120,
                 height: 40
@@ -45,9 +47,10 @@ export default class Label extends Shape {
                     fill: 'transparent'
                 },
                 label: {
+                    // The text of the label of the model (see `text-from`)
+                    textFrom: ['label', 'text'],
                     // In the color of its style (see `style-color.ts`)
                     styleFill: 'color',
-                    text: 'Label',
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.5 * h)',
                     textAnchor: 'middle',
@@ -57,9 +60,8 @@ export default class Label extends Shape {
                         height: 'calc(h)',
                         ellipsis: true
                     },
-                    fontSize: 20,
+                    // Its size, its weight of the label (see `text-from`)
                     fontFamily: 'sans-serif',
-                    fontWeight: 600,
                     fill: LABEL_COLOR
                 }
             }

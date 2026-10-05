@@ -1,6 +1,7 @@
 import { dia, type g } from '@joint/plus';
 import { LABEL_COLOR } from '../../const';
 import { getFootprint } from '../common/footprint';
+import { textAttributes } from './text-styles';
 import { flipOf } from './flip';
 
 /**
@@ -189,13 +190,57 @@ export const labelPositionAttributes: Record<string, dia.Cell.PresentationAttrib
     'text-wrap': {
         ...textWrap,
         set(this: dia.ElementView, value: unknown, refBBox: g.Rect, node: Element, attrs: TextAttributes) {
+            // Of a text of the model: wrapped by it (see `text-from`)
+            if (attrs['text-from'] != null) return {};
             return positioned(this, textWrapSet, value, refBBox, node, attrs);
+        }
+    },
+    /**
+     * `textFrom` in the attributes: the text of the model at the path (`['label', 'text']`, `['unit']`) - not stored in
+     * the attributes. A label (`['label', …]`): at its position of the model (`label.position`), else of the shape
+     * (`labelPosition`); the size, the weight, the styles (`label.size`, `label.weight`, `label.styles`) of a text of its own
+     * (the Label shape).
+     */
+    'text-from': {
+        set(this: dia.ElementView, path: string[], refBBox: g.Rect, node: Element, attrs: TextAttributes) {
+            const { model } = this;
+            const value = model.prop(path);
+            const text = value == null ? '' : String(value);
+            const label = (path[0] === 'label' ? model.get('label') : undefined) as ModelLabel | undefined;
+            const textAttrs: TextAttributes = {
+                ...attrs,
+                text,
+                ...(label?.position ? { 'label-position': label.position } : {}),
+                ...(label?.size ? { 'font-size': label.size } : {}),
+                ...(label?.weight ? { 'font-weight': label.weight } : {})
+            };
+            const own: TextAttributes = {
+                ...(label?.size ? { 'font-size': label.size } : {}),
+                ...(label?.weight ? { 'font-weight': label.weight } : {}),
+                ...(label?.styles ? textAttributes['text-styles'].set.call(this, label.styles) : {})
+            };
+            const wrap = attrs['text-wrap'];
+            const drawn = wrap
+                ? positioned(this, textWrapSet, wrap, refBBox, node, textAttrs)
+                : positioned(this, textSet, text, refBBox, node, textAttrs);
+            return { ...own, ...((drawn ?? {}) as TextAttributes) };
         }
     }
 };
 
+/** The label of an element in its model (see `text-from`): its text, its position, the size and the styles of a text */
+export interface ModelLabel {
+    text?: string;
+    position?: LabelPosition;
+    size?: number;
+    weight?: number;
+    styles?: string[];
+}
+
 /** The label of a shape: below it (see `LabelPosition`), as most of the shapes have it */
 export const labelAttributes = {
+    // The text of the label of the model (see `text-from`)
+    textFrom: ['label', 'text'],
     // Below the shape - as it is seen: kept horizontal when the element is rotated (see `labelPositionAttributes`)
     labelPosition: 'bottom',
     textAnchor: 'middle',

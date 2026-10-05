@@ -51,6 +51,8 @@ export default class GateValve extends Shape {
         return {
             ...super.defaults,
             type: 'GateValve',
+            // Its label (see `text-from`)
+            label: { text: 'Gate Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 open: true
@@ -65,8 +67,8 @@ export default class GateValve extends Shape {
                     magnetSelector: 'body'
                 },
                 stem: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     stroke: '#555',
                     strokeWidth: 4
                 },
@@ -82,8 +84,8 @@ export default class GateValve extends Shape {
                 handwheel: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(w / 2 - 20)',
                     width: 40,
                     height: 8,
@@ -97,8 +99,6 @@ export default class GateValve extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Gate Valve'
                 }
             },
             ports: pipePorts(this.stubLength)
@@ -113,8 +113,8 @@ export default class GateValve extends Shape {
         super.initialize(...args);
     }
 
-    /** The stem and the handwheel up (open) or down (closed), see `from-data.ts` */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The stem and the handwheel up (open) or down (closed), see `computed.ts` */
+    attrsOf(selector: string): Record<string, unknown> {
         const top = dataOf(this, 'open') ? HANDWHEEL_OPEN : HANDWHEEL_CLOSED;
         if (selector === 'stem') return { d: `M calc(w / 2) calc(h / 2) V ${top}` };
         if (selector === 'handwheel') return { y: top - 4 };

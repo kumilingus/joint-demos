@@ -44,6 +44,8 @@ export default class YStrainer extends Shape {
         return {
             ...super.defaults,
             type: 'YStrainer',
+            // Its label (see `text-from`)
+            label: { text: 'Strainer' },
             size: {
                 width: 80,
                 height: 60
@@ -95,8 +97,7 @@ export default class YStrainer extends Shape {
                     surfaceFill: 'pipe'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Strainer'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)

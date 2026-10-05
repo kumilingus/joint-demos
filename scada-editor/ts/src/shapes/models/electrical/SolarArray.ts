@@ -30,6 +30,8 @@ export default class SolarArray extends Shape {
         return {
             ...super.defaults,
             type: 'SolarArray',
+            // Its label (see `text-from`)
+            label: { text: 'Solar Array' },
             size: {
                 width: 180,
                 height: 100
@@ -60,8 +62,7 @@ export default class SolarArray extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Solar Array'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'out', side: 'right', along: 'calc(0.3 * h)' }])

@@ -42,6 +42,8 @@ export default class Battery extends Shape {
         return {
             ...super.defaults,
             type: 'Battery',
+            // Its label (see `text-from`)
+            label: { text: 'Battery' },
             size: {
                 width: 80,
                 height: 60
@@ -84,8 +86,7 @@ export default class Battery extends Shape {
                 minus: { ...sign, text: '−', x: `calc(${MINUS_X} * w)` },
                 plus: { ...sign, text: '+', x: `calc(${PLUS_X} * w)` },
                 label: {
-                    ...labelAttributes,
-                    text: 'Battery'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([

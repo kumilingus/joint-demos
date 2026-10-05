@@ -32,6 +32,8 @@ export default class Ground extends Shape {
         return {
             ...super.defaults,
             type: 'Ground',
+            // Its label (see `text-from`)
+            label: { text: 'Ground' },
             size: {
                 width: 60,
                 height: 60
@@ -79,8 +81,7 @@ export default class Ground extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Ground'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'in', side: 'top' }])

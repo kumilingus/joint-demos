@@ -48,7 +48,7 @@ export default class Zone extends Shape {
 
     // The tip out of the box on its side
     get overflow(): Overflow {
-        const side: TipSide = this.attr('body/tipSide') ?? 'left';
+        const side: TipSide = this.get('tipSide') ?? 'left';
         return { bottom: 0, [side]: TIP_DEPTH };
     }
 
@@ -69,6 +69,8 @@ export default class Zone extends Shape {
         return {
             ...super.defaults,
             type: 'Zone',
+            // Its label (see `text-from`)
+            label: { text: 'Zone' },
             size: {
                 width: 100,
                 height: 40
@@ -82,15 +84,16 @@ export default class Zone extends Shape {
                     fill: 'var(--shape-face)',
                     stroke: 'var(--shape-zone-stroke)',
                     strokeWidth: 1,
-                    // The outline (see `tip-side` below), edited in the inspector
+                    // The outline: of its `tipSide` (see `tip-side` below), on the left by default
                     tipSide: 'left'
                 },
                 label: {
+                    // The text of the label of the model (see `text-from`)
+                    textFrom: ['label', 'text'],
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
                     // On as many lines as the zone is high, cut with an ellipsis; in the size of the labels of the diagram
                     // (its style, see `diagram-style.ts`) - all the zones alike, as off-page connectors
-                    text: 'Zone',
                     textWrap: {
                         width: 'calc(w - 10)',
                         height: 'calc(h - 4)',
@@ -119,6 +122,8 @@ export default class Zone extends Shape {
         // the names are looked up in the kebab case).
         'tip-side': {
             set(this: dia.ElementView, side: TipSide, refBBox: dia.BBox) {
+                // Its own side (set in the inspector), else the default one
+                side = this.model.get('tipSide') ?? side;
                 return { d: zoneOutline(TIP_SIDES.includes(side) ? side : 'left', refBBox.width, refBBox.height) };
             },
             unset: 'd'

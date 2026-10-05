@@ -160,7 +160,7 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         : null;
 
     // An image of the user: named after it, the name can be changed (the label of the elements dropped from now on).
-    const imageId: string | undefined = cell.attr('image/imageId');
+    const imageId: string | undefined = cell.get('imageId');
     if (imageId) {
         titleEl.textContent = getImages(app.graph)[imageId]?.name ?? title;
         el.insertBefore(createNameField(app, imageId, (name) => {

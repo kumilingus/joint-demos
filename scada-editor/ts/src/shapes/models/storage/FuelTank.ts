@@ -42,6 +42,8 @@ export default class FuelTank extends Shape {
         return {
             ...super.defaults,
             type: 'FuelTank',
+            // Its label (see `text-from`)
+            label: { text: 'Fuel Tank' },
             // What it shows (see `data.ts`)
             data: {
                 level: 70
@@ -82,8 +84,8 @@ export default class FuelTank extends Shape {
                 fuel: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(0.44 * w + 2)',
                     width: 'calc(0.12 * w - 4)',
                     rx: 2,
@@ -102,8 +104,7 @@ export default class FuelTank extends Shape {
                     fill: SURFACE_INK
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Fuel Tank'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength, { left: 'calc(0.5 * h)', right: 'calc(0.5 * h)' })
@@ -129,8 +130,8 @@ export default class FuelTank extends Shape {
         return { fuel: { y: `${(GLASS_Y + GLASS_HEIGHT - height) * h}px`, height: `${height * h}px` }};
     }
 
-    /** The fuel in the sight glass as high as the level, from its bottom (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The fuel in the sight glass as high as the level, from its bottom (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         if (selector !== 'fuel') return {};
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         const height = GLASS_HEIGHT * ratio;

@@ -48,14 +48,13 @@ function sideField(label: string): Inputs {
     };
 }
 
-/** The texts of the shapes that can be edited: [selector, label, group]. */
-const TEXTS: Array<[string, string, string]> = [
-    ['label', 'Label', 'general'],
-    ['tag', 'Function', 'general'],
-    ['loop', 'Loop', 'general'],
-    ['unit', 'Unit', 'values']
+/** The texts of the shapes that can be edited (see `text-from`): [the path in the model, label, group]. */
+const TEXTS: Array<[string[], string, string]> = [
+    [['label', 'text'], 'Label', 'general'],
+    [['function'], 'Function', 'general'],
+    [['loop'], 'Loop', 'general'],
+    [['unit'], 'Unit', 'values']
 ];
-
 /** The elements a table can show the values of: those with an ID (not the tables, the labels, the groups, the background), by the ID */
 function sourceOptions(table: dia.Element): Array<{ value: string; content: string }> {
     const elements = table.graph?.getElements() ?? [];
@@ -63,7 +62,7 @@ function sourceOptions(table: dia.Element): Array<{ value: string; content: stri
         .filter(element => element.get('tag') && !['Table', 'Label', 'Group', 'Screen', 'Zone', 'CustomImage', 'Rectangle', 'Ellipse'].includes(element.get('type')))
         .map((element) => {
             const tag = String(element.get('tag'));
-            const name = element.attr('label/text') || descriptions[element.get('type')]?.title || element.get('type');
+            const name = element.prop(['label', 'text']) || descriptions[element.get('type')]?.title || element.get('type');
             return { value: tag, content: `${tag} ${name}` };
         })
         .sort((a, b) => a.value.localeCompare(b.value));
@@ -79,59 +78,53 @@ function getInputs(element: dia.Element): Inputs {
 
     inputs.tag = { type: 'text', label: 'ID', group: 'general', index: index++ };
 
-    const attrs: Inputs = {};
-    TEXTS.forEach(([selector, label, group]) => {
-        if (element.attr([selector, 'text']) === undefined) return;
-        attrs[selector] = { text: { type: 'text', label, group, index: index++ }};
-        // The label of a shape at a side of it (see `labelPosition`): the shapes with labels of their own have none
-        if (selector === 'label' && element.attr('label/labelPosition') != null) {
-            (attrs.label as Record<string, unknown>).labelPosition = {
-                ...sideField('Label position'),
-                // Of a label that is there (not empty)
-                when: { regex: { 'attrs/label/text': '\\S' }},
-                // How the label is drawn: after the colors, before the layer
-                group: 'appearance',
-                index: 90
-            };
-        }
+    TEXTS.forEach(([path, label, group]) => {
+        if (element.prop(path) === undefined) return;
+        util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), { type: 'text', label, group, index: index++ } as unknown as Inputs));
     });
-    if (Object.keys(attrs).length > 0) inputs.attrs = attrs;
+    // The label of a shape at a side of it (see `labelPosition`): the shapes with labels of their own have none
+    if (element.prop(['label', 'text']) !== undefined && element.attr('label/labelPosition') != null) {
+        util.merge(inputs, { label: { position: {
+            ...sideField('Label position'),
+            // Of a label that is there (not empty)
+            when: { regex: { 'label/text': '\\S' }},
+            // How the label is drawn: after the colors, before the layer
+            group: 'appearance',
+            index: 90
+        }}});
+    }
 
     // A label (a text on its own) has a size, a style and a weight of the text too (a zone: the label size of the diagram).
     if (element.get('type') === 'Label') {
-        inputs.attrs = {
-            ...(inputs.attrs as Inputs),
-            label: {
-                ...(inputs.attrs as Record<string, Inputs>).label,
-                fontSize: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'appearance', index: index++ },
-                // Several at once: an array (see `textStyles`)
-                textStyles: {
-                    type: 'select-button-group',
-                    label: 'Font style',
-                    multi: true,
-                    // The array replaced (not merged into the one before: an unselected style is gone)
-                    overwrite: true,
-                    options: [
-                        { value: 'italic', content: '<em>Italic</em>' },
-                        { value: 'underline', content: '<u>Underline</u>' },
-                        { value: 'line-through', content: '<s>Strike</s>' }
-                    ],
-                    group: 'appearance',
-                    index: index++
-                },
-                fontWeight: {
-                    type: 'select-button-group',
-                    label: 'Font weight',
-                    options: [
-                        { value: 400, content: 'Normal' },
-                        { value: 600, content: 'Semibold' },
-                        { value: 700, content: 'Bold' }
-                    ],
-                    group: 'appearance',
-                    index: index++
-                }
+        util.merge(inputs, { label: {
+            size: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'appearance', index: index++ },
+            // Several at once: an array (see `textStyles`)
+            styles: {
+                type: 'select-button-group',
+                label: 'Font style',
+                multi: true,
+                // The array replaced (not merged into the one before: an unselected style is gone)
+                overwrite: true,
+                options: [
+                    { value: 'italic', content: '<em>Italic</em>' },
+                    { value: 'underline', content: '<u>Underline</u>' },
+                    { value: 'line-through', content: '<s>Strike</s>' }
+                ],
+                group: 'appearance',
+                index: index++
+            },
+            weight: {
+                type: 'select-button-group',
+                label: 'Font weight',
+                options: [
+                    { value: 400, content: 'Normal' },
+                    { value: 600, content: 'Semibold' },
+                    { value: 700, content: 'Bold' }
+                ],
+                group: 'appearance',
+                index: index++
             }
-        };
+        }});
     }
 
     // The finish of the surfaces (see `SurfaceFinish`): first, it decides how their color is drawn
@@ -167,37 +160,31 @@ function getInputs(element: dia.Element): Inputs {
     // A shape of the background: its opacity
     if (['Rectangle', 'Ellipse'].includes(element.get('type'))) {
         util.merge(inputs, {
-            attrs: { body: { fillOpacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, group: 'appearance', index: index++ }}}
+            style: { opacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, defaultValue: 0.3, group: 'appearance', index: index++ }}
         });
     }
 
     // An uploaded image: its opacity (faded: a backdrop of the diagram)
     if (element.get('type') === 'CustomImage') {
         util.merge(inputs, {
-            attrs: { image: { opacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, defaultValue: 1, group: 'appearance', index: index++ }}}
+            style: { opacity: { type: 'range', label: 'Opacity', min: 0, max: 1, step: 0.05, defaultValue: 1, group: 'appearance', index: index++ }}
         });
     }
 
     // A zone points to the side its pipe comes from (the outline of its body, see `Zone`).
-    if (element.attr('body/tipSide') !== undefined) {
-        const attrs = (inputs.attrs || {}) as Record<string, Inputs>;
-        inputs.attrs = {
-            ...attrs,
-            body: {
-                ...attrs.body,
-                tipSide: {
-                    type: 'select-button-group',
-                    label: 'Tip',
-                    options: [
-                        { value: 'left', content: 'Left' },
-                        { value: 'right', content: 'Right' },
-                        { value: 'top', content: 'Top' },
-                        { value: 'bottom', content: 'Bottom' }
-                    ],
-                    group: 'general',
-                    index: index++
-                }
-            }
+    if (element.get('type') === 'Zone') {
+        inputs.tipSide = {
+            type: 'select-button-group',
+            label: 'Tip',
+            options: [
+                { value: 'left', content: 'Left' },
+                { value: 'right', content: 'Right' },
+                { value: 'top', content: 'Top' },
+                { value: 'bottom', content: 'Bottom' }
+            ],
+            defaultValue: 'left',
+            group: 'general',
+            index: index++
         };
     }
 
@@ -497,7 +484,7 @@ function renderMembersField(options: { type?: string; label?: string }, _path: s
         const tag = document.createElement('span');
         tag.className = 'group-member-tag';
         tag.textContent = String(member.get('tag') ?? '');
-        const name = isGroup(member) ? 'Group' : member.attr('label/text') || descriptions[member.get('type')]?.title || member.get('type');
+        const name = isGroup(member) ? 'Group' : member.prop(['label', 'text']) || descriptions[member.get('type')]?.title || member.get('type');
         button.append(tag, ` ${name}`);
         button.addEventListener('click', () => selectMember?.(member));
         item.append(button);

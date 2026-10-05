@@ -54,6 +54,8 @@ export default class Disconnector extends Shape {
         return {
             ...super.defaults,
             type: 'Disconnector',
+            // Its label (see `text-from`)
+            label: { text: 'Disconnector', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 open: false
@@ -92,8 +94,8 @@ export default class Disconnector extends Shape {
                     strokeWidth: 4
                 },
                 blade: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     d: CLOSED_BLADE,
                     stroke: 'var(--shape-copper-2)',
                     strokeWidth: 6,
@@ -109,8 +111,6 @@ export default class Disconnector extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Disconnector'
                 }
             },
             ports: terminalPorts([
@@ -128,8 +128,8 @@ export default class Disconnector extends Shape {
         super.initialize(...args);
     }
 
-    /** The blade open or closed (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The blade open or closed (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         return selector === 'blade' ? { d: dataOf(this, 'open') ? OPEN_BLADE : CLOSED_BLADE } : {};
     }
 

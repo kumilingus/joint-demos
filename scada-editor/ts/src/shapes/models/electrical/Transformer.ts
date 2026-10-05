@@ -48,6 +48,8 @@ export default class Transformer extends Shape {
         return {
             ...super.defaults,
             type: 'Transformer',
+            // Its label (see `text-from`)
+            label: { text: 'Transformer' },
             size: {
                 width: 80,
                 height: 100
@@ -93,8 +95,7 @@ export default class Transformer extends Shape {
                     strokeWidth: 2
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Transformer'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'in', side: 'left', along: 'calc(0.5 * h)' }, { id: 'out', side: 'right', along: 'calc(0.5 * h)' }])

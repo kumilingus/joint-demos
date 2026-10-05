@@ -46,6 +46,8 @@ export default class Busbar extends Shape {
         return {
             ...super.defaults,
             type: 'Busbar',
+            // Its label (see `text-from`)
+            label: { text: 'Busbar' },
             size: {
                 width: 240,
                 height: 20
@@ -69,8 +71,9 @@ export default class Busbar extends Shape {
                     stroke: 'var(--shape-copper-3)',
                     strokeWidth: 1.5
                 },
-                // The bolts of the taps (see `updateTaps()`)
+                // The bolts of the taps (see `attrsOf()`)
                 bolts: {
+                    computed: true,
                     stroke: '#5a3417',
                     strokeWidth: 5,
                     strokeLinecap: 'round'
@@ -80,7 +83,6 @@ export default class Busbar extends Shape {
                     ...labelAttributes,
                     // Over the taps on the left (see above): at a side of its own, not one to choose
                     labelPosition: null,
-                    text: 'Busbar',
                     x: 0,
                     y: -22,
                     textAnchor: 'start',
@@ -141,14 +143,14 @@ export default class Busbar extends Shape {
             ...taps.map(i => terminal({ id: `bottom${i}`, side: 'bottom', along: tapX(i - 1) }))
         ];
         const current = this.getPorts().map(port => port.id).join();
-        if (current === items.map(port => port.id).join()) return this.updateBolts(count, options);
+        if (current === items.map(port => port.id).join()) return;
         this.prop('ports/items', items, { ...options, ...DERIVED, rewrite: true });
-        this.updateBolts(count, options);
     }
 
-    /** A bolt where each tap is */
-    updateBolts(count: number, options: dia.Cell.Options): void {
-        const d = Array.from({ length: count }, (_, i) => `M ${tapX(i)} calc(0.5 * h) h 0.01`).join(' ');
-        this.attr('bolts/d', d, { ...options, ...DERIVED });
+    /** A bolt where each tap is (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
+        if (selector !== 'bolts') return {};
+        const count = Number(this.get('taps')) || 0;
+        return { d: Array.from({ length: count }, (_, i) => `M ${tapX(i)} calc(0.5 * h) h 0.01`).join(' ') || 'M 0 0' };
     }
 }

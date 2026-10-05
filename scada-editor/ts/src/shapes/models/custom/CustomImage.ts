@@ -21,7 +21,7 @@ const markup = util.svg/* xml */`
 `;
 
 /**
- * A shape of the user: an uploaded image. It refers to the image by its id (`attrs/image/imageId`):
+ * A shape of the user: an uploaded image. It refers to the image by its id (its `imageId`):
  * the image is stored on the graph and in the DOM once per paper (see `images.ts`).
  */
 export default class CustomImage extends Shape {
@@ -40,20 +40,22 @@ export default class CustomImage extends Shape {
         return {
             ...super.defaults,
             type: 'CustomImage',
+            // Its label (see `text-from`)
+            label: { text: 'Image' },
             size: {
                 width: SIZE,
                 height: SIZE
             },
             attrs: {
                 image: {
+                    // The image of its `imageId`, its opacity of its style (see `image-ref` below, `style-color.ts`)
+                    imageRef: true,
+                    styleOpacity: 'opacity',
                     width: 'calc(w)',
                     height: 'calc(h)',
-                    // Set in the inspector
-                    opacity: 1
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Image'
+                    ...labelAttributes
                 }
             }
         };
@@ -70,28 +72,25 @@ export default class CustomImage extends Shape {
         const step = (value: number) => Math.max(SIZE_STEP, Math.round(value * scale / SIZE_STEP) * SIZE_STEP);
         return new CustomImage({
             size: { width: step(image.width), height: step(image.height) },
-            attrs: {
-                image: { imageId },
-                label: { text: image.name }
-            }
+            label: { text: image.name },
+            imageId
         });
     }
 
     static attributes = {
         ...Shape.attributes,
-        // The image (its id) shown by the `<use>`: a reference to its definition in the paper.
-        // (`imageId` in the attributes: the names are looked up in the kebab case.)
-        'image-id': {
-            set(this: dia.ElementView, imageId: string, _refBBox: unknown, _node: unknown, _attrs: unknown, elementView: dia.ElementView) {
+        // The image (`imageId` of the model) shown by the `<use>` (`imageRef: true` on it): a reference to its
+        // definition in the paper
+        'image-ref': {
+            set(this: dia.ElementView, _ref: boolean, _refBBox: unknown, _node: unknown, _attrs: unknown, elementView: dia.ElementView) {
                 const { paper } = elementView;
+                const imageId = String(this.model.get('imageId') ?? '');
                 if (!paper) return {};
                 const image = imageId ? findImage(elementView, imageId) : null;
                 // An image that is not in the diagram (an element pasted from another one): a placeholder
                 if (!image) return { href: `#${definePlaceholder(paper)}` };
                 return { href: `#${defineImage(paper, imageId, image)}` };
             },
-            // No image id (`attr('image/imageId', null)`): the reference set above is removed
-            // (not the `image-id` attribute, which is never in the DOM).
             unset: 'href'
         }
     };

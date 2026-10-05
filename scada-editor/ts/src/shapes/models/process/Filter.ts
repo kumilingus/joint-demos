@@ -32,6 +32,8 @@ export default class Filter extends Shape {
         return {
             ...super.defaults,
             type: 'Filter',
+            // Its label (see `text-from`)
+            label: { text: 'Filter' },
             size: {
                 width: 60,
                 height: 80
@@ -71,8 +73,7 @@ export default class Filter extends Shape {
                     strokeWidth: 2
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Filter'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)

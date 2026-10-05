@@ -53,6 +53,8 @@ export default class OrificePlate extends Shape {
         return {
             ...super.defaults,
             type: 'OrificePlate',
+            // Its label (see `text-from`)
+            label: { text: 'Orifice' },
             size: {
                 width: 40,
                 height: 60
@@ -81,8 +83,7 @@ export default class OrificePlate extends Shape {
                 upstream: flange('calc(w / 2 - 11)'),
                 downstream: flange('calc(w / 2 + 3)'),
                 label: {
-                    ...labelAttributes,
-                    text: 'Orifice'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)

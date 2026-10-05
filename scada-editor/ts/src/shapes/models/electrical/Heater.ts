@@ -31,6 +31,8 @@ export default class Heater extends Shape {
         return {
             ...super.defaults,
             type: 'Heater',
+            // Its label (see `text-from`)
+            label: { text: 'Heater' },
             size: {
                 width: 80,
                 height: 60
@@ -79,8 +81,7 @@ export default class Heater extends Shape {
                     strokeLinecap: 'round'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Heater'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'in', side: 'top' }])

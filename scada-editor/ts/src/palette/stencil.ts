@@ -44,8 +44,8 @@ const LINKS_GAP = 2 * GAP;
 /** The groups of the palette filled with the shapes of the others (and hidden while empty) */
 // What a search looks in: the type (e.g. "tank", "valve") and the texts of the shapes (of all, of a type)
 const SEARCH_PATHS: Record<string, string[]> = {
-    '*': ['type', 'attrs/label/text'],
-    'Instrument': ['attrs/tag/text', 'attrs/loop/text']
+    '*': ['type', 'label/text'],
+    'Instrument': ['function', 'loop']
 };
 
 /**
@@ -93,7 +93,7 @@ const groups: Record<string, ui.Stencil.Group> = {
 function setTooltip(cell: dia.Cell): void {
     const { title } = descriptions[cell.get('type')] ?? { title: cell.get('type') };
     // An image of the user: its name
-    const name = cell.get('type') === 'CustomImage' ? cell.attr('label/text') : title;
+    const name = cell.get('type') === 'CustomImage' ? cell.prop(['label', 'text']) : title;
     cell.attr('root/data-tooltip', name);
     if (cell.isLink()) cell.labels([nameLabel(name)]);
 }
@@ -370,7 +370,7 @@ function createShapes(): Record<string, dia.Cell[]> {
  */
 export function paletteKey(cell: dia.Cell): string {
     const type = cell.get('type');
-    if (type === 'CustomImage') return `${type}:${cell.attr('image/imageId')}`;
+    if (type === 'CustomImage') return `${type}:${cell.get('imageId')}`;
     // A table (its names of the columns shown), a readout (neither the title nor the names): two shapes of the palette
     if (type === 'Table') return cell.get('names') ? 'Table' : 'Table:list';
     return type;

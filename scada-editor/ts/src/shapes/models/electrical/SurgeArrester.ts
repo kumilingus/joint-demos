@@ -41,6 +41,8 @@ export default class SurgeArrester extends Shape {
         return {
             ...super.defaults,
             type: 'SurgeArrester',
+            // Its label (see `text-from`)
+            label: { text: 'Surge Arrester' },
             size: {
                 width: 40,
                 height: 80
@@ -64,7 +66,6 @@ export default class SurgeArrester extends Shape {
                 // Beside it: its terminals are on the top and the bottom
                 label: {
                     ...labelAttributes,
-                    text: 'Surge Arrester',
                     x: 'calc(w + 10)',
                     y: 'calc(0.5 * h)',
                     textAnchor: 'start',

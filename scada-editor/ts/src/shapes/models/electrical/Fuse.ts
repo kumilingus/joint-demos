@@ -31,6 +31,8 @@ export default class Fuse extends Shape {
         return {
             ...super.defaults,
             type: 'Fuse',
+            // Its label (see `text-from`)
+            label: { text: 'Fuse' },
             size: {
                 width: 80,
                 height: 20
@@ -62,8 +64,7 @@ export default class Fuse extends Shape {
                     fill: '#6b5b3a'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Fuse'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'in', side: 'left' }, { id: 'out', side: 'right' }])

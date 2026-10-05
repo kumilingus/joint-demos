@@ -1,4 +1,4 @@
-import { dia, mvc, ui, util } from '@joint/plus';
+import { dia, mvc, ui } from '@joint/plus';
 import { cellNamespace } from './shapes';
 import { createStencil } from './palette/stencil';
 import { createGraph } from './canvas/layers';
@@ -39,18 +39,6 @@ import {
 import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
 import { toggleSettings } from './inspector/settings';
-import { withData } from './shapes/common/data';
-import { withoutDrawnAttributes } from './shapes/attributes/from-data';
-import { withStyle } from './shapes/common/style';
-import { withPartColorsInStyle } from './shapes/attributes/style-color';
-import { withoutStoredWidths } from './shapes/common/line-width';
-import { withoutStoredMarkers } from './shapes/models/instruments/Arrow';
-
-/** The color of the part of the cell in the defaults of its shape (its own color, see `withPartColorsInStyle()`) */
-function partDefault(cell: dia.Cell, [selector, attribute]: [string, string]): unknown {
-    const defaults = util.result(cell, 'defaults') as dia.Cell.Attributes | undefined;
-    return defaults?.attrs?.[selector]?.[attribute];
-}
 
 export class App {
 
@@ -175,24 +163,13 @@ export class App {
      * Load a diagram saved with `saveDiagram()`: its cells, its images (see `images.ts`) and the favorite
      * shapes of the palette (see `favorites.ts`), into the layers of the app.
      */
-    loadJSON(saved: dia.Graph.JSON): void {
-        // Saved before the values of the cells were their data, their style (see `data.ts`, `style.ts`)
-        const json = withStyle(withData(saved));
+    loadJSON(json: dia.Graph.JSON): void {
         // Tried on a graph of its own first (an unknown type of a shape, an unknown layer, ...):
         // the diagram is not replaced by a part of the file.
         createGraph().fromJSON(json);
         clearSelection(this);
         // A diagram without images (or favorites) has none (not those of the previous one), all of it animated.
         this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', [STYLE_ATTRIBUTE]: {}, ...json });
-        // The parts drawn from the data: as computed, not as a diagram saved before stored them; their colors in the style
-        this.graph.getElements().forEach(withoutDrawnAttributes);
-        this.graph.getCells().forEach((cell) => {
-            withPartColorsInStyle(cell, partDefault);
-            // The widths of the strokes of a link: at its size (see `line-width.ts`), not as stored
-            withoutStoredWidths(cell);
-            // The arrowheads of an arrow: of its `sourceArrowhead`, `targetArrowhead` (see `Arrow`)
-            withoutStoredMarkers(cell);
-        });
         this.applyStyle();
         this.history.reset();
         zoomToFit(this);

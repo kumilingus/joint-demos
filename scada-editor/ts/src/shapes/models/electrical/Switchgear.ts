@@ -49,6 +49,8 @@ export default class Switchgear extends Shape {
         return {
             ...super.defaults,
             type: 'Switchgear',
+            // Its label (see `text-from`)
+            label: { text: 'Switchgear' },
             size: {
                 width: 240,
                 height: 150
@@ -75,7 +77,6 @@ export default class Switchgear extends Shape {
                 // Above it: its terminals are at the bottom
                 label: {
                     ...labelAttributes,
-                    text: 'Switchgear',
                     y: -8,
                     textVerticalAnchor: 'bottom'
                 }

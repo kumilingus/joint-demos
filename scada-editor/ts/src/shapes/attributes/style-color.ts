@@ -7,7 +7,7 @@ import { type StyleKey, styleOf } from '../common/style';
  * the defaults of the shape: the default of the color field, see `ColorField.part`).
  */
 
-const styleColor = (property: 'fill' | 'stroke') => ({
+const styleColor = (property: 'fill' | 'stroke' | 'opacity' | 'fill-opacity') => ({
     set(this: dia.CellView, key: StyleKey) {
         const color = styleOf<string>(this.model, key);
         return color === undefined ? {} : { [property]: color };
@@ -16,25 +16,8 @@ const styleColor = (property: 'fill' | 'stroke') => ({
 
 export const styleColorAttributes = {
     'style-fill': styleColor('fill'),
-    'style-stroke': styleColor('stroke')
+    'style-stroke': styleColor('stroke'),
+    // `styleOpacity: 'opacity'`, `styleFillOpacity: 'opacity'`: its opacity (an image), of its fill (a shape of the background)
+    'style-opacity': styleColor('opacity'),
+    'style-fill-opacity': styleColor('fill-opacity')
 };
-
-/** The color fields of a cell (see `ColorField`): by the key of the style */
-type Fields = Partial<Record<'colorField' | 'outlineField' | 'accentField', { path: string[]; part?: [string, string] } | null>>;
-
-/**
- * The colors of the parts set on the element itself (a diagram saved before its style had them) moved into its style
- * (silently): its parts back to their own colors, the default ones.
- */
-export function withPartColorsInStyle(cell: dia.Cell, defaultsOf: (cell: dia.Cell, part: [string, string]) => unknown): void {
-    const fields = cell as dia.Cell & Fields;
-    (['colorField', 'outlineField', 'accentField'] as const).forEach((name) => {
-        const field = fields[name];
-        if (!field?.part || field.path[0] !== 'style') return;
-        const color = cell.attr(field.part);
-        const own = defaultsOf(cell, field.part);
-        if (color === undefined || color === own) return;
-        if (styleOf(cell, field.path[1] as StyleKey) === undefined) cell.prop(field.path, color, { silent: true });
-        cell.attr(field.part, own, { silent: true });
-    });
-}

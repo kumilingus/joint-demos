@@ -49,6 +49,8 @@ export default class ReliefValve extends Shape {
         return {
             ...super.defaults,
             type: 'ReliefValve',
+            // Its label (see `text-from`)
+            label: { text: 'Relief Valve' },
             size: {
                 width: 60,
                 height: 80
@@ -98,8 +100,7 @@ export default class ReliefValve extends Shape {
                     strokeLinejoin: 'round'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Relief Valve'
+                    ...labelAttributes
                 }
             },
             // The pipes enter the bottom half.

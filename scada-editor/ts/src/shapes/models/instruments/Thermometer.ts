@@ -71,6 +71,8 @@ export default class Thermometer extends Shape {
         return {
             ...super.defaults,
             type: 'Thermometer',
+            // Its label (see `text-from`)
+            label: { text: 'Thermometer' },
             // What it shows (see `data.ts`)
             data: {
                 // The height of the column in % of the scale
@@ -106,8 +108,8 @@ export default class Thermometer extends Shape {
                 column: {
                     // In the color of its style (see `style-color.ts`)
                     styleFill: 'color',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(w / 2 - 4)',
                     width: 8,
                     fill: MAX_LIQUID_COLOR
@@ -117,10 +119,10 @@ export default class Thermometer extends Shape {
                     stroke: 'var(--shape-scale)',
                     strokeWidth: 1.5
                 },
-                // The temperature, next to the top of the column (see `dataAttributes()`)
+                // The temperature, next to the top of the column (see `attrsOf()`)
                 reading: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(w + 14)',
                     textVerticalAnchor: 'middle',
                     fontSize: 14,
@@ -130,7 +132,6 @@ export default class Thermometer extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Thermometer',
                     y: 'calc(h + 16)'
                 }
             }
@@ -164,7 +165,7 @@ export default class Thermometer extends Shape {
      * The column rises from the bulb to the value on the scale (the scale spans 8% to 68% of the height), the reading
      * (in °C, the scale is 0 - 100 °C) is next to its top - by a transform, as it glides (see `glideKeyframes()`)
      */
-    dataAttributes(selector: string): Record<string, unknown> {
+    attrsOf(selector: string): Record<string, unknown> {
         const value = Math.max(0, Math.min(100, Number(dataOf(this, 'value')) || 0));
         const top = Number(g.scale.linear([0, 100], [0.68, 0.08], value).toFixed(3));
         if (selector === 'column') return { y: `calc(${top} * h)`, height: `calc(${(0.95 - top).toFixed(3)} * h - 8)` };

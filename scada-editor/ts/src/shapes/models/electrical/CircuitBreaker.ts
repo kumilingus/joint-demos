@@ -36,6 +36,8 @@ export default class CircuitBreaker extends Shape {
         return {
             ...super.defaults,
             type: 'CircuitBreaker',
+            // Its label (see `text-from`)
+            label: { text: 'Breaker', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 open: false
@@ -78,8 +80,8 @@ export default class CircuitBreaker extends Shape {
                     fill: '#1a1f24'
                 },
                 lever: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(0.5 * w - 8)',
                     width: 16,
                     height: 'calc(0.16 * h)',
@@ -90,8 +92,8 @@ export default class CircuitBreaker extends Shape {
                     strokeWidth: 1.5
                 },
                 window: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(0.25 * w)',
                     y: 'calc(0.64 * h)',
                     width: 'calc(0.5 * w)',
@@ -100,8 +102,8 @@ export default class CircuitBreaker extends Shape {
                     ry: 2
                 },
                 state: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.72 * h)',
                     textAnchor: 'middle',
@@ -114,8 +116,6 @@ export default class CircuitBreaker extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Breaker'
                 }
             },
             ports: terminalPorts([{ id: 'in', side: 'left' }, { id: 'out', side: 'right' }])
@@ -130,8 +130,8 @@ export default class CircuitBreaker extends Shape {
         super.initialize(...args);
     }
 
-    /** The lever up (closed) or down (open), the state in its color in the window (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The lever up (closed) or down (open), the state in its color in the window (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         const open = Boolean(dataOf(this, 'open'));
         switch (selector) {
             case 'lever': return { y: open ? 'calc(0.4 * h)' : 'calc(0.2 * h)' };

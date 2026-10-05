@@ -38,6 +38,8 @@ export default class BallValve extends Shape {
         return {
             ...super.defaults,
             type: 'BallValve',
+            // Its label (see `text-from`)
+            label: { text: 'Ball Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 open: true
@@ -62,8 +64,8 @@ export default class BallValve extends Shape {
                     strokeWidth: 2
                 },
                 bore: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     d: 'M -7 0 H 7',
                     stroke: '#333',
                     strokeWidth: 4,
@@ -72,8 +74,6 @@ export default class BallValve extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Ball Valve'
                 }
             },
             ports: pipePorts(this.stubLength)
@@ -88,8 +88,8 @@ export default class BallValve extends Shape {
         super.initialize(...args);
     }
 
-    /** The bore across the flow (closed) or along it (open), see `from-data.ts` */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The bore across the flow (closed) or along it (open), see `computed.ts` */
+    attrsOf(selector: string): Record<string, unknown> {
         if (selector !== 'bore') return {};
         const angle = dataOf(this, 'open') ? 0 : 90;
         return { transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})` };

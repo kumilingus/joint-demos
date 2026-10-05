@@ -46,6 +46,8 @@ export default class BatteryBank extends Shape {
         return {
             ...super.defaults,
             type: 'BatteryBank',
+            // Its label (see `text-from`)
+            label: { text: 'Battery Bank' },
             // What it shows (see `data.ts`)
             data: {
                 // The charge (0 - 100)
@@ -81,8 +83,8 @@ export default class BatteryBank extends Shape {
                 charge: {
                     // In the accent of its style (see `style-color.ts`)
                     styleFill: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     x: GAUGE_PADDING,
                     y: 'calc(0.8 * h)',
                     height: 'calc(0.12 * h)',
@@ -91,8 +93,7 @@ export default class BatteryBank extends Shape {
                     fill: LIQUID_COLOR
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Battery Bank'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'out', side: 'right', along: 'calc(0.4 * h)' }])
@@ -117,8 +118,8 @@ export default class BatteryBank extends Shape {
         return { charge: { width: `${ratio * (this.size().width - 2 * GAUGE_PADDING)}px` }};
     }
 
-    /** The bar of the gauge as long as the charge (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The bar of the gauge as long as the charge (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         if (selector !== 'charge') return {};
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         return { width: `calc(${ratio} * w - ${2 * GAUGE_PADDING * ratio})` };

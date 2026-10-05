@@ -65,6 +65,8 @@ export default class Blower extends Shape {
         return {
             ...super.defaults,
             type: 'Blower',
+            // Its label (see `text-from`)
+            label: { text: 'Blower' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -129,7 +131,6 @@ export default class Blower extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Blower',
                     y: 'calc(h + 14)'
                 }
             },

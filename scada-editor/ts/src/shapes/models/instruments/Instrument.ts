@@ -38,6 +38,8 @@ export default class Instrument extends Shape {
         return {
             ...super.defaults,
             type: 'Instrument',
+            function: 'PT',
+            loop: '101',
             size: {
                 width: 60,
                 height: 60
@@ -61,7 +63,8 @@ export default class Instrument extends Shape {
                     strokeWidth: 2
                 },
                 tag: {
-                    text: 'PT',
+                    // The text of the model (see `text-from`)
+                    textFrom: ['function'],
                     x: 'calc(w / 2)',
                     y: 'calc(h / 2 - 4)',
                     textAnchor: 'middle',
@@ -72,7 +75,8 @@ export default class Instrument extends Shape {
                     fill: 'var(--shape-instrument-text)'
                 },
                 loop: {
-                    text: '101',
+                    // The text of the model (see `text-from`)
+                    textFrom: ['loop'],
                     x: 'calc(w / 2)',
                     y: 'calc(h / 2 + 4)',
                     textAnchor: 'middle',

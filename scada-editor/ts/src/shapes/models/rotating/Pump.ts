@@ -49,6 +49,8 @@ export default class Pump extends Shape {
         return {
             ...super.defaults,
             type: 'Pump',
+            // Its label (see `text-from`)
+            label: { text: 'Pump' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -79,8 +81,7 @@ export default class Pump extends Shape {
                     surfaceFill: 'sphere'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Pump'
+                    ...labelAttributes
                 },
                 rotorGroup: {
                     transform: 'translate(calc(w/2),calc(h/2))'

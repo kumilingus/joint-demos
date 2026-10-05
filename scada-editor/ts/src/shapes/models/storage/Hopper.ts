@@ -27,6 +27,8 @@ export default class Hopper extends Shape {
         return {
             ...super.defaults,
             type: 'Hopper',
+            // Its label (see `text-from`)
+            label: { text: 'Hopper' },
             size: {
                 width: 120,
                 height: 120
@@ -63,8 +65,7 @@ export default class Hopper extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Hopper'
+                    ...labelAttributes
                 }
             }
         };

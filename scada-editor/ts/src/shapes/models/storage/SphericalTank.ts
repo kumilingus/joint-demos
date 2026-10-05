@@ -36,6 +36,8 @@ export default class SphericalTank extends Shape {
         return {
             ...super.defaults,
             type: 'SphericalTank',
+            // Its label (see `text-from`)
+            label: { text: 'Sphere' },
             size: {
                 width: 140,
                 height: 140
@@ -76,7 +78,6 @@ export default class SphericalTank extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Sphere',
                     y: 'calc(h + 20)'
                 }
             }

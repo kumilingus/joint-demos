@@ -50,6 +50,8 @@ export default class Scrubber extends Shape {
         return {
             ...super.defaults,
             type: 'Scrubber',
+            // Its label (see `text-from`)
+            label: { text: 'Scrubber' },
             size: {
                 width: 80,
                 height: 220
@@ -122,7 +124,6 @@ export default class Scrubber extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Scrubber',
                     y: 'calc(h + 18)'
                 }
             }

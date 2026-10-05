@@ -47,6 +47,8 @@ export default class ButterflyValve extends Shape {
         return {
             ...super.defaults,
             type: 'ButterflyValve',
+            // Its label (see `text-from`)
+            label: { text: 'Butterfly Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 open: true
@@ -63,8 +65,8 @@ export default class ButterflyValve extends Shape {
                 lever: leverAttributes,
                 body: bowTieAttributes,
                 disc: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     d: 'M 0 -16 V 16',
                     stroke: '#333',
                     strokeWidth: 5,
@@ -81,8 +83,6 @@ export default class ButterflyValve extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Butterfly Valve'
                 }
             },
             ports: pipePorts(this.stubLength)
@@ -97,8 +97,8 @@ export default class ButterflyValve extends Shape {
         super.initialize(...args);
     }
 
-    /** The disc along the flow (open) or across it (closed), see `from-data.ts` */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The disc along the flow (open) or across it (closed), see `computed.ts` */
+    attrsOf(selector: string): Record<string, unknown> {
         if (selector !== 'disc') return {};
         const angle = dataOf(this, 'open') ? 90 : 0;
         return { transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})` };

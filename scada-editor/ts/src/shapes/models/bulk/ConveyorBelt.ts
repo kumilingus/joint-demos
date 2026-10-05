@@ -56,6 +56,8 @@ export default class ConveyorBelt extends Shape {
         return {
             ...super.defaults,
             type: 'ConveyorBelt',
+            // Its label (see `text-from`)
+            label: { text: 'Conveyor' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -92,7 +94,6 @@ export default class ConveyorBelt extends Shape {
                 box2: box(BOX_POSITIONS[1]),
                 label: {
                     ...labelAttributes,
-                    text: 'Conveyor',
                     y: 'calc(h + 22)'
                 }
             }

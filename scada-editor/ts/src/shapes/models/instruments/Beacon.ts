@@ -41,6 +41,8 @@ export default class Beacon extends Shape {
         return {
             ...super.defaults,
             type: 'Beacon',
+            // Its label (see `text-from`)
+            label: { text: 'Beacon' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -56,8 +58,8 @@ export default class Beacon extends Shape {
                 },
                 // Around the lamp, over its surroundings (not a part of the footprint of the shape: shown while it's on only)
                 glow: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     cx: 'calc(w / 2)',
                     cy: 'calc(0.4 * w)',
                     r: 'calc(0.9 * w)',
@@ -66,8 +68,8 @@ export default class Beacon extends Shape {
                 },
                 // The dome from the top of the element (its center `0.4 * w` below it)
                 lamp: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     d: 'M calc(0.1 * w) calc(0.7 * h) V calc(0.4 * w) A calc(0.4 * w) calc(0.4 * w) 0 0 1 calc(0.9 * w) calc(0.4 * w) V calc(0.7 * h) Z',
                     stroke: '#333',
                     strokeWidth: 2
@@ -92,8 +94,7 @@ export default class Beacon extends Shape {
                     surfaceFill: 'plate'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Beacon'
+                    ...labelAttributes
                 }
             }
         };
@@ -107,8 +108,8 @@ export default class Beacon extends Shape {
         super.initialize(...args);
     }
 
-    /** The lamp lit and glowing while the alarm is on (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The lamp lit and glowing while the alarm is on (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         const on = Boolean(dataOf(this, 'power'));
         if (selector === 'lamp') return { fill: on ? MAX_LIQUID_COLOR : LAMP_OFF_COLOR };
         if (selector === 'glow') return { display: on ? 'block' : 'none' };

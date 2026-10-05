@@ -49,15 +49,6 @@ export const lineWidthAttributes = {
     }
 };
 
-/** The widths of the strokes removed from the link (silently): stored by a diagram saved before they were scaled */
-export function withoutStoredWidths(cell: dia.Cell): void {
-    const strokeWidths = (cell as dia.Cell & { strokeWidths?: StrokeWidths }).strokeWidths;
-    if (!strokeWidths) return;
-    Object.keys(strokeWidths).forEach((selector) => {
-        if (cell.attr([selector, 'strokeWidth']) !== undefined) cell.removeAttr([selector, 'strokeWidth'], { silent: true });
-    });
-}
-
 /** Whether the user chooses the width of the link (see `lineWidthAttributes`) */
 export function hasLineWidth(cell: dia.Cell): boolean {
     return (cell as dia.Cell & { strokeWidths?: StrokeWidths }).strokeWidths !== undefined;

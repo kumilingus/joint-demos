@@ -35,6 +35,8 @@ export default class HorizontalTank extends Shape {
         return {
             ...super.defaults,
             type: 'HorizontalTank',
+            // Its label (see `text-from`)
+            label: { text: 'Horizontal Tank' },
             size: {
                 width: 200,
                 height: 80
@@ -89,7 +91,6 @@ export default class HorizontalTank extends Shape {
                 },
                 label: {
                     ...labelAttributes,
-                    text: 'Horizontal Tank',
                     y: 'calc(h + 18)'
                 }
             }

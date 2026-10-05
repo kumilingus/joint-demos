@@ -44,6 +44,8 @@ export default class Compressor extends Shape {
         return {
             ...super.defaults,
             type: 'Compressor',
+            // Its label (see `text-from`)
+            label: { text: 'Compressor' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -99,8 +101,7 @@ export default class Compressor extends Shape {
                     strokeLinejoin: 'round'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Compressor'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)

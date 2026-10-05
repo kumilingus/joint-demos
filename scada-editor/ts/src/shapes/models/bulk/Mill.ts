@@ -61,6 +61,8 @@ export default class Mill extends Shape {
         return {
             ...super.defaults,
             type: 'Mill',
+            // Its label (see `text-from`)
+            label: { text: 'Mill' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -147,8 +149,7 @@ export default class Mill extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Mill'
+                    ...labelAttributes
                 }
             }
         };

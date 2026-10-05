@@ -111,7 +111,7 @@ const toggle = (probability: number): Generator => element => (chance(probabilit
 /** The highest pressure shown on the displays with the `bar` unit */
 function highestPressure(graph: dia.Graph): number {
     const pressures = graph.getElements()
-        .filter(element => element.get('type') === 'Display' && element.attr('unit/text') === 'bar')
+        .filter(element => element.get('type') === 'Display' && element.get('unit') === 'bar')
         .map(element => Number(dataOf(element, 'value')))
         .filter(value => !Number.isNaN(value));
     return pressures.length > 0 ? Math.max(...pressures) : 0;
@@ -125,7 +125,7 @@ const generators: Record<string, Generator> = {
     // The feed pumps push the water.
     FlowMeter: (element, graph) => roundTo(Math.max(0, follow(Number(valueOf(element)), withPumps(graph, PUMP_FLOW), 0.5)), 10),
     Display: (element) => {
-        const { step, min, max } = DISPLAY_RANGES[element.attr('unit/text')] ?? DISPLAY_RANGES.bar;
+        const { step, min, max } = DISPLAY_RANGES[element.get('unit')] ?? DISPLAY_RANGES.bar;
         return roundTo(drift(Number(valueOf(element)) || min, step, min, max), 10);
     },
     // How much it is open (%), in steps of a quarter

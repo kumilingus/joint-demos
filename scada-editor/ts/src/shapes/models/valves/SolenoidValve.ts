@@ -44,6 +44,8 @@ export default class SolenoidValve extends Shape {
         return {
             ...super.defaults,
             type: 'SolenoidValve',
+            // Its label (see `text-from`)
+            label: { text: 'Solenoid Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
                 open: true
@@ -77,8 +79,8 @@ export default class SolenoidValve extends Shape {
                     strokeWidth: 2
                 },
                 coilLabel: {
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     text: 'S',
                     x: 'calc(w / 2)',
                     y: -20,
@@ -91,8 +93,6 @@ export default class SolenoidValve extends Shape {
                 label: {
                     ...labelAttributes,
                     // Above it: its control below (see `controlPosition` in `controls.ts`)
-                    labelPosition: 'top',
-                    text: 'Solenoid Valve'
                 }
             },
             ports: pipePorts(this.stubLength)
@@ -107,8 +107,8 @@ export default class SolenoidValve extends Shape {
         super.initialize(...args);
     }
 
-    /** The coil lit while the valve is open (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The coil lit while the valve is open (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         return selector === 'coilLabel' ? { fill: dataOf(this, 'open') ? LIQUID_COLOR : '#bbb' } : {};
     }
 

@@ -49,6 +49,8 @@ export default class Turbine extends Shape {
         return {
             ...super.defaults,
             type: 'Turbine',
+            // Its label (see `text-from`)
+            label: { text: 'Turbine' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -95,8 +97,7 @@ export default class Turbine extends Shape {
                     strokeOpacity: 0
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Turbine'
+                    ...labelAttributes
                 }
             },
             ports: pipePorts(this.stubLength)

@@ -48,6 +48,8 @@ export default class Trend extends Shape {
         return {
             ...super.defaults,
             type: 'Trend',
+            // Its label (see `text-from`)
+            label: { text: 'Trend' },
             // What it shows (see `data.ts`)
             data: {
                 // The recent values (0 - 100), the oldest first
@@ -91,8 +93,8 @@ export default class Trend extends Shape {
                 line: {
                     // In the accent of its style (see `style-color.ts`)
                     styleStroke: 'accent',
-                    // Drawn from the data (see `dataAttributes()`)
-                    fromData: true,
+                    // Computed (see `attrsOf()`)
+                    computed: true,
                     fill: 'none',
                     stroke: LIQUID_COLOR,
                     strokeWidth: 2,
@@ -100,8 +102,7 @@ export default class Trend extends Shape {
                     strokeLinecap: 'round'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Trend'
+                    ...labelAttributes
                 }
             }
         };
@@ -115,8 +116,8 @@ export default class Trend extends Shape {
         super.initialize(...args);
     }
 
-    /** The line through the values, across the whole width of the chart (see `from-data.ts`) */
-    dataAttributes(selector: string): Record<string, unknown> {
+    /** The line through the values, across the whole width of the chart (see `computed.ts`) */
+    attrsOf(selector: string): Record<string, unknown> {
         if (selector !== 'line') return {};
         const values = dataOf<number[]>(this, 'values') || [];
         const last = Math.max(1, values.length - 1);

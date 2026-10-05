@@ -41,6 +41,8 @@ export default class PowerTransformer extends Shape {
         return {
             ...super.defaults,
             type: 'PowerTransformer',
+            // Its label (see `text-from`)
+            label: { text: 'Power Transformer' },
             size: {
                 width: 160,
                 height: 150
@@ -97,8 +99,7 @@ export default class PowerTransformer extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Power Transformer'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([

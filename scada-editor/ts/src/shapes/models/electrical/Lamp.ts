@@ -27,6 +27,8 @@ export default class Lamp extends Shape {
         return {
             ...super.defaults,
             type: 'Lamp',
+            // Its label (see `text-from`)
+            label: { text: 'Lamp' },
             size: {
                 width: 60,
                 height: 80
@@ -67,8 +69,7 @@ export default class Lamp extends Shape {
                     strokeWidth: 1.5
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Lamp'
+                    ...labelAttributes
                 }
             },
             ports: terminalPorts([{ id: 'in', side: 'top' }])

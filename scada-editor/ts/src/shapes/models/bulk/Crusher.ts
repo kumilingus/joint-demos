@@ -69,6 +69,8 @@ export default class Crusher extends Shape {
         return {
             ...super.defaults,
             type: 'Crusher',
+            // Its label (see `text-from`)
+            label: { text: 'Crusher' },
             // What it shows (see `data.ts`)
             data: {
                 // 0 = off, 1 = on
@@ -150,8 +152,7 @@ export default class Crusher extends Shape {
                     strokeLinecap: 'round'
                 },
                 label: {
-                    ...labelAttributes,
-                    text: 'Crusher'
+                    ...labelAttributes
                 }
             }
         };

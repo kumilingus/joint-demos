@@ -70,6 +70,8 @@ export default class BarChart extends Shape {
         return {
             ...super.defaults,
             type: 'BarChart',
+            // Its label (see `text-from`)
+            label: { text: 'Bar Chart' },
             // What it shows (see `data.ts`)
             data: {
                 // The scale of the values
@@ -120,8 +122,7 @@ export default class BarChart extends Shape {
                 },
                 ...scaleAttributes(),
                 label: {
-                    ...labelAttributes,
-                    text: 'Bar Chart'
+                    ...labelAttributes
                 }
             }
         };
