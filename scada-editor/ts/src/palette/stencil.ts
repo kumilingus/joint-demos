@@ -285,10 +285,10 @@ function createShapes(): Record<string, dia.Cell[]> {
         instruments: [
             new Instrument(),
             new PressureGauge(),
-            new Panel({ level: 70 }),
+            new Panel({ data: { level: 70 }}),
             new Thermometer(),
             new FlowMeter(),
-            new Beacon({ power: 1 }),
+            new Beacon({ data: { power: 1 }}),
             new Display(),
             new SignalLine({
                 source: { x: 0, y: 0 },
