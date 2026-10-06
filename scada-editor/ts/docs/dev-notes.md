@@ -11,7 +11,7 @@ For programmers extending the demo or connecting a plant. Usage: [user guide](us
 
 ### Controllers
 
-A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as its first callback argument: handlers are named functions `(app, ...eventArgs)`. What a controller owns (the log of `LogController`, the animations of `AnimationsController`) is its second callback argument: `(app, log, ...eventArgs)`. `App.controllers` listen all the time; `App.modeControllers` start and stop with their mode. A controller decides *when*, an action in `actions/` *what*.
+A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as its first callback argument: handlers are named functions `(app, ...eventArgs)`. What a controller owns (the log of `LogController`, the animations of `AnimationsController`) is its second callback argument: `(app, log, ...eventArgs)`. A controller file holds the controller and its handlers only - highlighters, constants and helpers live in their areas (`canvas/`, `runtime/`, `log/`, `events.ts`). `App.controllers` listen all the time; `App.modeControllers` start and stop with their mode. A controller decides *when*, an action in `actions/` *what*.
 
 | Controller | Mode | Listens to |
 |---|---|---|
@@ -47,6 +47,7 @@ Opening a diagram clears the history.
 src/
   main.ts, app.ts, const.ts   entry, App, constants
   tooltips.ts         the tooltips of the app
+  events.ts           what an event means (adds to the selection, drags a copy, typed into a field)
   diagram-style.ts    the style of a diagram
   examples.ts         the examples list
   styles.css          imports: JointJS+ and theme layers, tokens, then the area CSS (layout.css, */*.css)
@@ -57,9 +58,9 @@ src/
   toolbar/            toolbar (of each mode), config (the tools in each mode), toolbar.css
   palette/            stencil, packing, preview, descriptions, images, favorites
   inspector/          inspector, selection inspector, empty (nothing selected: the examples), color field, help, settings
-  runtime/            controls, animations
+  runtime/            controls, animations, electrical (the energized circuits)
   plant/              plant.ts (the interface), properties.ts, tags.ts; mock/ - the simulated plant
-  log/                the log of plant messages
+  log/                the log of plant messages, what it shows on the diagram (log-hooks)
   controllers/
   shapes/             models/<palette group>/, views/, common/ (Shape, ports, footprint, routing, gradients, charts),
                       attributes/ (label, from-style, computed, flip), shapes.css (shape colors), index.ts (the namespace)

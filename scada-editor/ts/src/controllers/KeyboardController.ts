@@ -3,6 +3,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { copySelection, cutSelection, flipSelection, groupSelection, paste, redo, removeSelection, selectAll, selectElements, selectUp, undo, ungroupSelection } from '../actions';
 import { closeMenu } from '../canvas/context-menu';
+import { isTyping } from '../events';
 
 /**
  * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, flip, `Escape` one level
@@ -31,11 +32,6 @@ export default class KeyboardController extends Controller {
             'shift+v': onFlipVertically
         });
     }
-}
-
-/** Whether the key was pressed while typing (e.g. into the inspector). */
-function isTyping(evt: dia.Event): boolean {
-    return evt.target instanceof Element && evt.target.closest('input, textarea, select, [contenteditable]') !== null;
 }
 
 function onDelete(app: App, evt: dia.Event) {
@@ -110,15 +106,13 @@ function onUngroup(app: App, evt: dia.Event) {
 }
 
 function onFlipHorizontally(app: App, evt: dia.Event) {
-    onFlip(app, evt, 'x');
+    if (isTyping(evt)) return;
+    evt.preventDefault();
+    flipSelection(app, 'x');
 }
 
 function onFlipVertically(app: App, evt: dia.Event) {
-    onFlip(app, evt, 'y');
-}
-
-function onFlip(app: App, evt: dia.Event, axis: 'x' | 'y') {
     if (isTyping(evt)) return;
     evt.preventDefault();
-    flipSelection(app, axis);
+    flipSelection(app, 'y');
 }

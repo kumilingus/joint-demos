@@ -41,12 +41,9 @@ export default class AnimationsController extends Controller<[App, Animations]> 
     }
 }
 
-function onDataChange(_app: App, animations: Animations, cell: dia.Cell) {
-    if (animations.stateChanged(cell)) onStateChange(animations, cell);
-}
-
 /** The cell switched on or off, opened or closed: its animations, and of the pipes of an element */
-function onStateChange(animations: Animations, cell: dia.Cell) {
+function onDataChange(_app: App, animations: Animations, cell: dia.Cell) {
+    if (!animations.stateChanged(cell)) return;
     animations.animate(cell);
     if (cell.isElement()) animations.animatePipes(cell);
 }

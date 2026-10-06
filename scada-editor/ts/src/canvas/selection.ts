@@ -1,7 +1,9 @@
-import { dia, highlighters, type mvc, ui, V } from '@joint/plus';
+import { dia, highlighters, linkTools, type mvc, ui, V } from '@joint/plus';
 import Pipe, { pipeOutlineWidth } from '../shapes/models/piping/Pipe';
 import { isGroup } from '../shapes/models/diagram/Group';
-import { SELECTION_COLOR, SELECTION_PADDING } from '../const';
+import { GRID_SIZE, SELECTION_COLOR, SELECTION_PADDING } from '../const';
+import { SourceArrowhead, TargetArrowhead, VertexHandle } from './tools';
+import Shape, { type ResizeOptions } from '../shapes/common/Shape';
 import { scaledWidth } from '../shapes/common/line-width';
 
 /*
@@ -164,4 +166,79 @@ export function preventSelectionInteraction(selection: ui.Selection, evt: dia.Ev
     if (interactionPrevented) return;
     if (action === 'translating') selection.options.graph?.stopBatch('selection-translate');
     selection.eventData(evt, { interactionPrevented: true });
+}
+
+/**
+ * The selection on the paper (its frames are drawn by `ui.Selection`, see `createSelection()`): a cell selected alone
+ * with its tools, the selected groups with their badges; a hover frame is out of date.
+ */
+export function showSelection(paper: dia.Paper, selection: mvc.Collection<dia.Cell>): void {
+    hideSelectedTools(paper);
+    showGroupBadges(paper, selection);
+    showHover(paper, null);
+    if (selection.length === 1) showSelectedTools(paper, selection.at(0));
+}
+
+/** A cell selected alone: an element with the free transform, a pipe with the link tools */
+function showSelectedTools(paper: dia.Paper, cell: dia.Cell): void {
+    const cellView = cell.findView(paper);
+    // A group is moved only (by its members), its frame is the one of the selection.
+    if (!cellView || isGroup(cell)) return;
+    if (cell.isElement()) {
+        // An element can be resized and rotated.
+        new ui.FreeTransform({
+            cellView,
+            ...getTransformOptions(cell),
+            // The padding in the coordinates of the graph: as the frame of the selection (see `selection.ts`)
+            usePaperScale: true,
+            padding: SELECTION_PADDING,
+            // The selection is cleared by the app.
+            clearAll: false,
+            clearOnBlankPointerdown: false,
+        }).render();
+        return;
+    }
+    // A pipe can be reshaped (vertices) and reconnected (arrowheads).
+    cellView.addTools(new dia.ToolsView({
+        tools: [
+            new linkTools.Vertices({ handleClass: VertexHandle }),
+            // Reconnect the end, or move its anchor along the side of the same element
+            new SourceArrowhead(),
+            new TargetArrowhead()
+        ]
+    }));
+}
+
+/** The resize handles: those of the shape, or for the constraints - all of them, unless the width or the height can't change. */
+function resizeDirections({ minWidth, maxWidth, minHeight, maxHeight, directions }: ResizeOptions): dia.Direction[] {
+    if (directions) return directions;
+    const fixedWidth = minWidth !== undefined && minWidth === maxWidth;
+    const fixedHeight = minHeight !== undefined && minHeight === maxHeight;
+    if (fixedWidth && fixedHeight) return [];
+    if (fixedWidth) return ['top', 'bottom'];
+    if (fixedHeight) return ['left', 'right'];
+    return ['top-left', 'top', 'top-right', 'right', 'bottom-right', 'bottom', 'bottom-left', 'left'];
+}
+
+/** How the shape can be transformed: resized (down to its minimal size, keeping its aspect ratio, ...) and rotated. */
+function getTransformOptions(cell: dia.Cell): Partial<ui.FreeTransform.Options> {
+    // The screen: any size, not rotated
+    if (!Shape.isShape(cell)) return { allowRotation: false };
+    const resizeOptions = cell.resizeOptions();
+    return {
+        allowRotation: cell.rotatable,
+        // No resize handles at all, or the constraints of resizing (the minimal size, ...)
+        ...(resizeOptions ? resizeOptions : { resizeDirections: [] }),
+        // A fixed width or height: the handles of the other one only
+        ...(resizeOptions ? { resizeDirections: resizeDirections(resizeOptions) } : {}),
+        // The size changes in two steps of the grid: the half of it (the center of the element,
+        // where the pipes are often anchored) stays on the grid too.
+        resizeGrid: { width: 2 * GRID_SIZE, height: 2 * GRID_SIZE }
+    };
+}
+
+/** The tools of the cells are the ones of the selection only. */
+function hideSelectedTools(paper: dia.Paper): void {
+    ui.FreeTransform.clear(paper);
+    paper.removeTools();
 }

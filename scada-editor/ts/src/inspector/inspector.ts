@@ -15,6 +15,9 @@ import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
 import { type DataKey, dataOf, hasData } from '../shapes/common/data';
 import type { App } from '../app';
 import { closePanel, type PanelContent, showInPanel } from './panel';
+import { openSettings } from './settings';
+import Screen from '../shapes/models/diagram/Screen';
+import { selectCell } from '../actions';
 
 const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
@@ -545,6 +548,25 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     ) as Inputs;
 }
 
+/**
+ * The inspector panel shows a cell only when it is the only one selected (the screen: the settings), several
+ * cells their appearance; a selection replaces what it shows (a shape of the palette, see `panel.ts`).
+ */
+export function inspectSelection(app: App, keepSettings = false): void {
+    const { selection } = app;
+    if (keepSettings && selection.length === 0) return;
+    const cell = selection.length === 1 ? selection.at(0) : null;
+    if (cell instanceof Screen) {
+        openSettings(app);
+    } else if (cell) {
+        openInspector(app, cell, member => selectCell(app, member));
+    } else if (selection.length > 1) {
+        openSelectionInspector(app, selection.toArray());
+    } else {
+        closePanel(app);
+    }
+}
+
 /** The inspector of the appearance of the cells (see `selection-inspector.ts`), with a note under its heading */
 function renderAppearanceInspector(cells: dia.Cell[], label: string, note?: string): ui.Inspector | null {
     const inspector = createAppearanceInspector(cells, label);
@@ -561,7 +583,7 @@ function renderAppearanceInspector(cells: dia.Cell[], label: string, note?: stri
 }
 
 /** Show the inspector of several selected cells in the panel: their appearance at once (a group for its members) */
-export function openSelectionInspector(app: App, cells: dia.Cell[]): void {
+function openSelectionInspector(app: App, cells: dia.Cell[]): void {
     const appearance = renderAppearanceInspector(appearanceTargets(cells), `Appearance · ${cells.length} selected`);
     if (appearance) {
         showInPanel(app, inspectorContent([appearance]));
@@ -571,7 +593,7 @@ export function openSelectionInspector(app: App, cells: dia.Cell[]): void {
 }
 
 /** Show the inspector of the cell in the panel; a click on a member of a group selects it (`onMemberSelect`). */
-export function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.Cell) => void): void {
+function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.Cell) => void): void {
     const linkName = LINK_NAMES[cell.get('type')] ?? 'Pipe';
     const inspector = new ui.Inspector({
         cell,

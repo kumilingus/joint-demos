@@ -1,8 +1,9 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { clearSelection, clickTarget, duplicate, selectAtLevel, selectCell, toggleAtLevel } from '../actions';
-import { delegateDrag, getDragDelegate } from '../canvas/drag';
+import { clearSelection, clickTarget, dragCopy, dropCopy, selectAtLevel, toggleAtLevel } from '../actions';
+import { getDragDelegate } from '../canvas/drag';
+import { isDuplicateEvent, isSelectionEvent } from '../events';
 import { openBlankMenu, openCellMenu } from '../canvas/context-menu';
 import { preventSelectionInteraction, showHover } from '../canvas/selection';
 
@@ -34,11 +35,6 @@ export default class EditController extends Controller {
             'element:pointerup': onElementPointerup
         });
     }
-}
-
-/** Whether the event adds to the selection (a cell picked, a region selected). */
-export function isSelectionEvent(evt: dia.Event): boolean {
-    return Boolean(evt.shiftKey || evt.ctrlKey || evt.metaKey);
 }
 
 function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {
@@ -77,13 +73,6 @@ function onCellMouseleave(app: App) {
     showHover(app.paper, null);
 }
 
-const DUPLICATE_BATCH = 'duplicate';
-
-/** Whether the press drags a copy: with Cmd / Ctrl (as PowerPoint, Visio) or Alt / Option (as Figma, Illustrator) */
-function isDuplicateEvent(evt: dia.Event): boolean {
-    return Boolean(evt.metaKey || evt.ctrlKey || evt.altKey);
-}
-
 /**
  * Cmd / Ctrl or Alt / Option pressed on an element: not moved (see `onElementPointermove()`), the point of the press
  * kept - a click with it is a click
@@ -104,21 +93,10 @@ function onElementPointermove(app: App, view: dia.ElementView, evt: dia.Event, x
     const { duplicatePressed } = view.eventData(evt);
     if (!duplicatePressed || getDragDelegate(view, evt)) return;
     const moved = view.getDelegatedView();
-    if (!moved) return;
-    app.graph.startBatch(DUPLICATE_BATCH);
-    const copy = duplicate(app, moved.model);
-    const copyView = copy.findView(app.paper) as dia.ElementView | undefined;
-    if (!copyView) {
-        app.graph.stopBatch(DUPLICATE_BATCH);
-        return;
-    }
-    // The copy alone selected (the selection doesn't move the others with it)
-    selectCell(app, copy);
-    view.eventData(evt, { duplicated: true });
-    delegateDrag(view, evt, copyView, duplicatePressed, x, y);
+    if (moved && dragCopy(app, view, evt, moved, duplicatePressed, x, y)) view.eventData(evt, { duplicated: true });
 }
 
 /** The copy dropped: the copy and its move one step of the history */
 function onElementPointerup(app: App, view: dia.ElementView, evt: dia.Event) {
-    if (view.eventData(evt).duplicated) app.graph.stopBatch(DUPLICATE_BATCH);
+    if (view.eventData(evt).duplicated) dropCopy(app);
 }

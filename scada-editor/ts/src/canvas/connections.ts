@@ -1,5 +1,5 @@
 import { anchors, type dia, g } from '@joint/plus';
-import { GRID_SIZE, PIPE_COLOR } from '../const';
+import { DERIVED, GRID_SIZE, PIPE_COLOR } from '../const';
 import Shape from '../shapes/common/Shape';
 import { styleOf } from '../shapes/common/style';
 
@@ -98,4 +98,24 @@ export function pipeColorAt(graph: dia.Graph, element: dia.Element): string {
     const pipe = incoming ?? pipes.find(pipe => pipe.source().id === element.id);
     // Its color (of its style, see `style.ts`), else its own
     return pipe ? String(styleOf(pipe, 'color') ?? pipe.attr('line/stroke') ?? PIPE_COLOR) : PIPE_COLOR;
+}
+
+/** The elements showing the pipe they sit on (its color): the control valves (the pipe through the window) */
+const SHOWS_PIPE = ['ControlValve'];
+
+/** The element showing its pipe in the color of the pipe (see `pipeColorAt()`): derived, not in the history */
+export function showPipeColor(graph: dia.Graph, element: dia.Cell | undefined | null): void {
+    if (!element?.isElement() || !SHOWS_PIPE.includes(element.get('type'))) return;
+    const color = pipeColorAt(graph, element);
+    if (element.attr('liquid/stroke') !== color) element.attr('liquid/stroke', color, DERIVED);
+}
+
+/** The elements at the ends of a link (now, and before the change) showing their pipes */
+export function showPipeColorsAtEnds(graph: dia.Graph, ends: Array<dia.Link.EndJSON | null | undefined>): void {
+    ends.forEach(end => end?.id && showPipeColor(graph, graph.getCell(end.id)));
+}
+
+/** All the elements showing their pipes */
+export function showPipeColors(graph: dia.Graph): void {
+    graph.getElements().forEach(element => showPipeColor(graph, element));
 }

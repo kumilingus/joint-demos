@@ -30,6 +30,22 @@ export function refreshPalette(app: App): void {
 }
 
 /**
+ * A refresh of the palette once for the changes of the moment (many cells added at once: a paste, a drop of a group):
+ * called as often as they come, it refreshes after them
+ */
+export function scheduledPaletteRefresh(app: App): () => void {
+    let scheduled = false;
+    return () => {
+        if (scheduled) return;
+        scheduled = true;
+        queueMicrotask(() => {
+            scheduled = false;
+            refreshPalette(app);
+        });
+    };
+}
+
+/**
  * Delete an image of the user: from the palette, and every element showing it from the diagram.
  * One step of the history (the images are a part of the diagram): an undo brings back both.
  */

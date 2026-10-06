@@ -2,7 +2,8 @@ import { type dia, g } from '@joint/plus';
 import type { App } from '../app';
 import { GRID_SIZE } from '../const';
 import Screen from '../shapes/models/diagram/Screen';
-import { selectCells, removeCells } from './selection';
+import { selectCell, selectCells, removeCells } from './selection';
+import { delegateDrag } from '../canvas/drag';
 
 /*
  * Copy, cut and paste (`ui.Clipboard`).
@@ -86,4 +87,30 @@ export function duplicate(app: App, element: dia.Element): dia.Element {
     const clones = graph.cloneSubgraph(graph.getSubgraph([element], { deep: true }), { deep: true });
     graph.addCells(Object.values(clones));
     return clones[element.id] as dia.Element;
+}
+
+/** The batch of a drag of a copy (see `dragCopy()`): the copy and its move one step of the history */
+const DUPLICATE_BATCH = 'duplicate';
+
+/**
+ * The element moved by the press of the view (the element, its group) copied in place: the copy moved by the press
+ * from now on (see `drag.ts`) and selected alone (the selection doesn't move the others with it) - the original stays,
+ * with its connections. `false` if there is no copy to move.
+ */
+export function dragCopy(app: App, view: dia.ElementView, evt: dia.Event, moved: dia.ElementView, pressed: dia.Point, x: number, y: number): boolean {
+    app.graph.startBatch(DUPLICATE_BATCH);
+    const copy = duplicate(app, moved.model);
+    const copyView = copy.findView(app.paper) as dia.ElementView | undefined;
+    if (!copyView) {
+        app.graph.stopBatch(DUPLICATE_BATCH);
+        return false;
+    }
+    selectCell(app, copy);
+    delegateDrag(view, evt, copyView, pressed, x, y);
+    return true;
+}
+
+/** The copy dropped (see `dragCopy()`): the copy and its move one step of the history */
+export function dropCopy(app: App): void {
+    app.graph.stopBatch(DUPLICATE_BATCH);
 }

@@ -1,21 +1,15 @@
-import { dia, linkTools, ui } from '@joint/plus';
+import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { GRID_SIZE, SELECTION_PADDING } from '../const';
-import { openInspector, openSelectionInspector } from '../inspector/inspector';
-import { closePanel } from '../inspector/panel';
-import { selectCell } from '../actions';
-import { isSettingsOpen, openSettings } from '../inspector/settings';
+import { inspectSelection } from '../inspector/inspector';
+import { isSettingsOpen } from '../inspector/settings';
 import Screen from '../shapes/models/diagram/Screen';
-import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../canvas/tools';
-import Shape, { type ResizeOptions } from '../shapes/common/Shape';
 import { isGroup } from '../shapes/models/diagram/Group';
-import { showGroupBadges, showHover, updateGroupBadge } from '../canvas/selection';
+import { showSelection, updateGroupBadge } from '../canvas/selection';
 
 /**
- * Shows the selected cells in the inspector and a single selected cell with its tools: an element
- * with the free transform, a pipe with the link tools (the frames are drawn by `ui.Selection`,
- * see `selection.ts`). Active in every mode.
+ * Shows the selected cells on the paper (a single selected cell with its tools, see `showSelection()`) and in the
+ * inspector panel (see `inspectSelection()`). Active in every mode.
  */
 export default class SelectionController extends Controller {
 
@@ -32,30 +26,21 @@ export default class SelectionController extends Controller {
 
 /** Cells selected, the selection replaced */
 function onSelectionChange(app: App) {
-    updateSelection(app);
+    showSelection(app.paper, app.selection);
+    inspectSelection(app);
 }
 
 /** The inspector of several cells shows their values (of a stand-in, see `selection-inspector.ts`): after an undo, a redo, again */
 function onHistoryChange(app: App) {
-    if (app.selection.length > 1 || isGroup(app.selection.at(0))) updateInspector(app);
-}
-
-/** A cell selected alone is shown with its tools (and in the inspector). */
-function updateSelection(app: App, keepSettings = false) {
-    const { selection } = app;
-    hideSelected(app);
-    // A selected group has a badge (see `selection.ts`); a hover frame is out of date.
-    showGroupBadges(app.paper, selection);
-    showHover(app.paper, null);
-    if (selection.length === 1) showSelected(app, selection.at(0));
-    updateInspector(app, keepSettings);
+    if (app.selection.length > 1 || isGroup(app.selection.at(0))) inspectSelection(app);
 }
 
 /** The screen removed while it is edited (switched off, deleted, undone): the settings stay open. */
 function onSelectionRemove(app: App, cell: dia.Cell) {
     // More removed with it (see `onCellRemove()`): the last one updates
     if (app.selection.toArray().some(selected => !app.graph.getCell(selected.id))) return;
-    updateSelection(app, cell instanceof Screen && isSettingsOpen(app));
+    showSelection(app.paper, app.selection);
+    inspectSelection(app, cell instanceof Screen && isSettingsOpen(app));
 }
 
 /** The cell removed: with the others selected removed already (the members of a group, ...), all at once */
@@ -74,87 +59,6 @@ function onMembersChange(app: App, cell: dia.Cell) {
     const groups = selection.filter(selected => isGroup(selected) && parents.includes(String(selected.id)));
     if (groups.length === 0) return;
     groups.forEach(group => updateGroupBadge(app.paper, group));
-    if (selection.length === 1) updateInspector(app);
+    if (selection.length === 1) inspectSelection(app);
 }
 
-/**
- * The inspector panel shows a cell only when it is the only one selected (the screen: the settings), several
- * cells their appearance; a selection replaces what it shows (a shape of the palette, see `panel.ts`).
- */
-function updateInspector(app: App, keepSettings = false) {
-    const { selection } = app;
-    if (keepSettings && selection.length === 0) return;
-    const cell = selection.length === 1 ? selection.at(0) : null;
-    if (cell instanceof Screen) {
-        openSettings(app);
-    } else if (cell) {
-        openInspector(app, cell, member => selectCell(app, member));
-    } else if (selection.length > 1) {
-        openSelectionInspector(app, selection.toArray());
-    } else {
-        closePanel(app);
-    }
-}
-
-function showSelected(app: App, cell: dia.Cell) {
-    const cellView = cell.findView(app.paper);
-    // A group is moved only (by its members), its frame is the one of the selection.
-    if (!cellView || isGroup(cell)) return;
-    if (cell.isElement()) {
-        // An element can be resized and rotated.
-        new ui.FreeTransform({
-            cellView,
-            ...getTransformOptions(cell),
-            // The padding in the coordinates of the graph: as the frame of the selection (see `selection.ts`)
-            usePaperScale: true,
-            padding: SELECTION_PADDING,
-            // The selection is cleared by the app.
-            clearAll: false,
-            clearOnBlankPointerdown: false,
-        }).render();
-        return;
-    }
-    // A pipe can be reshaped (vertices) and reconnected (arrowheads).
-    cellView.addTools(new dia.ToolsView({
-        tools: [
-            new linkTools.Vertices({ handleClass: VertexHandle }),
-            // Reconnect the end, or move its anchor along the side of the same element
-            new SourceArrowhead(),
-            new TargetArrowhead()
-        ]
-    }));
-}
-
-/** The resize handles: those of the shape, or for the constraints - all of them, unless the width or the height can't change. */
-function resizeDirections({ minWidth, maxWidth, minHeight, maxHeight, directions }: ResizeOptions): dia.Direction[] {
-    if (directions) return directions;
-    const fixedWidth = minWidth !== undefined && minWidth === maxWidth;
-    const fixedHeight = minHeight !== undefined && minHeight === maxHeight;
-    if (fixedWidth && fixedHeight) return [];
-    if (fixedWidth) return ['top', 'bottom'];
-    if (fixedHeight) return ['left', 'right'];
-    return ['top-left', 'top', 'top-right', 'right', 'bottom-right', 'bottom', 'bottom-left', 'left'];
-}
-
-/** How the shape can be transformed: resized (down to its minimal size, keeping its aspect ratio, ...) and rotated. */
-function getTransformOptions(cell: dia.Cell): Partial<ui.FreeTransform.Options> {
-    // The screen: any size, not rotated
-    if (!Shape.isShape(cell)) return { allowRotation: false };
-    const resizeOptions = cell.resizeOptions();
-    return {
-        allowRotation: cell.rotatable,
-        // No resize handles at all, or the constraints of resizing (the minimal size, ...)
-        ...(resizeOptions ? resizeOptions : { resizeDirections: [] }),
-        // A fixed width or height: the handles of the other one only
-        ...(resizeOptions ? { resizeDirections: resizeDirections(resizeOptions) } : {}),
-        // The size changes in two steps of the grid: the half of it (the center of the element,
-        // where the pipes are often anchored) stays on the grid too.
-        resizeGrid: { width: 2 * GRID_SIZE, height: 2 * GRID_SIZE }
-    };
-}
-
-/** The tools of the cells are the ones of the selection only. */
-function hideSelected(app: App) {
-    ui.FreeTransform.clear(app.paper);
-    app.paper.removeTools();
-}
