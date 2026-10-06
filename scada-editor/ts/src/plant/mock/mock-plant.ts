@@ -203,11 +203,11 @@ const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph)
     }
 };
 
-/** How the data of each type of chart changes (every `CHART_INTERVAL`, see `MockPlant`) */
-type ChartGenerator = (element: dia.Element, graph: dia.Graph, tick: number) => Record<string, unknown> | null;
+/** The sum of the steam flow of the current period of each bar chart (of the run, see `MockPlant`): its next bar is their mean */
+type PeriodFlows = Map<dia.Element, number>;
 
-/** The sum of the steam flow of the current period of each bar chart (by its id): its next bar is their mean */
-const periodFlows = new Map<string, number>();
+/** How the data of each type of chart changes (every `CHART_INTERVAL`, see `MockPlant`) */
+type ChartGenerator = (element: dia.Element, graph: dia.Graph, tick: number, periodFlows: PeriodFlows) => Record<string, unknown> | null;
 
 /** Whether the charts follow the steam of a plant (its flow meters: a boiler house); otherwise they drift on their own */
 const hasSteam = (graph: dia.Graph) => graph.getElements().some(element => element.get('type') === 'FlowMeter');
@@ -226,7 +226,7 @@ const chartGenerators: Record<string, ChartGenerator> = {
         return { 'data/values': [...values, next].slice(-CHART_POINTS) };
     },
     // The steam produced in the last period (the mean flow; or near the last bar): a new bar on the right
-    BarChart: (element, graph, tick) => {
+    BarChart: (element, graph, tick, periodFlows) => {
         if (!hasSteam(graph)) {
             // A new bar now and then, near the last one
             if (tick % BAR_PERIOD !== 0) return null;
@@ -234,12 +234,12 @@ const chartGenerators: Record<string, ChartGenerator> = {
             const values = dataOf<number[]>(element, 'values') || [];
             return { 'data/values': [...values.slice(1), driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max, 0.08)] };
         }
-        const sum = (periodFlows.get(element.id as string) ?? 0) + steamFlow(graph);
+        const sum = (periodFlows.get(element) ?? 0) + steamFlow(graph);
         if (tick % BAR_PERIOD !== 0) {
-            periodFlows.set(element.id as string, sum);
+            periodFlows.set(element, sum);
             return null;
         }
-        periodFlows.delete(element.id as string);
+        periodFlows.delete(element);
         const { min, max } = getScale(element);
         const values = dataOf<number[]>(element, 'values') || [];
         return { 'data/values': [...values.slice(1), roundTo(sum / BAR_PERIOD, max - min)] };
@@ -360,10 +360,10 @@ function restoreReadouts(graph: dia.Graph): void {
 }
 
 /** The updates of the charts (of those with a tag) */
-function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] {
+function createChartUpdates(graph: dia.Graph, tick: number, periodFlows: PeriodFlows): TagUpdate[] {
     return graph.getElements()
         .filter(element => getTag(element) && element.get('type') in chartGenerators)
-        .map(element => ({ tag: getTag(element), changes: chartGenerators[element.get('type')](element, graph, tick) }))
+        .map(element => ({ tag: getTag(element), changes: chartGenerators[element.get('type')](element, graph, tick, periodFlows) }))
         .filter((update): update is TagUpdate => update.changes !== null);
 }
 
@@ -406,6 +406,8 @@ export class MockPlant {
     timer: number | null = null;
     chartTimer: number | null = null;
     tick = 0;
+    /** The steam flows of the bar charts in their current period (see `createChartUpdates()`) */
+    protected periodFlows: PeriodFlows = new Map();
 
     /** The interface of the diagram the updates are sent to (as any system would): of the run */
     plant: Plant | null = null;
@@ -433,7 +435,7 @@ export class MockPlant {
         // The charts on a timer of their own: they move steadily
         this.chartTimer = window.setInterval(() => {
             this.tick++;
-            createChartUpdates(this.graph, this.tick).forEach(update => applyUpdate(this.graph, update));
+            createChartUpdates(this.graph, this.tick, this.periodFlows).forEach(update => applyUpdate(this.graph, update));
         }, CHART_INTERVAL);
     }
 
@@ -451,7 +453,7 @@ export class MockPlant {
         this.chartTimer = null;
         this.tick = 0;
         this.plant = null;
-        periodFlows.clear();
+        this.periodFlows.clear();
     }
 
     /** The timers of the answers to the commands (see `respond()`) */

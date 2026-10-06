@@ -119,22 +119,20 @@ export function updateGroupBadge(paper: dia.Paper, group: dia.Cell): void {
     if (view) GroupBadge.update(view, GROUP_BADGE_ID, true);
 }
 
-/** The hovered cell: what a click selects (see `clickTarget()`), framed as selected, faintly */
-let hovered: dia.Cell | null = null;
-
+/** Frame the hovered cell: what a click selects (see `clickTarget()`), framed as selected, faintly - or none */
 export function showHover(paper: dia.Paper, cell: dia.Cell | null): void {
-    if (hovered === cell) return;
-    const previous = hovered && hovered.findView(paper);
-    if (previous) SelectionFrame.remove(previous, HOVER_ID);
-    hovered = cell;
     const view = cell && cell.findView(paper);
-    if (!view) return;
+    // Framed already (the frames of the paper know the hovered cell)
+    if (view && SelectionFrame.get(view, HOVER_ID)) return;
+    SelectionFrame.removeAll(paper, HOVER_ID);
+    if (!cell || !view) return;
     const options = frameOptions(cell);
     SelectionFrame.add(view, 'root', HOVER_ID, {
         ...options,
         attrs: { ...options.attrs, strokeOpacity: 0.4 }
     });
 }
+
 export function createSelection(scroller: ui.PaperScroller, collection: mvc.Collection<dia.Cell>): ui.Selection {
     return new ui.Selection({
         paper: scroller,
