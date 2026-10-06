@@ -1,4 +1,4 @@
-import type { dia } from '@joint/plus';
+import { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { fitGroups } from '../actions';
@@ -17,9 +17,9 @@ export default class GroupController extends Controller {
     }
 }
 
-/** Of a member: moved, resized or rotated */
-function onCellChange(_app: App, cell: dia.Cell, options: ChangeOptions) {
-    if (!cell.isEmbedded() || options.derived) return;
+/** Of a member: moved, resized or rotated (the graph changes too: its attributes - the images, the style, ...) */
+function onCellChange(_app: App, cell: dia.Cell | dia.Graph, options: ChangeOptions) {
+    if (!(cell instanceof dia.Cell) || !cell.isEmbedded() || options.derived) return;
     const { changed } = cell;
     if (!('position' in changed || 'size' in changed || 'angle' in changed)) return;
     // Moved with an element it is in (the group): its groups move as a whole

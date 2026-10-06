@@ -1,4 +1,4 @@
-import type { dia } from '@joint/plus';
+import { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { showPipeColors, showPipeColorsAtEnds } from '../canvas/connections';
@@ -34,7 +34,8 @@ function onLinkReconnect(app: App, link: dia.Link) {
     showPipeColorsAtEnds(app.graph, [link.source(), link.target(), link.previous('source'), link.previous('target')]);
 }
 
-function onPipeRecolor(app: App, cell: dia.Cell) {
-    if (!cell.isLink() || cell.get('type') !== 'Pipe') return;
+/** Of a pipe (the graph changes its style too: the style of the diagram, see `diagram-style.ts`) */
+function onPipeRecolor(app: App, cell: dia.Cell | dia.Graph) {
+    if (!(cell instanceof dia.Link) || cell.get('type') !== 'Pipe') return;
     showPipeColorsAtEnds(app.graph, [cell.source(), cell.target()]);
 }
