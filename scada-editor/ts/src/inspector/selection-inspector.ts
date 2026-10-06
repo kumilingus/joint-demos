@@ -6,6 +6,7 @@ import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { hasLineWidth, lineWidthField, type LineWidth } from '../shapes/common/line-width';
 import { setStyle, styleOf, unsetStyle } from '../shapes/common/style';
+import { getCellDefaults } from '../shapes/defaults';
 
 /*
  * The appearance of several cells at once (a selection of them, the members of a group): an inspector
@@ -36,7 +37,7 @@ export const OUTLINE_WIDTH_OPTIONS = [
 /** The default color of the cell (of its shape) */
 function defaultColorOf(cell: dia.Cell): unknown {
     const { path, defaultValue } = colorFieldOf(cell)!;
-    return util.getByPath(util.result(cell, 'defaults') || {}, path.join('/'), '/') ?? defaultValue;
+    return util.getByPath(getCellDefaults(cell), path.join('/'), '/') ?? defaultValue;
 }
 
 /** The color of the cell as drawn: its own, or the default of its shape */

@@ -3,6 +3,7 @@ import type { ColorField } from '../shapes/common/Shape';
 import { renderLabel } from './help';
 import { dataOf } from '../shapes/common/data';
 import { setBesidePanel } from '../tooltips';
+import { getCellDefaults } from '../shapes/defaults';
 
 /*
  * The color fields of the inspector: the native color input (with its eyedropper), and the colors
@@ -59,7 +60,7 @@ export function accentFieldOf(cell: dia.Cell): ColorField | null {
 
 /** The default of the color field of the cell: its own, or of the defaults of its shape; none - Auto */
 export function fieldDefault(cell: dia.Cell, field: ColorField): string | undefined {
-    const defaults = util.result(cell, 'defaults') || {};
+    const defaults = getCellDefaults(cell);
     // The color of its part (its own in the defaults of the shape), or of the default of the style
     if (field.part) return field.defaultValue ?? util.getByPath(defaults, ['attrs', ...field.part].join('/'), '/');
     return field.defaultValue ?? util.getByPath(defaults, field.path.join('/'), '/');
@@ -224,7 +225,7 @@ export function renderColorField(
         swatches.append(swatch);
     }
     // The default of the field (of the shape)
-    const defaultColor = options.defaultValue ?? util.getByPath(util.result(cell, 'defaults') || {}, path, '/');
+    const defaultColor = options.defaultValue ?? util.getByPath(getCellDefaults(cell), path, '/');
     if (isHexColor(defaultColor)) {
         swatches.append(createSwatch(defaultColor, `Default ${defaultColor}`, () => pick(defaultColor)));
     } else if (isThemeColor(defaultColor)) {

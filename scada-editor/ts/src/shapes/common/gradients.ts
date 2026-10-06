@@ -1,5 +1,6 @@
-import { type dia, util } from '@joint/plus';
+import type { dia } from '@joint/plus';
 import { styleOf } from './style';
+import { getCellDefaults } from '../defaults';
 
 /*
  * The shading of the equipment: brushed steel lit from the top left.
@@ -330,7 +331,7 @@ const surfaceTypes = new Map<string, { fills: Set<SurfaceFill>; outlined: boolea
 function surfacesOf(element: dia.Element): { fills: Set<SurfaceFill>; outlined: boolean; materials: boolean } {
     const type = element.get('type');
     if (!surfaceTypes.has(type)) {
-        const { attrs = {}}: dia.Element.Attributes = util.result(element, 'defaults');
+        const { attrs = {}} = getCellDefaults(element);
         const nodes = Object.values(attrs).filter(Boolean) as Record<string, unknown>[];
         surfaceTypes.set(type, {
             fills: new Set(nodes.map(node => node.surfaceFill).filter(Boolean) as SurfaceFill[]),
