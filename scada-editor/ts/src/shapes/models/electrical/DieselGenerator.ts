@@ -57,7 +57,7 @@ export default class DieselGenerator extends Shape {
         return {
             ...super.defaults,
             type: 'DieselGenerator',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Diesel Generator', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -88,8 +88,8 @@ export default class DieselGenerator extends Shape {
                     strokeWidth: 2
                 },
                 skid: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     y: 'calc(h - 12)',
                     width: 'calc(w)',
                     height: 12,

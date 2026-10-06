@@ -37,7 +37,7 @@ export default class Display extends Shape {
         return {
             ...super.defaults,
             type: 'Display',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Display', position: 'bottom' },
             unit: 'bar',
             // What it shows (see `data.ts`): the reading
@@ -75,8 +75,8 @@ export default class Display extends Shape {
                 // The texts grow with the height of the display (a `calc()` takes a single
                 // variable, so the unit is in the corner rather than next to the value).
                 value: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     x: 'calc(w / 2)',
@@ -89,8 +89,10 @@ export default class Display extends Shape {
                     fill: LIQUID_COLOR
                 },
                 unit: {
-                    // The text of the model (see `text-from`)
-                    textFrom: ['unit'],
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
+                    // The text of the model (see `from-model`)
+                    fromModel: { text: ['unit'] },
                     x: 'calc(w - 12)',
                     y: 'calc(h - 9)',
                     textAnchor: 'end',
@@ -98,8 +100,6 @@ export default class Display extends Shape {
                     fontSize: 'calc(0.2 * h)',
                     fontFamily: 'sans-serif',
                     fill: LIQUID_COLOR,
-                    // In the accent of its style, as the value (see `style-color.ts`)
-                    styleFill: 'accent',
                     fillOpacity: 0.8
                 },
                 label: {

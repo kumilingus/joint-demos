@@ -36,7 +36,7 @@ export default class Cyclone extends Shape {
         return {
             ...super.defaults,
             type: 'Cyclone',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Cyclone', position: 'bottom' },
             size: {
                 width: 80,

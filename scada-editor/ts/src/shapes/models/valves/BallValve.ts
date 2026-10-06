@@ -38,7 +38,7 @@ export default class BallValve extends Shape {
         return {
             ...super.defaults,
             type: 'BallValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Ball Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {

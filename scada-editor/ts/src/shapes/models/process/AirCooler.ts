@@ -56,7 +56,7 @@ export default class AirCooler extends Shape {
         return {
             ...super.defaults,
             type: 'AirCooler',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Air Cooler', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -79,8 +79,8 @@ export default class AirCooler extends Shape {
                 },
                 // The plenum the fans sit in
                 plenum: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 6,
                     width: 'calc(w - 12)',
                     height: 'calc(0.5 * h)',

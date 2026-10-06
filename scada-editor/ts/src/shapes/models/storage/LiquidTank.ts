@@ -20,7 +20,7 @@ export default class LiquidTank extends Shape {
         return {
             ...super.defaults,
             type: 'LiquidTank',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Tank', position: 'bottom' },
             size: {
                 width: 160,

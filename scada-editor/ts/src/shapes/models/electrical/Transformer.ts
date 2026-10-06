@@ -48,7 +48,7 @@ export default class Transformer extends Shape {
         return {
             ...super.defaults,
             type: 'Transformer',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Transformer', position: 'bottom' },
             size: {
                 width: 80,

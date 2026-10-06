@@ -70,7 +70,7 @@ export default class BarChart extends Shape {
         return {
             ...super.defaults,
             type: 'BarChart',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Bar Chart', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -114,8 +114,8 @@ export default class BarChart extends Shape {
                     strokeOpacity: 0.12
                 },
                 bars: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     chartBars: true,
                     fill: LIQUID_COLOR,
                     fillOpacity: 0.85

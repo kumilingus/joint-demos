@@ -52,3 +52,6 @@ export enum ColorScheme {
     Light = 'light',
     Dark = 'dark'
 }
+
+/** A change derived from another one (not recorded in the history, see `historyOptions`). */
+export const DERIVED = { derived: true };

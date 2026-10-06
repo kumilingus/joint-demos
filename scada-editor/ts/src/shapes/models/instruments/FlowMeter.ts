@@ -38,7 +38,7 @@ export default class FlowMeter extends Shape {
         return {
             ...super.defaults,
             type: 'FlowMeter',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Flow Meter', position: 'bottom' },
             unit: 'm³/h',
             // What it shows (see `data.ts`): the reading
@@ -77,8 +77,8 @@ export default class FlowMeter extends Shape {
                 // The texts grow with the height of the meter.
                 // The value is in the middle of the screen (from 6 to 0.72 * h).
                 value: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     x: 'calc(w / 2)',
@@ -91,8 +91,8 @@ export default class FlowMeter extends Shape {
                     fill: LIQUID_COLOR
                 },
                 unit: {
-                    // The text of the model (see `text-from`)
-                    textFrom: ['unit'],
+                    // The text of the model (see `from-model`)
+                    fromModel: { text: ['unit'] },
                     x: 'calc(w / 2)',
                     // In the middle of the strip below the screen
                     y: 'calc(0.86 * h)',

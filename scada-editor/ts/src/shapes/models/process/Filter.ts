@@ -32,7 +32,7 @@ export default class Filter extends Shape {
         return {
             ...super.defaults,
             type: 'Filter',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Filter', position: 'bottom' },
             size: {
                 width: 60,
@@ -60,8 +60,8 @@ export default class Filter extends Shape {
                     strokeLinecap: 'round'
                 },
                 cap: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 'calc(0.2 * w)',
                     y: -8,
                     width: 'calc(0.6 * w)',

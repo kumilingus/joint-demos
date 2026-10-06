@@ -1,9 +1,9 @@
 import { type dia, util } from '@joint/plus';
 import { terminal, terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import { DERIVED } from '../../common/routing';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type Resizable } from '../../common/Shape';
+import { DERIVED } from '../../../const';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -46,7 +46,7 @@ export default class Busbar extends Shape {
         return {
             ...super.defaults,
             type: 'Busbar',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Busbar' },
             size: {
                 width: 240,

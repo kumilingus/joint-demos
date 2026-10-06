@@ -96,7 +96,7 @@ export default class PressureGauge extends Shape {
         return {
             ...super.defaults,
             type: 'PressureGauge',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Gauge', position: 'bottom' },
             unit: 'bar',
             // What it shows (see `data.ts`)
@@ -171,8 +171,8 @@ export default class PressureGauge extends Shape {
                 },
                 // Pointing up; turned (with a CSS transform, so that it sweeps) to the value.
                 needle: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     d: 'M -3 0 L 0 -20 L 3 0 Z',
@@ -185,8 +185,8 @@ export default class PressureGauge extends Shape {
                     fill: 'var(--shape-gauge-ink)'
                 },
                 unit: {
-                    // The text of the model (see `text-from`)
-                    textFrom: ['unit'],
+                    // The text of the model (see `from-model`)
+                    fromModel: { text: ['unit'] },
                     transform: dialTransform,
                     y: 15,
                     textAnchor: 'middle',

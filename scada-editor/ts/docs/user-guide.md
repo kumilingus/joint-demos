@@ -34,6 +34,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Move** by dragging; **resize** and **rotate** a single shape with its handles.
 - **Flip** - shapes that face a way (pump, check valve, strainer, manifold, turbine, compressor, fan, blower, cyclone, kiln, crusher, mill, bucket elevator): right-click *Flip Horizontally* (`Shift` + `H`) or *Flip Vertically* (`Shift` + `V`) mirrors them instead of turning them upside down; connected pipes stay on their stubs. The strainer and the manifold flip vertically too (the leg up, the outlets up).
 - **Label** - its text and *Label position* (top, left, right, bottom) in the inspector.
+- **Label shape** (a text on its own) - several lines (`Enter` in its text), its font size, style, weight and *Alignment* (left, center, right).
 - **Control position** - the side of a valve's buttons or slider (Controls group).
 
 ![The context menu of a shape](images/context-menu.png)

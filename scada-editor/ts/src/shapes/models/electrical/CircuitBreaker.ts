@@ -36,7 +36,7 @@ export default class CircuitBreaker extends Shape {
         return {
             ...super.defaults,
             type: 'CircuitBreaker',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Breaker', position: 'top' },
             // What it shows (see `data.ts`)
             data: {

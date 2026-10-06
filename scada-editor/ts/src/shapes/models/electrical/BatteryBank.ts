@@ -46,7 +46,7 @@ export default class BatteryBank extends Shape {
         return {
             ...super.defaults,
             type: 'BatteryBank',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Battery Bank', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -81,8 +81,8 @@ export default class BatteryBank extends Shape {
                     fill: '#1e272e'
                 },
                 charge: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     x: GAUGE_PADDING,
@@ -108,7 +108,7 @@ export default class BatteryBank extends Shape {
         super.initialize(...args);
     }
 
-    // The bar glides to a new charge (see `animateLevel()` in `animations.ts`)
+    // The bar glides to a new charge (see `glide.ts`)
     get glideProperty(): DataKey {
         return 'level';
     }

@@ -40,7 +40,7 @@ export default class Motor extends Shape {
         return {
             ...super.defaults,
             type: 'Motor',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Motor', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -106,8 +106,8 @@ export default class Motor extends Shape {
                     strokeWidth: 2
                 },
                 terminalBox: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 'calc(0.35 * w)',
                     y: -12,
                     width: 'calc(0.3 * w)',

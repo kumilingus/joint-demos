@@ -49,7 +49,7 @@ export default class Switchgear extends Shape {
         return {
             ...super.defaults,
             type: 'Switchgear',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Switchgear', position: 'bottom' },
             size: {
                 width: 240,

@@ -44,7 +44,7 @@ export default class SolenoidValve extends Shape {
         return {
             ...super.defaults,
             type: 'SolenoidValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Solenoid Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
@@ -66,8 +66,8 @@ export default class SolenoidValve extends Shape {
                 },
                 body: bowTieAttributes,
                 coil: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 'calc(w / 2 - 15)',
                     y: -32,
                     width: 30,

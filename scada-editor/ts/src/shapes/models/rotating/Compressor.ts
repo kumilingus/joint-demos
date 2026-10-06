@@ -44,7 +44,7 @@ export default class Compressor extends Shape {
         return {
             ...super.defaults,
             type: 'Compressor',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Compressor', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -65,8 +65,8 @@ export default class Compressor extends Shape {
                     magnetSelector: 'body'
                 },
                 base: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: 'M calc(0.15 * w) calc(h) L calc(0.3 * w) calc(0.8 * h) H calc(0.7 * w) L calc(0.85 * w) calc(h) Z',
                     fill: 'var(--shape-support)',
                     stroke: '#333',

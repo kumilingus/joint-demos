@@ -25,7 +25,7 @@ export default class ConicTank extends Shape {
         return {
             ...super.defaults,
             type: 'ConicTank',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Conic Tank', position: 'bottom' },
             size: {
                 width: 160,

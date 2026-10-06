@@ -44,7 +44,7 @@ export default class CheckValve extends Shape {
         return {
             ...super.defaults,
             type: 'CheckValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Check Valve', position: 'bottom' },
             size: {
                 width: 60,

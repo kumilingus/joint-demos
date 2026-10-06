@@ -42,7 +42,7 @@ export default class Battery extends Shape {
         return {
             ...super.defaults,
             type: 'Battery',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Battery', position: 'bottom' },
             size: {
                 width: 80,

@@ -69,7 +69,7 @@ export default class Zone extends Shape {
         return {
             ...super.defaults,
             type: 'Zone',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Zone' },
             size: {
                 width: 100,
@@ -77,10 +77,8 @@ export default class Zone extends Shape {
             },
             attrs: {
                 body: {
-                    // In the outline of its style (see `style-color.ts`)
-                    styleStroke: 'outline',
-                    // In the color of its style (see `style-color.ts`)
-                    styleFill: 'color',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'outline', fill: 'color' },
                     fill: 'var(--shape-face)',
                     stroke: 'var(--shape-zone-stroke)',
                     strokeWidth: 1,
@@ -88,10 +86,10 @@ export default class Zone extends Shape {
                     tipSide: 'left'
                 },
                 label: {
-                    // The text of the label of the model (see `text-from`)
-                    textFrom: ['label', 'text'],
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
+                    // The text of the label of the model (see `from-model`)
+                    fromModel: { text: ['label', 'text'] },
                     // On as many lines as the zone is high, cut with an ellipsis; in the size of the labels of the diagram
                     // (its style, see `diagram-style.ts`) - all the zones alike, as off-page connectors
                     textWrap: {

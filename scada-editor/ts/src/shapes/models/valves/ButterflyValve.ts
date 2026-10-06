@@ -47,7 +47,7 @@ export default class ButterflyValve extends Shape {
         return {
             ...super.defaults,
             type: 'ButterflyValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Butterfly Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
@@ -73,8 +73,8 @@ export default class ButterflyValve extends Shape {
                     strokeLinecap: 'round'
                 },
                 pivot: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     cx: 'calc(w / 2)',
                     cy: 'calc(h / 2)',
                     r: 4,

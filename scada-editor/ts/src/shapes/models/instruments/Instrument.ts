@@ -63,8 +63,8 @@ export default class Instrument extends Shape {
                     strokeWidth: 2
                 },
                 tag: {
-                    // The text of the model (see `text-from`)
-                    textFrom: ['function'],
+                    // The text of the model (see `from-model`)
+                    fromModel: { text: ['function'] },
                     x: 'calc(w / 2)',
                     y: 'calc(h / 2 - 4)',
                     textAnchor: 'middle',
@@ -75,8 +75,8 @@ export default class Instrument extends Shape {
                     fill: 'var(--shape-instrument-text)'
                 },
                 loop: {
-                    // The text of the model (see `text-from`)
-                    textFrom: ['loop'],
+                    // The text of the model (see `from-model`)
+                    fromModel: { text: ['loop'] },
                     x: 'calc(w / 2)',
                     y: 'calc(h / 2 + 4)',
                     textAnchor: 'middle',

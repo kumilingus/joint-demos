@@ -51,7 +51,7 @@ export default class WindTurbine extends Shape {
         return {
             ...super.defaults,
             type: 'WindTurbine',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Wind Turbine', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {

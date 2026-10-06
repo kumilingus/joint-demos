@@ -47,7 +47,7 @@ export default class Boiler extends Shape {
         return {
             ...super.defaults,
             type: 'Boiler',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Boiler', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -92,8 +92,8 @@ export default class Boiler extends Shape {
                     strokeWidth: 2
                 },
                 flameOuter: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     d: 'M -22 10 C -28 -8 -12 -14 -14 -30 C -4 -20 0 -28 2 -42 C 12 -26 26 -18 22 10 Z',

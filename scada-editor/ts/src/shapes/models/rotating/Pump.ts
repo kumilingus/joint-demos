@@ -49,7 +49,7 @@ export default class Pump extends Shape {
         return {
             ...super.defaults,
             type: 'Pump',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Pump', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {

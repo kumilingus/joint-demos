@@ -6,7 +6,7 @@ import { propertiesOf, readProperty, type TagValue } from '../properties';
 import { getEnergized } from './energized';
 import { CHART_POINTS, getScale } from '../../shapes/common/charts';
 import type { Slice } from '../../shapes/models/charts/DonutChart';
-import { dataChanged, dataOf, hasData, setData } from '../../shapes/common/data';
+import { dataOf, hasData, setData } from '../../shapes/common/data';
 
 /*
  * A mock of the plant: in random intervals it sends random updates of the plant data - the new value of a property
@@ -466,10 +466,9 @@ export class MockPlant {
         this.responses.add(timer);
     }
 
-    /** The states of the readouts follow their sources (see `readoutStates()`) */
     /** A generator, a pump or a switch changed (on, off, open, closed): the energized circuits, the states of the readouts */
     protected onDataChange(cell: dia.Cell): void {
-        if (!dataChanged(cell, 'power', 'open')) return;
+        if (!hasData(cell, 'power') && !hasData(cell, 'open')) return;
         this.updateEnergized();
         this.updateReadouts();
     }

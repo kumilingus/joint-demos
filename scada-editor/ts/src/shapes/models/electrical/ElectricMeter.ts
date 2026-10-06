@@ -42,7 +42,7 @@ export default class ElectricMeter extends Shape {
         return {
             ...super.defaults,
             type: 'ElectricMeter',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Voltmeter', position: 'bottom' },
             unit: 'V',
             // What it shows (see `data.ts`): the reading
@@ -78,8 +78,8 @@ export default class ElectricMeter extends Shape {
                     strokeWidth: 1
                 },
                 value: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     x: 'calc(w - 26)',
@@ -92,17 +92,17 @@ export default class ElectricMeter extends Shape {
                     fill: LIQUID_COLOR
                 },
                 unit: {
-                    // The text of the model (see `text-from`)
-                    textFrom: ['unit'],
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
+                    // The text of the model (see `from-model`)
+                    fromModel: { text: ['unit'] },
                     x: 'calc(w - 12)',
                     y: 'calc(0.5 * h)',
                     textAnchor: 'end',
                     textVerticalAnchor: 'middle',
                     fontSize: 14,
                     fontFamily: 'sans-serif',
-                    fill: LIQUID_COLOR,
-                    // In the accent of its style, as the value (see `style-color.ts`)
-                    styleFill: 'accent',
+                    fill: LIQUID_COLOR
                 },
                 label: {
                     ...labelAttributes

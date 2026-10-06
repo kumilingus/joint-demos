@@ -24,10 +24,3 @@ export function setStyle(cell: dia.Cell, key: StyleKey, value: unknown, options:
 export function unsetStyle(cell: dia.Cell, key: StyleKey, options: dia.Cell.Options = {}): void {
     if (styleOf(cell, key) !== undefined) cell.removeProp(['style', key], options);
 }
-
-/** Whether a change of the style of the cell changed any of the values */
-export function styleChanged(cell: dia.Cell, ...keys: StyleKey[]): boolean {
-    const previous = (cell.previous('style') ?? {}) as Record<string, unknown>;
-    const current = (cell.get('style') ?? {}) as Record<string, unknown>;
-    return keys.some(key => JSON.stringify(previous[key]) !== JSON.stringify(current[key]));
-}

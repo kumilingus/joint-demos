@@ -1,6 +1,7 @@
 import { dia } from '@joint/plus';
 import { CANVAS_COLOR } from '../../const';
 import { styleOf } from '../common/style';
+import { glide } from './glide';
 
 /**
  * A view of a shape rendered again when the attributes of its model change (their special attributes
@@ -13,13 +14,14 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
         update(this: dia.ElementView, ...args: unknown[]) {
             (dia.ElementView.prototype.update as (...updateArgs: unknown[]) => void).apply(this, args);
             this.el.toggleAttribute('data-canvas', styleOf(this.model, 'color') === CANVAS_COLOR);
+            // A value shown by a part: glides from the one drawn last (see `glide.ts`)
+            glide(this);
         },
         presentationAttributes: dia.ElementView.addPresentationAttributes(
             {
-                // The surfaces of the element and of its pipe stubs (ports)
                 // Its style (see `style.ts`): the surfaces of the element and of its pipe stubs (ports)
                 style: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
-                // Its texts (see `text-from`)
+                // Its texts (see `from-model`)
                 label: dia.ElementView.Flags.UPDATE,
                 unit: dia.ElementView.Flags.UPDATE,
                 function: dia.ElementView.Flags.UPDATE,

@@ -87,7 +87,7 @@ export default class LineChart extends Shape {
         return {
             ...super.defaults,
             type: 'LineChart',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Line Chart', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -133,16 +133,16 @@ export default class LineChart extends Shape {
                     strokeOpacity: 0.12
                 },
                 area: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     chartSeries: 'area',
                     // Of the color of the line (the accent)
                     fill: LIQUID_COLOR,
-                    // In the accent of its style, as the line (see `style-color.ts`)
-                    styleFill: 'accent',
                     fillOpacity: 0.2
                 },
                 line: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleStroke: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'accent' },
                     chartSeries: 'line',
                     fill: 'none',
                     stroke: LIQUID_COLOR,

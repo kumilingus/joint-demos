@@ -1,6 +1,5 @@
-import { dia } from '@joint/plus';
+import type { dia } from '@joint/plus';
 import { styleOf } from './style';
-import { routingPresentationAttributes } from './routing';
 
 /*
  * The width of a link (a pipe, a wire): thin, normal or thick - its strokes scaled together (the line, the dashes of
@@ -54,11 +53,3 @@ export const lineWidthAttributes = {
 export function hasLineWidth(cell: dia.Cell): boolean {
     return (cell as dia.Cell & { strokeWidths?: StrokeWidths }).strokeWidths !== undefined;
 }
-
-/** The view of a link drawn again when its style changes: its color, its size (see `style.ts`) */
-export const StyledLinkView = dia.LinkView.extend({
-    presentationAttributes: dia.LinkView.addPresentationAttributes({
-        style: dia.LinkView.Flags.UPDATE,
-        ...routingPresentationAttributes
-    })
-});

@@ -1,7 +1,6 @@
-import { dia, type g } from '@joint/plus';
+import { dia, g } from '@joint/plus';
 import { LABEL_COLOR } from '../../const';
 import { getFootprint } from '../common/footprint';
-import { textAttributes } from './text-styles';
 import { flipOf } from './flip';
 
 /**
@@ -13,15 +12,7 @@ export type LabelPosition = 'bottom' | 'top' | 'left' | 'right';
 // The space between a shape and its label
 const LABEL_GAP = 8;
 
-
 type TextAttributes = Record<string, unknown>;
-
-/** The point rotated by the angle (in degrees) around the center */
-function rotate(x: number, y: number, angle: number, cx: number, cy: number): { x: number; y: number } {
-    const radians = angle * Math.PI / 180;
-    const [cos, sin] = [Math.cos(radians), Math.sin(radians)];
-    return { x: cx + (x - cx) * cos - (y - cy) * sin, y: cy + (x - cx) * sin + (y - cy) * cos };
-}
 
 type Point = { x: number; y: number };
 
@@ -64,7 +55,9 @@ function seenCorners(element: dia.Element, x: number, y: number, width: number, 
     const size = element.size();
     const [cx, cy] = [size.width / 2, size.height / 2];
     const angle = element.angle();
-    return [[x, y], [x + width, y], [x + width, y + height], [x, y + height]].map(([px, py]) => rotate(px, py, angle, cx, cy));
+    // Clockwise (`g.Point.rotate()` turns the other way)
+    const center = new g.Point(cx, cy);
+    return [[x, y], [x + width, y], [x + width, y + height], [x, y + height]].map(([px, py]) => new g.Point(px, py).rotate(center, -angle));
 }
 
 /** The bounding box of the element as it is seen (rotated), in its coordinates */
@@ -132,8 +125,11 @@ function layoutOf(view: dia.ElementView, position: unknown, gap: number, size: {
     }[side];
     // ... in the coordinates of the element (turned back with it: the text is drawn in its view)
     const { width, height } = element.size();
-    const { x, y } = rotate(point.x, point.y, -angle, width / 2, height / 2);
-    return { ...anchors, x, y, ...(angle % 360 !== 0 ? { transform: `rotate(${-angle},${x},${y})` } : {}) };
+    const { x, y } = new g.Point(point).rotate(new g.Point(width / 2, height / 2), angle);
+    const layout: Layout = { ...anchors, x, y };
+    // Rotated: turned back to horizontal
+    if (angle % 360 !== 0) layout.transform = `rotate(${-angle},${x},${y})`;
+    return layout;
 }
 
 /**
@@ -166,17 +162,18 @@ function drawText(
 const textSet = dia.Element.getAttributeDefinition('text')!.set as dia.Cell.SetCallback<dia.ElementView>;
 const textWrapSet = dia.Element.getAttributeDefinition('text-wrap')!.set as dia.Cell.SetCallback<dia.ElementView>;
 
-export const textFromAttributes: Record<string, dia.Cell.PresentationAttributeDefinition<dia.ElementView>> = {
-    // Read by `text-from` (wrapping the text of the model), not drawn by itself: the built-in one would draw over it
+export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeDefinition<dia.ElementView>> = {
+    // Read by `from-model` (wrapping the text of the model), not drawn by itself: the built-in one would draw over it
     'text-wrap': {},
     /**
-     * `textFrom` in the attributes: the text of the model at the path (`['label', 'text']`, `['unit']`) - not stored in
-     * the attributes. A label (`['label', …]`): at its position (`label.position`, see `LabelPosition`), none - where the
-     * shape draws it; the size, the weight, the styles (`label.size`, `label.weight`, `label.styles`) of a text of its own
+     * `fromModel: { text: path }` in the attributes: the text of the model at the path (`['label', 'text']`, `['unit']`) -
+     * not stored in the attributes. A label (`['label', …]`): at its position (`label.position`, see `LabelPosition`), none - where the
+     * shape draws it; the size, the weight, the styles, the alignment (`label.size`,
+     * `label.weight`, `label.styles`, `label.align`) of a text of its own
      * (the Label shape).
      */
-    'text-from': {
-        set(this: dia.ElementView, path: string[], refBBox: g.Rect, node: Element, attrs: TextAttributes) {
+    'from-model': {
+        set(this: dia.ElementView, { text: path }: { text: string[] }, refBBox: g.Rect, node: Element, attrs: TextAttributes) {
             const { model } = this;
             const value = model.prop(path);
             const text = value == null ? '' : String(value);
@@ -184,7 +181,9 @@ export const textFromAttributes: Record<string, dia.Cell.PresentationAttributeDe
             const own: TextAttributes = {
                 ...(label?.size ? { 'font-size': label.size } : {}),
                 ...(label?.weight ? { 'font-weight': label.weight } : {}),
-                ...(label?.styles ? textAttributes['text-styles'].set.call(this, label.styles) : {})
+                ...(label?.styles ? textStyleAttributes(label.styles) : {}),
+                // Aligned in its box (a text of its own: the Label shape)
+                ...(label?.align ? alignedText(label.align, refBBox) : {})
             };
             const textAttrs: TextAttributes = { ...attrs, ...own, text };
             const wrap = attrs['text-wrap'];
@@ -196,19 +195,44 @@ export const textFromAttributes: Record<string, dia.Cell.PresentationAttributeDe
     }
 };
 
-/** The label of an element in its model (see `text-from`): its text, its position, the size and the styles of a text */
+/** The label of an element in its model: its text, its position; the size, the weight, the styles, the alignment of a text of its own */
 export interface ModelLabel {
     text?: string;
     position?: LabelPosition;
     size?: number;
     weight?: number;
-    styles?: string[];
+    styles?: TextStyle[];
+    align?: TextAlign;
+}
+
+/** A style of a text (several at once): its slant, its lines */
+export type TextStyle = 'italic' | 'underline' | 'line-through';
+
+const DECORATIONS: TextStyle[] = ['underline', 'line-through'];
+
+/** The SVG attributes of the styles of a text (`font-style`, `text-decoration`) */
+function textStyleAttributes(styles: TextStyle[]): TextAttributes {
+    const decorations = DECORATIONS.filter(style => styles.includes(style));
+    return {
+        'font-style': styles.includes('italic') ? 'italic' : 'normal',
+        'text-decoration': decorations.length > 0 ? decorations.join(' ') : 'none'
+    };
+}
+
+/** The alignment of a text in its box */
+export type TextAlign = 'left' | 'middle' | 'right';
+
+/** The x and the anchor of a text aligned in the box */
+function alignedText(align: TextAlign, { width }: g.Rect): TextAttributes {
+    const x = { left: 0, middle: width / 2, right: width }[align] ?? width / 2;
+    const anchor = { left: 'start', middle: 'middle', right: 'end' }[align] ?? 'middle';
+    return { x, 'text-anchor': anchor };
 }
 
 /** The label of a shape: below it (see `LabelPosition`), as most of the shapes have it */
 export const labelAttributes = {
-    // The text of the label of the model, at its position (see `text-from`)
-    textFrom: ['label', 'text'],
+    // The text of the label of the model, at its position (see `from-model`)
+    fromModel: { text: ['label', 'text'] },
     textAnchor: 'middle',
     textVerticalAnchor: 'top',
     x: 'calc(0.5*w)',

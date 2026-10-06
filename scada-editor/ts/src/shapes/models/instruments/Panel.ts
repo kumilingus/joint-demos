@@ -276,7 +276,7 @@ export default class Panel extends Shape {
     }
 
     /** The liquid at the level (0 - 100), as `attrsOf()` draws it, for the current size. */
-    // Its liquid glides to a new level (see `animateLevel()` in `animations.ts`)
+    // Its liquid glides to a new level (see `glide.ts`)
     get glideProperty(): DataKey {
         return 'level';
     }

@@ -33,7 +33,7 @@ export default class Silo extends Shape {
         return {
             ...super.defaults,
             type: 'Silo',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Silo', position: 'bottom' },
             size: {
                 width: 100,

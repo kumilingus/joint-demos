@@ -35,7 +35,7 @@ export default class Reactor extends Shape {
         return {
             ...super.defaults,
             type: 'Reactor',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Reactor', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -89,8 +89,8 @@ export default class Reactor extends Shape {
                     strokeLinecap: 'round'
                 },
                 motor: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 'calc(w / 2 - 14)',
                     y: -30,
                     width: 28,

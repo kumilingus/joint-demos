@@ -35,7 +35,7 @@ export default class HorizontalTank extends Shape {
         return {
             ...super.defaults,
             type: 'HorizontalTank',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Horizontal Tank', position: 'bottom' },
             size: {
                 width: 200,
@@ -46,8 +46,8 @@ export default class HorizontalTank extends Shape {
                     magnetSelector: 'body'
                 },
                 saddles: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: `${saddle(0.22)} ${saddle(0.78)}`,
                     fill: 'var(--shape-support)',
                     stroke: '#333',

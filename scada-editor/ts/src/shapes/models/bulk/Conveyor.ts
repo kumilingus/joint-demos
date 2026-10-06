@@ -1,7 +1,7 @@
 import { dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
 import type { ColorField } from '../../common/Shape';
-import { styleColorAttributes } from '../../attributes/style-color';
+import { fromStyleAttributes } from '../../attributes/from-style';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -26,7 +26,7 @@ export const CLEAT_PATTERN = [3, 13];
 export default class Conveyor extends dia.Link {
 
     // Its colors (see `style.ts`)
-    static attributes: typeof dia.Link.attributes = { ...styleColorAttributes };
+    static attributes: typeof dia.Link.attributes = { ...fromStyleAttributes };
 
     // The color of the belt (see `ColorField`)
     get colorField(): ColorField {
@@ -66,26 +66,29 @@ export default class Conveyor extends dia.Link {
                 },
                 // Reaching under the element it connects to (the conveyors are drawn under the equipment)
                 outline: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'outline' },
                     connection: true,
                     stroke: 'var(--shape-belt-outline)',
-                    styleStroke: 'outline',
                     strokeWidth: OUTLINE_WIDTH,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'square'
                 },
                 belt: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'color' },
                     connection: true,
                     stroke: 'var(--shape-belt)',
-                    styleStroke: 'color',
                     strokeWidth: BELT_WIDTH,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'square'
                 },
                 // The cleats: dashes across the whole width of the belt
                 cleats: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'accent' },
                     connection: true,
                     stroke: 'var(--shape-belt-cleat)',
-                    styleStroke: 'accent',
                     strokeWidth: BELT_WIDTH,
                     strokeDasharray: CLEAT_PATTERN.join(' '),
                     pointerEvents: 'none'

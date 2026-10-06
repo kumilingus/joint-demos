@@ -44,7 +44,7 @@ export default class YStrainer extends Shape {
         return {
             ...super.defaults,
             type: 'YStrainer',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Strainer', position: 'bottom' },
             size: {
                 width: 80,
@@ -73,8 +73,8 @@ export default class YStrainer extends Shape {
                     strokeDasharray: '3,2'
                 },
                 cap: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 'calc(0.52 * w)',
                     y: 'calc(h - 10)',
                     width: 'calc(0.36 * w)',

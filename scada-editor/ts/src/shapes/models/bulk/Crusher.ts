@@ -69,7 +69,7 @@ export default class Crusher extends Shape {
         return {
             ...super.defaults,
             type: 'Crusher',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Crusher', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -108,8 +108,8 @@ export default class Crusher extends Shape {
                     fill: '#2b2f33'
                 },
                 rocks: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: [
                         'M calc(0.26 * w) calc(0.2 * h) l 10 -8 l 12 4 l -2 12 l -14 2 Z',
                         'M calc(0.44 * w) calc(0.16 * h) l 12 -4 l 8 10 l -10 8 l -10 -4 Z',

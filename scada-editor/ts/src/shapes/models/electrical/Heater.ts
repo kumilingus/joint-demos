@@ -31,7 +31,7 @@ export default class Heater extends Shape {
         return {
             ...super.defaults,
             type: 'Heater',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Heater', position: 'bottom' },
             size: {
                 width: 80,

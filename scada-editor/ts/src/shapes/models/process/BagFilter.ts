@@ -56,7 +56,7 @@ export default class BagFilter extends Shape {
         return {
             ...super.defaults,
             type: 'BagFilter',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Bag Filter', position: 'bottom' },
             size: {
                 width: 160,
@@ -67,8 +67,8 @@ export default class BagFilter extends Shape {
                     magnetSelector: 'body'
                 },
                 legs: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleStroke: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'accent' },
                     d: 'M calc(0.06 * w) calc(0.6 * h) V calc(h) M calc(0.94 * w) calc(0.6 * h) V calc(h)',
                     stroke: 'var(--shape-legs)',
                     strokeWidth: 6,

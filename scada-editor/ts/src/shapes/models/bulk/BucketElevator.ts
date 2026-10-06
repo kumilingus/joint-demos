@@ -57,7 +57,7 @@ export default class BucketElevator extends Shape {
         return {
             ...super.defaults,
             type: 'BucketElevator',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Bucket Elevator', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -94,8 +94,8 @@ export default class BucketElevator extends Shape {
                 },
                 // The buckets going up the chain: a dashed stroke from the boot to the head (see `BUCKET_PATTERN`)
                 buckets: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleStroke: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'accent' },
                     d: 'M calc(0.5 * w) calc(h - 38) V 38',
                     stroke: 'var(--shape-bucket)',
                     strokeWidth: 24,

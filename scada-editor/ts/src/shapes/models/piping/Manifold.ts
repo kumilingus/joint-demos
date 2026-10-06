@@ -45,7 +45,7 @@ export default class Manifold extends Shape {
         return {
             ...super.defaults,
             type: 'Manifold',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Manifold', position: 'top' },
             size: {
                 width: 160,

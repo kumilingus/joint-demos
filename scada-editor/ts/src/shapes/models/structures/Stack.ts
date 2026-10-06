@@ -56,7 +56,7 @@ export default class Stack extends Shape {
         return {
             ...super.defaults,
             type: 'Stack',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Stack', position: 'bottom' },
             size: {
                 width: 60,
@@ -94,8 +94,8 @@ export default class Stack extends Shape {
                     surfaceFill: 'cylinder'
                 },
                 bands: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: `${band(0.06, 0.12)} ${band(0.18, 0.24)}`,
                     fill: BAND_COLOR,
                     fillOpacity: 0.85,

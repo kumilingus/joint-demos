@@ -1,9 +1,9 @@
 import { dia, type g, util } from '@joint/plus';
 import { Layer, LABEL_COLOR } from '../../../const';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
-import { styleColorAttributes } from '../../attributes/style-color';
+import { fromStyleAttributes } from '../../attributes/from-style';
 import { styleOf } from '../../common/style';
-import { routingPresentationAttributes } from '../../common/routing';
+import LinkView from '../../views/LinkView';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -40,7 +40,7 @@ export default class Arrow extends dia.Link {
 
     static attributes: typeof dia.Link.attributes = {
         // Its color (see `style.ts`)
-        ...styleColorAttributes,
+        ...fromStyleAttributes,
         // `arrowheads` in the attributes of the line: its arrowheads (`sourceArrowhead`, `targetArrowhead`) in its color
         // (of its style, else its own) - the markers defined here: the library takes the color of a marker from the
         // `stroke` set on the line, not from one computed
@@ -82,9 +82,10 @@ export default class Arrow extends dia.Link {
                     strokeLinecap: 'round'
                 },
                 line: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'color' },
                     connection: true,
                     stroke: LABEL_COLOR,
-                    styleStroke: 'color',
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round',
@@ -112,13 +113,11 @@ function shorten(point: g.Point, next: g.Point, length: number): g.Point {
  * The view of an arrow: its line (the path) ends where its arrowheads start - they are outside of it (see
  * `MARKERS`), their tips at the ends (where it points, connected or not; the tools of the ends there too).
  */
-export const ArrowView = dia.LinkView.extend({
-    // Drawn again when its arrowheads or its style change (see `arrowheads`)
-    presentationAttributes: dia.LinkView.addPresentationAttributes({
+export const ArrowView = LinkView.extend({
+    // Drawn again when its arrowheads change too (see `arrowheads`)
+    presentationAttributes: LinkView.addPresentationAttributes({
         sourceArrowhead: dia.LinkView.Flags.UPDATE,
-        targetArrowhead: dia.LinkView.Flags.UPDATE,
-        style: dia.LinkView.Flags.UPDATE,
-        ...routingPresentationAttributes
+        targetArrowhead: dia.LinkView.Flags.UPDATE
     }),
     findPath(this: dia.LinkView, route: g.Point[], sourcePoint: g.Point, targetPoint: g.Point) {
         const { model } = this;

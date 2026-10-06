@@ -25,7 +25,7 @@ const PORT_END_OVERHANG = 3;
  */
 function withoutLabel(element: dia.Element, overflow: Required<Overflow>): Required<Overflow> {
     const { x, y } = element.attr('label') || {};
-    // A label of the model (see `text-from`)
+    // A label of the model (see `from-model`)
     if (element.prop(['label', 'text']) === undefined) return overflow;
     // On the right: `calc(w + 10)` (from the start of the text)
     const right = typeof x === 'string' ? x.match(/^calc\(w\s*\+\s*(\d+(?:\.\d+)?)\)$/) : null;

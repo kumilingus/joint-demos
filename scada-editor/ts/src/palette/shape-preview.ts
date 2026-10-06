@@ -149,9 +149,8 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         if (!state) return;
         stateEl.textContent = state(copy, view, on) ?? '';
         stateEl.classList.toggle('on', on);
+        // A level, a charge, a column glide to the new value by their views (as in the runtime mode, see `glide.ts`)
         animations.animate(copy);
-        // A level, a charge, a column glide to the new value (as in the runtime mode)
-        if (copy.isElement()) animations.animateLevel(copy);
     };
     show();
     animations.start();

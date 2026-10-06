@@ -71,7 +71,7 @@ export default class Thermometer extends Shape {
         return {
             ...super.defaults,
             type: 'Thermometer',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Thermometer', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -106,8 +106,8 @@ export default class Thermometer extends Shape {
                     strokeWidth: 2
                 },
                 column: {
-                    // In the color of its style (see `style-color.ts`)
-                    styleFill: 'color',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'color' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     x: 'calc(w / 2 - 4)',
@@ -146,7 +146,7 @@ export default class Thermometer extends Shape {
         super.initialize(...args);
     }
 
-    // The column (and its reading) glides to a new value (see `animateLevel()` in `animations.ts`)
+    // The column (and its reading) glides to a new value (see `glide.ts`)
     get glideProperty(): DataKey {
         return 'value';
     }

@@ -40,7 +40,7 @@ export default class HandValve extends Shape {
         return {
             ...super.defaults,
             type: 'HandValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
@@ -74,8 +74,8 @@ export default class HandValve extends Shape {
                     surfaceFill: 'dark'
                 },
                 handwheel: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     width: 60,
                     height: 10,
                     x: 'calc(w / 2 - 30)',

@@ -50,7 +50,7 @@ export default class Scrubber extends Shape {
         return {
             ...super.defaults,
             type: 'Scrubber',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Scrubber', position: 'bottom' },
             size: {
                 width: 80,
@@ -70,8 +70,8 @@ export default class Scrubber extends Shape {
                     strokeWidth: 2
                 },
                 skirt: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: 'M calc(0.1 * w) calc(h - 10) L 0 calc(h + 12) H calc(w) L calc(0.9 * w) calc(h - 10) Z',
                     fill: 'var(--shape-skirt)',
                     stroke: '#555',

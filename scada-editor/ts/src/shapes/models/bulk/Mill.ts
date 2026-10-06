@@ -61,7 +61,7 @@ export default class Mill extends Shape {
         return {
             ...super.defaults,
             type: 'Mill',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Mill', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -81,8 +81,8 @@ export default class Mill extends Shape {
                     magnetSelector: 'shell'
                 },
                 piers: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: `${pier(0.08)} ${pier(0.92)}`,
                     fill: 'var(--shape-support)',
                     stroke: '#333',

@@ -2,9 +2,8 @@ import { dia, util } from '@joint/plus';
 import { Layer, PIPE_COLOR, PIPE_OUTLINE } from '../../../const';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
 import { lineWidthAttributes, scaledWidth, type StrokeWidths } from '../../common/line-width';
-import { styleColorAttributes } from '../../attributes/style-color';
+import { fromStyleAttributes } from '../../attributes/from-style';
 import { outlineWidthOf } from '../../common/gradients';
-import { routingPresentationAttributes } from '../../common/routing';
 
 // The widths of its strokes (normal, see `lineWidth`); the outline is around the line (see `pipeOutline`)
 const STROKE_WIDTHS: StrokeWidths = { line: 10, flow: 3 };
@@ -28,7 +27,7 @@ export default class Pipe extends dia.Link {
     // The outline: as wide as the line plus the border on each side (the outline width, see `OutlineWidth`)
     static attributes: typeof dia.Link.attributes = {
         // Its colors and its size (see `style.ts`)
-        ...styleColorAttributes,
+        ...fromStyleAttributes,
         ...lineWidthAttributes,
         'pipe-outline': {
             set(this: dia.LinkView) {
@@ -69,9 +68,10 @@ export default class Pipe extends dia.Link {
                     strokeLinecap: 'round'
                 },
                 outline: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'outline' },
                     connection: true,
                     stroke: PIPE_OUTLINE,
-                    styleStroke: 'outline',
                     pipeOutline: true,
                     strokeLinejoin: 'round',
                     // Reaching under the element it connects to (the pipes are drawn under the equipment):
@@ -79,9 +79,10 @@ export default class Pipe extends dia.Link {
                     strokeLinecap: 'square'
                 },
                 line: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'color' },
                     connection: true,
                     stroke: PIPE_COLOR,
-                    styleStroke: 'color',
                     strokeWidthBase: STROKE_WIDTHS.line,
                     strokeLinejoin: 'round',
                     // Reaching under the element it connects to (the pipes are drawn under the equipment):
@@ -106,11 +107,3 @@ export default class Pipe extends dia.Link {
         this.markup = markup;
     }
 }
-
-/** The view of a pipe: drawn again when its style changes - its colors, its size, its outline width (see `style.ts`) */
-export const PipeView = dia.LinkView.extend({
-    presentationAttributes: dia.LinkView.addPresentationAttributes({
-        style: dia.LinkView.Flags.UPDATE,
-        ...routingPresentationAttributes
-    })
-});

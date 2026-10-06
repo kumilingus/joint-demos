@@ -54,7 +54,7 @@ export default class Disconnector extends Shape {
         return {
             ...super.defaults,
             type: 'Disconnector',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Disconnector', position: 'top' },
             // What it shows (see `data.ts`)
             data: {

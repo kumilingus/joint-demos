@@ -48,7 +48,7 @@ export default class Trend extends Shape {
         return {
             ...super.defaults,
             type: 'Trend',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Trend', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -91,8 +91,8 @@ export default class Trend extends Shape {
                     strokeDasharray: '3,3'
                 },
                 line: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleStroke: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     fill: 'none',

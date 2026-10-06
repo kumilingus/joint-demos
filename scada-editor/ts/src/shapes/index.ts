@@ -45,8 +45,8 @@ import WaterTower from './models/storage/WaterTower';
 import Trend from './models/charts/Trend';
 import Zone from './models/piping/Zone';
 import Join from './models/piping/Join';
-import Pipe, { PipeView } from './models/piping/Pipe';
-import { StyledLinkView } from './common/line-width';
+import Pipe from './models/piping/Pipe';
+import LinkView from './views/LinkView';
 import Conveyor from './models/bulk/Conveyor';
 import RotaryKiln from './models/bulk/RotaryKiln';
 import Table from './models/charts/Table';
@@ -166,12 +166,11 @@ export const cellNamespace = {
     // A busbar drawn again when its taps change (its bolts, see `Busbar.attrsOf()`)
     BusbarView: shapeView(['taps']),
     // The links drawn again when their style changes (see `style.ts`)
-    WireView: StyledLinkView,
-    SignalLineView: StyledLinkView,
-    ConveyorView: StyledLinkView,
-    // A pipe with a view of its own (its outline drawn again with its outline width)
+    WireView: LinkView,
+    SignalLineView: LinkView,
+    ConveyorView: LinkView,
+    PipeView: LinkView,
     Pipe,
-    PipeView,
     SignalLine,
     // An arrow with a view of its own (its line ends where its arrowheads start)
     Arrow,
@@ -215,13 +214,9 @@ export const cellNamespace = {
     TableView,
     // The charts, with the views rendering them again when their data changes (a view is looked up by the type)
     LineChart,
-    LineChartView: shapeView(['data']),
     BarChart,
-    BarChartView: shapeView(['data']),
     DonutChart,
-    DonutChartView: shapeView(['data']),
     GaugeChart,
-    GaugeChartView: shapeView(['data']),
     Rectangle,
     Ellipse,
     Group

@@ -27,7 +27,7 @@ export default class Hopper extends Shape {
         return {
             ...super.defaults,
             type: 'Hopper',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Hopper', position: 'bottom' },
             size: {
                 width: 120,
@@ -46,8 +46,8 @@ export default class Hopper extends Shape {
                 },
                 // The material in the bin
                 material: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: 'M calc(0.12 * w) calc(0.2 * h) Q calc(0.5 * w) 2 calc(0.88 * w) calc(0.2 * h) Z',
                     fill: 'var(--shape-hopper-material)',
                     stroke: '#5e4f3d',

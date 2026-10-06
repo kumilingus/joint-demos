@@ -49,7 +49,7 @@ export default class Turbine extends Shape {
         return {
             ...super.defaults,
             type: 'Turbine',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Turbine', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {

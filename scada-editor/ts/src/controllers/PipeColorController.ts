@@ -2,8 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { pipeColorAt } from '../canvas/connections';
-import { DERIVED } from '../shapes/common/routing';
-import { styleChanged } from '../shapes/common/style';
+import { DERIVED } from '../const';
 
 /** The elements showing the pipe they sit on (its color): the control valves (the pipe through the window) */
 const SHOWS_PIPE = ['ControlValve'];
@@ -52,6 +51,5 @@ function onLinkReconnect(app: App, link: dia.Link) {
 
 function onPipeRecolor(app: App, cell: dia.Cell) {
     if (!cell.isLink() || cell.get('type') !== 'Pipe') return;
-    if (!styleChanged(cell, 'color')) return;
     updateEnds(app, [cell.source(), cell.target()]);
 }

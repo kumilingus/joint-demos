@@ -49,7 +49,7 @@ export default class ReliefValve extends Shape {
         return {
             ...super.defaults,
             type: 'ReliefValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Relief Valve', position: 'bottom' },
             size: {
                 width: 60,
@@ -79,8 +79,8 @@ export default class ReliefValve extends Shape {
                     strokeLinejoin: 'round'
                 },
                 cap: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 'calc(0.3 * w)',
                     y: -8,
                     width: 'calc(0.4 * w)',

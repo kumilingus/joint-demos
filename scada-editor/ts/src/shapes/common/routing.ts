@@ -33,8 +33,6 @@ const ROUTINGS: Record<Routing, Pick<dia.Link.Attributes, 'router' | 'connector'
     }
 };
 
-/** A change derived from another one (not recorded in the history, see `historyOptions`). */
-export const DERIVED = { derived: true };
 
 /** Whether the user chooses how the link goes (see `Routing`). */
 export function isRouted(cell: dia.Cell): boolean {

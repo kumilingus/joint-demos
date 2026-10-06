@@ -24,10 +24,3 @@ export function hasData(cell: dia.Cell, key: DataKey): boolean {
 export function setData(cell: dia.Cell, key: DataKey, value: unknown, options: dia.Cell.Options = {}): void {
     cell.prop(['data', key], value, { ...options, rewrite: true });
 }
-
-/** Whether a change of the data of the element changed any of the values */
-export function dataChanged(cell: dia.Cell, ...keys: DataKey[]): boolean {
-    const previous = (cell.previous('data') ?? {}) as Record<string, unknown>;
-    const current = (cell.get('data') ?? {}) as Record<string, unknown>;
-    return keys.some(key => JSON.stringify(previous[key]) !== JSON.stringify(current[key]));
-}

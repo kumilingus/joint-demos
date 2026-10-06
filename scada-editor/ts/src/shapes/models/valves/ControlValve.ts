@@ -49,7 +49,7 @@ export default class ControlValve extends Shape {
         return {
             ...super.defaults,
             type: 'ControlValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
@@ -127,8 +127,8 @@ export default class ControlValve extends Shape {
                     surfaceFill: 'dark'
                 },
                 control: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     d: 'M 0 0 C 0 -30 60 -30 60 0 Z',
                     transform: 'translate(calc(w / 2 - 30), -20)',
                     stroke: '#333',

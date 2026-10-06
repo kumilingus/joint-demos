@@ -42,7 +42,7 @@ export default class MixingTank extends Shape {
         return {
             ...super.defaults,
             type: 'MixingTank',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Mixer', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -86,8 +86,8 @@ export default class MixingTank extends Shape {
                     strokeLinejoin: 'round'
                 },
                 motor: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     x: 'calc(w / 2 - 16)',
                     y: -34,
                     width: 32,

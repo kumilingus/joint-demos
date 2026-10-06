@@ -78,7 +78,7 @@ export default class GaugeChart extends Shape {
         return {
             ...super.defaults,
             type: 'GaugeChart',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Gauge', position: 'bottom' },
             unit: 'bar',
             // What it shows (see `data.ts`)
@@ -117,8 +117,10 @@ export default class GaugeChart extends Shape {
                     strokeWidth: 1
                 },
                 track: { ...arc, chartArc: 'track', stroke: '#fff', strokeOpacity: 0.12 },
-                arc: { styleStroke: 'accent', ...arc, chartArc: 'value', stroke: LIQUID_COLOR },
+                arc: { fromStyle: { stroke: 'accent' }, ...arc, chartArc: 'value', stroke: LIQUID_COLOR },
                 value: {
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     chartValue: 1,
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.5 * h + 2)',
@@ -127,13 +129,11 @@ export default class GaugeChart extends Shape {
                     fontFamily: 'monospace',
                     fontWeight: 'bold',
                     // Of the color of the arc (the accent)
-                    fill: LIQUID_COLOR,
-                    // In the accent of its style, as the arc (see `style-color.ts`)
-                    styleFill: 'accent'
+                    fill: LIQUID_COLOR
                 },
                 unit: {
-                    // The text of the model (see `text-from`)
-                    textFrom: ['unit'],
+                    // The text of the model (see `from-model`)
+                    fromModel: { text: ['unit'] },
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.5 * h + 26)',
                     textAnchor: 'middle',

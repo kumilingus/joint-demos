@@ -46,18 +46,14 @@ export default class Rectangle extends Shape {
             },
             attrs: {
                 body: {
-                    // In the outline of its style (see `style-color.ts`)
-                    styleStroke: 'outline',
-                    // In the color of its style (see `style-color.ts`)
-                    styleFill: 'color',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { stroke: 'outline', fill: 'color', fillOpacity: 'opacity' },
                     width: 'calc(w)',
                     height: 'calc(h)',
                     rx: 8,
                     ry: 8,
                     fill: BACKGROUND_FILL,
                     fillOpacity: 0.3,
-                    // Of its style, else its own (see `style-color.ts`)
-                    styleFillOpacity: 'opacity',
                     stroke: 'none',
                     strokeWidth: 2
                 }

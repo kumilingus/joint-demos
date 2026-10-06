@@ -27,7 +27,7 @@ export default class Lamp extends Shape {
         return {
             ...super.defaults,
             type: 'Lamp',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Lamp', position: 'bottom' },
             size: {
                 width: 60,

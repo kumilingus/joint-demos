@@ -5,7 +5,8 @@ import { JAW_PIVOT } from '../shapes/models/bulk/Crusher';
 import { LINER_PATTERN } from '../shapes/models/bulk/Mill';
 import { BUCKET_PATTERN } from '../shapes/models/bulk/BucketElevator';
 import { BAGS } from '../shapes/models/process/BagFilter';
-import { type DataKey, dataOf, hasData } from '../shapes/common/data';
+import { dataOf, hasData } from '../shapes/common/data';
+import { setGliding } from '../shapes/views/glide';
 
 /*
  * The animations of the runtime mode (the Web Animations API on the views of the cells):
@@ -390,20 +391,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
 };
 
 // The time the liquid of a level gauge takes to reach its new level (ms)
-const LEVEL_DURATION = 1000;
 
-/**
- * A shape showing a value by a part of it (a level, a charge, a column): the part glides to a new value
- * (see `animateLevel()`) - the property of the value, the keyframe of each part (by its selector) at a value
- */
-export interface Gliding {
-    glideProperty: DataKey;
-    glideKeyframes(value: number): Record<string, Keyframe>;
-}
-
-export function isGliding(cell: dia.Cell): cell is dia.Element & Gliding {
-    return cell.isElement() && typeof (cell as Partial<Gliding>).glideKeyframes === 'function';
-}
+/** The state of the cell its animations follow: on / off, open / closed */
+const stateOf = (cell: dia.Cell) => `${dataOf(cell, 'power') ?? ''}:${dataOf(cell, 'open') ?? ''}`;
 
 export class Animations {
 
@@ -411,7 +401,8 @@ export class Animations {
     /** What moves (see `AnimationLevel`): set before `start()` */
     level: AnimationLevel = 'full';
     running = new Map<dia.Cell.ID, Animation[]>();
-    levels = new Map<dia.Cell.ID, Animation[]>();
+    /** The state each cell is animated in (on / off, open / closed): animated again when it changes */
+    states = new Map<dia.Cell.ID, string>();
 
     constructor(paper: dia.Paper) {
         this.paper = paper;
@@ -423,20 +414,23 @@ export class Animations {
     }
 
     start(): void {
+        // The values glide to new ones (see `glide.ts`) as the level lets them
+        setGliding(this.paper, this.allows('level'));
         this.paper.model.getCells().forEach(cell => this.animate(cell));
     }
 
     stop(): void {
         this.running.forEach(animations => animations.forEach(animation => animation.cancel()));
         this.running.clear();
-        this.levels.forEach(animations => animations.forEach(animation => animation.cancel()));
-        this.levels.clear();
+        this.states.clear();
+        setGliding(this.paper, false);
     }
 
     /** (Re)start the animations of the cell for its current state (e.g. after its power changed). */
     animate(cell: dia.Cell): void {
         this.running.get(cell.id)?.forEach(animation => animation.cancel());
         this.running.delete(cell.id);
+        this.states.set(cell.id, stateOf(cell));
         // Not every type of element is animated, nor every kind at the level.
         // A link: its own (a conveyor), or the flow of a pipe
         const animator = animators[cell.get('type')] ?? (cell.isLink() ? { kind: 'flow' as const, animate: flow } : undefined);
@@ -447,26 +441,9 @@ export class Animations {
         if (animations.length > 0) this.running.set(cell.id, animations);
     }
 
-    /**
-     * The liquid of the level gauge moves from the previous level to the current one
-     * (both computed from the model); when it finishes, the view shows the current level.
-     */
-    /** The parts of a gliding element (see `Gliding`) move from its previous value to its value */
-    animateLevel(element: dia.Element): void {
-        this.levels.get(element.id)?.forEach(animation => animation.cancel());
-        this.levels.delete(element.id);
-        if (!isGliding(element) || !this.allows('level')) return;
-        const view = element.findView(this.paper);
-        const previous = Number((element.previous('data') as Record<string, unknown> | undefined)?.[element.glideProperty]);
-        if (!view || !Number.isFinite(previous)) return;
-        const from = element.glideKeyframes(previous);
-        const to = element.glideKeyframes(Number(dataOf(element, element.glideProperty)) || 0);
-        const animations = Object.keys(to).flatMap((selector) => {
-            const target = view.findNode(selector) as SVGElement | null;
-            return target ? [target.animate([from[selector], to[selector]], { duration: LEVEL_DURATION, easing: 'ease-in-out' })] : [];
-        });
-        this.levels.set(element.id, animations);
-        animations[0]?.addEventListener('finish', () => this.levels.delete(element.id));
+    /** Whether the cell is in another state than it is animated in (switched, opened, closed since) */
+    stateChanged(cell: dia.Cell): boolean {
+        return this.states.get(cell.id) !== stateOf(cell);
     }
 
     /** The pipes flow or stop with the equipment at their ends. */

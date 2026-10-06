@@ -1,7 +1,6 @@
 import type { dia } from '@joint/plus';
-import { GRID_SIZE } from '../../../const';
+import { DERIVED, GRID_SIZE } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import { DERIVED } from '../../common/routing';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
 import { dataOf, setData } from '../../common/data';
 

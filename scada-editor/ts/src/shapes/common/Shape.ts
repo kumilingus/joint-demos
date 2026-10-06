@@ -1,14 +1,12 @@
 import { dia } from '@joint/plus';
 import type { Overflow } from './footprint';
-import { GRID_SIZE, Layer } from '../../const';
+import { DERIVED, GRID_SIZE, Layer } from '../../const';
 import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttributes } from './gradients';
 import { flippedPorts, pipeAttributes } from './ports';
-import { textAttributes } from '../attributes/text-styles';
-import { textFromAttributes } from '../attributes/label';
+import { fromModelAttributes } from '../attributes/label';
 import { type Flip, flipAttributes, flipOf } from '../attributes/flip';
 import { computedAttributes } from '../attributes/computed';
-import { styleColorAttributes } from '../attributes/style-color';
-import { DERIVED } from './routing';
+import { fromStyleAttributes } from '../attributes/from-style';
 
 /** The size constraints of resizing. */
 export interface ResizeOptions {
@@ -96,12 +94,12 @@ const minSize = (size: number) => Math.max(SIZE_STEP, Math.round(size * MIN_SIZE
 export default abstract class Shape extends dia.Element implements ShapeFeatures {
 
     // The surfaces in the color of the element (`surfaceFill`, `surfaceStroke`), the outlines of its pipes
-    // (`pipeOutline`), the styles of its texts (`textStyles`), its texts of the model (`textFrom`), the mirrored
+    // (`pipeOutline`), its texts of the model (`fromModel`), the values of its style (`fromStyle`), the mirrored
     // parts of a flipped one (`flip`), the parts drawn from its data (`computed`); a shape with
     // attributes of its own adds them to these
     static attributes: typeof dia.Element.attributes = {
-        ...surfaceAttributes, ...materialAttributes, ...pipeAttributes, ...textAttributes, ...textFromAttributes, ...flipAttributes,
-        ...computedAttributes, ...styleColorAttributes
+        ...surfaceAttributes, ...materialAttributes, ...pipeAttributes, ...fromModelAttributes, ...flipAttributes,
+        ...computedAttributes, ...fromStyleAttributes
     };
 
     get resizable(): Resizable {

@@ -42,7 +42,7 @@ export default class FuelTank extends Shape {
         return {
             ...super.defaults,
             type: 'FuelTank',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Fuel Tank', position: 'bottom' },
             // What it shows (see `data.ts`)
             data: {
@@ -82,8 +82,8 @@ export default class FuelTank extends Shape {
                     strokeWidth: 1.5
                 },
                 fuel: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     x: 'calc(0.44 * w + 2)',
@@ -119,7 +119,7 @@ export default class FuelTank extends Shape {
         super.initialize(...args);
     }
 
-    // The fuel glides to a new level (see `animateLevel()` in `animations.ts`)
+    // The fuel glides to a new level (see `glide.ts`)
     get glideProperty(): DataKey {
         return 'level';
     }

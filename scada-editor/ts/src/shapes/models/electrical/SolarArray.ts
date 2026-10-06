@@ -30,7 +30,7 @@ export default class SolarArray extends Shape {
         return {
             ...super.defaults,
             type: 'SolarArray',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Solar Array', position: 'bottom' },
             size: {
                 width: 180,

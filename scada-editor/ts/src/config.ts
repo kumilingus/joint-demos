@@ -1,8 +1,8 @@
 import { anchors, dia, ui } from '@joint/plus';
-import { ColorScheme, GRID_SIZE, Mode, SELECTION_COLOR } from './const';
+import { ColorScheme, type DERIVED, GRID_SIZE, Mode, SELECTION_COLOR } from './const';
 import type { RUNTIME } from './runtime/controls';
 import { connectionStrategy, gridSide } from './canvas/connections';
-import { type DERIVED, routingPaperOptions } from './shapes/common/routing';
+import { routingPaperOptions } from './shapes/common/routing';
 import type { PREFERENCE } from './palette/favorites';
 import Label from './shapes/models/instruments/Label';
 import SignalLine from './shapes/models/instruments/SignalLine';

@@ -40,7 +40,7 @@ export default class CustomImage extends Shape {
         return {
             ...super.defaults,
             type: 'CustomImage',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Image', position: 'bottom' },
             size: {
                 width: SIZE,
@@ -48,11 +48,12 @@ export default class CustomImage extends Shape {
             },
             attrs: {
                 image: {
-                    // The image of its `imageId`, its opacity of its style (see `image-ref` below, `style-color.ts`)
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { opacity: 'opacity' },
+                    // The image of its `imageId`, its opacity of its style (see `image-ref` below, `from-style.ts`)
                     imageRef: true,
-                    styleOpacity: 'opacity',
                     width: 'calc(w)',
-                    height: 'calc(h)',
+                    height: 'calc(h)'
                 },
                 label: {
                     ...labelAttributes

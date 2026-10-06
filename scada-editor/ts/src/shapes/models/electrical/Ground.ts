@@ -32,7 +32,7 @@ export default class Ground extends Shape {
         return {
             ...super.defaults,
             type: 'Ground',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Ground', position: 'bottom' },
             size: {
                 width: 60,
@@ -43,8 +43,8 @@ export default class Ground extends Shape {
                     magnetSelector: 'body'
                 },
                 soil: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     y: 'calc(0.45 * h)',
                     width: 'calc(w)',
                     height: 'calc(0.55 * h)',

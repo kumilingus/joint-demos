@@ -51,7 +51,7 @@ export default class GateValve extends Shape {
         return {
             ...super.defaults,
             type: 'GateValve',
-            // Its label (see `text-from`)
+            // Its label (see `from-model`)
             label: { text: 'Gate Valve', position: 'top' },
             // What it shows (see `data.ts`)
             data: {
@@ -82,8 +82,8 @@ export default class GateValve extends Shape {
                     strokeWidth: 1.5
                 },
                 handwheel: {
-                    // In the accent of its style (see `style-color.ts`)
-                    styleFill: 'accent',
+                    // In the colors of its style (see `from-style.ts`)
+                    fromStyle: { fill: 'accent' },
                     // Computed (see `attrsOf()`)
                     computed: true,
                     x: 'calc(w / 2 - 20)',

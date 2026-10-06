@@ -48,7 +48,7 @@ function sideField(label: string): Inputs {
     };
 }
 
-/** The texts of the shapes that can be edited (see `text-from`): [the path in the model, label, group]. */
+/** The texts of the shapes that can be edited (see `from-model`): [the path in the model, label, group]. */
 const TEXTS: Array<[string[], string, string]> = [
     [['label', 'text'], 'Label', 'general'],
     [['function'], 'Function', 'general'],
@@ -80,7 +80,9 @@ function getInputs(element: dia.Element): Inputs {
 
     TEXTS.forEach(([path, label, group]) => {
         if (element.prop(path) === undefined) return;
-        util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), { type: 'text', label, group, index: index++ } as unknown as Inputs));
+        // A text of its own (the Label shape): on several lines
+        const type = element.get('type') === 'Label' && path[0] === 'label' ? 'textarea' : 'text';
+        util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), { type, label, group, index: index++ } as unknown as Inputs));
     });
     // The label of a shape at a side of it (see `LabelPosition`): the shapes with labels of their own have none
     if (element.prop(['label', 'position']) !== undefined) {
@@ -123,6 +125,17 @@ function getInputs(element: dia.Element): Inputs {
                 ],
                 group: 'appearance',
                 index: index++
+            },
+            align: {
+                type: 'select-button-group',
+                label: 'Alignment',
+                options: [
+                    { value: 'left', content: 'Left' },
+                    { value: 'middle', content: 'Center' },
+                    { value: 'right', content: 'Right' }
+                ],
+                group: 'appearance',
+                index: index++
             }
         }});
     }
@@ -154,7 +167,7 @@ function getInputs(element: dia.Element): Inputs {
     util.merge(inputs, accentInputs(element, 'appearance', index++));
     // The accent of a table: its head - only while the names of the columns are shown
     if (element.get('type') === 'Table') {
-        util.merge(inputs, { headerFill: { when: { eq: { names: true }}}});
+        util.merge(inputs, { style: { accent: { when: { eq: { names: true }}}}});
     }
 
     // A shape of the background: its opacity
