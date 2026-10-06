@@ -24,7 +24,7 @@ interface SplitLink {
  * along it go to the first half, the direction of the route there says from where the halves come.
  */
 function splitAt(app: App, link: dia.Link, point: dia.Point): SplitLink {
-    const view = link.findView(app.paper) as dia.LinkView;
+    const view = app.paper.requireView<dia.LinkView>(link);
     const length = view.getClosestPointLength(point);
     const split = view.getPointAtLength(length).snapToGrid(GRID_SIZE);
     const tangent = view.getTangentAtLength(length);
@@ -99,14 +99,15 @@ const DISCONNECT_SHIFT = 2 * GRID_SIZE;
 
 /**
  * The selected elements disconnected: the ends of their links freed where they are drawn (the end points of the
- * rendered links - the element is under the pointer), the elements moved off them. One step of the history.
+ * rendered links), the elements moved off them. One step of the history.
  */
 export function disconnectSelection(app: App): void {
     const { graph, paper } = app;
     const ends = connectedEnds(app).flatMap(([link, end]) => {
-        const view = link.findView(paper) as dia.LinkView | undefined;
-        const point = view && (end === 'source' ? view.sourcePoint : view.targetPoint);
-        return point ? [{ link, end, point: point.toJSON() }] : [];
+        // Rendered now if it isn't (out of the viewport): the end as drawn
+        const view = paper.requireView<dia.LinkView>(link);
+        const point = end === 'source' ? view.sourcePoint : view.targetPoint;
+        return [{ link, end, point: point.toJSON() }];
     });
     if (ends.length === 0) return;
     graph.startBatch('disconnect');

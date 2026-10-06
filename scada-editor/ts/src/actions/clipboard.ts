@@ -21,9 +21,10 @@ const isCopied = (end: dia.Link.EndJSON, copied: Set<dia.Cell.ID>) => end.id !==
  */
 function detachedCopy(app: App, link: dia.Link, copied: Set<dia.Cell.ID>): dia.Link {
     const copy = link.clone();
-    const linkView = link.findView(app.paper) as dia.LinkView | undefined;
-    if (!isCopied(link.source(), copied)) copy.source(linkView ? linkView.sourcePoint.toJSON() : link.getSourcePoint().toJSON());
-    if (!isCopied(link.target(), copied)) copy.target(linkView ? linkView.targetPoint.toJSON() : link.getTargetPoint().toJSON());
+    // Rendered now if it isn't (out of the viewport: selected, scrolled away): its ends as drawn
+    const linkView = app.paper.requireView<dia.LinkView>(link);
+    if (!isCopied(link.source(), copied)) copy.source(linkView.sourcePoint.toJSON());
+    if (!isCopied(link.target(), copied)) copy.target(linkView.targetPoint.toJSON());
     return copy;
 }
 

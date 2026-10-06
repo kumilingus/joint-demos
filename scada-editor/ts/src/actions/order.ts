@@ -76,7 +76,7 @@ function farthestLayer(app: App, direction: 1 | -1): Layer | null {
 function overlapping(app: App, cell: dia.Cell): dia.Element[] {
     const { graph, paper } = app;
     if (cell.isElement()) return graph.findElementsUnderElement(cell);
-    const view = cell.findView(paper) as dia.LinkView | undefined;
+    const view = paper.requireView<dia.LinkView>(cell);
     const connection = view?.getConnection();
     if (!connection) return [];
     // Curved too: the path as straight segments (of its polylines, one of each of its subpaths)
