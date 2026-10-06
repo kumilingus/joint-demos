@@ -21,9 +21,10 @@ export default class PaletteController extends Controller {
         this.listenTo(history, 'stack', onDiagramChange);
         // Not recorded (a preference, see `history.ts`): the favorites group only
         this.listenTo(graph, 'change:favorites', onFavoritesChange);
-        this.listenTo(stencil, 'element:drop', onPaletteShapeDrop);
-        Object.keys(stencil.options.groups || {}).forEach((group) => {
-            this.listenTo(stencil.getPaper(group), 'cell:pointerclick', onPaletteShapeClick);
+        this.listenTo(stencil, {
+            'element:drop': onPaletteShapeDrop,
+            // The events of the papers of its groups (the paper of the group first)
+            'group:cell:pointerclick': onPaletteShapeClick
         });
     }
 }
@@ -36,7 +37,7 @@ function onFavoritesChange(app: App) {
     refreshFavorites(app);
 }
 
-function onPaletteShapeClick(app: App, cellView: dia.CellView) {
+function onPaletteShapeClick(app: App, _paper: dia.Paper, cellView: dia.CellView) {
     // The inspector panel shows the shape of the palette instead of the selection.
     clearSelection(app);
     showShapePreview(app, cellView);
