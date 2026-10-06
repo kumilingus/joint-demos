@@ -141,7 +141,7 @@ export default class PlantSocketController extends Controller {
     socket: WebSocket | null = null;
 
     startListening(): void {
-        const plant = this.context.plant!;
+        const plant = this.app.plant!;
         const socket = this.socket = new WebSocket('wss://scada.example.com/plant');
         socket.onmessage = ({ data }) => {
             const { tag, property, value } = JSON.parse(data);

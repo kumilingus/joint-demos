@@ -14,7 +14,7 @@ import type { TagValue } from '../plant/properties';
 export default class ControlsController extends Controller {
 
     startListening(): void {
-        const { graph, paper } = this.context;
+        const { graph, paper } = this.app;
 
         addControls(paper);
 
@@ -30,7 +30,7 @@ export default class ControlsController extends Controller {
 
     stopListening(): void {
         super.stopListening();
-        removeControls(this.context.paper);
+        removeControls(this.app.paper);
     }
 }
 

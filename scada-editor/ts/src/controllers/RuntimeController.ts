@@ -13,11 +13,11 @@ import { isScreenShown } from '../canvas/screen';
 export default class RuntimeController extends Controller {
 
     onWindowResize = () => {
-        if (isScreenShown(this.context)) zoomToFit(this.context);
+        if (isScreenShown(this.app)) zoomToFit(this.app);
     };
 
     startListening(): void {
-        const { paper } = this.context;
+        const { paper } = this.app;
 
         // The controls are shown in every mode (see `ControlsController`),
         // operated in this one.

@@ -11,7 +11,7 @@ import Screen from '../shapes/models/diagram/Screen';
 export default class TagsController extends Controller {
 
     startListening(): void {
-        const { graph } = this.context;
+        const { graph } = this.app;
 
         this.listenTo(graph, {
             'add': onCellAdd,

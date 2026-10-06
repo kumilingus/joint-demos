@@ -12,7 +12,7 @@ import type { ChangeOptions } from '../history';
 export default class GroupController extends Controller {
 
     startListening(): void {
-        const { graph } = this.context;
+        const { graph } = this.app;
         this.listenTo(graph, 'change', onCellChange);
     }
 }

@@ -11,7 +11,7 @@ import { isScreenShown } from '../canvas/screen';
 export default class CanvasController extends Controller {
 
     startListening(): void {
-        const { paper, scroller } = this.context;
+        const { paper, scroller } = this.app;
 
         this.listenTo(paper, {
             'blank:pointerdown': onBlankPointerdown,

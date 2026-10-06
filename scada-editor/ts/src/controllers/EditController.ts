@@ -20,7 +20,7 @@ import { preventSelectionInteraction, showHover } from '../canvas/selection';
 export default class EditController extends Controller {
 
     startListening(): void {
-        const { paper } = this.context;
+        const { paper } = this.app;
 
         this.listenTo(paper, {
             'cell:pointerclick': onCellPointerclick,

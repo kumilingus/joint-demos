@@ -12,7 +12,7 @@ import { isTyping } from '../events';
 export default class KeyboardController extends Controller {
 
     startListening(): void {
-        const { keyboard } = this.context;
+        const { keyboard } = this.app;
 
         this.listenTo(keyboard, {
             'delete backspace': onDelete,

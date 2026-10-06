@@ -22,7 +22,7 @@ export default class AnimationsController extends Controller<[App, Animations]> 
     }
 
     startListening(): void {
-        const { graph } = this.context;
+        const { graph } = this.app;
 
         // The level of the diagram; the alarms only if the user asks the system for less motion
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

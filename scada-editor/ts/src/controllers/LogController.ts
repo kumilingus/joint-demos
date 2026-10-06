@@ -25,15 +25,15 @@ export default class LogController extends Controller<[App, Log]> {
     startListening(): void {
         this.log.clear();
         // A listener of the plant (as any system): the updates and the commands
-        this.listenTo(this.context.plant, {
+        this.listenTo(this.app.plant, {
             'update': onPlantUpdate,
             'command': onPlantCommand
         });
-        this.listenTo(this.context.toolbar, {
+        this.listenTo(this.app.toolbar, {
             'log:pointerclick': onLogPointerclick
         });
         // An element clicked while the log is open: its tag in the filter of the log (or out of it)
-        this.listenTo(this.context.paper, {
+        this.listenTo(this.app.paper, {
             'element:pointerclick': onElementPointerclick
         });
     }

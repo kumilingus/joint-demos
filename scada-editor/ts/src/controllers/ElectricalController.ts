@@ -10,14 +10,14 @@ import { hideEnergized, showEnergized } from '../runtime/electrical';
 export default class ElectricalController extends Controller {
 
     startListening(): void {
-        const { graph, paper } = this.context;
+        const { graph, paper } = this.app;
         graph.getCells().forEach(cell => showEnergized(paper, cell));
         this.listenTo(graph, 'change:energized', onEnergizedChange);
     }
 
     stopListening(): void {
         super.stopListening();
-        hideEnergized(this.context.paper);
+        hideEnergized(this.app.paper);
     }
 }
 

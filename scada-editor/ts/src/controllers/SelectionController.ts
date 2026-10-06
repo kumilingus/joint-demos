@@ -14,13 +14,13 @@ import { showSelection, updateGroupBadge } from '../canvas/selection';
 export default class SelectionController extends Controller {
 
     startListening(): void {
-        const { selection, graph } = this.context;
+        const { selection, graph } = this.app;
 
         this.listenTo(selection, 'add reset', onSelectionChange);
         this.listenTo(selection, 'remove', onSelectionRemove);
         this.listenTo(graph, 'remove', onCellRemove);
         this.listenTo(graph, 'add remove change:parent', onMembersChange);
-        this.listenTo(this.context.history, 'stack:undo stack:redo', onHistoryChange);
+        this.listenTo(this.app.history, 'stack:undo stack:redo', onHistoryChange);
     }
 }
 

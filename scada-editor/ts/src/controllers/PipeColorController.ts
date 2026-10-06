@@ -10,7 +10,7 @@ import { showPipeColors, showPipeColorsAtEnds } from '../canvas/connections';
 export default class PipeColorController extends Controller {
 
     startListening(): void {
-        const { graph } = this.context;
+        const { graph } = this.app;
         showPipeColors(graph);
         this.listenTo(graph, {
             'reset': onGraphReset,

@@ -11,7 +11,7 @@ import { isSettingsOpen, toggleSettings } from '../inspector/settings';
 export default class ToolbarController extends Controller {
 
     startListening(): void {
-        const { toolbar } = this.context;
+        const { toolbar } = this.app;
 
         this.listenTo(toolbar, {
             'mode:pointerclick': onModePointerclick,

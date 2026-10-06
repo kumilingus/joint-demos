@@ -7,7 +7,8 @@ import type { App } from '../app';
  */
 export default abstract class Controller<A extends [App, ...unknown[]] = [App, ...unknown[]]> extends mvc.Listener<A> {
 
-    get context(): A[0] {
+    /** The app (the first argument of the handlers) */
+    get app(): App {
         return this.callbackArguments[0];
     }
 
