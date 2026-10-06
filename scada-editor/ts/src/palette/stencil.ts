@@ -20,11 +20,12 @@ import { getFootprint } from '../shapes/common/footprint';
 import { createGraph } from '../canvas/layers';
 import { pack } from './packing';
 import { descriptions } from './descriptions';
-import { CLICK_THRESHOLD } from '../config';
+import { CLICK_THRESHOLD } from '../const';
 import { LABEL_COLOR } from '../const';
 import { type ImageEntry, type ImageLibrary, readImageFile } from './images';
 import ShapeView from '../shapes/views/ShapeView';
 import { routingPaperOptions } from '../shapes/common/routing';
+import { besidePanel, setBesidePanel } from '../tooltips';
 
 // The shapes are shown in the palette smaller than on the canvas.
 const STENCIL_SCALE = 0.5;
@@ -86,8 +87,22 @@ const groups: Record<string, ui.Stencil.Group> = {
     background: { index: 14, label: 'Background' }
 };
 
+/** What a shape of the palette does on a click, on a drag: the second line of its tooltip */
+const PALETTE_HINT = 'Click for details · drag to add';
+
+/** The text as HTML (the tooltips render their content as such): the name of an image of the user safe */
+const escapeHtml = (text: string) => text.replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]!);
+
+/** The attributes of the tooltip of a shape of the palette: its name and the hint, outside the palette (see `besidePanel()`) */
+function paletteTooltip(name: string): Record<string, string> {
+    return {
+        'data-tooltip': `<strong>${escapeHtml(name)}</strong><span class="tooltip-hint">${PALETTE_HINT}</span>`,
+        ...besidePanel('palette')
+    };
+}
+
 /**
- * The name of the shape of the palette (see `descriptions.ts`), shown in its tooltip; a link has it
+ * The name of the shape of the palette (see `descriptions.ts`), shown in its tooltip (with a hint); a link has it
  * as its label too, on the right of it (a line is hard to tell apart without it). Not on the dragged
  * and the dropped shape (see `dragStartClone`).
  */
@@ -95,7 +110,7 @@ function setTooltip(cell: dia.Cell): void {
     const { title } = descriptions[cell.get('type')] ?? { title: cell.get('type') };
     // An image of the user: its name
     const name = cell.get('type') === 'CustomImage' ? cell.prop(['label', 'text']) : title;
-    cell.attr('root/data-tooltip', name);
+    cell.attr('root', paletteTooltip(name));
     if (cell.isLink()) cell.labels([nameLabel(name)]);
 }
 
@@ -172,7 +187,7 @@ export function createStencil(
         // The dragged shape (and the dropped one, cloned from it) has no tooltip, a link no name (see `setTooltip()`).
         dragStartClone: (cell: dia.Cell) => {
             const clone = cell.clone();
-            clone.removeAttr('root/data-tooltip');
+            Object.keys(paletteTooltip('')).forEach(name => clone.removeAttr(['root', name]));
             if (clone.isLink()) clone.labels([]);
             return clone;
         },
@@ -443,6 +458,7 @@ function addUploadButton(stencil: ui.Stencil, onUpload: StencilImages['onUpload'
     const button = document.createElement('label');
     button.className = 'stencil-upload';
     button.dataset.tooltip = 'Upload images (PNG, JPEG, SVG, ...) as shapes of your own';
+    setBesidePanel(button, 'palette');
     button.textContent = 'Upload images';
     button.append(input);
     groupEl.querySelector('.group-label')?.after(button);

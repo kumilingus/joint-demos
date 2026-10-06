@@ -1,4 +1,5 @@
 import { LAYER_NAMES } from '../canvas/layers';
+import { setBesidePanel } from '../tooltips';
 
 /*
  * The help of the fields of the inspectors (of a cell, of the settings): a question mark next to the label
@@ -100,6 +101,7 @@ export function renderLabel(options: { label?: string; help?: string }, path: st
     mark.className = 'field-help';
     mark.textContent = '?';
     mark.dataset.tooltip = help;
+    setBesidePanel(mark, 'inspector');
     label.append(mark);
     return label;
 }

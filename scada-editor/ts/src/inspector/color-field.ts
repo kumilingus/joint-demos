@@ -2,6 +2,7 @@ import { type dia, type ui, util } from '@joint/plus';
 import type { ColorField } from '../shapes/common/Shape';
 import { renderLabel } from './help';
 import { dataOf } from '../shapes/common/data';
+import { setBesidePanel } from '../tooltips';
 
 /*
  * The color fields of the inspector: the native color input (with its eyedropper), and the colors
@@ -99,6 +100,7 @@ function createSwatch(color: string, tooltip: string, onClick: () => void): HTML
     swatch.className = 'color-swatch';
     swatch.style.background = color;
     swatch.dataset.tooltip = tooltip;
+    setBesidePanel(swatch, 'inspector');
     swatch.addEventListener('click', onClick);
     return swatch;
 }
