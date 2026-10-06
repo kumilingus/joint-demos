@@ -6,7 +6,7 @@ import { createSelection } from './canvas/selection';
 import { createNavigator } from './canvas/navigator';
 import { EXAMPLES } from './examples';
 import { type ColorScheme, Mode } from './const';
-import { canvasColors, getGrid, interactivity, paperOptions, scrollerOptions, snaplinesOptions } from './canvas/config';
+import { getGrid, interactivity, paperOptions, scrollerOptions, snaplinesOptions } from './canvas/config';
 import { createToolbar } from './toolbar/toolbar';
 import { historyOptions } from './history';
 import { tooltipOptions } from './tooltips';
@@ -188,12 +188,10 @@ export class App {
         this.paper.unfreeze();
     }
 
-    /** The colors of the page (the design tokens in `theme/tokens.css`) and of the canvas. */
+    /** The colors of the page (the design tokens in `theme/tokens.css`): the canvas and its grid follow them. */
     setColorScheme(colorScheme: ColorScheme): void {
         this.colorScheme = colorScheme;
         document.documentElement.dataset.colorScheme = colorScheme;
-        this.paper.drawBackground({ color: canvasColors[colorScheme].background });
-        this.paper.setGrid(getGrid(this.mode, colorScheme));
         storeColorScheme(colorScheme);
     }
 
@@ -222,7 +220,7 @@ export class App {
         this.paper.setInteractivity(this.interactivityOf(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
         setTablesLive(this.paper, mode === Mode.Runtime);
-        this.paper.setGrid(getGrid(mode, this.colorScheme));
+        this.paper.setGrid(getGrid(mode));
         this.el.dataset.mode = mode;
         showScreen(this);
         // The side panels are hidden in the runtime mode only (the attribute above): the canvas changes its size.

@@ -132,15 +132,6 @@
     font-family: var(--font);
 }
 
-/* The grid in the tones of the canvas (`--canvas-grid*` in `shapes.css`): its thin lines, its thick ones */
-.joint-grid-layer pattern:first-of-type path {
-    stroke: var(--canvas-grid);
-}
-
-.joint-grid-layer pattern:last-of-type path {
-    stroke: var(--canvas-grid-major);
-}
-
 /* The canvas in a gradient (the style of the diagram, see `diagram-style.ts`): behind the paper, on the viewport
    (it stays while the paper is scrolled, zoomed, resized) */
 :root[data-canvas-gradient] .joint-paper-scroller {

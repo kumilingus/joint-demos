@@ -1,5 +1,5 @@
 import { anchors, dia, type ui } from '@joint/plus';
-import { CLICK_THRESHOLD, ColorScheme, GRID_SIZE, Mode, SELECTION_COLOR } from '../const';
+import { CLICK_THRESHOLD, GRID_SIZE, Mode, SELECTION_COLOR } from '../const';
 import { connectionStrategy, gridSide } from './connections';
 import { routingPaperOptions } from '../shapes/common/routing';
 import Label from '../shapes/models/instruments/Label';
@@ -19,6 +19,8 @@ import ShapeView from '../shapes/views/ShapeView';
 export const ZOOM = { min: 0.2, max: 3 };
 
 export const paperOptions: dia.Paper.Options = {
+    // The color of the canvas: of the theme and the style of the diagram (`--shape-canvas`, see `shapes.css`)
+    background: { color: 'var(--shape-canvas)' },
     // A shape without a view of its own (a chart has one): rendered again when its color changes (see `ShapeView`)
     elementView: (_element, namespaceView) => namespaceView ?? ShapeView,
     width: 1,
@@ -109,29 +111,19 @@ export const interactivity: Record<Mode, Interactivity | false> = {
     [Mode.Runtime]: false
 };
 
-/**
- * The canvas in each color scheme: its background and the lines of its grid (drawn in the tones of the canvas by
- * `canvas.css`, these until its style applies).
- */
-export const canvasColors: Record<ColorScheme, { background: string; grid: string; majorGrid: string }> = {
-    // The background: of the theme (`--shape-canvas`, the surfaces of the finish `none` are of it too)
-    [ColorScheme.Light]: { background: 'var(--shape-canvas)', grid: '#e1e8e6', majorGrid: '#c9d4d1' },
-    [ColorScheme.Dark]: { background: 'var(--shape-canvas)', grid: '#12223a', majorGrid: '#1d3354' }
-};
-
 // A thick line every this many thin ones
 const MAJOR_GRID_FACTOR = 5;
 
 /** The grid is drawn only while the diagram is edited (it is what the elements snap to). */
-export function getGrid(mode: Mode, colorScheme: ColorScheme): dia.Paper.GridOptions | false {
+export function getGrid(mode: Mode): dia.Paper.GridOptions | false {
     if (mode === Mode.Runtime) return false;
-    const { grid, majorGrid } = canvasColors[colorScheme];
-    // Thin lines, and thick ones every few of them
+    // Thin lines, and thick ones every few of them: in the tones of the canvas (`--canvas-grid*` in `shapes.css`, of the
+    // color scheme and the style of the diagram)
     return {
         name: 'doubleMesh',
         args: [
-            { color: grid, thickness: 1 },
-            { color: majorGrid, thickness: 1.5, scaleFactor: MAJOR_GRID_FACTOR }
+            { color: 'var(--canvas-grid)', thickness: 1 },
+            { color: 'var(--canvas-grid-major)', thickness: 1.5, scaleFactor: MAJOR_GRID_FACTOR }
         ]
     };
 }
