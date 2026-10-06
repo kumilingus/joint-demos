@@ -107,15 +107,10 @@ export function pipeColorAt(graph: dia.Graph, element: dia.Element): string {
 const SHOWS_PIPE = ['ControlValve'];
 
 /** The element showing its pipe in the color of the pipe (see `pipeColorAt()`): derived, not in the history */
-export function showPipeColor(graph: dia.Graph, element: dia.Cell | undefined | null): void {
-    if (!element?.isElement() || !SHOWS_PIPE.includes(element.get('type'))) return;
+function showPipeColor(graph: dia.Graph, element: dia.Element): void {
+    if (!SHOWS_PIPE.includes(element.get('type'))) return;
     const color = pipeColorAt(graph, element);
     if (element.attr('liquid/stroke') !== color) element.attr('liquid/stroke', color, DERIVED);
-}
-
-/** The elements at the ends of a link (now, and before the change) showing their pipes */
-export function showPipeColorsAtEnds(graph: dia.Graph, ends: Array<dia.Link.EndJSON | null | undefined>): void {
-    ends.forEach(end => end?.id && showPipeColor(graph, graph.getCell(end.id)));
 }
 
 /** All the elements showing their pipes */

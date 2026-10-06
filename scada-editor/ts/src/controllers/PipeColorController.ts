@@ -1,11 +1,11 @@
 import { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { showPipeColors, showPipeColorsAtEnds } from '../canvas/connections';
+import { showPipeColors } from '../canvas/connections';
 
 /**
- * An element showing its pipe takes the color of the pipe (see `showPipeColor()`): again when a pipe is
- * recolored, connected or disconnected, added or removed. Active in every mode.
+ * The elements showing their pipe take the color of the pipe (see `showPipeColors()`): again when a link is added,
+ * removed, reconnected (dragged, disconnected, undone) or recolored. Active in every mode.
  */
 export default class PipeColorController extends Controller {
 
@@ -14,9 +14,7 @@ export default class PipeColorController extends Controller {
         showPipeColors(graph);
         this.listenTo(graph, {
             'reset': onGraphReset,
-            'add remove': onLinkAddRemove,
-            'change:source change:target': onLinkReconnect,
-            'change:style': onPipeRecolor
+            'add remove change:source change:target change:style': onLinkChange
         });
     }
 }
@@ -25,17 +23,8 @@ function onGraphReset(app: App) {
     showPipeColors(app.graph);
 }
 
-function onLinkAddRemove(app: App, cell: dia.Cell) {
-    if (!cell.isLink()) return;
-    showPipeColorsAtEnds(app.graph, [cell.source(), cell.target()]);
-}
-
-function onLinkReconnect(app: App, link: dia.Link) {
-    showPipeColorsAtEnds(app.graph, [link.source(), link.target(), link.previous('source'), link.previous('target')]);
-}
-
-/** Of a pipe (the graph changes its style too: the style of the diagram, see `diagram-style.ts`) */
-function onPipeRecolor(app: App, cell: dia.Cell | dia.Graph) {
-    if (!(cell instanceof dia.Link) || cell.get('type') !== 'Pipe') return;
-    showPipeColorsAtEnds(app.graph, [cell.source(), cell.target()]);
+/** Of a link (the graph changes its style too: the style of the diagram, see `diagram-style.ts`) */
+function onLinkChange(app: App, cell: dia.Cell | dia.Graph) {
+    if (!(cell instanceof dia.Link)) return;
+    showPipeColors(app.graph);
 }
