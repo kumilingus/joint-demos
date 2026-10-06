@@ -12,7 +12,7 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
         // The surfaces in the color of the canvas marked on the root: the ink on them follows it
         // (see `--shape-surface-ink` in `shapes.css`)
         update(this: dia.ElementView, ...args: unknown[]) {
-            (dia.ElementView.prototype.update as (...updateArgs: unknown[]) => void).apply(this, args);
+            dia.ElementView.prototype.update.apply(this, args);
             this.el.toggleAttribute('data-canvas', styleOf(this.model, 'color') === CANVAS_COLOR);
             // A value shown by a part: glides from the one drawn last (see `glide.ts`)
             glide(this);

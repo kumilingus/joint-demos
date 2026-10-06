@@ -14,7 +14,7 @@ import { addImages, clearSelection, refreshPalette, storedColorScheme, storeColo
 import { isControlEvent, setControlsOperable } from './runtime/controls';
 import { Plant } from './plant/plant';
 import { setTablesLive } from './shapes/views/TableView';
-import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './palette/images';
+import { getImages, IMAGES_ATTRIBUTE } from './palette/images';
 import { FAVORITES_ATTRIBUTE } from './palette/favorites';
 import { ANIMATIONS_ATTRIBUTE } from './runtime/animations';
 import { applyDiagramStyle, STYLE_ATTRIBUTE } from './diagram-style';
@@ -98,7 +98,7 @@ export class App {
             // on the blank canvas, its default action - dragging the slider - prevented)
             guard: (evt: dia.Event) => isControlEvent(evt),
             getImages: () => getImages(this.graph)
-        } as dia.Paper.Options & ImagesPaperOptions);
+        });
 
         this.scroller = new ui.PaperScroller({
             ...scrollerOptions,

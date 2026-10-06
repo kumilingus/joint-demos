@@ -48,11 +48,11 @@ export default class Arrow extends dia.Link {
             set(this: dia.LinkView, _arrowheads: boolean, _refBBox: dia.BBox, _node: Element, attrs: Record<string, unknown>) {
                 const color = styleOf<string>(this.model, 'color') ?? String(attrs.stroke ?? LABEL_COLOR);
                 const marker = (end: 'source' | 'target', turned: boolean) => {
-                    const head = arrowheadMarker(this.model.get(`${end}Arrowhead`) as Arrowhead);
+                    const head = arrowheadMarker(this.model.get(`${end}Arrowhead`));
                     if (!head) return 'none';
                     // As the library defines them: in the color of the line, the one at the end turned around
                     const definition = { stroke: color, fill: color, ...(turned ? { transform: 'rotate(180)' } : {}), ...head };
-                    return `url(#${this.paper!.defineMarker(definition as dia.SVGMarkerJSON)})`;
+                    return `url(#${this.paper!.defineMarker(definition)})`;
                 };
                 return { 'marker-start': marker('source', false), 'marker-end': marker('target', true) };
             }

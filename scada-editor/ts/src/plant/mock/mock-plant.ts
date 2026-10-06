@@ -363,7 +363,7 @@ function restoreReadouts(graph: dia.Graph): void {
 function createChartUpdates(graph: dia.Graph, tick: number): TagUpdate[] {
     return graph.getElements()
         .filter(element => getTag(element) && element.get('type') in chartGenerators)
-        .map(element => ({ tag: getTag(element)!, changes: chartGenerators[element.get('type')](element, graph, tick) }))
+        .map(element => ({ tag: getTag(element), changes: chartGenerators[element.get('type')](element, graph, tick) }))
         .filter((update): update is TagUpdate => update.changes !== null);
 }
 

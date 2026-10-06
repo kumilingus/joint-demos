@@ -4,7 +4,7 @@ import { cellNamespace } from '../shapes';
 import { createGraph } from '../canvas/layers';
 import { getFootprint } from '../shapes/common/footprint';
 import { descriptions } from './descriptions';
-import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './images';
+import { getImages, IMAGES_ATTRIBUTE } from './images';
 import { SELECTION_COLOR } from '../const';
 import type { App } from '../app';
 import { deleteImage, refreshPalette } from '../actions';
@@ -130,13 +130,13 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         interactive: false,
         background: { color: 'transparent' },
         getImages: () => getImages(app.graph)
-    } as dia.Paper.Options & ImagesPaperOptions);
+    });
     const copy = cell.clone();
     // A link without its name (the label of the palette, see `setTooltip()` in `stencil.ts`): the title says it.
     if (copy.isLink()) copy.labels([]);
     paper.model.addCell(copy);
     // The paper renders the shape at once (not async): its view is there to be animated.
-    const view = copy.findView(paper)!;
+    const view = copy.findView(paper);
     const animations = new Animations(paper);
     // As much as the diagram moves (the alarms only: switched still); less if the system asks for less motion
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

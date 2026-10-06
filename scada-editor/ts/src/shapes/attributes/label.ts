@@ -113,7 +113,7 @@ function drawnBelowAsIs(element: dia.Element): boolean {
  */
 function layoutOf(view: dia.ElementView, position: unknown, gap: number, size: { width: number; height: number }): Layout | null {
     const side = sideOf(position);
-    const element = view.model as dia.Element;
+    const element = view.model;
     const angle = element.angle();
     if (side === 'bottom' && angle % 360 === 0 && drawnBelowAsIs(element)) return null;
     const point = besideElement(element, side, size, gap);
@@ -177,7 +177,7 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
             const { model } = this;
             const value = model.prop(path);
             const text = value == null ? '' : String(value);
-            const label = (path[0] === 'label' ? model.get('label') : undefined) as ModelLabel | undefined;
+            const label: ModelLabel | undefined = path[0] === 'label' ? model.get('label') : undefined;
             const own: TextAttributes = {
                 ...(label?.size ? { 'font-size': label.size } : {}),
                 ...(label?.weight ? { 'font-weight': label.weight } : {}),

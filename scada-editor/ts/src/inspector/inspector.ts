@@ -82,7 +82,7 @@ function getInputs(element: dia.Element): Inputs {
         if (element.prop(path) === undefined) return;
         // A text of its own (the Label shape): on several lines
         const type = element.get('type') === 'Label' && path[0] === 'label' ? 'textarea' : 'text';
-        util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), { type, label, group, index: index++ } as unknown as Inputs));
+        util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), { type, label, group, index: index++ } as Inputs));
     });
     // The label of a shape at a side of it (see `LabelPosition`): the shapes with labels of their own have none
     if (element.prop(['label', 'position']) !== undefined) {
@@ -370,7 +370,7 @@ function colorInputs(cell: dia.Cell, group: string, index: number): Inputs {
     if (!field) return {};
     const { path, defaultValue } = field;
     const input = { type: 'color', label: 'Color', group, index, ...(defaultValue ? { defaultValue } : {}) };
-    return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
+    return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as Inputs);
 }
 
 /**
@@ -407,7 +407,7 @@ function fieldInputs(cell: dia.Cell, field: ColorField | null, label: string, gr
     // No color of its own by default (none, or none at all): Auto
     const defaultColor = fieldDefault(cell, field);
     const input = { type: 'color', label, group, index, ...(defaultColor === undefined || defaultColor === 'none' ? { auto: true } : {}) };
-    return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as unknown as Inputs);
+    return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as Inputs);
 }
 
 // Where the tip of an arrowhead of a button is (see `arrowheadIcon()`)
@@ -574,8 +574,8 @@ export function openInspector(el: HTMLElement, cell: dia.Cell, onMemberSelect?: 
         // The first group named after the kind of the shape (as in the palette, see `descriptions.ts`)
         groups: {
             ...groups,
-            general: { ...groups!.general, label: descriptions[cell.get('type')]?.title ?? groups!.general.label },
-            link: { ...groups!.link, label: linkName }
+            general: { ...groups.general, label: descriptions[cell.get('type')]?.title ?? groups.general.label },
+            link: { ...groups.link, label: linkName }
         },
         renderLabel,
         // The color fields with the swatches of the colors to pick again (see `color-field.ts`), the members of a group

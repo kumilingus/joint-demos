@@ -12,7 +12,7 @@ export type DataKey = 'power' | 'open' | 'level' | 'value' | 'values' | 'min' | 
 
 /** A value of the data of the element (`undefined` if it has none) */
 export function dataOf<T = unknown>(cell: dia.Cell, key: DataKey): T | undefined {
-    return cell.prop(['data', key]) as T | undefined;
+    return cell.prop(['data', key]);
 }
 
 /** Whether the element has the value (it shows it) */

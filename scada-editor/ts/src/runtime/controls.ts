@@ -128,7 +128,7 @@ abstract class Control extends dia.HighlighterView {
     protected transform(): void {
         const { transformGroup, cellView } = this;
         if (!transformGroup) return;
-        const { x, y } = (cellView.model as dia.Element).position();
+        const { x, y } = cellView.model.position();
         transformGroup.attr('transform', `translate(${x},${y})`);
     }
 

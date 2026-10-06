@@ -83,7 +83,7 @@ export function insertJoin(app: App, link: dia.Link, point: dia.Point): void {
 /** The ends of the links attached to the selected elements (to their members too: a group) */
 export function connectedEnds(app: App): Array<[dia.Link, 'source' | 'target']> {
     const { graph, selection } = app;
-    const elements = selection.filter(cell => cell.isElement()) as dia.Element[];
+    const elements = selection.filter(cell => cell.isElement());
     const ids = new Set(elements.flatMap(element => [element, ...element.getEmbeddedCells({ deep: true })]).map(cell => cell.id));
     const links = new Set(elements.flatMap(element => graph.getConnectedLinks(element, { deep: true })));
     return [...links].flatMap(link => (['source', 'target'] as const)

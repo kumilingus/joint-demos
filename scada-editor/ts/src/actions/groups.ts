@@ -32,7 +32,7 @@ export function groupable(app: App): dia.Element[] {
  * `recorded` in a step of the history that changes the members (an undo of it gets the size back).
  */
 export function fitGroups(cell: dia.Cell, { recorded = false } = {}): void {
-    const options = (recorded ? {} : { ...DERIVED }) as dia.Element.FitToChildrenOptions;
+    const options = (recorded ? {} : { ...DERIVED });
     withGroups(cell).filter(isGroup).forEach(group => group.fitEmbeds(options));
 }
 

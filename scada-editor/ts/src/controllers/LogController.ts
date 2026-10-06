@@ -17,7 +17,7 @@ export default class LogController extends Controller {
     startListening(): void {
         clearLog();
         // A listener of the plant (as any system): the updates and the commands
-        this.listenTo(this.context.plant!, {
+        this.listenTo(this.context.plant, {
             'update': (_app: App, message: PlantMessage) => logMessage('update', message),
             'command': (_app: App, message: PlantMessage) => logMessage('command', message)
         });
@@ -87,7 +87,7 @@ const TagBadge = dia.HighlighterView.extend({
     transform(this: dia.HighlighterView) {
         const { transformGroup, cellView } = this;
         if (!transformGroup) return;
-        const { x, y } = (cellView.model as dia.Element).position();
+        const { x, y } = cellView.model.position();
         transformGroup.attr('transform', `translate(${x},${y})`);
     }
 });

@@ -42,7 +42,7 @@ export default class Busbar extends Shape {
     }
 
     defaults(): dia.Element.Attributes {
-        const ends = terminalPorts([{ id: 'left', side: 'left' }, { id: 'right', side: 'right' }])!;
+        const ends = terminalPorts([{ id: 'left', side: 'left' }, { id: 'right', side: 'right' }]);
         return {
             ...super.defaults,
             type: 'Busbar',

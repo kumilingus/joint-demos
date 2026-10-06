@@ -103,10 +103,10 @@ function onElementPointerdown(app: App, view: dia.ElementView, evt: dia.Event, x
 function onElementPointermove(app: App, view: dia.ElementView, evt: dia.Event, x: number, y: number) {
     const { duplicatePressed } = view.eventData(evt);
     if (!duplicatePressed || getDragDelegate(view, evt)) return;
-    const moved = view.getDelegatedView() as dia.ElementView | null;
+    const moved = view.getDelegatedView();
     if (!moved) return;
     app.graph.startBatch(DUPLICATE_BATCH);
-    const copy = duplicate(app, moved.model as dia.Element);
+    const copy = duplicate(app, moved.model);
     const copyView = copy.findView(app.paper) as dia.ElementView | undefined;
     if (!copyView) {
         app.graph.stopBatch(DUPLICATE_BATCH);

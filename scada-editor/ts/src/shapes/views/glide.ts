@@ -43,7 +43,7 @@ export function glide(view: dia.ElementView): void {
     glidingView.glides?.forEach(animation => animation.cancel());
     const [from, to] = [model.glideKeyframes(drawn), model.glideKeyframes(value)];
     glidingView.glides = Object.keys(to).flatMap((selector) => {
-        const node = view.findNode(selector) as SVGElement | null;
+        const node = view.findNode(selector);
         return node ? [node.animate([from[selector], to[selector]], { duration: GLIDE_DURATION, easing: 'ease-in-out' })] : [];
     });
 }

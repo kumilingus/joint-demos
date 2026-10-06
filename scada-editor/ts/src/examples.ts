@@ -17,16 +17,16 @@ export const EXAMPLES: Example[] = [
     {
         name: 'Boiler House',
         description: 'Steam: the boilers, the feedwater, the charts of the plant',
-        json: boilerHouse as dia.Graph.JSON
+        json: boilerHouse
     },
     {
         name: 'Microgrid',
         description: 'Power: the wind, the sun, a diesel backup and a battery on a bus',
-        json: microgrid as dia.Graph.JSON
+        json: microgrid
     },
     {
         name: 'Cement Plant',
         description: 'Solids: the limestone up a belt, the raw meal through the preheater, the gas to the stack',
-        json: cementPlant as dia.Graph.JSON
+        json: cementPlant
     }
 ];

@@ -35,7 +35,7 @@ interface MenuItem {
 function openMenu(app: App, evt: dia.Event, items: MenuItem[]): void {
     ui.ContextToolbar.close();
     const menu = new ui.ContextToolbar({
-        target: { x: evt.clientX!, y: evt.clientY! },
+        target: { x: evt.clientX, y: evt.clientY },
         root: app.el,
         vertical: true,
         anchor: 'top-left',

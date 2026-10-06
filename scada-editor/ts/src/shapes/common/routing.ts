@@ -71,7 +71,7 @@ const rightAngle = ((vertices: dia.Point[], args: Record<string, unknown> = {}, 
     const sourceDirection = args.sourceDirection ?? portDirection(link.source(), link.graph);
     const targetDirection = args.targetDirection ?? portDirection(link.target(), link.graph);
     return routers.rightAngle(vertices, { ...args, sourceDirection, targetDirection } as never, linkView);
-}) as unknown as typeof routers.rightAngle;
+});
 
 /**
  * The routers of the papers: the `rightAngle` one aware of the rotated ports (under its own name,
@@ -86,13 +86,13 @@ const routingOf = (link: dia.Link) => ROUTINGS[link.get('routing') as Routing] ?
 const routingRouter = ((vertices: dia.Point[], _args: unknown, linkView: dia.LinkView) => {
     const { name, args } = routingOf(linkView.model).router as { name: keyof typeof routerNamespace; args?: object };
     return (routerNamespace[name] as routers.Router).call(linkView, vertices, { ...args }, linkView);
-}) as routers.Router;
+});
 
 /** The connector of the papers: of the routing of the link (its own options too: a raw path asked by the view) */
 const routingConnector = ((sourcePoint: g.Point, targetPoint: g.Point, route: g.Point[], options: object, linkView: dia.LinkView) => {
     const { name, args } = routingOf(linkView.model).connector as { name: keyof typeof connectors; args?: object };
     return (connectors[name] as connectors.Connector).call(linkView, sourcePoint, targetPoint, route, { ...args, ...options }, linkView);
-}) as connectors.Connector;
+});
 
 /** The options of a paper drawing the links by their routing */
 export const routingPaperOptions = {

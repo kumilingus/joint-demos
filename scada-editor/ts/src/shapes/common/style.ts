@@ -12,7 +12,7 @@ export type StyleKey = 'color' | 'outline' | 'outlineWidth' | 'accent' | 'finish
 
 /** A value of the style of the cell (`undefined`: none of its own - Auto) */
 export function styleOf<T = unknown>(cell: dia.Cell, key: StyleKey): T | undefined {
-    return cell.prop(['style', key]) as T | undefined;
+    return cell.prop(['style', key]);
 }
 
 /** Set a value of the style of the cell */

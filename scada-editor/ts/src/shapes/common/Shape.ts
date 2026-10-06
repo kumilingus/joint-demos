@@ -185,7 +185,7 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     toJSON(options?: dia.Cell.ExportOptions): dia.Cell.JSON {
         const { ports: _ports, ...json } = super.toJSON(options);
         // No finish of its own (Auto: of the diagram, see `finishOf()`)
-        const style = json.style as Record<string, unknown> | undefined;
+        const style: Record<string, unknown> | undefined = json.style;
         if (style?.finish === 'auto') delete style.finish;
         // No style, no data of its own: none (an empty one left by a value removed)
         (['style', 'data'] as const).forEach((key) => {
