@@ -4,6 +4,9 @@ import type { Example } from '../examples';
 import { getScreen } from '../canvas/screen';
 import { getStyle } from '../diagram-style';
 import Screen from '../shapes/models/diagram/Screen';
+import { clearSelection, selectCells } from './selection';
+import { showHover } from '../canvas/selection';
+import { addControls, removeControls } from '../runtime/controls';
 
 /*
  * The diagram as a file: a new one, opened, saved (JSON), exported (an image).
@@ -31,10 +34,6 @@ export function saveDiagram(app: App): void {
 
 const IMAGE_FILE_NAME = 'scada-diagram.webp';
 
-// Not of the diagram (of the editor): the grid, the highlighters (the frames of the selection, the controls),
-// the tools, the screen (its frame: the area of the image)
-const NOT_EXPORTED = ['.joint-grid-layer', '.joint-back-layer > *', '.joint-front-layer > *', '.joint-tools-layer > *', '.joint-type-screen'];
-
 /**
  * Download the diagram as an image (WebP): the screen only if there is one, else all of it; on the background of
  * the canvas in the current color scheme.
@@ -48,6 +47,14 @@ export function exportImage(app: App): void {
     const gradient = getStyle(graph).canvasGradient
         ? ['--canvas-gradient-top', '--canvas-gradient-bottom'].map(name => computed.getPropertyValue(name).trim())
         : null;
+    // Nothing of the editor in the image: the selection (its frames, its tools), the hover frame, the controls, the
+    // screen (its frame: the area of the image); the grid is not exported. Put back right after: the export copies
+    // the paper at once.
+    const selected = app.selection.toArray();
+    clearSelection(app);
+    showHover(paper, null);
+    removeControls(paper);
+    if (screen) paper.updateCellVisibility(screen, { cellVisibility: () => false });
     format.toDataURL(paper, (dataURL, error) => {
         if (error) return;
         const link = document.createElement('a');
@@ -62,10 +69,12 @@ export function exportImage(app: App): void {
         useComputedStyles: 'full',
         ...(screen ? { area: screen.getBBox() } : { padding: 20 }),
         beforeSerialize: (svg) => {
-            NOT_EXPORTED.forEach(selector => svg.querySelectorAll(selector).forEach(node => node.remove()));
             if (gradient) drawGradient(svg, gradient);
         }
     });
+    if (screen) paper.updateCellVisibility(screen);
+    addControls(paper);
+    selectCells(app, selected);
 }
 
 /** The gradient of the canvas under the whole image (its view box): from the top color to the bottom one */
