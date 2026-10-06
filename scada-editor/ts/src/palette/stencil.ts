@@ -181,12 +181,20 @@ export function createStencil(
     el.className = 'scada-stencil-panel';
     container.prepend(el);
 
+    // The labels with icons (elements of this palette)
+    const labeledGroups: Record<string, ui.Stencil.Group> = {
+        ...groups,
+        [DerivedGroup.Favorites]: { ...groups[DerivedGroup.Favorites], label: groupLabel('Favorites', 'star') },
+        [DerivedGroup.InUse]: { ...groups[DerivedGroup.InUse], label: groupLabel('In Use', 'layers') },
+        custom: { ...groups.custom, label: groupLabel('Custom', 'image') }
+    };
+
     const stencil = new ui.Stencil({
         el,
         paper: scroller,
         width: STENCIL_WIDTH,
         height: undefined,
-        groups,
+        groups: labeledGroups,
         layout: layoutGroup,
         dropAnimation: true,
         // The dragged shape (and the dropped one, cloned from it) has no tooltip, a link no name (see `setTooltip()`).
@@ -410,7 +418,8 @@ function shapesByKey(images: ImageLibrary): Map<string, dia.Cell> {
 /** A group of the palette with the shapes of the keys (in the order of the palette), hidden if there are none. */
 export function loadDerivedGroup(stencil: ui.Stencil, group: DerivedGroup, keys: Set<string>, images: ImageLibrary): void {
     const shapes = [...shapesByKey(images)].filter(([key]) => keys.has(key)).map(([, cell]) => cell);
-    // Shown before loading: the paper is fitted on load (a hidden group has nothing to measure).
+    // Shown before loading: the paper is fitted on load (a hidden group has nothing to measure). The element of the
+    // group by the stencil's markup (internal): TODO - removed and added again once `ui.Stencil` can (add / remove groups)
     const groupEl = stencil.el.querySelector<HTMLElement>(`.group[data-name="${group}"]`);
     if (groupEl) groupEl.hidden = shapes.length === 0;
     stencil.loadGroup(shapes, group);
@@ -453,6 +462,16 @@ export function loadCustomShapes(stencil: ui.Stencil, images: ImageLibrary): voi
     stencil.loadGroup(customShapes(images), 'custom');
 }
 
+/** The label of a group of the palette (its `label`: an element, see `ui.Stencil.Group`) with an icon (see `palette.css`) */
+function groupLabel(text: string, icon: string): HTMLElement {
+    const label = document.createElement('span');
+    label.className = 'scada-group-label';
+    const iconEl = document.createElement('span');
+    iconEl.className = `scada-group-icon scada-group-icon-${icon}`;
+    label.append(iconEl, text);
+    return label;
+}
+
 /** A button in the group of the custom shapes: it uploads images (into the diagram, see `onUpload`). */
 function addUploadButton(stencil: ui.Stencil, onUpload: StencilImages['onUpload']): void {
     const groupEl = stencil.el.querySelector('.group[data-name="custom"]');
@@ -468,6 +487,7 @@ function addUploadButton(stencil: ui.Stencil, onUpload: StencilImages['onUpload'
     setBesidePanel(button, 'palette');
     button.textContent = 'Upload images';
     button.append(input);
+    // Under the header of the group: its element by the stencil's markup (internal - no API for content of a group)
     groupEl.querySelector('.group-label')?.after(button);
 
     input.addEventListener('change', async() => {
