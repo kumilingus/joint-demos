@@ -1,5 +1,5 @@
 import { anchors, dia, type ui } from '@joint/plus';
-import { CLICK_THRESHOLD, GRID_SIZE, Mode, SELECTION_COLOR } from '../const';
+import { CANVAS_COLOR, CLICK_THRESHOLD, GRID_SIZE, Mode, SELECTION_COLOR } from '../const';
 import { connectionStrategy, gridSide } from './connections';
 import { routingPaperOptions } from '../shapes/common/routing';
 import Label from '../shapes/models/instruments/Label';
@@ -20,7 +20,7 @@ export const ZOOM = { min: 0.2, max: 3 };
 
 export const paperOptions: dia.Paper.Options = {
     // The color of the canvas: of the theme and the style of the diagram (`--shape-canvas`, see `shapes.css`)
-    background: { color: 'var(--shape-canvas)' },
+    background: { color: CANVAS_COLOR },
     // A shape without a view of its own (a chart has one): rendered again when its color changes (see `ShapeView`)
     elementView: (_element, namespaceView) => namespaceView ?? ShapeView,
     width: 1,

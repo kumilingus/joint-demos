@@ -1,6 +1,7 @@
 import type { dia } from '@joint/plus';
 import type { App } from './app';
 import { type OutlineWidth, setStyleFinish, setStyleOutlineWidth, type SurfaceFinish } from './shapes/common/gradients';
+import { CANVAS_COLOR } from './const';
 
 /*
  * The style of the diagram (in the settings, saved with it): the finish of all the equipment (shaded, flat), one color
@@ -81,7 +82,10 @@ export function applyStyle(style: DiagramStyle): void {
 
 /** The style of the diagram on the document (see `diagram-style.ts`), its finish on the shapes: on the canvas, in the palette */
 export function applyDiagramStyle(app: App): void {
-    applyStyle(getStyle(app.graph));
+    const style = getStyle(app.graph);
+    applyStyle(style);
+    // The canvas in a gradient: drawn behind the paper (on its scroller, see `canvas.css`) - the paper transparent
+    app.paper.drawBackground({ color: style.canvasGradient ? 'transparent' : CANVAS_COLOR });
     const papers: dia.Paper[] = [app.paper];
     if (app.stencil) papers.push(...Object.keys(app.stencil.options.groups ?? {}).map(group => app.stencil!.getPaper(group)));
     // The elements (their surfaces) rendered again, the links updated (the borders of the pipes)

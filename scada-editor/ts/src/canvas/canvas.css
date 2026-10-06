@@ -138,11 +138,6 @@
     background: linear-gradient(var(--canvas-gradient-top), var(--canvas-gradient-bottom));
 }
 
-:root[data-canvas-gradient] .joint-paper-scroller .joint-paper,
-:root[data-canvas-gradient] .joint-paper-scroller .joint-paper-background {
-    background: transparent !important;
-}
-
 /* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - not its ping (in its view, see `LogController`) */
 .scada-tint > :not(.scada-ping) {
     filter: var(--tint-filter) drop-shadow(0 0 6px var(--tint-color));
