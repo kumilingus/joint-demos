@@ -209,6 +209,8 @@ export function createStencil(
             // The shapes of the user show the images of the diagram.
             getImages,
             clickThreshold: CLICK_THRESHOLD,
+            // The hover frame of a shape at the edge of a group (the first link) drawn out of the paper, not cut
+            overflow: true,
             cellViewNamespace: cellNamespace,
             // The links by their routing (see `routing.ts`)
             ...routingPaperOptions,
