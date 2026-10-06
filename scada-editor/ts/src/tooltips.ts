@@ -2,20 +2,19 @@ import type { ui } from '@joint/plus';
 
 /**
  * The tooltips of the app: of every element with the `data-tooltip` attribute (the toolbar buttons,
- * the shapes of the palette, the help of the inspector, ...) - below it, unless it says where (its
- * `data-tooltip-position`, see `besidePanel()`).
+ * the shapes of the palette, the help of the inspector, ...) - where its `data-tooltip-position` says: below it
+ * (see `BELOW`), beside its panel (see `besidePanel()`).
  */
 export const tooltipOptions: Partial<ui.Tooltip.Options> = {
     rootTarget: document.body,
     target: '[data-tooltip]',
     padding: 8,
     // Shown after a while (not while the pointer passes over), fading in
-    animation: { delay: '400ms', duration: '150ms', timingFunction: 'ease-out' },
-    direction: 'auto' as ui.Tooltip.Options['direction'],
-    // Below it (its arrow on its top: the position is of the arrow), unless it says where - an option overrides the
-    // attributes of the element: none returned, they apply
-    position: (element: Element) => (element.hasAttribute('data-tooltip-position') ? undefined : 'top') as ui.Tooltip.TooltipPosition
+    animation: { delay: '400ms', duration: '150ms', timingFunction: 'ease-out' }
 };
+
+/** The attribute of an element with its tooltip below it: its arrow on its top (the position is of the arrow) */
+export const BELOW = { 'data-tooltip-position': 'top' };
 
 /**
  * The attributes of an element with its tooltip outside of its panel, at its height: on the right of the palette (the
