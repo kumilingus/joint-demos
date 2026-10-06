@@ -1,25 +1,34 @@
 import { dia, V } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { clearLog, closeLog, isLogOpen, type LogHooks, logMessage, toggleFilterTag, toggleLog } from '../log/log';
+import Log, { type LogHooks } from '../log/Log';
 import type { PlantEvent, PlantMessage } from '../plant/plant';
 import { findByTag, getTag } from '../plant/tags';
 import { propertiesOf } from '../plant/properties';
 import { setTint } from '../canvas/tint';
 
 /**
- * The log of the messages between the diagram and the plant (see `log/log.ts`): opened by the Log button.
+ * The log of the messages between the diagram and the plant (see `log/Log.ts`): opened by the Log button.
  * Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open, the element
  * of the message clicked is tinted blue; the tags of the elements are shown, the elements of the messages pinged if asked.
  */
-export default class LogController extends Controller {
+export default class LogController extends Controller<[App, Log]> {
+
+    constructor(app: App) {
+        // The log of the app (its options kept from a run to the next one): passed to the handlers too
+        super(app, new Log(logHooks(app)));
+    }
+
+    get log(): Log {
+        return this.callbackArguments[1];
+    }
 
     startListening(): void {
-        clearLog();
+        this.log.clear();
         // A listener of the plant (as any system): the updates and the commands
         this.listenTo(this.context.plant, {
-            'update': (_app: App, message: PlantMessage) => logMessage('update', message),
-            'command': (_app: App, message: PlantMessage) => logMessage('command', message)
+            'update': onPlantUpdate,
+            'command': onPlantCommand
         });
         this.listenTo(this.context.toolbar, {
             'log:pointerclick': onLogPointerclick
@@ -32,17 +41,25 @@ export default class LogController extends Controller {
 
     stopListening(): void {
         super.stopListening();
-        closeLog();
+        this.log.close();
     }
 }
 
-function onLogPointerclick(app: App) {
-    toggleLog(app.el, logHooks(app), app.toolbar.getWidgetByName('log')?.el);
+function onPlantUpdate(_app: App, log: Log, message: PlantMessage) {
+    log.add('update', message);
 }
 
-function onElementPointerclick(_app: App, elementView: dia.ElementView) {
+function onPlantCommand(_app: App, log: Log, message: PlantMessage) {
+    log.add('command', message);
+}
+
+function onLogPointerclick(app: App, log: Log) {
+    log.toggle(app.el, app.toolbar.getWidgetByName('log')?.el);
+}
+
+function onElementPointerclick(_app: App, log: Log, elementView: dia.ElementView) {
     const tag = getTag(elementView.model);
-    if (tag && isLogOpen()) toggleFilterTag(tag);
+    if (tag && log.isOpen) log.toggleFilterTag(tag);
 }
 
 const TAG_BADGE_ID = 'tag-badge';

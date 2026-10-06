@@ -50,7 +50,7 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         text: 'Settings',
         attrs: { button: { 'data-tooltip': 'The settings of the diagram (the screen, the animations) and of the editor' }}
     }] : [];
-    // The messages between the diagram and the plant (see `log/log.ts`): in the runtime mode
+    // The messages between the diagram and the plant (see `log/Log.ts`): in the runtime mode
     const log: ui.Toolbar.Options['tools'] = mode === Mode.Runtime ? [{
         type: 'button',
         name: 'log',
