@@ -1,4 +1,4 @@
-/* The inspector panel (see `inspector.ts`): its empty state, the examples, the fields of the app, the settings (see `settings.ts`) */
+/* The inspector panel (see `inspector.ts`): its placeholder, the examples, the fields of the app, the settings (see `settings.ts`) */
 
 /* Inspector */
 
@@ -8,7 +8,7 @@
 }
 
 /* Nothing in the panel (no selection, no shape of the palette, no settings): what it is for (see `App`) */
-.scada-inspector-empty {
+.scada-inspector-placeholder {
     display: none;
     margin: 16px;
     padding: 32px 16px;
@@ -20,16 +20,16 @@
     text-align: center;
 }
 
-.scada-inspector-panel:not(:has(> :not(.scada-inspector-empty))) > .scada-inspector-empty {
+.scada-inspector-panel:not(:has(> :not(.scada-inspector-placeholder))) > .scada-inspector-placeholder {
     display: block;
 }
 
-.scada-inspector-empty p {
+.scada-inspector-placeholder p {
     margin: 0;
 }
 
 /* "or" between the two ways, on a line */
-.scada-inspector-empty-or {
+.scada-inspector-placeholder-or {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -37,15 +37,15 @@
     font-size: 12px;
 }
 
-.scada-inspector-empty-or::before,
-.scada-inspector-empty-or::after {
+.scada-inspector-placeholder-or::before,
+.scada-inspector-placeholder-or::after {
     content: '';
     flex: 1;
     border-top: 1px solid var(--border);
 }
 
 /* The settings: a button with the cog of the toolbar */
-.scada-inspector-empty button {
+.scada-inspector-placeholder button {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -59,7 +59,7 @@
     cursor: pointer;
 }
 
-.scada-inspector-empty button::before {
+.scada-inspector-placeholder button::before {
     content: '';
     width: 14px;
     height: 14px;
@@ -67,7 +67,7 @@
     mask: var(--icon-settings) center / contain no-repeat;
 }
 
-.scada-inspector-empty button:hover {
+.scada-inspector-placeholder button:hover {
     background: var(--muted);
 }
 
@@ -121,7 +121,7 @@
     color: var(--muted-foreground);
 }
 
-.scada-inspector-empty-caption {
+.scada-inspector-placeholder-caption {
     margin-top: 8px !important;
     font-size: 12px;
 }

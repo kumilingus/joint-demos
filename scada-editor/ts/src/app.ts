@@ -39,7 +39,7 @@ import {
 // The mock of the plant (see `plant/mock/`): an app with a real plant deletes it and this line
 import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
-import { showInspectorEmpty } from './inspector/empty';
+import { showInspectorPlaceholder } from './inspector/placeholder';
 import type { PanelContent } from './inspector/panel';
 
 export class App {
@@ -147,8 +147,8 @@ export class App {
         this.controllers.forEach(controller => controller.startListening());
         this.enterMode(this.mode);
         this.setColorScheme(this.colorScheme);
-        // What the inspector panel shows with nothing in it (see `inspector/empty.ts`): the app complete
-        showInspectorEmpty(this);
+        // What the inspector panel shows with nothing in it (see `inspector/placeholder.ts`): the app complete
+        showInspectorPlaceholder(this);
     }
 
     setMode(mode: Mode): void {

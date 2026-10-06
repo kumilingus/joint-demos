@@ -2,7 +2,7 @@ import type { App } from '../app';
 
 /*
  * The inspector panel shows one thing at a time (see `App.panel`): the inspector of the selection, the settings,
- * a shape of the palette - or, with nothing in it, what it can show (see `empty.ts`).
+ * a shape of the palette - or, with nothing in it, what it can show (see `placeholder.ts`).
  */
 
 /** What the inspector panel shows: removed with what it started (its listeners, its timers, its papers, ...) */

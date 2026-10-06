@@ -4,7 +4,7 @@ import cementPlant from './diagrams/cement-plant.json';
 import microgrid from './diagrams/microgrid.json';
 
 /*
- * The example diagrams (saved with the Save button): offered in the empty inspector panel (see `App`).
+ * The example diagrams (saved with the Save button): offered by the placeholder of the inspector panel (see `inspector/placeholder.ts`).
  */
 
 export interface Example {

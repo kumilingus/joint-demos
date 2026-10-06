@@ -58,7 +58,7 @@ src/
                       navigator, screen, context menu, tint
   toolbar/            toolbar (of each mode), config (the tools in each mode), toolbar.css
   palette/            stencil, packing, preview, descriptions, images, favorites
-  inspector/          inspector, selection inspector, empty (nothing selected: the examples), color field, help, settings
+  inspector/          inspector, selection inspector, panel (what it shows), placeholder (nothing in it: the examples), color field, help, settings
   runtime/            controls, animations, electrical (the energized circuits)
   plant/              plant.ts (the interface), properties.ts, tags.ts; mock/ - the simulated plant
   log/                the log of plant messages, what it shows on the diagram (log-hooks)
