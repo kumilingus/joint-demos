@@ -41,7 +41,7 @@ import {
 import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
 import { showInspectorPlaceholder } from './inspector/placeholder';
-import type { PanelContent } from './inspector/panel';
+import { hideToolsOverPanel, type PanelContent } from './inspector/panel';
 
 export class App {
 
@@ -154,6 +154,8 @@ export class App {
         this.setColorScheme(this.colorScheme);
         // What the inspector panel shows with nothing in it (see `inspector/placeholder.ts`): the app complete
         showInspectorPlaceholder(this);
+        // The edited cell seen without its tools while the pointer is in the panel (see `panel.ts`)
+        hideToolsOverPanel(this);
     }
 
     setMode(mode: Mode): void {

@@ -3,6 +3,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { inspectSelection } from '../inspector/inspector';
 import { isSettingsOpen } from '../inspector/settings';
+import { hideNewToolsOverPanel } from '../inspector/panel';
 import Screen from '../shapes/models/diagram/Screen';
 import Group from '../shapes/models/diagram/Group';
 import { showSelection, updateGroupBadge } from '../canvas/selection';
@@ -27,6 +28,7 @@ export default class SelectionController extends Controller {
 function onSelectionChange(app: App) {
     const { paper, selection } = app;
     showSelection(paper, selection);
+    hideNewToolsOverPanel(app);
     inspectSelection(app);
 }
 
@@ -43,6 +45,7 @@ function onSelectionRemove(app: App, cell: dia.Cell) {
     // group, ...), the last one updates
     if (selection.toArray().some(selected => !graph.getCell(selected.id))) return;
     showSelection(paper, selection);
+    hideNewToolsOverPanel(app);
     inspectSelection(app, Screen.isScreen(cell) && isSettingsOpen(app));
 }
 
