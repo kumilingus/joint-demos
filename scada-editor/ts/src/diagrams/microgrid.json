@@ -1120,11 +1120,11 @@
     {
       "position": {
         "x": 350,
-        "y": 30
+        "y": 55
       },
       "size": {
         "width": 420,
-        "height": 120
+        "height": 100
       },
       "angle": 0,
       "type": "Label",
@@ -1244,11 +1244,11 @@
     {
       "position": {
         "x": 1240,
-        "y": 110
+        "y": 124
       },
       "size": {
         "width": 240,
-        "height": 40
+        "height": 20
       },
       "angle": 0,
       "type": "Label",

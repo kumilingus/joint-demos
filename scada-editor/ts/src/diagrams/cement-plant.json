@@ -1201,11 +1201,11 @@
     {
       "position": {
         "x": 20,
-        "y": 660
+        "y": 695
       },
       "size": {
         "width": 410,
-        "height": 120
+        "height": 80
       },
       "angle": 0,
       "type": "Label",
@@ -1382,8 +1382,8 @@
     },
     {
       "position": {
-        "x": 1470,
-        "y": 480
+        "x": 1480,
+        "y": 489
       },
       "size": {
         "width": 80,
@@ -1399,13 +1399,14 @@
       },
       "label": {
         "text": "Kiln Gas",
-        "size": 14
+        "size": 14,
+        "align": "left"
       }
     },
     {
       "position": {
-        "x": 1150,
-        "y": 400
+        "x": 1160,
+        "y": 409
       },
       "size": {
         "width": 80,
@@ -1421,7 +1422,8 @@
       },
       "label": {
         "text": "Raw Meal",
-        "size": 14
+        "size": 14,
+        "align": "left"
       }
     },
     {
@@ -1464,8 +1466,8 @@
     },
     {
       "position": {
-        "x": 1700,
-        "y": 290
+        "x": 1695,
+        "y": 289
       },
       "size": {
         "width": 60,
@@ -1481,7 +1483,8 @@
       },
       "label": {
         "text": "Exhaust",
-        "size": 14
+        "size": 14,
+        "align": "right"
       }
     },
     {
@@ -1543,8 +1546,8 @@
     },
     {
       "position": {
-        "x": 1360,
-        "y": 780
+        "x": 1380,
+        "y": 779
       },
       "size": {
         "width": 80,
@@ -1560,7 +1563,8 @@
       },
       "label": {
         "text": "Clinker",
-        "size": 14
+        "size": 14,
+        "align": "left"
       }
     },
     {
