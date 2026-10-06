@@ -1,6 +1,6 @@
 import type { dia } from '@joint/plus';
 import { GRID_SIZE } from '../../../const';
-import { DERIVED } from '../../../history';
+import { type ChangeOptions, DERIVED } from '../../../history';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type ColorField, type Resizable } from '../../common/Shape';
 import { dataOf, setData } from '../../common/data';
@@ -159,7 +159,7 @@ export default class Table extends Shape {
      * As many rows as the height takes (one at least), the height snapped to them: a resize by the handles is in
      * the steps of the grid (a row each) already, any other one (set, loaded) is fitted
      */
-    protected fitRows(options: dia.Cell.Options): void {
+    protected fitRows(options: ChangeOptions): void {
         if (options.derived) return;
         const rows = Math.max(1, Math.round((this.size().height - Table.headOf(this)) / ROW_HEIGHT));
         if (rows !== this.get('rows')) this.set('rows', rows, { ...DERIVED, resized: true });

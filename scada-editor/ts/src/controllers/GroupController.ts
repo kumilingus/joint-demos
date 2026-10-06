@@ -2,6 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { fitGroups } from '../actions';
+import type { ChangeOptions } from '../history';
 
 /**
  * A group fits its members (see `Group`): a member moved on its own (selected in the group), resized
@@ -12,12 +13,15 @@ export default class GroupController extends Controller {
 
     startListening(): void {
         const { graph } = this.context;
-        this.listenTo(graph, 'change:position change:size change:angle', onMemberChange);
+        this.listenTo(graph, 'change', onCellChange);
     }
 }
 
-function onMemberChange(_app: App, cell: dia.Cell, _value: unknown, options: dia.Cell.Options) {
+/** Of a member: moved, resized or rotated */
+function onCellChange(_app: App, cell: dia.Cell, options: ChangeOptions) {
     if (!cell.isEmbedded() || options.derived) return;
+    const { changed } = cell;
+    if (!('position' in changed || 'size' in changed || 'angle' in changed)) return;
     // Moved with an element it is in (the group): its groups move as a whole
     if (options.translateBy && options.translateBy !== cell.id) return;
     const parent = cell.getParentCell();

@@ -18,7 +18,10 @@ export const DERIVED = { derived: true };
 export const PREFERENCE = { preference: true };
 
 /** The flags in the options of a change (see above) */
-type ChangeFlags = Partial<typeof RUNTIME & typeof DERIVED & typeof PREFERENCE>;
+export type ChangeFlags = Partial<typeof RUNTIME & typeof DERIVED & typeof PREFERENCE>;
+
+/** The options of a change of a cell, with its flags */
+export type ChangeOptions = dia.Cell.Options & ChangeFlags;
 
 /** The history records the changes not flagged (see above). */
 export const historyOptions: Partial<dia.CommandManager.Options> = {
