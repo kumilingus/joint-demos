@@ -396,3 +396,9 @@
 .joint-inspector select:has(option[value=""]:checked) {
     color: var(--muted-foreground);
 }
+
+/* An ID taken or empty (see `validateTag()` in `inspector.ts`): its field in red until it is fixed */
+.joint-inspector input:invalid {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgb(220 38 38 / 0.12);
+}

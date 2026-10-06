@@ -15,6 +15,7 @@ import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
 import { type DataKey, dataOf, hasData } from '../shapes/common/data';
 import type { App } from '../app';
 import { isTaggable } from '../plant/tags';
+import type TagIndex from '../plant/TagIndex';
 import { closePanel, type PanelContent, showInPanel } from './panel';
 import { openSettings } from './settings';
 import Screen from '../shapes/models/diagram/Screen';
@@ -614,7 +615,9 @@ function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.C
         renderLabel,
         // The color fields with the swatches of the colors to pick again (see `color-field.ts`), the members of a group
         renderFieldContent: fieldContentRenderer(onMemberSelect),
-        getFieldValue
+        getFieldValue,
+        // An ID taken or empty: not set, told at the field (see `validateTag()`)
+        validateInput: (input: HTMLInputElement, path: string) => (path === 'tag' ? validateTag(app.tags, cell, input) : input.validity.valid)
     });
     inspector.render();
     trackPickedColors(inspector.el);
@@ -629,6 +632,18 @@ function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.C
         }
     }
     showInPanel(app, inspectorContent(inspectors));
+}
+
+/**
+ * Whether the ID in the field can be the tag of the cell: not empty, not of another cell (see `TagIndex`). If not, the
+ * browser tells why at the field (its validation message) and the cell keeps its tag; the field keeps the value to fix.
+ */
+function validateTag(tags: TagIndex, cell: dia.Cell, input: HTMLInputElement): boolean {
+    const tag = input.value.trim();
+    const message = !tag ? 'An ID is required.' : tags.isTaken(tag, cell) ? `${tag} is the ID of another element.` : '';
+    input.setCustomValidity(message);
+    if (message) input.reportValidity();
+    return !message;
 }
 
 /**
