@@ -8,7 +8,7 @@ export { copySelection, cutSelection, duplicate, paste, pasteAt } from './clipbo
 export { bringToFront, sendToBack, layerOver, layerUnder, moveToLayer, menuCell, elementBelow } from './order';
 export { splitLink, insertJoin, connectedEnds, disconnectSelection } from './pipes';
 export { topGroup, groupable, fitGroups, groupSelection, ungroupSelection } from './groups';
-export { saveDiagram, exportImage, confirmReplace, newDiagram, openDiagram } from './file';
+export { saveDiagram, exportImage, confirmReplace, newDiagram, openDiagram, openExample } from './file';
 export { addImages, refreshPalette, deleteImage } from './palette';
-export { zoomToFit } from './view';
+export { zoomToFit, storedColorScheme, storeColorScheme } from './view';
 export { flipSelection, flipTargets } from './flip';

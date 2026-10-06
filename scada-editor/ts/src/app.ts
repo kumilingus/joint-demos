@@ -4,20 +4,20 @@ import { createStencil } from './palette/stencil';
 import { createGraph } from './canvas/layers';
 import { createSelection } from './canvas/selection';
 import { createNavigator } from './canvas/navigator';
-import { EXAMPLES, type Example } from './examples';
-import { ColorScheme, Mode } from './const';
+import { EXAMPLES } from './examples';
+import { type ColorScheme, Mode } from './const';
 import { canvasColors, getGrid, interactivity, paperOptions, scrollerOptions, snaplinesOptions } from './canvas/config';
-import { getToolbarOptions } from './toolbar/config';
+import { createToolbar } from './toolbar/toolbar';
 import { historyOptions } from './actions/history';
 import { tooltipOptions } from './tooltips';
-import { addImages, clearSelection, confirmReplace, refreshPalette, zoomToFit } from './actions';
+import { addImages, clearSelection, refreshPalette, storedColorScheme, storeColorScheme, zoomToFit } from './actions';
 import { isControlEvent, setControlsOperable } from './runtime/controls';
 import { Plant } from './plant/plant';
 import { setTablesLive } from './shapes/views/TableView';
 import { getImages, IMAGES_ATTRIBUTE, type ImagesPaperOptions } from './palette/images';
 import { FAVORITES_ATTRIBUTE } from './palette/favorites';
 import { ANIMATIONS_ATTRIBUTE } from './runtime/animations';
-import { applyStyle, getStyle, STYLE_ATTRIBUTE } from './diagram-style';
+import { applyDiagramStyle, STYLE_ATTRIBUTE } from './diagram-style';
 import { hideScreen, showScreen } from './canvas/screen';
 import {
     type Controller,
@@ -39,7 +39,7 @@ import {
 // The mock of the plant (see `plant/mock/`): an app with a real plant deletes it and this line
 import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
-import { toggleSettings } from './inspector/settings';
+import { showInspectorEmpty } from './inspector/empty';
 
 export class App {
 
@@ -63,7 +63,7 @@ export class App {
     tooltip: ui.Tooltip;
 
     mode: Mode = Mode.Edit;
-    colorScheme: ColorScheme = getInitialColorScheme();
+    colorScheme: ColorScheme = storedColorScheme();
     /** Whether a moved or resized element aligns with the others (see the settings) */
     snaplinesEnabled = true;
     /** The cells as they were before the runtime mode (put back when it is left: its changes are not the diagram's) */
@@ -82,16 +82,10 @@ export class App {
     constructor(el: HTMLElement) {
         this.el = el;
         this.inspectorEl = el.querySelector<HTMLElement>('.inspector-panel')!;
-        // The empty state of the panel: put back when its content is replaced (an inspector empties it)
-        const emptyEl = this.createInspectorEmpty();
-        this.inspectorEl.append(emptyEl);
-        new MutationObserver(() => {
-            if (!emptyEl.isConnected) this.inspectorEl.append(emptyEl);
-        }).observe(this.inspectorEl, { childList: true });
 
         this.graph = createGraph();
         // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings
-        this.graph.on(`change:${STYLE_ATTRIBUTE}`, () => this.applyStyle());
+        this.graph.on(`change:${STYLE_ATTRIBUTE}`, () => applyDiagramStyle(this));
 
         this.history = new dia.CommandManager({ ...historyOptions, graph: this.graph });
 
@@ -150,6 +144,8 @@ export class App {
         this.controllers.forEach(controller => controller.startListening());
         this.enterMode(this.mode);
         this.setColorScheme(this.colorScheme);
+        // What the inspector panel shows with nothing in it (see `inspector/empty.ts`): the app complete
+        showInspectorEmpty(this);
     }
 
     setMode(mode: Mode): void {
@@ -158,7 +154,6 @@ export class App {
         this.mode = mode;
         this.enterMode(mode);
     }
-
 
     /**
      * Load a diagram saved with `saveDiagram()`: its cells, its images (see `images.ts`) and the favorite
@@ -171,7 +166,7 @@ export class App {
         clearSelection(this);
         // A diagram without images (or favorites) has none (not those of the previous one), all of it animated.
         this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', [STYLE_ATTRIBUTE]: {}, ...json });
-        this.applyStyle();
+        applyDiagramStyle(this);
         this.history.reset();
         zoomToFit(this);
         this.paper.unfreeze();
@@ -191,10 +186,13 @@ export class App {
      * the palette is created for the edit mode only, the toolbar for each mode (with its tools).
      */
     protected enterMode(mode: Mode): void {
-        this.createToolbar(mode);
+        this.toolbar = createToolbar(this, mode);
         if (mode === Mode.Edit) {
             this.createSnaplines();
-            this.createStencil(this.snaplines!);
+            this.stencil = createStencil(this.el.querySelector('.main')!, this.scroller, this.snaplines!, {
+                getImages: () => getImages(this.graph),
+                onUpload: images => addImages(this, images)
+            });
         }
         if (mode === Mode.Runtime) {
             // Nothing of the runtime mode in the history; the diagram kept as it is
@@ -244,88 +242,6 @@ export class App {
         };
     }
 
-    /** What the empty inspector panel says (shown while it has nothing else, see `inspector/inspector.css`): with a way to the settings */
-    protected createInspectorEmpty(): HTMLElement {
-        const el = document.createElement('div');
-        el.className = 'inspector-empty';
-        // Two ways: a shape, or (an "or" between them) the settings with what they have
-        const text = document.createElement('p');
-        text.textContent = 'Select a shape on the canvas or in the palette to see its properties.';
-        const or = document.createElement('div');
-        or.className = 'inspector-empty-or';
-        or.textContent = 'or';
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.textContent = 'Diagram settings';
-        button.addEventListener('click', () => toggleSettings(this));
-        const caption = document.createElement('p');
-        caption.className = 'inspector-empty-caption';
-        caption.textContent = 'the screen, the animations, the editor';
-        el.append(text, or, button, caption, this.createExamples());
-        return el;
-    }
-
-    /** The example diagrams to open (see `examples.ts`) */
-    protected createExamples(): HTMLElement {
-        const el = document.createElement('div');
-        el.className = 'inspector-examples';
-        const title = document.createElement('h4');
-        title.textContent = 'Examples';
-        el.append(title);
-        EXAMPLES.forEach((example) => {
-            const button = document.createElement('button');
-            button.type = 'button';
-            const name = document.createElement('strong');
-            name.textContent = example.name;
-            const description = document.createElement('span');
-            description.textContent = example.description;
-            button.append(name, description);
-            button.addEventListener('click', () => this.openExample(example));
-            el.append(button);
-        });
-        return el;
-    }
-
-    /** Open the example instead of the diagram: as a file, asked first if the diagram was changed */
-    openExample(example: Example): void {
-        if (!confirmReplace(this, `Open the ${example.name} example?`)) return;
-        this.loadJSON(example.json);
-    }
-
-    protected createToolbar(mode: Mode): void {
-        const el = document.createElement('div');
-        el.className = 'toolbar-panel';
-        this.el.prepend(el);
-        this.toolbar = new ui.Toolbar({
-            ...getToolbarOptions(mode),
-            el,
-            references: { paperScroller: this.scroller, commandManager: this.history }
-        });
-        this.toolbar.render();
-    }
-
-    protected createStencil(snaplines: ui.Snaplines): void {
-        const el = document.createElement('div');
-        el.className = 'stencil-panel';
-        this.el.querySelector('.main')!.prepend(el);
-        this.stencil = createStencil(el, this.scroller, snaplines, {
-            getImages: () => getImages(this.graph),
-            onUpload: images => addImages(this, images)
-        });
-    }
-
-    /** The style of the diagram on the document (see `diagram-style.ts`), its finish on the shapes: on the canvas, in the palette */
-    applyStyle(): void {
-        applyStyle(getStyle(this.graph));
-        const papers: dia.Paper[] = [this.paper];
-        if (this.stencil) papers.push(...Object.keys(this.stencil.options.groups ?? {}).map(group => this.stencil!.getPaper(group)));
-        // The elements (their surfaces) rendered again, the links updated (the borders of the pipes)
-        papers.forEach((paper) => {
-            paper.model.getElements().forEach(element => element.findView(paper)?.render());
-            paper.model.getLinks().forEach(link => (link.findView(paper) as dia.LinkView | undefined)?.update());
-        });
-    }
-
     protected destroyStencil(): void {
         this.stencil?.remove();
         this.stencil = null;
@@ -356,26 +272,6 @@ export class App {
     protected destroySnaplines(): void {
         this.snaplines?.remove();
         this.snaplines = null;
-    }
-}
-
-const COLOR_SCHEME_KEY = 'scada-editor:color-scheme';
-/** The color scheme chosen last time, or the one of the system. */
-function getInitialColorScheme(): ColorScheme {
-    try {
-        const stored = localStorage.getItem(COLOR_SCHEME_KEY);
-        if (stored === ColorScheme.Light || stored === ColorScheme.Dark) return stored;
-    } catch {
-        // No storage (a private window): the system decides.
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? ColorScheme.Dark : ColorScheme.Light;
-}
-
-function storeColorScheme(colorScheme: ColorScheme): void {
-    try {
-        localStorage.setItem(COLOR_SCHEME_KEY, colorScheme);
-    } catch {
-        // Not remembered, but switched.
     }
 }
 

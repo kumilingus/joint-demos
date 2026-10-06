@@ -1,5 +1,6 @@
 import { format, V } from '@joint/plus';
 import type { App } from '../app';
+import type { Example } from '../examples';
 import { getScreen } from '../canvas/screen';
 import { getStyle } from '../diagram-style';
 import Screen from '../shapes/models/diagram/Screen';
@@ -111,4 +112,10 @@ export function openDiagram(app: App): void {
         }
     });
     input.click();
+}
+
+/** Open the example instead of the diagram: as a file, asked first if the diagram was changed */
+export function openExample(app: App, example: Example): void {
+    if (!confirmReplace(app, `Open the ${example.name} example?`)) return;
+    app.loadJSON(example.json);
 }

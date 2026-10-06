@@ -169,12 +169,17 @@ export interface StencilImages {
     onUpload: (images: ImageEntry[]) => void;
 }
 
+/** The palette in its panel, the first of the container (left of the canvas). */
 export function createStencil(
-    el: HTMLElement,
+    container: HTMLElement,
     scroller: ui.PaperScroller,
     snaplines: ui.Snaplines,
     { getImages, onUpload }: StencilImages
 ): ui.Stencil {
+
+    const el = document.createElement('div');
+    el.className = 'stencil-panel';
+    container.prepend(el);
 
     const stencil = new ui.Stencil({
         el,

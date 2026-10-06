@@ -54,9 +54,9 @@ src/
   actions/            selection, history, clipboard, order, groups, pipes, file, palette, view
   canvas/             config (the paper, the scroller, the zoom), selection frames, snaplines, link tools, connections, layers,
                       navigator, screen, context menu, tint
-  toolbar/            config (the tools in each mode), toolbar.css
+  toolbar/            toolbar (of each mode), config (the tools in each mode), toolbar.css
   palette/            stencil, packing, preview, descriptions, images, favorites
-  inspector/          inspector, selection inspector, color field, help, settings
+  inspector/          inspector, selection inspector, empty (nothing selected: the examples), color field, help, settings
   runtime/            controls, animations
   plant/              plant.ts (the interface), properties.ts, tags.ts; mock/ - the simulated plant
   log/                the log of plant messages
