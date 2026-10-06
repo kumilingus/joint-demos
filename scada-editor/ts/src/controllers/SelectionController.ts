@@ -18,7 +18,6 @@ export default class SelectionController extends Controller {
 
         this.listenTo(selection, 'add reset', onSelectionChange);
         this.listenTo(selection, 'remove', onSelectionRemove);
-        this.listenTo(graph, 'remove', onCellRemove);
         this.listenTo(graph, 'add remove change:parent', onMembersChange);
         this.listenTo(this.app.history, 'stack:undo stack:redo', onHistoryChange);
     }
@@ -37,16 +36,11 @@ function onHistoryChange(app: App) {
 
 /** The screen removed while it is edited (switched off, deleted, undone): the settings stay open. */
 function onSelectionRemove(app: App, cell: dia.Cell) {
-    // More removed with it (see `onCellRemove()`): the last one updates
+    // Removed from the diagram (`ui.Selection` drops each removed cell): with more of it removed (the members of a
+    // group, ...), the last one updates
     if (app.selection.toArray().some(selected => !app.graph.getCell(selected.id))) return;
     showSelection(app.paper, app.selection);
     inspectSelection(app, cell instanceof Screen && isSettingsOpen(app));
-}
-
-/** The cell removed: with the others selected removed already (the members of a group, ...), all at once */
-function onCellRemove(app: App, cell: dia.Cell) {
-    const { selection, graph } = app;
-    selection.remove([cell, ...selection.toArray().filter(selected => !graph.getCell(selected.id))]);
 }
 
 /**
