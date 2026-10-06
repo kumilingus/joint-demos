@@ -7,7 +7,8 @@ import { styleOf } from '../shapes/common/style';
 /*
  * Where the end of a pipe connects (when its arrowhead is dropped or snapped):
  * to the center of a port (a pipe stub), or to a side of an element - pinned to the side,
- * in the steps of the grid, or to the middle of the side (`Shape.anchors`).
+ * in the steps of the grid, or to the middle of the side (`Shape.anchors`). An arrow and a conveyor are pinned where
+ * they are dropped (see `connectionStrategy`).
  * The arrowhead moves the anchor too: there is no anchor tool.
  */
 
@@ -48,9 +49,11 @@ function pinAnywhere(element: dia.Element, coords: g.PlainPoint): g.Point {
 export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end, view, magnet, coords, link) => {
     const element = view.model as dia.Element;
     const { width, height } = element.size();
-    // An arrow points anywhere on the element (see `Arrow`): pinned where it is dropped
-    if (link.get('type') === 'Arrow') {
-        const { x, y } = pinAnywhere(element, coords);
+    const type = link.get('type');
+    // An arrow points anywhere on the element (see `Arrow`), a conveyor drops onto (or takes from) the equipment
+    // anywhere - on a part drawn out of its box too (a chute): pinned where it is dropped
+    if (type === 'Arrow' || type === 'Conveyor') {
+        const { x, y } = type === 'Arrow' ? pinAnywhere(element, coords) : element.getRelativePointFromAbsolute(coords);
         end.anchor = { name: 'topLeft', args: { dx: percent(x, width), dy: percent(y, height), rotate: true, useModelGeometry: true }};
         return end;
     }
