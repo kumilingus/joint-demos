@@ -24,9 +24,9 @@
 
 /* Controls of the equipment (see `controls.ts`) */
 
-.jj-switch,
-.jj-checkbox,
-.jj-slider {
+.scada-control-switch,
+.scada-control-checkbox,
+.scada-control-slider {
     width: 100%;
     height: 100%;
     border: 1px solid var(--border);
@@ -37,20 +37,20 @@
     font: 13px var(--font);
 }
 
-.jj-switch,
-.jj-slider {
+.scada-control-switch,
+.scada-control-slider {
     padding: 3px;
 }
 
 /* Open / closed: a segmented control, the state the valve is in pressed (see `controls.ts`) */
-.jj-switch {
+.scada-control-switch {
     display: flex;
     gap: 2px;
     background: var(--muted);
 }
 
-.jj-switch-on,
-.jj-switch-off {
+.scada-control-switch-on,
+.scada-control-switch-off {
     flex: 1;
     height: 22px;
     padding: 0;
@@ -62,12 +62,12 @@
     cursor: pointer;
 }
 
-.jj-switch-on:hover,
-.jj-switch-off:hover {
+.scada-control-switch-on:hover,
+.scada-control-switch-off:hover {
     color: var(--foreground);
 }
 
-.jj-switch [aria-pressed="true"] {
+.scada-control-switch [aria-pressed="true"] {
     background: var(--background);
     box-shadow: var(--shadow-xs);
     color: var(--foreground);
@@ -75,7 +75,7 @@
     cursor: default;
 }
 
-.jj-checkbox-input {
+.scada-control-checkbox-input {
     width: 14px;
     height: 14px;
     margin: 2px;
@@ -83,13 +83,13 @@
     cursor: pointer;
 }
 
-.jj-slider-input {
+.scada-control-slider-input {
     width: 100%;
     accent-color: var(--primary);
     cursor: pointer;
 }
 
-.jj-slider-output {
+.scada-control-slider-output {
     display: block;
     width: 100%;
     color: var(--muted-foreground);
@@ -99,35 +99,35 @@
 }
 
 /* While editing (see `controls.ts`): not operated - the pointer goes through to the element (selected, moved), dimmed */
-.jj-control-inert {
+.scada-control-inert {
     opacity: 0.6;
     pointer-events: none;
 }
 
 /* A command sent, not done by the plant yet (see `controls.ts`): a busy cursor, the state asked for pulsing */
-.jj-control-pending,
-.jj-control-pending * {
+.scada-control-pending,
+.scada-control-pending * {
     cursor: progress !important;
 }
 
-.jj-switch [data-pending] {
+.scada-control-switch [data-pending] {
     background: color-mix(in srgb, var(--selection) 25%, transparent);
     color: var(--foreground);
-    animation: jj-pending 0.8s ease-in-out infinite alternate;
+    animation: scada-control-pending-pulse 0.8s ease-in-out infinite alternate;
 }
 
-.jj-control-pending .jj-checkbox {
+.scada-control-pending .scada-control-checkbox {
     outline: 2px solid var(--selection);
     outline-offset: 1px;
-    animation: jj-pending 0.8s ease-in-out infinite alternate;
+    animation: scada-control-pending-pulse 0.8s ease-in-out infinite alternate;
 }
 
-.jj-control-pending .jj-slider-output {
+.scada-control-pending .scada-control-slider-output {
     color: var(--selection);
-    animation: jj-pending 0.8s ease-in-out infinite alternate;
+    animation: scada-control-pending-pulse 0.8s ease-in-out infinite alternate;
 }
 
-@keyframes jj-pending {
+@keyframes scada-control-pending-pulse {
     from { opacity: 1; }
     to { opacity: 0.45; }
 }

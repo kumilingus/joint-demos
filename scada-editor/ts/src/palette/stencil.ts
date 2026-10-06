@@ -96,7 +96,7 @@ const escapeHtml = (text: string) => text.replace(/[&<>"]/g, char => ({ '&': '&a
 /** The attributes of the tooltip of a shape of the palette: its name and the hint, outside the palette (see `besidePanel()`) */
 function paletteTooltip(name: string): Record<string, string> {
     return {
-        'data-tooltip': `<strong>${escapeHtml(name)}</strong><span class="tooltip-hint">${PALETTE_HINT}</span>`,
+        'data-tooltip': `<strong>${escapeHtml(name)}</strong><span class="scada-tooltip-hint">${PALETTE_HINT}</span>`,
         ...besidePanel('palette')
     };
 }
@@ -178,7 +178,7 @@ export function createStencil(
 ): ui.Stencil {
 
     const el = document.createElement('div');
-    el.className = 'stencil-panel';
+    el.className = 'scada-stencil-panel';
     container.prepend(el);
 
     const stencil = new ui.Stencil({
@@ -463,7 +463,7 @@ function addUploadButton(stencil: ui.Stencil, onUpload: StencilImages['onUpload'
     input.multiple = true;
     input.hidden = true;
     const button = document.createElement('label');
-    button.className = 'stencil-upload';
+    button.className = 'scada-stencil-upload';
     button.dataset.tooltip = 'Upload images (PNG, JPEG, SVG, ...) as shapes of your own';
     setBesidePanel(button, 'palette');
     button.textContent = 'Upload images';

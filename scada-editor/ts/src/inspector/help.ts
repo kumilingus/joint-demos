@@ -12,81 +12,81 @@ const FIELD_HELP: Record<string, string> = {
     tag: `
         <strong>ID</strong> - the tag of the element in the plant (e.g. <em>P-101</em>): the plant data
         are addressed to it, a SCADA server sends the values by it.
-        <strong class="tooltip-heading">Unique</strong>
+        <strong class="scada-tooltip-heading">Unique</strong>
         An ID taken by another element (or an empty one) is not accepted. A copy gets a new one.`,
     layer: `
         <strong>Layers</strong>, from the top:
-        <ol class="tooltip-list">${Object.values(LAYER_NAMES).map(name => `<li>${name}</li>`).join('')}</ol>
+        <ol class="scada-tooltip-list">${Object.values(LAYER_NAMES).map(name => `<li>${name}</li>`).join('')}</ol>
         Everything in a layer is drawn over everything in the layers below it.
-        <strong class="tooltip-heading">Within a layer</strong>
+        <strong class="scada-tooltip-heading">Within a layer</strong>
         Right-click a shape and choose <em>Bring to Front</em> or <em>Send to Back</em>.`,
     controls: `
         <strong>Controls</strong> - the switch or the slider on the equipment (the power of a pump,
         the opening of a valve), operated in the run mode.
-        <strong class="tooltip-heading">Off</strong>
+        <strong class="scada-tooltip-heading">Off</strong>
         The element only shows its state: it is operated by the plant alone.`,
     finish: `
         <strong>Finish</strong> - how the surfaces of the element are drawn, in its color.
-        <strong class="tooltip-heading">Shaded</strong>
+        <strong class="scada-tooltip-heading">Shaded</strong>
         Lit metal: a 3D look, close to the real equipment.
-        <strong class="tooltip-heading">Flat</strong>
+        <strong class="scada-tooltip-heading">Flat</strong>
         Its color as it is, every part outlined, as the <em>high-performance HMI</em> style (ISA-101) draws the
         equipment. In the color <em>Canvas</em>: a line drawing, as a P&amp;ID.
-        <strong class="tooltip-heading">Auto</strong>
+        <strong class="scada-tooltip-heading">Auto</strong>
         The finish of the diagram (Settings - Style).`,
     // The colors of a shape (see `ColorField`): by the label of the field - each shape has them at a path of its own
     color: `
         <strong>Color</strong> - the main color of the shape: the metal of the equipment, the line of a pipe,
         the text of a label. Mixed into the shading in the finish <em>Shaded</em>, as it is in <em>Flat</em>.
-        <strong class="tooltip-heading">Default</strong>
+        <strong class="scada-tooltip-heading">Default</strong>
         The color of the shape (the first swatch): of the diagram's style, if it has one (Settings - Style).
-        <strong class="tooltip-heading">Canvas</strong>
+        <strong class="scada-tooltip-heading">Canvas</strong>
         The color of the canvas, light or dark with the theme: a line drawing, as a P&amp;ID.`,
     outline: `
         <strong>Outline</strong> - the outline of the shape (of its surfaces: one color, one width for all of them;
         the edges of a pipe).
-        <strong class="tooltip-heading">Auto</strong>
+        <strong class="scada-tooltip-heading">Auto</strong>
         As the shape draws it (in the finish <em>Flat</em>: the edge of the metal).`,
     outlineWidth: `
         <strong>Outline width</strong> - the width of the outline: of a shape while it is outlined (an outline color of
         its own, or the finish <em>Flat</em>), of the border of a pipe.
-        <strong class="tooltip-heading">Auto</strong>
+        <strong class="scada-tooltip-heading">Auto</strong>
         The outline width of the diagram (Settings - Style).`,
     accent: `
         <strong>Accent</strong> - a marking of the shape in a color of its own: the bands of a stack, the handwheel
         of a valve, the motor of a pump, the needle of a gauge, the reading of a meter, the liquid of a level panel.
-        <strong class="tooltip-heading">Not a state</strong>
+        <strong class="scada-tooltip-heading">Not a state</strong>
         The colors of a state (an alarm, a warning level, a running pump) are the plant's: they stay.`,
     animations: `
         <strong>Animations</strong> - what moves in the run mode. Saved with the diagram.
-        <strong class="tooltip-heading">Full</strong>
+        <strong class="scada-tooltip-heading">Full</strong>
         The equipment runs: rotors spin, agitators stir, the liquid flows, flames flicker, the alarms pulse.
-        <strong class="tooltip-heading">Alarms only - high-performance HMI</strong>
+        <strong class="scada-tooltip-heading">Alarms only - high-performance HMI</strong>
         The ISA-101 standard keeps the steady plant still: the eye goes to what moves, so the motion is left
         for what needs attention - the alarms. A level still glides to its new value.
-        <strong class="tooltip-heading">Reduced motion</strong>
+        <strong class="scada-tooltip-heading">Reduced motion</strong>
         A system set to reduce motion gets the alarms only.`,
     // The style of the diagram (in the settings: on its color, see `settings.ts`)
     'diagram-style': `
         <strong>Style</strong> - the colors of the whole diagram: of every shape without a color of its own, in the
         palette too. Saved with the diagram.
-        <strong class="tooltip-heading">Finish</strong>
+        <strong class="scada-tooltip-heading">Finish</strong>
         Shaded or flat: of every shape without a finish of its own (its finish <em>Auto</em>).
-        <strong class="tooltip-heading">Color</strong>
+        <strong class="scada-tooltip-heading">Color</strong>
         Mixed into the metal of the equipment (the shading stays).
-        <strong class="tooltip-heading">Outline, Accent</strong>
+        <strong class="scada-tooltip-heading">Outline, Accent</strong>
         The outlines; the markings (bands, handwheels, motors, caps, ...).
-        <strong class="tooltip-heading">Outline width</strong>
+        <strong class="scada-tooltip-heading">Outline width</strong>
         Of the outlined shapes and the borders of the pipes without one of their own (their <em>Auto</em>).
-        <strong class="tooltip-heading">Auto</strong>
+        <strong class="scada-tooltip-heading">Auto</strong>
         The colors of the shapes themselves.`,
     screen: `
         <strong>Screen</strong> - the part of the diagram the run mode shows: in the whole window,
         fitted to it, without scrolling and zooming; the toolbar slides away (and back when the pointer
         comes to the top).
-        <strong class="tooltip-heading">Without a screen</strong>
+        <strong class="scada-tooltip-heading">Without a screen</strong>
         The run mode shows the whole diagram.
-        <strong class="tooltip-heading">The frame</strong>
+        <strong class="scada-tooltip-heading">The frame</strong>
         It can be moved and resized only while the settings are open.`
 };
 
@@ -98,7 +98,7 @@ export function renderLabel(options: { label?: string; help?: string }, path: st
     const label = document.createElement('label');
     label.textContent = options.label ?? path;
     const mark = document.createElement('span');
-    mark.className = 'field-help';
+    mark.className = 'scada-field-help';
     mark.textContent = '?';
     mark.dataset.tooltip = help;
     setBesidePanel(mark, 'inspector');

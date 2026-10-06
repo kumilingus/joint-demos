@@ -16,19 +16,19 @@ export function showInspectorEmpty(app: App): void {
 /** What the empty inspector panel says (shown while it has nothing else, see `inspector/inspector.css`): with a way to the settings */
 function createInspectorEmpty(app: App): HTMLElement {
     const el = document.createElement('div');
-    el.className = 'inspector-empty';
+    el.className = 'scada-inspector-empty';
     // Two ways: a shape, or (an "or" between them) the settings with what they have
     const text = document.createElement('p');
     text.textContent = 'Select a shape on the canvas or in the palette to see its properties.';
     const or = document.createElement('div');
-    or.className = 'inspector-empty-or';
+    or.className = 'scada-inspector-empty-or';
     or.textContent = 'or';
     const button = document.createElement('button');
     button.type = 'button';
     button.textContent = 'Diagram settings';
     button.addEventListener('click', () => toggleSettings(app));
     const caption = document.createElement('p');
-    caption.className = 'inspector-empty-caption';
+    caption.className = 'scada-inspector-empty-caption';
     caption.textContent = 'the screen, the animations, the editor';
     el.append(text, or, button, caption, createExamples(app));
     return el;
@@ -37,7 +37,7 @@ function createInspectorEmpty(app: App): HTMLElement {
 /** The example diagrams to open (see `examples.ts`) */
 function createExamples(app: App): HTMLElement {
     const el = document.createElement('div');
-    el.className = 'inspector-examples';
+    el.className = 'scada-inspector-examples';
     const title = document.createElement('h4');
     title.textContent = 'Examples';
     el.append(title);

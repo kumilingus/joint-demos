@@ -4,11 +4,11 @@
  * The cursor on the canvas: the blank canvas is panned (`grab` of the paper scroller, see `config.ts`),
  * a cell is moved in the edit mode; in the runtime mode it is not (its controls have their own cursors).
  */
-.app[data-mode="edit"] .joint-paper-scroller .joint-cell {
+.scada-app[data-mode="edit"] .joint-paper-scroller .joint-cell {
     cursor: move;
 }
 
-.app[data-mode="runtime"] .joint-paper-scroller .joint-cell {
+.scada-app[data-mode="runtime"] .joint-paper-scroller .joint-cell {
     cursor: default;
 }
 
@@ -17,35 +17,35 @@
  * without its frame and name in the runtime mode, where the canvas shows it only (see `screen.ts`).
  */
 
-.screen-editable [data-type="Screen"] [joint-selector="edge"] {
+.scada-screen-editable [data-type="Screen"] [joint-selector="edge"] {
     pointer-events: stroke;
     cursor: move;
 }
 
 /* Its name and size above it: a handle too (its whole box, not the glyphs only) */
-.screen-editable [data-type="Screen"] [joint-selector="label"] {
+.scada-screen-editable [data-type="Screen"] [joint-selector="label"] {
     pointer-events: bounding-box;
     cursor: move;
 }
 
-.app[data-mode="runtime"] [data-type="Screen"] [joint-selector="body"] {
+.scada-app[data-mode="runtime"] [data-type="Screen"] [joint-selector="body"] {
     stroke: none;
 }
 
-.app[data-mode="runtime"] [data-type="Screen"] [joint-selector="label"] {
+.scada-app[data-mode="runtime"] [data-type="Screen"] [joint-selector="label"] {
     display: none;
 }
 
-.app[data-screen="shown"] .joint-paper-scroller {
+.scada-app[data-screen="shown"] .joint-paper-scroller {
     overflow: hidden;
 }
 
 /* The screen takes the whole window: the toolbar slides up out of the way, and down when the pointer comes to the top. */
-.app[data-screen="shown"] {
+.scada-app[data-screen="shown"] {
     position: relative;
 }
 
-.app[data-screen="shown"] > .joint-toolbar {
+.scada-app[data-screen="shown"] > .joint-toolbar {
     position: absolute;
     top: 0;
     left: 0;
@@ -55,7 +55,7 @@
 }
 
 /* The strip at the top of the window it is shown from (a part of the toolbar: hovered with it) */
-.app[data-screen="shown"] > .joint-toolbar::after {
+.scada-app[data-screen="shown"] > .joint-toolbar::after {
     content: '';
     position: absolute;
     top: 100%;
@@ -68,18 +68,18 @@
  * Down while hovered, focused from the keyboard (not a clicked button), just shown (see `revealToolbar()`)
  * or pressed (see `holdToolbarWhilePressed()`)
  */
-.app[data-screen="shown"] > .joint-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
+.scada-app[data-screen="shown"] > .joint-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
     transform: translateY(0);
     box-shadow: var(--shadow-md);
 }
 
-.app[data-screen="shown"] :is(.navigator-panel, .joint-toolbar [data-group="zoom"]) {
+.scada-app[data-screen="shown"] :is(.scada-navigator-panel, .joint-toolbar [data-group="zoom"]) {
     display: none;
 }
 
 /* Navigator: a minimap in the bottom right corner of the canvas */
 
-.navigator-panel {
+.scada-navigator-panel {
     /* Center the minimap (what the navigator does for an element it creates itself). */
     display: flex;
     align-items: center;
@@ -97,7 +97,7 @@
 }
 
 /* The screen in the minimap (see `navigator.ts`): its frame as on the canvas, its area tinted */
-.joint-navigator .navigator-screen {
+.joint-navigator .scada-navigator-screen {
     fill: color-mix(in srgb, var(--shape-screen) 12%, transparent);
     stroke: var(--shape-screen);
     /* Solid: dashes would scale down with the minimap; the width not (a CSS rule overrides the attribute) */
@@ -120,7 +120,7 @@
     border-top: 1px solid var(--border);
 }
 
-.joint-context-toolbar :is(kbd, .hint) {
+.joint-context-toolbar :is(kbd, .scada-hint) {
     color: var(--muted-foreground);
     font: 12px var(--font);
     font-variant-numeric: tabular-nums;
@@ -153,7 +153,7 @@
 }
 
 /* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - not its ping (in its view, see `LogController`) */
-.jj-tint > :not(.jj-ping) {
-    filter: var(--jj-tint-filter) drop-shadow(0 0 6px var(--jj-tint-color));
+.scada-tint > :not(.scada-ping) {
+    filter: var(--tint-filter) drop-shadow(0 0 6px var(--tint-color));
 }
 

@@ -68,5 +68,5 @@
     background: var(--primary-hover);
 }
 
-.app[data-mode="edit"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-play); }
-.app[data-mode="runtime"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-pencil); }
+.scada-app[data-mode="edit"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-play); }
+.scada-app[data-mode="runtime"] .joint-toolbar [data-name="mode"] { --icon: var(--icon-pencil); }

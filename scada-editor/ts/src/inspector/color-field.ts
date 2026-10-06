@@ -97,7 +97,7 @@ function resolveColor(value: string): string {
 function createSwatch(color: string, tooltip: string, onClick: () => void): HTMLButtonElement {
     const swatch = document.createElement('button');
     swatch.type = 'button';
-    swatch.className = 'color-swatch';
+    swatch.className = 'scada-color-swatch';
     swatch.style.background = color;
     swatch.dataset.tooltip = tooltip;
     setBesidePanel(swatch, 'inspector');
@@ -160,7 +160,7 @@ export function renderColorField(
 ): HTMLElement | undefined {
     if (options.type !== 'color' || /\/\d+\//.test(path)) return undefined;
     const el = document.createElement('div');
-    el.className = 'color-field-content';
+    el.className = 'scada-color-field-content';
     // The content of a field includes its label (with the help of the field, if it has one).
     // The help of the field by its path, or of its kind by its label (a color is at a path of each shape's own)
     const label = renderLabel(options, path) ?? renderLabel(options, (options.label ?? '').toLowerCase()) ?? document.createElement('label');
@@ -188,8 +188,8 @@ export function renderColorField(
     input.addEventListener('change', unmix);
     // The input and the swatches on a row
     const row = document.createElement('div');
-    row.className = 'color-field-row';
-    if (options.themeOnly) el.classList.add('theme-only');
+    row.className = 'scada-color-field-row';
+    if (options.themeOnly) el.classList.add('scada-theme-only');
     row.append(input);
     el.append(row);
 
@@ -200,7 +200,7 @@ export function renderColorField(
         input.dispatchEvent(new Event('change', { bubbles: true }));
     };
     const swatches = document.createElement('div');
-    swatches.className = 'color-swatches';
+    swatches.className = 'scada-color-swatches';
     // A color of the theme: set on the model (the input takes a hex only), shown as it is now
     const pickThemeColor = (color: string) => {
         cell.prop(path.split('/'), color);
@@ -235,7 +235,7 @@ export function renderColorField(
         .forEach(([name, color]) => swatches.append(themeSwatch(color, `${name} (light / dark)`)));
     // On a row of their own: the canvas, the recent colors and the ones of the diagram
     const others = document.createElement('span');
-    others.className = 'color-swatches-break';
+    others.className = 'scada-color-swatches-break';
     swatches.append(others);
     if (options.themeOnly) {
         row.append(swatches);
@@ -256,7 +256,7 @@ export function renderColorField(
 
 /** The value of a color field (the `getFieldValue` of the inspector): of its native input */
 export function getColorFieldValue(attribute: HTMLElement): { value: string } | undefined {
-    if (!attribute.classList.contains('color-field-content')) return undefined;
+    if (!attribute.classList.contains('scada-color-field-content')) return undefined;
     const input = attribute.querySelector<HTMLInputElement>('input[type="color"]');
     return input ? { value: input.value } : undefined;
 }

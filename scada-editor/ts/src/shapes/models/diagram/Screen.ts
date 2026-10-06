@@ -42,7 +42,7 @@ export default class Screen extends dia.Element {
                     strokeDasharray: '8 4',
                     pointerEvents: 'none'
                 },
-                // The edge it is grabbed by while it is edited (`.screen-editable` in `canvas/canvas.css`): a transparent
+                // The edge it is grabbed by while it is edited (`.scada-screen-editable` in `canvas/canvas.css`): a transparent
                 // band along the frame; otherwise the pointer through it too
                 edge: {
                     width: 'calc(w)',

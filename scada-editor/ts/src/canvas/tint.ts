@@ -22,7 +22,7 @@ const filterIds = new Map<string, string>();
 function defineTint(paper: dia.Paper, color: string): string {
     let id = filterIds.get(color);
     if (!id) {
-        id = `jj-tint-${filterIds.size + 1}`;
+        id = `scada-tint-${filterIds.size + 1}`;
         filterIds.set(color, id);
     }
     if (!paper.svg.querySelector(`#${id}`)) {
@@ -40,22 +40,22 @@ function defineTint(paper: dia.Paper, color: string): string {
     return id;
 }
 
-/** The tint: the class of the view (`.jj-tint` in `canvas.css`), its filter and its color as its variables */
+/** The tint: the class of the view (`.tint` in `canvas.css`), its filter and its color as its variables */
 const Tint = dia.HighlighterView.extend({
     // Nothing of its own: the view of the element is tinted
     MOUNTABLE: false,
     highlight(this: dia.HighlighterView, cellView: dia.CellView) {
         const { color, filter } = this.options as { color: string; filter: string };
         const { el } = cellView;
-        el.classList.add('jj-tint');
-        el.style.setProperty('--jj-tint-color', color);
-        el.style.setProperty('--jj-tint-filter', `url(#${filter})`);
+        el.classList.add('scada-tint');
+        el.style.setProperty('--tint-color', color);
+        el.style.setProperty('--tint-filter', `url(#${filter})`);
     },
     unhighlight(this: dia.HighlighterView, cellView: dia.CellView) {
         const { el } = cellView;
-        el.classList.remove('jj-tint');
-        el.style.removeProperty('--jj-tint-color');
-        el.style.removeProperty('--jj-tint-filter');
+        el.classList.remove('scada-tint');
+        el.style.removeProperty('--tint-color');
+        el.style.removeProperty('--tint-filter');
     }
 });
 

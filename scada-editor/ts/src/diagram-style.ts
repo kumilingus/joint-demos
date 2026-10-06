@@ -6,7 +6,7 @@ import { type OutlineWidth, setStyleFinish, setStyleOutlineWidth, type SurfaceFi
  * The style of the diagram (in the settings, saved with it): the finish of all the equipment (shaded, flat), one color
  * for their metal, one for their outlines, one for their accents - instead of the defaults of the shapes (see the `--base-*` in
  * `shapes.css`), everywhere: the canvas, the palette, the preview. An element's own color, outline, accent stay.
- * The size and the color of the labels of the elements too (`.jj-label` in `shapes.css`), the color of the canvas.
+ * The size and the color of the labels of the elements too (`.scada-shape-label` in `shapes.css`), the color of the canvas.
  */
 
 /** The attribute of the graph with the style (saved with the diagram) */

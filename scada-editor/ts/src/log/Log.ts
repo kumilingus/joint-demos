@@ -61,7 +61,7 @@ export default class Log {
 
     /** The list of the messages in the dialog: while it is open */
     protected get list(): HTMLElement | null {
-        return this.dialog?.el.querySelector<HTMLElement>('.jj-log-list') ?? null;
+        return this.dialog?.el.querySelector<HTMLElement>('.scada-log-list') ?? null;
     }
 
     /** Whether the log is open */
@@ -112,7 +112,7 @@ export default class Log {
             words.splice(index, 1);
         }
         filter.text = words.join(' ');
-        const input = this.dialog.el.querySelector<HTMLInputElement>('.jj-log-filter input');
+        const input = this.dialog.el.querySelector<HTMLInputElement>('.scada-log-filter input');
         if (input) input.value = filter.text;
         this.renderList();
     }
@@ -122,23 +122,23 @@ export default class Log {
         const { hooks, options } = this;
         button?.classList.add('active');
         const content = document.createElement('div');
-        content.className = 'jj-log';
+        content.className = 'scada-log';
         const intro = document.createElement('p');
-        intro.className = 'jj-log-intro';
+        intro.className = 'scada-log-intro';
         intro.textContent = 'Live traffic between this diagram and the plant. Readings come in addressed by element tags, and whatever you do to a valve or a pump goes out as a command. The plant is simulated here - in a real deployment, the same messages would travel over OPC UA, MQTT, WebSockets or a REST API.';
         // On the diagram: the tags (where the messages go), the elements pinged as their messages come
         const settings = document.createElement('div');
-        settings.className = 'jj-log-options';
+        settings.className = 'scada-log-options';
         settings.append(
             this.renderOption('Show the tags', 'tags', shown => hooks.showTags(shown)),
             this.renderOption('Ping the changes', 'pings', pinged => hooks.pingChanges(pinged))
         );
         const list = document.createElement('div');
-        list.className = 'jj-log-list';
+        list.className = 'scada-log-list';
         list.append(...this.shownMessages());
         // A message clicked: the messages of its tag marked, its element highlighted - clicked again: none
         list.addEventListener('click', (evt) => {
-            const row = (evt.target as Element).closest<HTMLElement>('.jj-log-message');
+            const row = (evt.target as Element).closest<HTMLElement>('.scada-log-message');
             if (row) this.selectTag(row.dataset.tag === this.selectedTag ? null : row.dataset.tag ?? null);
         });
         content.append(intro, settings, this.renderFilter(), list);
@@ -190,7 +190,7 @@ export default class Log {
     /** The messages of the tag marked (the new ones too), its element highlighted - or none */
     protected selectTag(tag: string | null): void {
         this.selectedTag = tag;
-        this.list?.querySelectorAll<HTMLElement>('.jj-log-message').forEach(row => row.classList.toggle('selected', row.dataset.tag === tag));
+        this.list?.querySelectorAll<HTMLElement>('.scada-log-message').forEach(row => row.classList.toggle('selected', row.dataset.tag === tag));
         this.hooks.highlight(tag);
     }
 
@@ -198,7 +198,7 @@ export default class Log {
     protected renderFilter(): HTMLElement {
         const { filter } = this;
         const row = document.createElement('div');
-        row.className = 'jj-log-filter';
+        row.className = 'scada-log-filter';
         const input = document.createElement('input');
         input.type = 'search';
         input.placeholder = 'Filter: a tag or a property - or click an element';
@@ -208,7 +208,7 @@ export default class Log {
             this.renderList();
         });
         const directions = document.createElement('div');
-        directions.className = 'jj-log-directions';
+        directions.className = 'scada-log-directions';
         const buttons = DIRECTION_FILTERS.map(([direction, text]) => {
             const button = document.createElement('button');
             button.type = 'button';
@@ -230,7 +230,7 @@ export default class Log {
     protected renderOption(text: string, name: keyof LogOptions, onChange: (checked: boolean) => void): HTMLElement {
         const { options } = this;
         const label = document.createElement('label');
-        label.className = 'jj-log-option';
+        label.className = 'scada-log-option';
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = options[name];
@@ -244,7 +244,7 @@ export default class Log {
 
     protected renderMessage({ kind, tag, property, value, time }: LogEntry): HTMLElement {
         const row = document.createElement('div');
-        row.className = 'jj-log-message';
+        row.className = 'scada-log-message';
         row.dataset.kind = kind;
         row.dataset.tag = tag;
         row.classList.toggle('selected', tag === this.selectedTag);
@@ -257,7 +257,7 @@ export default class Log {
         ];
         row.append(...cells.map(([name, text]) => {
             const cell = document.createElement('span');
-            cell.className = `jj-log-${name}`;
+            cell.className = `scada-log-${name}`;
             cell.textContent = text;
             return cell;
         }));

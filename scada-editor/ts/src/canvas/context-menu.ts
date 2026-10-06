@@ -46,7 +46,7 @@ function openMenu(app: App, evt: dia.Event, items: MenuItem[]): void {
         padding: 0,
         tools: items.map(item => ({
             action: item.action,
-            content: `<span>${item.label}</span>${item.shortcut ? `<kbd>${item.shortcut}</kbd>` : ''}${item.hint ? `<span class="hint">${item.hint}</span>` : ''}`,
+            content: `<span>${item.label}</span>${item.shortcut ? `<kbd>${item.shortcut}</kbd>` : ''}${item.hint ? `<span class="scada-hint">${item.hint}</span>` : ''}`,
             attrs: {
                 class: item.separated ? 'tool separated' : 'tool',
                 ...(item.disabled ? { disabled: 'disabled' } : {})

@@ -9,7 +9,7 @@ import { dataOf } from '../shapes/common/data';
  * The controls of the equipment: highlighters embedding HTML form controls
  * in a `foreignObject`. They are shown in both modes, but can be operated
  * in the runtime mode only: while editing they are inert (not focused, not clicked - the pointer goes through to
- * the element, to select it or to move it) and dimmed (`.jj-control-inert` in `runtime.css`).
+ * the element, to select it or to move it) and dimmed (`.scada-control-inert` in `runtime.css`).
  * In the runtime mode the paper ignores the events on them (its `guard`, see `app.ts`).
  */
 
@@ -28,7 +28,7 @@ const SLIDER_SIZE = { width: 100, height: 42 };
 const CONTROL_GAP = 6;
 
 /** The class of the root of every control. */
-const CONTROL_CLASS = 'jj-control';
+const CONTROL_CLASS = 'scada-control';
 
 /** Whether the event started on a control (and not on the element under it). */
 export function isControlEvent(evt: dia.Event): boolean {
@@ -41,26 +41,26 @@ const CHECKBOX_SIZE = 20;
 
 const pumpControlMarkup = util.svg/* xml */`
     <foreignObject class="${CONTROL_CLASS}" width="${CHECKBOX_SIZE}" height="${CHECKBOX_SIZE}">
-        <div class="jj-checkbox" xmlns="http://www.w3.org/1999/xhtml">
-            <input @selector="input" class="jj-checkbox-input" type="checkbox"/>
+        <div class="scada-control-checkbox" xmlns="http://www.w3.org/1999/xhtml">
+            <input @selector="input" class="scada-control-checkbox-input" type="checkbox"/>
         </div>
     </foreignObject>
 `;
 
 const toggleValveControlMarkup = util.svg/* xml */`
     <foreignObject class="${CONTROL_CLASS}" width="${TOGGLE_SIZE.width}" height="${TOGGLE_SIZE.height}">
-        <div class="jj-switch" xmlns="http://www.w3.org/1999/xhtml">
-            <button @selector="buttonOn" class="jj-switch-on" data-open="true">Open</button>
-            <button @selector="buttonOff" class="jj-switch-off" data-open="false">Closed</button>
+        <div class="scada-control-switch" xmlns="http://www.w3.org/1999/xhtml">
+            <button @selector="buttonOn" class="scada-control-switch-on" data-open="true">Open</button>
+            <button @selector="buttonOff" class="scada-control-switch-off" data-open="false">Closed</button>
         </div>
     </foreignObject>
 `;
 
 const sliderValveControlMarkup = util.svg/* xml */`
     <foreignObject class="${CONTROL_CLASS}" width="${SLIDER_SIZE.width}" height="${SLIDER_SIZE.height}">
-        <div class="jj-slider" xmlns="http://www.w3.org/1999/xhtml">
-            <input @selector="slider" class="jj-slider-input" type="range" min="0" max="100" step="25"/>
-            <output @selector="value" class="jj-slider-output"></output>
+        <div class="scada-control-slider" xmlns="http://www.w3.org/1999/xhtml">
+            <input @selector="slider" class="scada-control-slider-input" type="range" min="0" max="100" step="25"/>
+            <output @selector="value" class="scada-control-slider-output"></output>
         </div>
     </foreignObject>
 `;
@@ -90,14 +90,14 @@ abstract class Control extends dia.HighlighterView {
         this.update();
     }
 
-    /** Pending until the element has the value asked for (`.jj-control-pending` in `runtime.css`: a busy cursor, a pulse) */
+    /** Pending until the element has the value asked for (`.scada-control-pending` in `runtime.css`: a busy cursor, a pulse) */
     protected updatePending(element: dia.Element): void {
         const { pending } = this;
         if (pending && readProperty(element, pending.property) === pending.value) {
             window.clearTimeout(pending.timer);
             this.pending = null;
         }
-        this.el.classList.toggle('jj-control-pending', this.pending !== null);
+        this.el.classList.toggle('scada-control-pending', this.pending !== null);
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class Control extends dia.HighlighterView {
      */
     protected updateInert(cellView: dia.CellView): void {
         const inert = !operable.get(cellView.paper!);
-        this.el.classList.toggle('jj-control-inert', inert);
+        this.el.classList.toggle('scada-control-inert', inert);
         this.el.querySelectorAll('foreignObject > *').forEach(node => node.toggleAttribute('inert', inert));
     }
 

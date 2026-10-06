@@ -35,7 +35,7 @@ const NavigatorElementView = dia.ElementView.extend({
         this.body = doc.selectors.body;
         if (this.model.get('type') === 'Screen') {
             // In the color of the screen on the canvas, tinted (see `canvas.css`): what the runtime mode shows
-            this.body.setAttribute('class', 'navigator-screen');
+            this.body.setAttribute('class', 'scada-navigator-screen');
         } else if (this.model.get('type') === 'Group') {
             // Nothing of it is drawn (see `Group`): its members are.
             this.body.setAttribute('fill', 'none');

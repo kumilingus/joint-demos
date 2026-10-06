@@ -18,19 +18,19 @@ body {
 
 /* Layout */
 
-.app {
+.scada-app {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
-.main {
+.scada-main {
     display: flex;
     flex: 1;
     min-height: 0;
 }
 
-.canvas {
+.scada-canvas {
     position: relative;
     flex: 1;
     min-width: 0;
@@ -41,14 +41,14 @@ body {
  * Runtime mode: the palette and the undo / redo buttons don't exist in it (see `App.enterMode()`),
  * the inspector is closed - its empty panel is not in the way of the canvas.
  */
-.app[data-mode="runtime"] .inspector-panel {
+.scada-app[data-mode="runtime"] .scada-inspector-panel {
     display: none;
 }
 
 /* Panels (palette and inspector) */
 
-.stencil-panel,
-.inspector-panel {
+.scada-stencil-panel,
+.scada-inspector-panel {
     position: relative;
     flex-shrink: 0;
     overflow: auto;

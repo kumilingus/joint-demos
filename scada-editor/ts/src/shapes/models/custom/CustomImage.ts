@@ -65,7 +65,7 @@ function definePlaceholder(paper: dia.Paper): string {
     let id = images.get(PLACEHOLDER_ID);
     if (id) return id;
     id = `scada-image-${++counter}`;
-    V('symbol', { id, class: 'missing-image', viewBox: '0 0 48 48', preserveAspectRatio: 'xMidYMid meet' })
+    V('symbol', { id, class: 'scada-missing-image', viewBox: '0 0 48 48', preserveAspectRatio: 'xMidYMid meet' })
         .append([
             V('rect', { x: 1, y: 1, width: 46, height: 46, rx: 4, fill: 'none', strokeDasharray: '4 3' }),
             // An image crossed out

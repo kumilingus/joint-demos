@@ -240,6 +240,6 @@ export const labelAttributes = {
     fontSize: 14,
     fontFamily: 'sans-serif',
     fill: LABEL_COLOR,
-    // Its size and color: of the style of the diagram (see `diagram-style.ts`, `.jj-label` in `shapes.css`)
-    class: 'jj-label'
+    // Its size and color: of the style of the diagram (see `diagram-style.ts`, `.scada-shape-label` in `shapes.css`)
+    class: 'scada-shape-label'
 };

@@ -1,7 +1,7 @@
 /* The palette (`ui.Stencil`, see `stencil.ts`) and a shape of it shown in the inspector panel (see `shape-preview.ts`) */
 
 /* An icon drawn from one of the `--icon-*` masks, in the color of the text. */
-.stencil-upload::before,
+.scada-stencil-upload::before,
 .group:is([data-name="favorites"], [data-name="inUse"], [data-name="custom"]) > .group-label::after {
     content: '';
     display: inline-block;
@@ -14,7 +14,7 @@
 
 /* Palette */
 
-.stencil-panel {
+.scada-stencil-panel {
     width: 240px;
     border-right: 1px solid var(--border);
 }
@@ -44,12 +44,12 @@
 }
 
 /* The palette and the preview of a shape (its title says it) show the shapes without their labels (a label and a zone are their text). */
-:is(.stencil-panel .joint-paper, .palette-shape-preview) [data-type]:not([data-type="Label"], [data-type="Zone"]) > text[joint-selector="label"] {
+:is(.scada-stencil-panel .joint-paper, .scada-palette-shape-preview) [data-type]:not([data-type="Label"], [data-type="Zone"]) > text[joint-selector="label"] {
     display: none;
 }
 
 /* The button uploading images into the group of the custom shapes */
-.stencil-upload {
+.scada-stencil-upload {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,29 +64,29 @@
     transition: background-color 0.15s, color 0.15s;
 }
 
-.stencil-upload::before {
+.scada-stencil-upload::before {
     --icon: var(--icon-upload);
 }
 
-.stencil-upload:hover {
+.scada-stencil-upload:hover {
     background: var(--muted);
     color: var(--foreground);
 }
 
-.stencil-panel .group.closed > .stencil-upload {
+.scada-stencil-panel .group.closed > .scada-stencil-upload {
     display: none;
 }
 
 /* A shape of the palette shown in the inspector panel (clicked in the palette) */
 
-.palette-shape {
+.scada-palette-shape {
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 16px;
 }
 
-.palette-shape-preview {
+.scada-palette-shape-preview {
     display: flex;
     justify-content: center;
     margin-bottom: 4px;
@@ -97,7 +97,7 @@
 }
 
 /* The state of the shape in the preview (see `shape-preview.ts`): a dot, green while on */
-.palette-shape-state {
+.scada-palette-shape-state {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -106,11 +106,11 @@
     font: 500 12px var(--font);
 }
 
-.palette-shape-state:empty {
+.scada-palette-shape-state:empty {
     display: none;
 }
 
-.palette-shape-state::before {
+.scada-palette-shape-state::before {
     content: '';
     width: 8px;
     height: 8px;
@@ -118,27 +118,27 @@
     background: var(--muted-foreground);
 }
 
-.palette-shape-state.on {
+.scada-palette-shape-state.on {
     color: var(--foreground);
 }
 
-.palette-shape-state.on::before {
+.scada-palette-shape-state.on::before {
     background: var(--color-green);
 }
 
-.palette-shape-title {
+.scada-palette-shape-title {
     margin: 0;
     color: var(--foreground);
     font: 600 15px/1.3 var(--font);
 }
 
-.palette-shape-description {
+.scada-palette-shape-description {
     margin: 0;
     color: var(--muted-foreground);
     font: 13px/1.5 var(--font);
 }
 
-.palette-shape-field {
+.scada-palette-shape-field {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -147,7 +147,7 @@
     font: 500 13px var(--font);
 }
 
-.palette-shape-actions {
+.scada-palette-shape-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -155,7 +155,7 @@
 }
 
 /* A button of the panel: outlined, with an icon */
-.palette-shape-button {
+.scada-palette-shape-button {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -171,11 +171,11 @@
     transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.palette-shape-button:hover {
+.scada-palette-shape-button:hover {
     background: var(--muted);
 }
 
-.palette-shape-button::before {
+.scada-palette-shape-button::before {
     content: '';
     width: 14px;
     height: 14px;
@@ -183,29 +183,29 @@
     mask: var(--icon) center / contain no-repeat;
 }
 
-.palette-shape-button.favorite {
+.scada-palette-shape-button.favorite {
     --icon: var(--icon-star);
 }
 
-.palette-shape-button.favorite.active {
+.scada-palette-shape-button.favorite.active {
     border-color: #f5b301;
     color: #b07d00;
 }
 
-.palette-shape-button.favorite.active::before {
+.scada-palette-shape-button.favorite.active::before {
     background: #f5b301;
 }
 
-:root[data-color-scheme="dark"] .palette-shape-button.favorite.active {
+:root[data-color-scheme="dark"] .scada-palette-shape-button.favorite.active {
     color: #f5b301;
 }
 
-.palette-shape-button.danger {
+.scada-palette-shape-button.danger {
     --icon: var(--icon-trash);
     color: #dc2626;
 }
 
-.palette-shape-button.danger:hover {
+.scada-palette-shape-button.danger:hover {
     border-color: #dc2626;
     background: rgb(220 38 38 / 0.08);
 }

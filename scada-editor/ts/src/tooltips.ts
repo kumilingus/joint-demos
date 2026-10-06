@@ -23,8 +23,8 @@ export const tooltipOptions: Partial<ui.Tooltip.Options> = {
  */
 export function besidePanel(panel: 'palette' | 'inspector'): Record<string, string> {
     return panel === 'palette'
-        ? { 'data-tooltip-position': 'left', 'data-tooltip-position-selector': '.stencil-panel' }
-        : { 'data-tooltip-position': 'right', 'data-tooltip-position-selector': '.inspector-panel' };
+        ? { 'data-tooltip-position': 'left', 'data-tooltip-position-selector': '.scada-stencil-panel' }
+        : { 'data-tooltip-position': 'right', 'data-tooltip-position-selector': '.scada-inspector-panel' };
 }
 
 /** Set the attributes on the element (see `besidePanel()`) */

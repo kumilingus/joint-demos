@@ -31,7 +31,7 @@ class SettingsPanel implements PanelContent {
         this.el = el;
         this.inspector = inspector;
         this.listener = listener;
-        app.paper.el.classList.add('screen-editable');
+        app.paper.el.classList.add('scada-screen-editable');
         app.toolbar.getWidgetByName('settings')?.el.classList.add('active');
     }
 
@@ -40,7 +40,7 @@ class SettingsPanel implements PanelContent {
         this.listener.stopListening();
         this.inspector.remove();
         this.el.remove();
-        app.paper.el.classList.remove('screen-editable');
+        app.paper.el.classList.remove('scada-screen-editable');
         app.toolbar.getWidgetByName('settings')?.el.classList.remove('active');
     }
 }
@@ -97,9 +97,9 @@ export function openSettings(app: App): void {
     if (isSettingsOpen(app)) return;
     const { graph } = app;
     const el = document.createElement('div');
-    el.className = 'settings';
+    el.className = 'scada-settings';
     const titleEl = document.createElement('h3');
-    titleEl.className = 'settings-title';
+    titleEl.className = 'scada-settings-title';
     titleEl.textContent = 'Settings';
     el.append(titleEl);
 

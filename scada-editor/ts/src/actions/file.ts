@@ -72,7 +72,7 @@ export function exportImage(app: App): void {
 function drawGradient(svg: SVGSVGElement, [top, bottom]: string[]): void {
     const [x, y, width, height] = (svg.getAttribute('viewBox') ?? '').split(/[\s,]+/).map(Number);
     if (![x, y, width, height].every(Number.isFinite)) return;
-    const id = 'jj-export-canvas-gradient';
+    const id = 'scada-export-canvas-gradient';
     const gradient = V('linearGradient', { id, x1: 0, y1: 0, x2: 0, y2: 1 }).append([
         V('stop', { offset: 0, style: `stop-color: ${top}` }),
         V('stop', { offset: 1, style: `stop-color: ${bottom}` })

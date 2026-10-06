@@ -114,20 +114,20 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
     const { title, description } = descriptions[type] ?? { title: type, description: '' };
 
     const el = document.createElement('div');
-    el.className = 'palette-shape';
+    el.className = 'scada-palette-shape';
     const previewEl = document.createElement('div');
-    previewEl.className = 'palette-shape-preview';
+    previewEl.className = 'scada-palette-shape-preview';
     const titleEl = document.createElement('h3');
-    titleEl.className = 'palette-shape-title';
+    titleEl.className = 'scada-palette-shape-title';
     titleEl.textContent = title;
     const descriptionEl = document.createElement('p');
-    descriptionEl.className = 'palette-shape-description';
+    descriptionEl.className = 'scada-palette-shape-description';
     descriptionEl.textContent = description;
     const actionsEl = document.createElement('div');
-    actionsEl.className = 'palette-shape-actions';
+    actionsEl.className = 'scada-palette-shape-actions';
     actionsEl.append(createFavoriteButton(app, paletteKey(cell)));
     const stateEl = document.createElement('div');
-    stateEl.className = 'palette-shape-state';
+    stateEl.className = 'scada-palette-shape-state';
     el.append(previewEl, stateEl, titleEl, descriptionEl, actionsEl);
 
     // In the panel before its paper: as wide as the panel
@@ -199,7 +199,7 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
 /** The name of the image in the diagram (the palette shows it under the image). */
 function createNameField(app: App, imageId: string, onRename: (name: string) => void): HTMLElement {
     const label = document.createElement('label');
-    label.className = 'palette-shape-field';
+    label.className = 'scada-palette-shape-field';
     label.textContent = 'Name';
     const input = document.createElement('input');
     input.type = 'text';
@@ -222,7 +222,7 @@ function createNameField(app: App, imageId: string, onRename: (name: string) => 
 function createFavoriteButton(app: App, key: string): HTMLElement {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'palette-shape-button favorite';
+    button.className = 'scada-palette-shape-button favorite';
     const update = () => {
         const favorite = isFavorite(app.graph, key);
         button.classList.toggle('active', favorite);
@@ -242,7 +242,7 @@ function createFavoriteButton(app: App, key: string): HTMLElement {
 function createDeleteButton(app: App, imageId: string): HTMLElement {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'palette-shape-button danger';
+    button.className = 'scada-palette-shape-button danger';
     button.textContent = 'Delete image';
     button.addEventListener('click', () => {
         deleteImage(app, imageId);

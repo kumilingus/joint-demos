@@ -38,7 +38,7 @@ const SIDES: Array<[string, string, number]> = [['top', 'Top', 0], ['left', 'Lef
 
 /**
  * A side of the shape (a label, a control): the buttons as a cross around the shape - a triangle and the name on each side
- * (see `.jj-side-picker` in the styles), below unless set
+ * (see `.scada-side-picker` in the styles), below unless set
  */
 function sideField(label: string): Inputs {
     return {
@@ -47,7 +47,7 @@ function sideField(label: string): Inputs {
         defaultValue: 'bottom',
         options: SIDES.map(([value, name, angle]) => ({
             value,
-            content: `<svg class="jj-side-icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M 5 2 L 9 8 H 1 Z" transform="rotate(${angle} 5 5)"/></svg><span>${name}</span>`
+            content: `<svg class="scada-side-icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M 5 2 L 9 8 H 1 Z" transform="rotate(${angle} 5 5)"/></svg><span>${name}</span>`
         })),
         attrs: { '.joint-select-button-group': { 'data-picker': 'side' }}
     };
@@ -497,7 +497,7 @@ function renderMembersField(
 ): HTMLElement | undefined {
     if (options.type !== 'group-members') return undefined;
     const el = document.createElement('div');
-    el.className = 'group-members';
+    el.className = 'scada-group-members';
     const label = document.createElement('label');
     label.textContent = options.label ?? '';
     const list = document.createElement('ul');
@@ -505,9 +505,9 @@ function renderMembersField(
         const item = document.createElement('li');
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'group-member';
+        button.className = 'scada-group-member';
         const tag = document.createElement('span');
-        tag.className = 'group-member-tag';
+        tag.className = 'scada-group-member-tag';
         tag.textContent = String(member.get('tag') ?? '');
         const name = isGroup(member) ? 'Group' : member.prop(['label', 'text']) || descriptions[member.get('type')]?.title || member.get('type');
         button.append(tag, ` ${name}`);
@@ -528,7 +528,7 @@ function fieldContentRenderer(selectMember?: (member: dia.Cell) => void) {
 
 /** The value of a custom field: of a color one (the members of a group are read-only, no value) */
 function getFieldValue(attribute: HTMLElement): { value: unknown } | undefined {
-    if (attribute.classList.contains('group-members')) return { value: undefined };
+    if (attribute.classList.contains('scada-group-members')) return { value: undefined };
     return getColorFieldValue(attribute);
 }
 
@@ -578,7 +578,7 @@ function renderAppearanceInspector(cells: dia.Cell[], label: string, note?: stri
     inspector.render();
     if (note) {
         const noteEl = document.createElement('p');
-        noteEl.className = 'appearance-note';
+        noteEl.className = 'scada-appearance-note';
         noteEl.textContent = note;
         inspector.el.querySelector('.group-label')?.after(noteEl);
     }

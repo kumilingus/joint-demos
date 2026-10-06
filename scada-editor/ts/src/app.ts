@@ -84,7 +84,7 @@ export class App {
 
     constructor(el: HTMLElement) {
         this.el = el;
-        this.inspectorEl = el.querySelector<HTMLElement>('.inspector-panel')!;
+        this.inspectorEl = el.querySelector<HTMLElement>('.scada-inspector-panel')!;
 
         this.graph = createGraph();
         // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings
@@ -107,12 +107,12 @@ export class App {
             ...scrollerOptions,
             paper: this.paper
         });
-        el.querySelector('.canvas')!.appendChild(this.scroller.el);
+        el.querySelector('.scada-canvas')!.appendChild(this.scroller.el);
         this.scroller.render();
 
         this.selectionView = createSelection(this.scroller, this.selection);
 
-        this.navigator = createNavigator(el.querySelector('.navigator-panel')!, this.scroller);
+        this.navigator = createNavigator(el.querySelector('.scada-navigator-panel')!, this.scroller);
 
         this.keyboard = new ui.Keyboard();
 
@@ -198,7 +198,7 @@ export class App {
         this.toolbar = createToolbar(this, mode);
         if (mode === Mode.Edit) {
             this.createSnaplines();
-            this.stencil = createStencil(this.el.querySelector('.main')!, this.scroller, this.snaplines!, {
+            this.stencil = createStencil(this.el.querySelector('.scada-main')!, this.scroller, this.snaplines!, {
                 getImages: () => getImages(this.graph),
                 onUpload: images => addImages(this, images)
             });
@@ -284,7 +284,7 @@ export class App {
     }
 }
 
-export function init(el: HTMLElement = document.querySelector<HTMLElement>('.app')!): App {
+export function init(el: HTMLElement = document.querySelector<HTMLElement>('.scada-app')!): App {
     const app = new App(el);
     // The first example (a boiler house), saved with the Save button: its cells, its images and favorites
     app.loadJSON(EXAMPLES[0].json);
