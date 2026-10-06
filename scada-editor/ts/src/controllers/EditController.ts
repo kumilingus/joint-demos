@@ -39,9 +39,10 @@ export default class EditController extends Controller {
 }
 
 function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {
+    const { paper } = app;
     // A member of a group selects the group, and its member when the group is selected (see `Group`).
     const { model } = cellView;
-    showHover(app.paper, null);
+    showHover(paper, null);
     if (isSelectionEvent(evt)) {
         toggleAtLevel(app, model);
     } else {
@@ -50,12 +51,13 @@ function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {
 }
 
 function onBlankPointerdown(app: App, evt: dia.Event) {
+    const { selectionView } = app;
     // Otherwise the canvas is panned (see `CanvasController`).
     if (!evt.shiftKey) {
         clearSelection(app);
         return;
     }
-    app.selectionView.startSelecting(evt);
+    selectionView.startSelecting(evt);
 }
 
 function onCellContextmenu(app: App, cellView: dia.CellView, evt: dia.Event, x: number, y: number) {
@@ -67,11 +69,13 @@ function onBlankContextmenu(app: App, evt: dia.Event, x: number, y: number) {
 }
 
 function onCellMouseenter(app: App, cellView: dia.CellView) {
-    showHover(app.paper, clickTarget(app, cellView.model));
+    const { paper } = app;
+    showHover(paper, clickTarget(app, cellView.model));
 }
 
 function onCellMouseleave(app: App) {
-    showHover(app.paper, null);
+    const { paper } = app;
+    showHover(paper, null);
 }
 
 /**
@@ -79,11 +83,12 @@ function onCellMouseleave(app: App) {
  * kept - a click with it is a click
  */
 function onElementPointerdown(app: App, view: dia.ElementView, evt: dia.Event, x: number, y: number) {
+    const { selectionView } = app;
     if (!isDuplicateEvent(evt)) return;
     view.preventDefaultInteraction(evt);
     view.eventData(evt, { duplicatePressed: { x, y }});
     // Nor moved with the other selected cells (the selection moves them)
-    preventSelectionInteraction(app.selectionView, evt);
+    preventSelectionInteraction(selectionView, evt);
 }
 
 /**

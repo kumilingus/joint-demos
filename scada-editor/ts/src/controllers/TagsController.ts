@@ -23,18 +23,21 @@ export default class TagsController extends Controller {
 }
 
 function onCellAdd(app: App, cell: dia.Cell, _collection: unknown, options: dia.Cell.Options) {
+    const { graph } = app;
     if (!cell.isElement() || cell instanceof Screen) return;
     // In the same batch as the adding (undone together)
-    ensureTag(app.graph, cell, options);
+    ensureTag(graph, cell, options);
 }
 
 function onGraphReset(app: App) {
-    app.graph.getElements().filter(element => !(element instanceof Screen)).forEach(element => ensureTag(app.graph, element));
+    const { graph } = app;
+    graph.getElements().filter(element => !(element instanceof Screen)).forEach(element => ensureTag(graph, element));
 }
 
 /** A tag must not be empty or taken by another element: such a change is reverted. */
 function onTagChange(app: App, element: dia.Element, tag: string) {
-    const taken = app.graph.getElements().some(other => other !== element && other.get('tag') === tag);
+    const { graph } = app;
+    const taken = graph.getElements().some(other => other !== element && other.get('tag') === tag);
     if (tag && !taken) return;
     element.set('tag', element.previous('tag'));
 }

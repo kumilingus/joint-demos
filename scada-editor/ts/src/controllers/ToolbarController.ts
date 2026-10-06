@@ -28,11 +28,13 @@ export default class ToolbarController extends Controller {
 }
 
 function onModePointerclick(app: App) {
-    app.setMode(app.mode === Mode.Edit ? Mode.Runtime : Mode.Edit);
+    const { mode } = app;
+    app.setMode(mode === Mode.Edit ? Mode.Runtime : Mode.Edit);
 }
 
 function onColorSchemePointerclick(app: App) {
-    app.setColorScheme(app.colorScheme === ColorScheme.Light ? ColorScheme.Dark : ColorScheme.Light);
+    const { colorScheme } = app;
+    app.setColorScheme(colorScheme === ColorScheme.Light ? ColorScheme.Dark : ColorScheme.Light);
 }
 
 /** A new diagram: its settings open (the screen, the style) - the first thing to set */

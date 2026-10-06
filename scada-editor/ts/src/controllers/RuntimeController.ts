@@ -34,7 +34,8 @@ export default class RuntimeController extends Controller {
 }
 
 function onCellPointerdown(app: App, _cellView: dia.CellView, evt: dia.Event) {
+    const { scroller } = app;
     // Dragging the slider (or anything else on a control) must not pan the canvas.
     if (isControlEvent(evt) || isScreenShown(app)) return;
-    app.scroller.startPanning(evt);
+    scroller.startPanning(evt);
 }

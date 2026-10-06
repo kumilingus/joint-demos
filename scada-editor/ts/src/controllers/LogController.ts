@@ -23,17 +23,18 @@ export default class LogController extends Controller<[App, Log]> {
     }
 
     startListening(): void {
+        const { plant, toolbar, paper } = this.app;
         this.log.clear();
         // A listener of the plant (as any system): the updates and the commands
-        this.listenTo(this.app.plant, {
+        this.listenTo(plant, {
             'update': onPlantUpdate,
             'command': onPlantCommand
         });
-        this.listenTo(this.app.toolbar, {
+        this.listenTo(toolbar, {
             'log:pointerclick': onLogPointerclick
         });
         // An element clicked while the log is open: its tag in the filter of the log (or out of it)
-        this.listenTo(this.app.paper, {
+        this.listenTo(paper, {
             'element:pointerclick': onElementPointerclick
         });
     }
@@ -53,7 +54,8 @@ function onPlantCommand(_app: App, log: Log, message: PlantMessage) {
 }
 
 function onLogPointerclick(app: App, log: Log) {
-    log.toggle(app.el, app.toolbar.getWidgetByName('log')?.el);
+    const { el, toolbar } = app;
+    log.toggle(el, toolbar.getWidgetByName('log')?.el);
 }
 
 function onElementPointerclick(_app: App, log: Log, elementView: dia.ElementView) {

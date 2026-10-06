@@ -35,20 +35,24 @@ export default class ControlsController extends Controller {
 }
 
 function onGraphReset(app: App) {
-    addControls(app.paper);
+    const { paper } = app;
+    addControls(paper);
 }
 
 function onCellAdd(app: App, cell: dia.Cell) {
+    const { paper } = app;
     if (!cell.isElement()) return;
-    updateControl(app.paper, cell);
+    updateControl(paper, cell);
 }
 
 function onControlsChange(app: App, element: dia.Element) {
-    updateControl(app.paper, element);
+    const { paper } = app;
+    updateControl(paper, element);
 }
 
 /** A command of the operator: sent to the plant of the run (none while editing) */
 function onCommand(app: App, element: dia.Element, property: string, value: TagValue) {
+    const { plant } = app;
     const tag = getTag(element);
-    if (tag) app.plant?.send(tag, property, value);
+    if (tag) plant?.send(tag, property, value);
 }

@@ -14,32 +14,35 @@ import { showSelection, updateGroupBadge } from '../canvas/selection';
 export default class SelectionController extends Controller {
 
     startListening(): void {
-        const { selection, graph } = this.app;
+        const { selection, graph, history } = this.app;
 
         this.listenTo(selection, 'add reset', onSelectionChange);
         this.listenTo(selection, 'remove', onSelectionRemove);
         this.listenTo(graph, 'add remove change:parent', onMembersChange);
-        this.listenTo(this.app.history, 'stack:undo stack:redo', onHistoryChange);
+        this.listenTo(history, 'stack:undo stack:redo', onHistoryChange);
     }
 }
 
 /** Cells selected, the selection replaced */
 function onSelectionChange(app: App) {
-    showSelection(app.paper, app.selection);
+    const { paper, selection } = app;
+    showSelection(paper, selection);
     inspectSelection(app);
 }
 
 /** The inspector of several cells shows their values (of a stand-in, see `selection-inspector.ts`): after an undo, a redo, again */
 function onHistoryChange(app: App) {
-    if (app.selection.length > 1 || isGroup(app.selection.at(0))) inspectSelection(app);
+    const { selection } = app;
+    if (selection.length > 1 || isGroup(selection.at(0))) inspectSelection(app);
 }
 
 /** The screen removed while it is edited (switched off, deleted, undone): the settings stay open. */
 function onSelectionRemove(app: App, cell: dia.Cell) {
+    const { graph, paper, selection } = app;
     // Removed from the diagram (`ui.Selection` drops each removed cell): with more of it removed (the members of a
     // group, ...), the last one updates
-    if (app.selection.toArray().some(selected => !app.graph.getCell(selected.id))) return;
-    showSelection(app.paper, app.selection);
+    if (selection.toArray().some(selected => !graph.getCell(selected.id))) return;
+    showSelection(paper, selection);
     inspectSelection(app, cell instanceof Screen && isSettingsOpen(app));
 }
 
@@ -48,11 +51,11 @@ function onSelectionRemove(app: App, cell: dia.Cell) {
  * again, its inspector lists them again.
  */
 function onMembersChange(app: App, cell: dia.Cell) {
-    const { selection } = app;
+    const { paper, selection } = app;
     const parents = [cell.get('parent'), cell.previous('parent')];
     const groups = selection.filter(selected => isGroup(selected) && parents.includes(String(selected.id)));
     if (groups.length === 0) return;
-    groups.forEach(group => updateGroupBadge(app.paper, group));
+    groups.forEach(group => updateGroupBadge(paper, group));
     if (selection.length === 1) inspectSelection(app);
 }
 

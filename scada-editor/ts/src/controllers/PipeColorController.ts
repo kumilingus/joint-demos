@@ -20,11 +20,13 @@ export default class PipeColorController extends Controller {
 }
 
 function onGraphReset(app: App) {
-    showPipeColors(app.graph);
+    const { graph } = app;
+    showPipeColors(graph);
 }
 
 /** Of a link (the graph changes its style too: the style of the diagram, see `diagram-style.ts`) */
 function onLinkChange(app: App, cell: dia.Cell | dia.Graph) {
+    const { graph } = app;
     if (!(cell instanceof dia.Link)) return;
-    showPipeColors(app.graph);
+    showPipeColors(graph);
 }

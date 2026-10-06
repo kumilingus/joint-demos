@@ -22,5 +22,6 @@ export default class ElectricalController extends Controller {
 }
 
 function onEnergizedChange(app: App, cell: dia.Cell) {
-    showEnergized(app.paper, cell);
+    const { paper } = app;
+    showEnergized(paper, cell);
 }
