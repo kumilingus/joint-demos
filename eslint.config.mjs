@@ -105,6 +105,13 @@ const combinedConfig = defineConfig([
             ],
         },
     },
+    {
+        // The SCADA editor: lines of 140 characters at most (texts and URLs aside)
+        files: ['scada-editor/**/*.ts'],
+        rules: {
+            'max-len': ['error', { code: 140, ignoreStrings: true, ignoreTemplateLiterals: true, ignoreUrls: true, ignoreRegExpLiterals: true }],
+        },
+    },
 ]);
 
 export default combinedConfig;
