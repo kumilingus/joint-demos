@@ -33,7 +33,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 
 ### History
 
-Everything edited is recorded (image upload, rename, delete included). Not recorded (`historyOptions` in `config.ts`) - changes with:
+Everything edited is recorded (image upload, rename, delete included). Not recorded (`historyOptions` in `actions/history.ts`) - changes with:
 
 - `RUNTIME` (`runtime/controls.ts`) - by the plant during a run,
 - `DERIVED` (`shapes/common/routing.ts`) - derived from another change (the taps of a busbar, table rows taken by a resize),
@@ -45,13 +45,16 @@ Opening a diagram clears the history.
 
 ```
 src/
-  main.ts, app.ts, config.ts, const.ts   entry, App, options, constants
+  main.ts, app.ts, const.ts   entry, App, constants
+  tooltips.ts         the tooltips of the app
   diagram-style.ts    the style of a diagram
   examples.ts         the examples list
   styles.css          imports: JointJS+ and theme layers, tokens, then the area CSS (layout.css, */*.css)
   tokens.css, icons/  app tokens and icons (over the theme's)
   actions/            selection, history, clipboard, order, groups, pipes, file, palette, view
-  canvas/             selection frames, snaplines, link tools, connections, layers, navigator, screen, context menu, tint
+  canvas/             config (the paper, the scroller, the zoom), selection frames, snaplines, link tools, connections, layers,
+                      navigator, screen, context menu, tint
+  toolbar/            config (the tools in each mode), toolbar.css
   palette/            stencil, packing, preview, descriptions, images, favorites
   inspector/          inspector, selection inspector, color field, help, settings
   runtime/            controls, animations
@@ -59,7 +62,7 @@ src/
   log/                the log of plant messages
   controllers/
   shapes/             models/<palette group>/, views/, common/ (Shape, ports, footprint, routing, gradients, charts),
-                      attributes/ (label, text styles), shapes.css (shape colors), index.ts (the namespace)
+                      attributes/ (label, from-style, computed, flip), shapes.css (shape colors), index.ts (the namespace)
   theme/              the reusable `minimal` theme (see theme/README.md)
   diagrams/           the examples (saved JSON)
 ```

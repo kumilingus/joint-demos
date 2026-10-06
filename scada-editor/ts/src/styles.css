@@ -12,6 +12,7 @@
 
 /* The styles of the app, by its parts */
 @import './layout.css';
+@import './toolbar/toolbar.css';
 @import './palette/palette.css';
 @import './inspector/inspector.css';
 @import './canvas/canvas.css';

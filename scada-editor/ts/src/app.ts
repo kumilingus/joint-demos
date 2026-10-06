@@ -6,9 +6,10 @@ import { createSelection } from './canvas/selection';
 import { createNavigator } from './canvas/navigator';
 import { EXAMPLES, type Example } from './examples';
 import { ColorScheme, Mode } from './const';
-import {
-    canvasColors, getGrid, getToolbarOptions, historyOptions, interactivity, paperOptions, scrollerOptions, snaplinesOptions, tooltipOptions
-} from './config';
+import { canvasColors, getGrid, interactivity, paperOptions, scrollerOptions, snaplinesOptions } from './canvas/config';
+import { getToolbarOptions } from './toolbar/config';
+import { historyOptions } from './actions/history';
+import { tooltipOptions } from './tooltips';
 import { addImages, clearSelection, confirmReplace, refreshPalette, zoomToFit } from './actions';
 import { isControlEvent, setControlsOperable } from './runtime/controls';
 import { Plant } from './plant/plant';
@@ -249,7 +250,7 @@ export class App {
         el.className = 'inspector-empty';
         // Two ways: a shape, or (an "or" between them) the settings with what they have
         const text = document.createElement('p');
-        text.textContent = 'Select a shape on the canvas or in the stencil to see its properties.';
+        text.textContent = 'Select a shape on the canvas or in the palette to see its properties.';
         const or = document.createElement('div');
         or.className = 'inspector-empty-or';
         or.textContent = 'or';

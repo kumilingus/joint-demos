@@ -1,5 +1,5 @@
 import { dia, ui, util } from '@joint/plus';
-import { paperOptions } from '../config';
+import { paperOptions } from './config';
 import { routingPaperOptions, routingPresentationAttributes } from '../shapes/common/routing';
 
 /*

@@ -1,7 +1,7 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { ZOOM } from '../config';
+import { ZOOM } from '../canvas/config';
 import { Mode } from '../const';
 import { isScreenShown } from '../canvas/screen';
 

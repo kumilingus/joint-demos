@@ -1,6 +1,6 @@
 import type { App } from '../app';
 import { Mode } from '../const';
-import { fitOptions, runtimeFitOptions } from '../config';
+import { fitOptions, runtimeFitOptions } from '../canvas/config';
 import { getScreen, isScreenShown } from '../canvas/screen';
 
 /*
