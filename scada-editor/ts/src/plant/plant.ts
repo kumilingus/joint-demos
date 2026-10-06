@@ -1,5 +1,5 @@
 import { type dia, mvc } from '@joint/plus';
-import { RUNTIME } from '../runtime/controls';
+import { RUNTIME } from '../history';
 import { findByTag } from './tags';
 import { readProperty, type TagValue, writeProperty } from './properties';
 

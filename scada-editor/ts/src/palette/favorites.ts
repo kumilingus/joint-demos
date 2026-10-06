@@ -1,4 +1,5 @@
 import type { dia } from '@joint/plus';
+import { PREFERENCE } from '../history';
 
 /*
  * The favorite shapes of the palette (by their keys, see `paletteKey()`): stored on the graph,
@@ -9,8 +10,6 @@ import type { dia } from '@joint/plus';
 /** The attribute of the graph with the favorite shapes */
 export const FAVORITES_ATTRIBUTE = 'favorites';
 
-/** A change of a preference of the user (the favorites): not recorded in the history, see `historyOptions`. */
-export const PREFERENCE = { preference: true };
 
 export function getFavorites(graph: dia.Graph): Set<string> {
     const favorites = graph.get(FAVORITES_ATTRIBUTE);

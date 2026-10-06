@@ -53,8 +53,6 @@ export enum ColorScheme {
     Dark = 'dark'
 }
 
-/** A change derived from another one (not recorded in the history, see `historyOptions`). */
-export const DERIVED = { derived: true };
 
 /** The pointer moves (events, not pixels) after which a press is not a click but a drag: on the canvas and in the palette */
 export const CLICK_THRESHOLD = 10;

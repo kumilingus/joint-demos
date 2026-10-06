@@ -1,5 +1,5 @@
 import type { dia } from '@joint/plus';
-import { RUNTIME } from '../../runtime/controls';
+import { RUNTIME } from '../../history';
 import { findByTag, getTag } from '../tags';
 import type { Plant, PlantMessage } from '../plant';
 import { propertiesOf, readProperty, type TagValue } from '../properties';

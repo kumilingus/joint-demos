@@ -1,6 +1,7 @@
 import { dia } from '@joint/plus';
 import type { Overflow } from './footprint';
-import { DERIVED, GRID_SIZE, Layer } from '../../const';
+import { GRID_SIZE, Layer } from '../../const';
+import { DERIVED } from '../../history';
 import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttributes } from './gradients';
 import { flippedPorts, pipeAttributes } from './ports';
 import { fromModelAttributes } from '../attributes/label';

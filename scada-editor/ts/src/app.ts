@@ -8,7 +8,7 @@ import { EXAMPLES } from './examples';
 import { type ColorScheme, Mode } from './const';
 import { canvasColors, getGrid, interactivity, paperOptions, scrollerOptions, snaplinesOptions } from './canvas/config';
 import { createToolbar } from './toolbar/toolbar';
-import { historyOptions } from './actions/history';
+import { historyOptions } from './history';
 import { tooltipOptions } from './tooltips';
 import { addImages, clearSelection, refreshPalette, storedColorScheme, storeColorScheme, zoomToFit } from './actions';
 import { isControlEvent, setControlsOperable } from './runtime/controls';

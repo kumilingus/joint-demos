@@ -3,7 +3,7 @@ import type { App } from '../app';
 import Screen from '../shapes/models/diagram/Screen';
 import Group, { isGroup } from '../shapes/models/diagram/Group';
 import { selectCell, selectCells, parentId } from './selection';
-import { DERIVED } from '../const';
+import { DERIVED } from '../history';
 
 /*
  * The groups of elements (see `Group`): grouping, ungrouping, fitting, the group a cell is in.

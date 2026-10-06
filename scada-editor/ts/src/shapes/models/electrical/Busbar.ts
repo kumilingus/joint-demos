@@ -3,7 +3,7 @@ import { terminal, terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
 import Shape, { type Resizable } from '../../common/Shape';
-import { DERIVED } from '../../../const';
+import { DERIVED } from '../../../history';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`

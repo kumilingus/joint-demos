@@ -14,12 +14,6 @@ import { dataOf } from '../shapes/common/data';
  */
 
 /**
- * The option of the changes made in the runtime mode (by operating the equipment or by the plant,
- * see `plant/mock/`), not by editing the diagram: they are not recorded in the history.
- */
-export const RUNTIME = { runtime: true };
-
-/**
  * A command of the operator: the value of the property of the element asked for (see `properties.ts`) - the `command`
  * event of the element, sent to the plant (see `ControlsController`). Nothing of the element changes: the plant
  * answers with an update when it is done (the valve moved, the pump started), as a SCADA server would.

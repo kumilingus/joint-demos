@@ -33,11 +33,11 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 
 ### History
 
-Everything edited is recorded (image upload, rename, delete included). Not recorded (`historyOptions` in `actions/history.ts`) - changes with:
+Everything edited is recorded (image upload, rename, delete included). Not recorded (`historyOptions` in `history.ts`, with the options below) - changes with:
 
-- `RUNTIME` (`runtime/controls.ts`) - by the plant during a run,
-- `DERIVED` (`shapes/common/routing.ts`) - derived from another change (the taps of a busbar, table rows taken by a resize),
-- `PREFERENCE` (`palette/favorites.ts`) - favorites.
+- `RUNTIME` - by the plant during a run,
+- `DERIVED` - derived from another change (the taps of a busbar, table rows taken by a resize),
+- `PREFERENCE` - favorites.
 
 Opening a diagram clears the history.
 
@@ -47,6 +47,7 @@ Opening a diagram clears the history.
 src/
   main.ts, app.ts, const.ts   entry, App, constants
   tooltips.ts         the tooltips of the app
+  history.ts          what the history records (the change flags, `historyOptions`)
   events.ts           what an event means (adds to the selection, drags a copy, typed into a field)
   diagram-style.ts    the style of a diagram
   examples.ts         the examples list
@@ -72,7 +73,7 @@ src/
 
 - **Comments** say what or why, in short phrases; every export and non-obvious constant has one.
 - **File names** - a class default export: PascalCase (`Shape.ts`); otherwise kebab-case (`mock-plant.ts`). Attribute keys camelCase.
-- **Change options** - `RUNTIME`, `DERIVED`, `PREFERENCE` (see [History](#history)). An operator command is not a change but an event (see [Connecting a plant](#connecting-a-plant)).
+- **Change flags** - `RUNTIME`, `DERIVED`, `PREFERENCE` (see [History](#history)). An operator command is not a change but an event (see [Connecting a plant](#connecting-a-plant)).
 - **Model geometry** - routes, positions and sizes come from the models (`getFootprint()`, the getters), never from the rendered DOM.
 - **Embedding** - `config.storeEmbeds = false` (`main.ts`): the members of a group are known by their `parent` only, no `embeds` stored; listen to `change:parent`.
 - **Example JSON** - when edited by a script, set only what the inspector can set (fields, positions, sizes, link ends, vertices).
