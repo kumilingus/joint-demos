@@ -1,7 +1,7 @@
 import type { dia } from '@joint/plus';
-import { util } from '@joint/plus';
+import { util, V } from '@joint/plus';
 import { GRID_SIZE } from '../../../const';
-import { defineImage, definePlaceholder, findImage, type ImageEntry } from '../../../palette/images';
+import type { ImageEntry, ImagesPaperOptions } from '../../../palette/images';
 import { labelAttributes } from '../../attributes/label';
 import Shape, { type Resizable } from '../../common/Shape';
 
@@ -14,6 +14,68 @@ const MAX_SIDE = 240;
 // The size changes in two steps of the grid (see `Shape`).
 const SIZE_STEP = 2 * GRID_SIZE;
 
+/*
+ * An image is in the DOM once per paper: it is defined in the `<defs>` of the paper (a `<symbol>` of its natural
+ * size) and each element shows it with a `<use>` of its own size.
+ */
+
+/** The image of the element, from its paper (see `ImagesPaperOptions`); `null` for a paper without images. */
+function findImage(elementView: dia.ElementView, imageId: string): ImageEntry | null {
+    const options = elementView.paper!.options as ImagesPaperOptions;
+    return options.getImages?.()[imageId] ?? null;
+}
+
+/** The ids of the definitions in each paper (by the image ids). */
+const definitions = new WeakMap<dia.Paper, Map<string, string>>();
+
+// The ids are unique in the document: every paper (the canvas, the palette, ...) has its own definitions.
+let counter = 0;
+
+/** The id of the definition of the image in the paper (defined now if it is not yet). */
+function defineImage(paper: dia.Paper, imageId: string, { href, width, height }: ImageEntry): string {
+    let images = definitions.get(paper);
+    if (!images) {
+        images = new Map();
+        definitions.set(paper, images);
+    }
+    let id = images.get(imageId);
+    if (id) return id;
+    id = `scada-image-${++counter}`;
+    // Shown whole in the size of the element (its aspect ratio is kept by the resizing).
+    V('symbol', { id, viewBox: `0 0 ${width} ${height}`, preserveAspectRatio: 'xMidYMid meet' })
+        .append(V('image', { href, width, height }))
+        .appendTo(paper.defs);
+    images.set(imageId, id);
+    return id;
+}
+
+/** The placeholder of an image that is not in the diagram (e.g. a pasted element of another diagram) */
+const PLACEHOLDER_ID = '';
+
+/**
+ * The id of the definition of the placeholder in the paper: a dashed frame with an icon of a missing image
+ * (in the colors of the element label, see `palette.css`).
+ */
+function definePlaceholder(paper: dia.Paper): string {
+    let images = definitions.get(paper);
+    if (!images) {
+        images = new Map();
+        definitions.set(paper, images);
+    }
+    let id = images.get(PLACEHOLDER_ID);
+    if (id) return id;
+    id = `scada-image-${++counter}`;
+    V('symbol', { id, class: 'missing-image', viewBox: '0 0 48 48', preserveAspectRatio: 'xMidYMid meet' })
+        .append([
+            V('rect', { x: 1, y: 1, width: 46, height: 46, rx: 4, fill: 'none', strokeDasharray: '4 3' }),
+            // An image crossed out
+            V('path', { d: 'M 14 14 H 34 V 34 H 14 Z M 14 30 L 21 23 L 27 29 M 26 22 A 2 2 0 1 0 26.1 22 M 12 12 L 36 36', fill: 'none' })
+        ])
+        .appendTo(paper.defs);
+    images.set(PLACEHOLDER_ID, id);
+    return id;
+}
+
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
     <use @selector='image' />
@@ -22,7 +84,7 @@ const markup = util.svg/* xml */`
 
 /**
  * A shape of the user: an uploaded image. It refers to the image by its id (its `imageId`):
- * the image is stored on the graph and in the DOM once per paper (see `images.ts`).
+ * the image is stored on the graph (see `images.ts`) and in the DOM once per paper (see `defineImage()`).
  */
 export default class CustomImage extends Shape {
 

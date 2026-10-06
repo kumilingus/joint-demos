@@ -43,14 +43,6 @@
     color: var(--foreground);
 }
 
-/* The placeholder of a missing image (see `definePlaceholder()`) */
-.missing-image {
-    stroke: var(--muted-foreground);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
 /* The palette and the preview of a shape (its title says it) show the shapes without their labels (a label and a zone are their text). */
 :is(.stencil-panel .joint-paper, .palette-shape-preview) [data-type]:not([data-type="Label"], [data-type="Zone"]) > text[joint-selector="label"] {
     display: none;

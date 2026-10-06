@@ -185,7 +185,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 | Feature | Code |
 |---|---|
 | Palette packing (skyline, no labels) | `palette/packing.ts` |
-| Uploaded images (one `<symbol>` per paper) | `palette/images.ts` |
+| Uploaded images (on the graph; one `<symbol>` per paper) | `palette/images.ts`, `shapes/models/custom/CustomImage.ts` |
 | Where a link end connects | `connectionStrategy` in `canvas/connections.ts` |
 | Routing straight / orthogonal / curved (a link stores its `routing` only: the router, the connector by the paper defaults) | `shapes/common/routing.ts` |
 | Conveyor (a link drawn as a belt) | `shapes/models/bulk/Conveyor.ts` |

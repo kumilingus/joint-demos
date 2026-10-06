@@ -316,3 +316,11 @@
     font-size: var(--style-label-size, 14px);
     fill: var(--style-label-color, var(--shape-label));
 }
+
+/* The placeholder of a missing image (see `definePlaceholder()` in `CustomImage.ts`) */
+.missing-image {
+    stroke: var(--muted-foreground);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
