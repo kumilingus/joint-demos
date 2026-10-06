@@ -12,32 +12,37 @@ import { delegateDrag } from '../canvas/drag';
 /** A copy is pasted this far from the original (in two grid steps: the centers stay on the grid). */
 const PASTE_OFFSET = { dx: 2 * GRID_SIZE, dy: 2 * GRID_SIZE };
 
+/** Whether the end of a link is connected to a copied element */
+const isCopied = (end: dia.Link.EndJSON, copied: Set<dia.Cell.ID>) => end.id !== undefined && copied.has(end.id);
+
 /**
- * A copy of the pipe on its own: its ends are where they are now, but not connected
- * (the clipboard would copy the elements it is connected to with it).
+ * A copy of the link (not in the graph): connected at its ends to the copied elements (`copied`, by their ids), the
+ * other ends where they are now, but not connected (the clipboard would copy the elements they are connected to).
  */
-function detachedCopy(app: App, link: dia.Link): dia.Link {
+function detachedCopy(app: App, link: dia.Link, copied: Set<dia.Cell.ID>): dia.Link {
     const copy = link.clone();
     const linkView = link.findView(app.paper) as dia.LinkView | undefined;
-    copy.source(linkView ? linkView.sourcePoint.toJSON() : link.getSourcePoint().toJSON());
-    copy.target(linkView ? linkView.targetPoint.toJSON() : link.getTargetPoint().toJSON());
+    if (!isCopied(link.source(), copied)) copy.source(linkView ? linkView.sourcePoint.toJSON() : link.getSourcePoint().toJSON());
+    if (!isCopied(link.target(), copied)) copy.target(linkView ? linkView.targetPoint.toJSON() : link.getTargetPoint().toJSON());
     return copy;
 }
 
-/** Copy the selected cells: the elements (with the pipes between them), or a pipe on its own. */
+/**
+ * Copy the selected cells: the elements (a group with its members) with the links between them, and the selected
+ * links - one to an element not copied detached from it (see `detachedCopy()`).
+ */
 export function copySelection(app: App): void {
     const { graph, clipboard } = app;
     // A diagram has one screen.
     const selection = app.selection.filter(cell => !Screen.isScreen(cell));
     if (selection.length === 0) return;
     const elements = selection.filter(cell => cell.isElement());
-    if (elements.length > 0) {
-        // A group with its members (and the links between them)
-        clipboard.copyElements(elements, graph, { deep: true });
-    } else {
-        // Free copies (not in the graph): nothing else is copied with them.
-        clipboard.copyElements(selection.map(link => detachedCopy(app, link as dia.Link)), graph);
-    }
+    const copied = new Set(elements.flatMap(element => [element, ...element.getEmbeddedCells({ deep: true })]).map(cell => cell.id));
+    // The links between the copied elements are copied with them (as they are).
+    const links = selection.filter((cell): cell is dia.Link => cell.isLink())
+        .filter(link => !isCopied(link.source(), copied) || !isCopied(link.target(), copied))
+        .map(link => detachedCopy(app, link, copied));
+    clipboard.copyElements([...elements, ...links], graph, { deep: true });
 }
 
 /** Copy the selected cells and remove them (in one step of the history). */
