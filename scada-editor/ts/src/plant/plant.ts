@@ -1,6 +1,6 @@
-import { type dia, mvc } from '@joint/plus';
+import { mvc } from '@joint/plus';
 import { RUNTIME } from '../history';
-import { findByTag } from './tags';
+import type TagIndex from './TagIndex';
 import { readProperty, type TagValue, writeProperty } from './properties';
 
 /*
@@ -31,15 +31,16 @@ export interface PlantMessage {
 
 export class Plant {
 
-    protected graph: dia.Graph;
+    /** The elements of the diagram by their tags */
+    protected tags: TagIndex;
 
     // Of `mvc.Events` (assigned to the prototype below): the `update` and `command` events
     declare on: mvc.Events_On<Plant>;
     declare off: mvc.Events_Off<Plant>;
     declare trigger: mvc.Events_Trigger<Plant>;
 
-    constructor(graph: dia.Graph) {
-        this.graph = graph;
+    constructor(tags: TagIndex) {
+        this.tags = tags;
     }
 
     /**
@@ -47,7 +48,7 @@ export class Plant {
      * event). `false` if it is not shown (no element of the tag, no such property of it).
      */
     update(tag: string, property: string, value: TagValue): boolean {
-        const element = findByTag(this.graph, tag);
+        const element = this.tags.get(tag);
         if (!element || !writeProperty(element, property, value, RUNTIME)) return false;
         this.trigger('update', { tag, property, value, time: new Date() });
         return true;
@@ -63,7 +64,7 @@ export class Plant {
 
     /** The value of the property of the element of the tag, as the diagram shows it now */
     get(tag: string, property: string): TagValue | undefined {
-        const element = findByTag(this.graph, tag);
+        const element = this.tags.get(tag);
         return element ? readProperty(element, property) : undefined;
     }
 }

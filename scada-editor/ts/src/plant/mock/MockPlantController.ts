@@ -14,7 +14,7 @@ export default class MockPlantController extends Controller {
 
     constructor(app: App) {
         super(app);
-        this.mock = new MockPlant(app.graph);
+        this.mock = new MockPlant(app.graph, app.tags);
     }
 
     startListening(): void {

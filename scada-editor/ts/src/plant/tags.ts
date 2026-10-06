@@ -1,38 +1,29 @@
 import type { dia } from '@joint/plus';
-import Shape from '../shapes/common/Shape';
+import type TagIndex from './TagIndex';
 
 /*
- * The tags: the IDs of the elements (`P-101`, `FT-101`, ...), set by the user.
+ * The tags: the IDs of the cells (`P-101`, `FT-101`, ...), set by the user.
  * JointJS generates the `id` of a cell, but it can't be changed: the tag is an attribute of its own.
- * The runtime updates address the elements by their tags (see `plant/mock/`).
+ * The runtime updates address the cells by their tags (see `plant/mock/`), found by the index of the app
+ * (`app.tags`, see `TagIndex`). A cell has a tag if its shape has a prefix for them (`tagPrefix`, see `Shape`):
+ * the shapes do, the screen and the links don't (a link that needs one - a conveyor - would define it).
  */
 
-// The first number of a prefix: `P-101`
-const FIRST_NUMBER = 101;
+/** A cell with a tag: its shape has the prefix of its tags */
+export type Taggable = dia.Cell & { tagPrefix: string };
 
-export function getTag(element: dia.Element): string | undefined {
-    return element.get('tag');
+/** Whether the cell has a tag (see above) */
+export function isTaggable(cell: dia.Cell): cell is Taggable {
+    return 'tagPrefix' in cell && typeof cell.tagPrefix === 'string';
 }
 
-export function findByTag(graph: dia.Graph, tag: string): dia.Element | undefined {
-    return graph.getElements().find(element => getTag(element) === tag);
+export function getTag(cell: dia.Cell): string | undefined {
+    return cell.get('tag');
 }
 
-/** The next free tag with the prefix of the element: `P-103` after `P-101` and `P-102`. */
-export function nextTag(graph: dia.Graph, element: dia.Element): string {
-    const prefix = Shape.isShape(element) ? element.tagPrefix : 'E';
-    const numbers = graph.getElements()
-        .map(getTag)
-        .map(tag => tag?.match(new RegExp(`^${prefix}-(\\d+)$`)))
-        .filter((match): match is RegExpMatchArray => Boolean(match))
-        .map(match => Number(match[1]));
-    return `${prefix}-${numbers.length > 0 ? Math.max(...numbers) + 1 : FIRST_NUMBER}`;
-}
-
-/** Give the element a tag if it has none, or if another element has the same one. */
-export function ensureTag(graph: dia.Graph, element: dia.Element, options?: dia.Cell.Options): void {
-    const tag = getTag(element);
-    const taken = tag && graph.getElements().some(other => other !== element && getTag(other) === tag);
-    if (tag && !taken) return;
-    element.set('tag', nextTag(graph, element), options);
+/** Give the cell a tag if it has none, or if another cell has the same one. */
+export function ensureTag(tags: TagIndex, cell: Taggable, options?: dia.Cell.Options): void {
+    const tag = getTag(cell);
+    if (tag && !tags.isTaken(tag, cell)) return;
+    cell.set('tag', tags.next(cell.tagPrefix), options);
 }

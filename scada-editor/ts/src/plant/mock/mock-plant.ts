@@ -1,6 +1,7 @@
 import type { dia } from '@joint/plus';
 import { RUNTIME } from '../../history';
-import { findByTag, getTag } from '../tags';
+import { getTag } from '../tags';
+import type TagIndex from '../TagIndex';
 import type { Plant, PlantMessage } from '../plant';
 import { propertiesOf, readProperty, type TagValue } from '../properties';
 import { getEnergized } from './energized';
@@ -174,13 +175,13 @@ const generators: Record<string, Generator> = {
  * How the values of a table change (not the values of tags: a table shows those of the diagram, see `readoutStates()`) -
  * the changes of the table, or `null` if nothing changes this time.
  */
-const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph) => Record<string, unknown> | null> = {
+const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph, tags: TagIndex) => Record<string, unknown> | null> = {
     // A value of a table changes: a state switches now and then, a number (as many decimals as it has) drifts.
     // A table of a source (an element): its states follow it (see `readoutStates()`), its numbers drift while it runs.
-    Table: (element, graph) => {
+    Table: (element, _graph, tags) => {
         const values = dataOf<string[][]>(element, 'values') ?? [];
         const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
-        const source = sourceOf(element, graph);
+        const source = sourceOf(element, tags);
         if (source && !isRunning(source)) return null;
         const cells = values.flatMap((row, rowIndex) => row
             .map((value, column) => ({ value, rowIndex, column, kind: kinds[column] }))
@@ -275,19 +276,19 @@ const chartGenerators: Record<string, ChartGenerator> = {
     }
 };
 
-/** The element a table shows the values of (its `sourceTag`, an ID), if any */
-function sourceOf(table: dia.Element, graph: dia.Graph): dia.Element | undefined {
+/** The cell a table shows the values of (its `sourceTag`, an ID), if any */
+function sourceOf(table: dia.Element, tags: TagIndex): dia.Cell | undefined {
     const source = table.get('sourceTag');
-    return source ? findByTag(graph, source) : undefined;
+    return source ? tags.get(source) : undefined;
 }
 
 // The switches of the circuits: open, they cut it (a valve open lets the liquid through)
 const SWITCHES = ['CircuitBreaker', 'Disconnector'];
 
 /** Whether the element runs: switched on (a pump, a generator), open (a valve) or closed (a breaker), or neither */
-function isRunning(element: dia.Element): boolean {
-    if (hasData(element, 'power')) return Boolean(dataOf(element, 'power'));
-    if (hasData(element, 'open')) return SWITCHES.includes(element.get('type')) ? !dataOf(element, 'open') : Boolean(dataOf(element, 'open'));
+function isRunning(cell: dia.Cell): boolean {
+    if (hasData(cell, 'power')) return Boolean(dataOf(cell, 'power'));
+    if (hasData(cell, 'open')) return SWITCHES.includes(cell.get('type')) ? !dataOf(cell, 'open') : Boolean(dataOf(cell, 'open'));
     return true;
 }
 
@@ -301,9 +302,9 @@ const isNumber = (value: string) => /^-?\d+(\.\d+)?$/.test(value);
  * The tables of a source as it is: their states `on` while it runs, `off` while not (an alarm stays); their numbers
  * zero while it is stopped (the ones before kept, see `runningValues`), back when it runs again
  */
-function readoutStates(graph: dia.Graph): void {
+function readoutStates(graph: dia.Graph, tags: TagIndex): void {
     graph.getElements().filter(element => element.get('type') === 'Table').forEach((table) => {
-        const source = sourceOf(table, graph);
+        const source = sourceOf(table, tags);
         if (!source) return;
         const running = isRunning(source);
         const kinds: Array<string | undefined> = (table.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
@@ -380,14 +381,14 @@ interface PlantUpdate {
  * An update of the plant (the new value of the property of a random element of those with data), or an update of
  * a table; `null` if nothing changes this time.
  */
-function createRandomUpdate(graph: dia.Graph): PlantUpdate | TagUpdate | null {
+function createRandomUpdate(graph: dia.Graph, tags: TagIndex): PlantUpdate | TagUpdate | null {
     const elements = graph.getElements().filter(element => getTag(element) && (element.get('type') in generators || element.get('type') in readoutGenerators));
     if (elements.length === 0) return null;
     const element = elements[Math.floor(Math.random() * elements.length)];
     const tag = getTag(element)!;
     const type = element.get('type');
     if (type in readoutGenerators) {
-        const changes = readoutGenerators[type](element, graph);
+        const changes = readoutGenerators[type](element, graph, tags);
         return changes ? { tag, changes } : null;
     }
     const value = generators[type](element, graph);
@@ -395,8 +396,8 @@ function createRandomUpdate(graph: dia.Graph): PlantUpdate | TagUpdate | null {
 }
 
 /** Apply an update to the element with its tag (a runtime change: not recorded in the history). */
-function applyUpdate(graph: dia.Graph, { tag, changes }: TagUpdate): void {
-    const element = findByTag(graph, tag);
+function applyUpdate(tags: TagIndex, { tag, changes }: TagUpdate): void {
+    const element = tags.get(tag);
     if (!element) return;
     // Replaced (an array of values not merged into the one before)
     Object.entries(changes).forEach(([path, value]) => element.prop(path, value, { ...RUNTIME, rewrite: true }));
@@ -414,8 +415,12 @@ export class MockPlant {
     /** The interface of the diagram the updates are sent to (as any system would): of the run */
     plant: Plant | null = null;
 
-    constructor(graph: dia.Graph) {
+    /** The elements of the diagram by their tags */
+    tags: TagIndex;
+
+    constructor(graph: dia.Graph, tags: TagIndex) {
         this.graph = graph;
+        this.tags = tags;
     }
 
     get running(): boolean {
@@ -432,12 +437,12 @@ export class MockPlant {
         this.updateEnergized();
         this.graph.on('change:data', this.onDataChange, this);
         fillTables(this.graph);
-        readoutStates(this.graph);
+        readoutStates(this.graph, this.tags);
         this.schedule();
         // The charts on a timer of their own: they move steadily
         this.chartTimer = window.setInterval(() => {
             this.tick++;
-            createChartUpdates(this.graph, this.tick, this.periodFlows).forEach(update => applyUpdate(this.graph, update));
+            createChartUpdates(this.graph, this.tick, this.periodFlows).forEach(update => applyUpdate(this.tags, update));
         }, CHART_INTERVAL);
     }
 
@@ -478,7 +483,7 @@ export class MockPlant {
     }
 
     protected updateReadouts(): void {
-        readoutStates(this.graph);
+        readoutStates(this.graph, this.tags);
     }
 
     /** The `energized` of the cells (as a SCADA server would send it): the circuits traced from the sources */
@@ -497,12 +502,12 @@ export class MockPlant {
 
     protected schedule(): void {
         this.timer = window.setTimeout(() => {
-            const update = createRandomUpdate(this.graph);
+            const update = createRandomUpdate(this.graph, this.tags);
             if (update && 'property' in update) {
                 // As any system would: through the interface of the diagram
                 this.plant?.update(update.tag, update.property, update.value);
             } else if (update) {
-                applyUpdate(this.graph, update);
+                applyUpdate(this.tags, update);
             }
             this.schedule();
         }, random(MIN_INTERVAL, MAX_INTERVAL));

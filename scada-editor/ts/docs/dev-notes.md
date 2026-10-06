@@ -60,7 +60,7 @@ src/
   palette/            stencil, packing, preview, descriptions, images, favorites
   inspector/          inspector, selection inspector, panel (what it shows), placeholder (nothing in it: the examples), color field, help, settings
   runtime/            controls, animations, electrical (the energized circuits)
-  plant/              plant.ts (the interface), properties.ts, tags.ts; mock/ - the simulated plant
+  plant/              plant.ts (the interface), properties.ts, tags.ts, TagIndex.ts (the elements by their tags, `app.tags`); mock/ - the simulated plant
   log/                the log of plant messages, what it shows on the diagram (log-hooks)
   controllers/
   shapes/             models/<palette group>/, views/, common/ (Shape, ports, footprint, routing, gradients, charts),

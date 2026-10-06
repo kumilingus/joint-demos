@@ -1,11 +1,10 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { ensureTag } from '../plant/tags';
-import Screen from '../shapes/models/diagram/Screen';
+import { ensureTag, isTaggable } from '../plant/tags';
 
 /**
- * Every element has a tag (an ID, see `tags.ts`): an element added without one
+ * Every cell of a shape with tags has one (an ID, see `tags.ts`): a cell added without one
  * (dropped from the palette) gets the next free one. Active in every mode.
  */
 export default class TagsController extends Controller {
@@ -23,21 +22,20 @@ export default class TagsController extends Controller {
 }
 
 function onCellAdd(app: App, cell: dia.Cell, _collection: unknown, options: dia.Cell.Options) {
-    const { graph } = app;
-    if (!cell.isElement() || Screen.isScreen(cell)) return;
+    const { tags } = app;
+    if (!isTaggable(cell)) return;
     // In the same batch as the adding (undone together)
-    ensureTag(graph, cell, options);
+    ensureTag(tags, cell, options);
 }
 
 function onGraphReset(app: App) {
-    const { graph } = app;
-    graph.getElements().filter(element => !Screen.isScreen(element)).forEach(element => ensureTag(graph, element));
+    const { graph, tags } = app;
+    graph.getCells().filter(isTaggable).forEach(cell => ensureTag(tags, cell));
 }
 
 /** A tag must not be empty or taken by another element: such a change is reverted. */
-function onTagChange(app: App, element: dia.Element, tag: string) {
-    const { graph } = app;
-    const taken = graph.getElements().some(other => other !== element && other.get('tag') === tag);
-    if (tag && !taken) return;
-    element.set('tag', element.previous('tag'));
+function onTagChange(app: App, cell: dia.Cell, tag: string) {
+    const { tags } = app;
+    if (tag && !tags.isTaken(tag, cell)) return;
+    cell.set('tag', cell.previous('tag'));
 }

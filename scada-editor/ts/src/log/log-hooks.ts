@@ -2,7 +2,7 @@ import { dia, V } from '@joint/plus';
 import type { App } from '../app';
 import type { LogHooks } from './Log';
 import type { PlantEvent, PlantMessage } from '../plant/plant';
-import { findByTag, getTag } from '../plant/tags';
+import { getTag } from '../plant/tags';
 import { propertiesOf } from '../plant/properties';
 import { setTint } from '../canvas/tint';
 
@@ -60,12 +60,14 @@ const TagBadge = dia.HighlighterView.extend({
 
 /** What the log shows on the paper of the app */
 export function logHooks(app: App): LogHooks {
-    const { paper, graph } = app;
+    const { paper, graph, tags } = app;
     let focused: dia.Element | null = null;
     let stopPinging: (() => void) | null = null;
     return {
         highlight: (tag) => {
-            const element = tag ? findByTag(graph, tag) ?? null : null;
+            // An element of the tag (the tint and the ping draw on elements)
+            const cell = tag ? tags.get(tag) : undefined;
+            const element = cell?.isElement() ? cell : null;
             if (element === focused) return;
             if (focused) setTint(paper, focused, null);
             focused = element;
@@ -88,8 +90,8 @@ export function logHooks(app: App): LogHooks {
             // A listener of the plant too: the element of a message pinged
             const plant = app.plant!;
             const onMessage = (kind: PlantEvent) => ({ tag }: PlantMessage) => {
-                const element = findByTag(graph, tag);
-                if (element) ping(paper, element, kind);
+                const cell = tags.get(tag);
+                if (cell?.isElement()) ping(paper, cell, kind);
             };
             const onUpdate = onMessage('update');
             const onCommand = onMessage('command');

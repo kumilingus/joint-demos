@@ -13,6 +13,7 @@ import { tooltipOptions } from './tooltips';
 import { addImages, clearSelection, refreshPalette, storedColorScheme, storeColorScheme, zoomToFit } from './actions';
 import { isControlEvent, setControlsOperable } from './runtime/controls';
 import { Plant } from './plant/plant';
+import TagIndex from './plant/TagIndex';
 import { setTablesLive } from './shapes/views/TableView';
 import { getImages, IMAGES_ATTRIBUTE } from './palette/images';
 import { FAVORITES_ATTRIBUTE } from './palette/favorites';
@@ -49,6 +50,8 @@ export class App {
     /** What the inspector panel shows (see `inspector/panel.ts`) */
     panel: PanelContent | null = null;
     graph: dia.Graph;
+    /** The elements by their tags (see `TagIndex`) */
+    tags: TagIndex;
     /** The interface of the diagram to the plant (see `plant.ts`): a new one for each run, none while editing */
     plant: Plant | null = null;
     history: dia.CommandManager;
@@ -87,6 +90,8 @@ export class App {
         this.inspectorEl = el.querySelector<HTMLElement>('.scada-inspector-panel')!;
 
         this.graph = createGraph();
+        // The first listener of the graph: up to date for all the others
+        this.tags = new TagIndex(this.graph);
         // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings
         this.graph.on(`change:${STYLE_ATTRIBUTE}`, () => applyDiagramStyle(this));
 
@@ -210,7 +215,7 @@ export class App {
             this.runtimeCells = this.graph.getCells().map(cell => cell.toJSON({ ignoreDefaults: false }));
         }
         // A plant for the run (see `plant.ts`): before the controllers of the mode, they listen to it
-        if (mode === Mode.Runtime) this.plant = new Plant(this.graph);
+        if (mode === Mode.Runtime) this.plant = new Plant(this.tags);
         this.modeControllers[mode].forEach(controller => controller.startListening());
         this.paper.setInteractivity(this.interactivityOf(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);

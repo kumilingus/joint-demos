@@ -13,9 +13,9 @@ export type TagValue = number | boolean;
 
 interface Property {
     /** The value the element shows now */
-    read: (element: dia.Element) => TagValue;
+    read: (cell: dia.Cell) => TagValue;
     /** The changes of the element showing the value (its attributes by their paths) */
-    write: (element: dia.Element, value: TagValue) => Record<string, unknown>;
+    write: (cell: dia.Cell, value: TagValue) => Record<string, unknown>;
 }
 
 /** Running or not (a pump, a motor, an alarm) */
@@ -87,20 +87,20 @@ const properties: Record<string, Record<string, Property>> = {
 };
 
 /** The names of the properties of the element (none if the plant knows nothing of it) */
-export function propertiesOf(element: dia.Element): string[] {
-    return Object.keys(properties[element.get('type')] ?? {});
+export function propertiesOf(cell: dia.Cell): string[] {
+    return Object.keys(properties[cell.get('type')] ?? {});
 }
 
 /** The value of the property of the element: what it shows now (`undefined` if it has no such property) */
-export function readProperty(element: dia.Element, name: string): TagValue | undefined {
-    return properties[element.get('type')]?.[name]?.read(element);
+export function readProperty(cell: dia.Cell, name: string): TagValue | undefined {
+    return properties[cell.get('type')]?.[name]?.read(cell);
 }
 
 /** Show the value of the property on the element; `false` if it has no such property */
-export function writeProperty(element: dia.Element, name: string, value: TagValue, options?: dia.Cell.Options): boolean {
-    const property = properties[element.get('type')]?.[name];
+export function writeProperty(cell: dia.Cell, name: string, value: TagValue, options?: dia.Cell.Options): boolean {
+    const property = properties[cell.get('type')]?.[name];
     if (!property) return false;
     // Replaced (an array of values not merged into the one before)
-    Object.entries(property.write(element, value)).forEach(([path, change]) => element.prop(path, change, { ...options, rewrite: true }));
+    Object.entries(property.write(cell, value)).forEach(([path, change]) => cell.prop(path, change, { ...options, rewrite: true }));
     return true;
 }
