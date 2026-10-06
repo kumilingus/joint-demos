@@ -1,4 +1,5 @@
-import { dia, type g, util } from '@joint/plus';
+import { type dia, type g, util } from '@joint/plus';
+import { builtInSet } from './built-in';
 
 /*
  * The computed parts of a shape: `computed: true` on a part - its attributes (`attrs`) computed by the shape from its
@@ -15,8 +16,7 @@ export interface Computed {
 }
 
 // The built-in text: its lines, its anchors
-const text = dia.Element.getAttributeDefinition('text')!;
-const textSet = text.set as dia.Cell.SetCallback<dia.ElementView>;
+const textSet = builtInSet('text');
 
 export const computedAttributes = {
     computed: {

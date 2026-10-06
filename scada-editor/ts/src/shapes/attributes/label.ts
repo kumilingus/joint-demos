@@ -1,7 +1,8 @@
-import { dia, g } from '@joint/plus';
+import { type dia, g } from '@joint/plus';
 import { LABEL_COLOR } from '../../const';
 import { getFootprint } from '../common/footprint';
 import { flipOf } from './flip';
+import { builtInSet } from './built-in';
 
 /**
  * Where the label of a shape is: below it (the default - as the shape draws it), above it, on its left or right -
@@ -159,8 +160,8 @@ function drawText(
 }
 
 // The built-in definitions of the text: their `set` called with the layout
-const textSet = dia.Element.getAttributeDefinition('text')!.set as dia.Cell.SetCallback<dia.ElementView>;
-const textWrapSet = dia.Element.getAttributeDefinition('text-wrap')!.set as dia.Cell.SetCallback<dia.ElementView>;
+const textSet = builtInSet('text');
+const textWrapSet = builtInSet('text-wrap');
 
 export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeDefinition<dia.ElementView>> = {
     // Read by `from-model` (wrapping the text of the model), not drawn by itself: the built-in one would draw over it
