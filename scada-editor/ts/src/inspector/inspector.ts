@@ -13,6 +13,8 @@ import { descriptions } from '../palette/descriptions';
 import { hasLineWidth, lineWidthField } from '../shapes/common/line-width';
 import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
 import { type DataKey, dataOf, hasData } from '../shapes/common/data';
+import type { App } from '../app';
+import { closePanel, type PanelContent, showInPanel } from './panel';
 
 const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
@@ -475,14 +477,17 @@ const groupInputs: Inputs = {
     members: { type: 'group-members', label: 'Members', group: 'general', index: 1 }
 };
 
-/** What a click on a member of a group in the inspector does (see `openInspector()`) */
-let selectMember: ((cell: dia.Cell) => void) | null = null;
-
 /**
  * The members of a group (the `renderFieldContent` of the inspector): the elements by their IDs and names,
- * a click on one selects it.
+ * a click on one selects it (`selectMember`).
  */
-function renderMembersField(options: { type?: string; label?: string }, _path: string, _value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
+function renderMembersField(
+    selectMember: ((member: dia.Cell) => void) | undefined,
+    options: { type?: string; label?: string },
+    _path: string,
+    _value: unknown,
+    inspector: ui.Inspector
+): HTMLElement | undefined {
     if (options.type !== 'group-members') return undefined;
     const el = document.createElement('div');
     el.className = 'group-members';
@@ -507,9 +512,11 @@ function renderMembersField(options: { type?: string; label?: string }, _path: s
     return el;
 }
 
-/** The custom contents of the fields: the colors (see `color-field.ts`), the members of a group */
-function renderFieldContent(...args: Parameters<typeof renderColorField>): HTMLElement | undefined {
-    return renderColorField(...args) ?? renderMembersField(...args);
+/** The custom contents of the fields: the colors (see `color-field.ts`), the members of a group (a click selects one) */
+function fieldContentRenderer(selectMember?: (member: dia.Cell) => void) {
+    return (...args: Parameters<typeof renderColorField>): HTMLElement | undefined => {
+        return renderColorField(...args) ?? renderMembersField(selectMember, ...args);
+    };
 }
 
 /** The value of a custom field: of a color one (the members of a group are read-only, no value) */
@@ -538,13 +545,10 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     ) as Inputs;
 }
 
-/** The inspector of the appearance of several cells (see `selection-inspector.ts`), if one is open */
-let appearance: ui.Inspector | null = null;
-
-/** Open the inspector of the appearance of the cells (see `selection-inspector.ts`) in the element, with a note under its heading */
-function openAppearanceInspector(el: HTMLElement, cells: dia.Cell[], label: string, note?: string): void {
+/** The inspector of the appearance of the cells (see `selection-inspector.ts`), with a note under its heading */
+function renderAppearanceInspector(cells: dia.Cell[], label: string, note?: string): ui.Inspector | null {
     const inspector = createAppearanceInspector(cells, label);
-    if (!inspector) return;
+    if (!inspector) return null;
     inspector.render();
     if (note) {
         const noteEl = document.createElement('p');
@@ -552,23 +556,24 @@ function openAppearanceInspector(el: HTMLElement, cells: dia.Cell[], label: stri
         noteEl.textContent = note;
         inspector.el.querySelector('.group-label')?.after(noteEl);
     }
-    el.append(inspector.el);
     trackPickedColors(inspector.el);
-    appearance = inspector;
+    return inspector;
 }
 
-/** Open the inspector of several selected cells: their appearance at once (a group for its members) */
-export function openSelectionInspector(el: HTMLElement, cells: dia.Cell[]): void {
-    closeInspector();
-    openAppearanceInspector(el, appearanceTargets(cells), `Appearance · ${cells.length} selected`);
+/** Show the inspector of several selected cells in the panel: their appearance at once (a group for its members) */
+export function openSelectionInspector(app: App, cells: dia.Cell[]): void {
+    const appearance = renderAppearanceInspector(appearanceTargets(cells), `Appearance · ${cells.length} selected`);
+    if (appearance) {
+        showInPanel(app, inspectorContent([appearance]));
+    } else {
+        closePanel(app);
+    }
 }
 
-/** Open the inspector of the cell; a click on a member of a group selects it (`onMemberSelect`). */
-export function openInspector(el: HTMLElement, cell: dia.Cell, onMemberSelect?: (member: dia.Cell) => void): void {
-    closeInspector();
-    selectMember = onMemberSelect ?? null;
+/** Show the inspector of the cell in the panel; a click on a member of a group selects it (`onMemberSelect`). */
+export function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.Cell) => void): void {
     const linkName = LINK_NAMES[cell.get('type')] ?? 'Pipe';
-    const inspector = ui.Inspector.create(el, {
+    const inspector = new ui.Inspector({
         cell,
         inputs: inspectorInputs(cell),
         // The first group named after the kind of the shape (as in the palette, see `descriptions.ts`)
@@ -579,15 +584,40 @@ export function openInspector(el: HTMLElement, cell: dia.Cell, onMemberSelect?: 
         },
         renderLabel,
         // The color fields with the swatches of the colors to pick again (see `color-field.ts`), the members of a group
-        renderFieldContent,
+        renderFieldContent: fieldContentRenderer(onMemberSelect),
         getFieldValue
     });
+    inspector.render();
     trackPickedColors(inspector.el);
+    const inspectors = [inspector];
     // A group: the appearance of its members, set now (it has none of its own) - under its fields, in its inspector
     if (isGroup(cell)) {
-        openAppearanceInspector(inspector.el, appearanceTargets([cell]), 'Members\' appearance',
+        const appearance = renderAppearanceInspector(appearanceTargets([cell]), 'Members\' appearance',
             'Sets the members as they are now: the group has no color of its own, a shape added to it later keeps its own.');
+        if (appearance) {
+            inspector.el.append(appearance.el);
+            inspectors.push(appearance);
+        }
     }
+    showInPanel(app, inspectorContent(inspectors));
+}
+
+/**
+ * The inspectors in the panel (of a group: its own, its members' appearance in it): removed together, a field being
+ * edited saved first (blurred: its `change`), the colors picked too (see `savePickedColors()`)
+ */
+function inspectorContent([inspector, ...nested]: ui.Inspector[]): PanelContent {
+    return {
+        el: inspector.el,
+        remove: () => {
+            const focused = document.activeElement;
+            if (focused instanceof HTMLElement && inspector.el.contains(focused)) focused.blur();
+            [...nested, inspector].forEach((each) => {
+                savePickedColors(each.el);
+                each.remove();
+            });
+        }
+    };
 }
 
 /**
@@ -623,15 +653,4 @@ function savePickedColors(el: Element): void {
     el.querySelectorAll<HTMLInputElement>(`input[type="color"][data-${PICKED}]`).forEach((input) => {
         input.dispatchEvent(new Event('change', { bubbles: true }));
     });
-}
-
-export function closeInspector(): void {
-    const { instance } = ui.Inspector;
-    if (instance) savePickedColors(instance.el);
-    ui.Inspector.close();
-    if (appearance) {
-        savePickedColors(appearance.el);
-        appearance.remove();
-        appearance = null;
-    }
 }

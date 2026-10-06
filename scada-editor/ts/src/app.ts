@@ -40,11 +40,14 @@ import {
 import MockPlantController from './plant/mock/MockPlantController';
 import Snaplines from './canvas/Snaplines';
 import { showInspectorEmpty } from './inspector/empty';
+import type { PanelContent } from './inspector/panel';
 
 export class App {
 
     el: HTMLElement;
     inspectorEl: HTMLElement;
+    /** What the inspector panel shows (see `inspector/panel.ts`) */
+    panel: PanelContent | null = null;
     graph: dia.Graph;
     /** The interface of the diagram to the plant (see `plant.ts`): a new one for each run, none while editing */
     plant: Plant | null = null;

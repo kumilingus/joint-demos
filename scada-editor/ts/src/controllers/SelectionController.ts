@@ -2,10 +2,10 @@ import { dia, linkTools, ui } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { GRID_SIZE, SELECTION_PADDING } from '../const';
-import { closeInspector, openInspector, openSelectionInspector } from '../inspector/inspector';
+import { openInspector, openSelectionInspector } from '../inspector/inspector';
+import { closePanel } from '../inspector/panel';
 import { selectCell } from '../actions';
-import { closeShapePreview } from '../palette/shape-preview';
-import { closeSettings, isSettingsOpen, openSettings } from '../inspector/settings';
+import { isSettingsOpen, openSettings } from '../inspector/settings';
 import Screen from '../shapes/models/diagram/Screen';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from '../canvas/tools';
 import Shape, { type ResizeOptions } from '../shapes/common/Shape';
@@ -22,15 +22,22 @@ export default class SelectionController extends Controller {
     startListening(): void {
         const { selection, graph } = this.context;
 
-        this.listenTo(selection, 'add reset', (app: App) => updateSelection(app));
+        this.listenTo(selection, 'add reset', onSelectionChange);
         this.listenTo(selection, 'remove', onSelectionRemove);
         this.listenTo(graph, 'remove', onCellRemove);
         this.listenTo(graph, 'add remove change:parent', onMembersChange);
-        // The inspector of several cells shows their values (of a stand-in, see `selection-inspector.ts`): after an undo, a redo, again
-        this.listenTo(this.context.history, 'stack:undo stack:redo', (app: App) => {
-            if (app.selection.length > 1 || isGroup(app.selection.at(0))) updateInspector(app);
-        });
+        this.listenTo(this.context.history, 'stack:undo stack:redo', onHistoryChange);
     }
+}
+
+/** Cells selected, the selection replaced */
+function onSelectionChange(app: App) {
+    updateSelection(app);
+}
+
+/** The inspector of several cells shows their values (of a stand-in, see `selection-inspector.ts`): after an undo, a redo, again */
+function onHistoryChange(app: App) {
+    if (app.selection.length > 1 || isGroup(app.selection.at(0))) updateInspector(app);
 }
 
 /** A cell selected alone is shown with its tools (and in the inspector). */
@@ -48,7 +55,7 @@ function updateSelection(app: App, keepSettings = false) {
 function onSelectionRemove(app: App, cell: dia.Cell) {
     // More removed with it (see `onCellRemove()`): the last one updates
     if (app.selection.toArray().some(selected => !app.graph.getCell(selected.id))) return;
-    updateSelection(app, cell instanceof Screen && isSettingsOpen());
+    updateSelection(app, cell instanceof Screen && isSettingsOpen(app));
 }
 
 /** The cell removed: with the others selected removed already (the members of a group, ...), all at once */
@@ -70,25 +77,22 @@ function onMembersChange(app: App, cell: dia.Cell) {
     if (selection.length === 1) updateInspector(app);
 }
 
-/** The inspector shows a cell only when it is the only one selected (the screen: the settings). */
+/**
+ * The inspector panel shows a cell only when it is the only one selected (the screen: the settings), several
+ * cells their appearance; a selection replaces what it shows (a shape of the palette, see `panel.ts`).
+ */
 function updateInspector(app: App, keepSettings = false) {
-    const { selection, inspectorEl } = app;
-    // A selection replaces the shape of the palette shown in the panel.
-    closeShapePreview();
+    const { selection } = app;
     if (keepSettings && selection.length === 0) return;
     const cell = selection.length === 1 ? selection.at(0) : null;
     if (cell instanceof Screen) {
-        closeInspector();
         openSettings(app);
-        return;
-    }
-    closeSettings(app);
-    if (cell) {
-        openInspector(inspectorEl, cell, member => selectCell(app, member));
+    } else if (cell) {
+        openInspector(app, cell, member => selectCell(app, member));
     } else if (selection.length > 1) {
-        openSelectionInspector(inspectorEl, selection.toArray());
+        openSelectionInspector(app, selection.toArray());
     } else {
-        closeInspector();
+        closePanel(app);
     }
 }
 

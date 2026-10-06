@@ -8,6 +8,7 @@ import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from '..
 import { type DiagramStyle, getStyle, LABEL_SIZES, STYLE_ATTRIBUTE } from '../diagram-style';
 import { CANVAS_COLORS, getColorFieldValue, renderColorField } from './color-field';
 import { OUTLINE_WIDTHS, type OutlineWidth } from '../shapes/common/gradients';
+import { closePanel, type PanelContent, showInPanel } from './panel';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
@@ -16,13 +17,32 @@ import { OUTLINE_WIDTHS, type OutlineWidth } from '../shapes/common/gradients';
  * moved (and selected, resized); it is out of the way otherwise.
  */
 
-interface Shown {
-    el: HTMLElement;
-    inspector: ui.Inspector;
-    listener: mvc.Listener<[]>;
-}
+/** The settings in the inspector panel (see `openSettings()`): the screen editable while they are open */
+class SettingsPanel implements PanelContent {
 
-let shown: Shown | null = null;
+    el: HTMLElement;
+    protected app: App;
+    protected inspector: ui.Inspector;
+    protected listener: mvc.Listener<[]>;
+
+    constructor(app: App, el: HTMLElement, inspector: ui.Inspector, listener: mvc.Listener<[]>) {
+        this.app = app;
+        this.el = el;
+        this.inspector = inspector;
+        this.listener = listener;
+        app.paper.el.classList.add('screen-editable');
+        app.toolbar.getWidgetByName('settings')?.el.classList.add('active');
+    }
+
+    remove(): void {
+        const { app } = this;
+        this.listener.stopListening();
+        this.inspector.remove();
+        this.el.remove();
+        app.paper.el.classList.remove('screen-editable');
+        app.toolbar.getWidgetByName('settings')?.el.classList.remove('active');
+    }
+}
 
 interface ScreenSettings {
     screen: boolean;
@@ -45,8 +65,8 @@ function getScreenSettings(graph: dia.Graph): ScreenSettings {
     return screen ? { screen: true, size: screen.size() } : { screen: false };
 }
 
-export function isSettingsOpen(): boolean {
-    return shown !== null;
+export function isSettingsOpen(app: App): boolean {
+    return app.panel instanceof SettingsPanel;
 }
 
 /**
@@ -54,7 +74,7 @@ export function isSettingsOpen(): boolean {
  * The screen is selected with them (it is edited in the settings, see `SelectionController`).
  */
 export function toggleSettings(app: App): void {
-    if (shown) {
+    if (isSettingsOpen(app)) {
         clearSelection(app);
         closeSettings(app);
         return;
@@ -73,7 +93,7 @@ export function toggleSettings(app: App): void {
  * or resizes the screen) and follows it (the screen resized with the free transform, an undo, ...).
  */
 export function openSettings(app: App): void {
-    if (shown) return;
+    if (isSettingsOpen(app)) return;
     const { graph } = app;
     const el = document.createElement('div');
     el.className = 'settings';
@@ -81,7 +101,6 @@ export function openSettings(app: App): void {
     titleEl.className = 'settings-title';
     titleEl.textContent = 'Settings';
     el.append(titleEl);
-    app.inspectorEl.append(el);
 
     // A cell (not in the graph): the inspector unsets its properties (`removeProp()`)
     const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled, inUse: app.inUseShown };
@@ -199,18 +218,9 @@ export function openSettings(app: App): void {
     });
     inspector.render();
     el.append(inspector.el);
-
-    shown = { el, inspector, listener };
-    app.paper.el.classList.add('screen-editable');
-    app.toolbar.getWidgetByName('settings')?.el.classList.add('active');
+    showInPanel(app, new SettingsPanel(app, el, inspector, listener));
 }
 
 export function closeSettings(app: App): void {
-    if (!shown) return;
-    shown.listener.stopListening();
-    shown.inspector.remove();
-    shown.el.remove();
-    shown = null;
-    app.paper.el.classList.remove('screen-editable');
-    app.toolbar.getWidgetByName('settings')?.el.classList.remove('active');
+    if (isSettingsOpen(app)) closePanel(app);
 }

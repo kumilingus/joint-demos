@@ -37,7 +37,7 @@ function onColorSchemePointerclick(app: App) {
 
 /** A new diagram: its settings open (the screen, the style) - the first thing to set */
 function onNewPointerclick(app: App) {
-    if (newDiagram(app) && !isSettingsOpen()) toggleSettings(app);
+    if (newDiagram(app) && !isSettingsOpen(app)) toggleSettings(app);
 }
 
 function onSavePointerclick(app: App) {

@@ -8,14 +8,9 @@ import { toggleSettings } from './settings';
  * examples to open.
  */
 
-/** The empty state in the inspector panel: put back whenever its content is replaced (an inspector empties it) */
+/** The empty state in the inspector panel: shown while it has nothing else (see `inspector/inspector.css`) */
 export function showInspectorEmpty(app: App): void {
-    const panel = app.inspectorEl;
-    const emptyEl = createInspectorEmpty(app);
-    panel.append(emptyEl);
-    new MutationObserver(() => {
-        if (!emptyEl.isConnected) panel.append(emptyEl);
-    }).observe(panel, { childList: true });
+    app.inspectorEl.append(createInspectorEmpty(app));
 }
 
 /** What the empty inspector panel says (shown while it has nothing else, see `inspector/inspector.css`): with a way to the settings */
