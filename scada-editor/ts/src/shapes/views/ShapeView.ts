@@ -5,7 +5,8 @@ import { glide } from './glide';
 
 /**
  * A view of a shape rendered again when the attributes of its model change (their special attributes
- * read them): its style - the color, the finish and the outline (its color, its width) of its surfaces (see `surfaceAttributes`), the data of a chart, ...
+ * read them): its style - the color, the finish and the outline (its color, its width) of its surfaces (see
+ * `surfaceAttributes`), the data of a chart, ...
  */
 export function shapeView(attributes: string[] = []): typeof dia.ElementView {
     return dia.ElementView.extend({

@@ -175,7 +175,10 @@ function stubPort(stub: Stub, group: string, length: number): StubPort {
     return { ...sideStub(id, group, side, length, along, z), stub };
 }
 
-/** The stub mirrored by the flip: horizontally - on the other of the left and the right sides, the other way along the top and the bottom */
+/**
+ * The stub mirrored by the flip: horizontally - on the other of the left and the right sides, the other way along the
+ * top and the bottom
+ */
 export function flipStub(stub: Stub, flip: string): Stub {
     let { side, at = 0.5 } = stub;
     const vertical = side === 'left' || side === 'right';

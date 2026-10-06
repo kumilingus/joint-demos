@@ -11,7 +11,8 @@ import { preventSelectionInteraction, showHover } from '../canvas/selection';
  * Selecting cells on the canvas: a click selects a cell (the group it is in, a level further in when
  * that is selected, see `selectAtLevel()`), a click with Ctrl / Cmd / Shift adds it to the selection
  * (or removes it, of the same level only), a hovered cell is framed faintly with what the click selects,
- * a drag with Shift on the blank canvas selects the cells it touches (see `selection.ts`). The right click opens the context menu of a cell or of the blank
+ * a drag with Shift on the blank canvas selects the cells it touches (see `selection.ts`). The right click opens the
+ * context menu of a cell or of the blank
  * canvas (see `context-menu.ts`). A drag with Cmd / Ctrl or Alt / Option moves a copy (the original stays, connected);
  * a click with Cmd / Ctrl is still a click (it adds to the selection).
  * Active in the edit mode only.

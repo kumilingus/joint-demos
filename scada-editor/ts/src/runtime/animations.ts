@@ -10,7 +10,8 @@ import { setGliding } from '../shapes/views/glide';
 
 /*
  * The animations of the runtime mode (the Web Animations API on the views of the cells):
- * the rotors spin, the agitators stir and the conveyors carry while the power is on, the liquid flows through the pipes and the open valves,
+ * the rotors spin, the agitators stir and the conveyors carry while the power is on, the liquid flows through the
+ * pipes and the open valves,
  * the flames flicker, the smoke rises, the liquid in a level gauge rises and falls to its new level.
  * Nothing is animated while the diagram is edited; in the run mode, what moves is the level of the diagram
  * (see `AnimationLevel`): all of it, or the alarms only.

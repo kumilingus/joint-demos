@@ -87,7 +87,8 @@ function getInputs(element: dia.Element): Inputs {
         if (element.prop(path) === undefined) return;
         // A text of its own (the Label shape): on several lines
         const type = element.get('type') === 'Label' && path[0] === 'label' ? 'textarea' : 'text';
-        util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), { type, label, group, index: index++ } as Inputs));
+        const input = { type, label, group, index: index++ } as Inputs;
+        util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input));
     });
     // The label of a shape at a side of it (see `LabelPosition`): the shapes with labels of their own have none
     if (element.prop(['label', 'position']) !== undefined) {
@@ -454,7 +455,10 @@ const lineWidthInputs = (cell: dia.Cell): Inputs => ({
     style: { lineWidth: { type: 'select-button-group', ...lineWidthField([cell.get('type')]), defaultValue: 'normal', group: 'link', index: 0 }}
 });
 
-/** What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow points, a conveyor carries the bulk material. */
+/**
+ * What the user calls the links: a pipe carries the medium, a signal line the measurement, a wire the power, an arrow
+ * points, a conveyor carries the bulk material.
+ */
 const LINK_NAMES: Record<string, string> = {
     Pipe: 'Pipe',
     SignalLine: 'Signal line',

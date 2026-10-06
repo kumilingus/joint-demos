@@ -3,7 +3,8 @@ import { styleOf } from './style';
 
 /*
  * The width of a link (a pipe, a wire): thin, normal or thick - its strokes scaled together (the line, the dashes of
- * the flow: `strokeWidthBase` on them) when it is drawn, set in the inspector. The outline of a pipe is around its line (see `Pipe`). A pipe stays within its
+ * the flow: `strokeWidthBase` on them) when it is drawn, set in the inspector. The outline of a pipe is around its
+ * line (see `Pipe`). A pipe stays within its
  * pipe stubs (see `ports.ts`).
  */
 

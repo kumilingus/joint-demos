@@ -1,7 +1,10 @@
 import { type dia, ui } from '@joint/plus';
 import type { App } from '../app';
 import {
-    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell, moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin, connectedEnds, disconnectSelection, sameTypeCells, flipSelection, flipTargets, selectAll, selectConnections, selectedTypes, selectElements, selectSameType
+    bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell,
+    moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin,
+    connectedEnds, disconnectSelection, sameTypeCells, flipSelection, flipTargets, selectAll, selectConnections,
+    selectedTypes, selectElements, selectSameType
 } from '../actions';
 import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
@@ -11,7 +14,8 @@ import type { Layer } from '../const';
 /*
  * The context menus of the canvas (`ui.ContextToolbar`, in the edit mode): of a cell - the clipboard,
  * the order in its layer and the removal of the selection (the cell selected first if it is not), the split
- * of a link at the pointer (a join inserted into a pipe there), the disconnection of the elements from their links, the selection of the element below at the pointer;
+ * of a link at the pointer (a join inserted into a pipe there), the disconnection of the elements from their links,
+ * the selection of the element below at the pointer;
  * of the blank canvas - the paste at the pointer.
  */
 

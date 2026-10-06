@@ -97,7 +97,15 @@ const DUPLICATE_BATCH = 'duplicate';
  * from now on (see `drag.ts`) and selected alone (the selection doesn't move the others with it) - the original stays,
  * with its connections. `false` if there is no copy to move.
  */
-export function dragCopy(app: App, view: dia.ElementView, evt: dia.Event, moved: dia.ElementView, pressed: dia.Point, x: number, y: number): boolean {
+export function dragCopy(
+    app: App,
+    view: dia.ElementView,
+    evt: dia.Event,
+    moved: dia.ElementView,
+    pressed: dia.Point,
+    x: number,
+    y: number
+): boolean {
     app.graph.startBatch(DUPLICATE_BATCH);
     const copy = duplicate(app, moved.model);
     const copyView = copy.findView(app.paper) as dia.ElementView | undefined;

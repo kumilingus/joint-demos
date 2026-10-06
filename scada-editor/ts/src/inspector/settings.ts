@@ -12,7 +12,8 @@ import { closePanel, type PanelContent, showInPanel } from './panel';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
- * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the snaplines, the In Use group of the palette).
+ * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the
+ * snaplines, the In Use group of the palette).
  * While they are open, the screen can be
  * moved (and selected, resized); it is out of the way otherwise.
  */
@@ -104,7 +105,12 @@ export function openSettings(app: App): void {
 
     // A cell (not in the graph): the inspector unsets its properties (`removeProp()`)
     const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled, inUse: app.inUseShown };
-    const settings = new dia.Cell({ ...getScreenSettings(graph), animations: getAnimationLevel(graph), style: getStyle(graph), ...editorSettings });
+    const settings = new dia.Cell({
+        ...getScreenSettings(graph),
+        animations: getAnimationLevel(graph),
+        style: getStyle(graph),
+        ...editorSettings
+    });
     const listener = new mvc.Listener<[]>();
     // The settings change the diagram (the settings of the diagram are its cells)...
     listener.listenTo(settings, 'change:screen', (_cell: dia.Cell, enabled: boolean, options: SettingsOptions) => {

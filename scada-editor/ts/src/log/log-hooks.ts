@@ -111,7 +111,8 @@ const PING_REACH = 16;
 
 /**
  * A ping: two rings out of the middle of the element, behind it (the first child of its view), growing and fading
- * (`.jj-ping` in `log.css`) - an update of the plant in the color of the selection (as the element of the message clicked, see `tint.ts`), a command in amber (as in the log)
+ * (`.jj-ping` in `log.css`) - an update of the plant in the color of the selection (as the element of the message
+ * clicked, see `tint.ts`), a command in amber (as in the log)
  */
 const Ping = dia.HighlighterView.extend({
     tagName: 'g',

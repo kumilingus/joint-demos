@@ -78,7 +78,9 @@ function overlapping(app: App, cell: dia.Cell): dia.Element[] {
     const connection = view?.getConnection();
     if (!connection) return [];
     // Curved too: the path as straight segments (of its polylines, one of each of its subpaths)
-    const segments = (connection.toPolylines() ?? []).flatMap(({ points }) => points.slice(1).map((point, index) => new g.Line(points[index], point)));
+    const segments = (connection.toPolylines() ?? []).flatMap(({ points }) => {
+        return points.slice(1).map((point, index) => new g.Line(points[index], point));
+    });
     const link = cell as dia.Link;
     const ends = [link.getSourceElement(), link.getTargetElement()];
     // The area of the connection as drawn (a curve reaches out of the bounding box of the link)

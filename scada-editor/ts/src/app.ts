@@ -168,7 +168,13 @@ export class App {
         createGraph().fromJSON(json);
         clearSelection(this);
         // A diagram without images (or favorites) has none (not those of the previous one), all of it animated.
-        this.graph.fromJSON({ [IMAGES_ATTRIBUTE]: {}, [FAVORITES_ATTRIBUTE]: [], [ANIMATIONS_ATTRIBUTE]: 'full', [STYLE_ATTRIBUTE]: {}, ...json });
+        this.graph.fromJSON({
+            [IMAGES_ATTRIBUTE]: {},
+            [FAVORITES_ATTRIBUTE]: [],
+            [ANIMATIONS_ATTRIBUTE]: 'full',
+            [STYLE_ATTRIBUTE]: {},
+            ...json
+        });
         applyDiagramStyle(this);
         this.history.reset();
         zoomToFit(this);

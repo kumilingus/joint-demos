@@ -48,7 +48,11 @@ const Flags = {
 };
 
 /** A new SVG element with the attributes, in the parent */
-function svg<K extends keyof SVGElementTagNameMap>(parent: Element, tag: K, attributes: Record<string, string | number>): SVGElementTagNameMap[K] {
+function svg<K extends keyof SVGElementTagNameMap>(
+    parent: Element,
+    tag: K,
+    attributes: Record<string, string | number>
+): SVGElementTagNameMap[K] {
     const el = document.createElementNS(SVG_NS, tag);
     Object.entries(attributes).forEach(([name, value]) => el.setAttribute(name, String(value)));
     parent.append(el);
@@ -134,7 +138,8 @@ export default class TableView extends dia.ElementView {
         this.body = svg(el, 'rect', { width, height, rx: 4, ry: 4 });
         this.head = names ? svg(el, 'rect', { y: top, width, height: HEAD_HEIGHT }) : null;
         // The lines under the title and the names, between the rows, between the columns
-        const ys = new Set([...(header ? [top] : []), ...(names ? [bodyTop] : []), ...Array.from({ length: Math.max(rows - 1, 0) }, (_, row) => bodyTop + (row + 1) * rowHeight)]);
+        const rowLines = Array.from({ length: Math.max(rows - 1, 0) }, (_, row) => bodyTop + (row + 1) * rowHeight);
+        const ys = new Set([...(header ? [top] : []), ...(names ? [bodyTop] : []), ...rowLines]);
         const lines = [
             ...[...ys].filter(y => y > 0 && y < height).map(y => `M 0 ${y} H ${width}`),
             ...starts.slice(1).map(x => `M ${x} ${top} V ${height}`)
@@ -205,7 +210,15 @@ export default class TableView extends dia.ElementView {
     }
 
     /** A text centered on a line at the point, cut with an ellipsis to the width */
-    protected text(parent: Element, text: string, x: number, y: number, width: number, anchor: string, attributes: Record<string, string | number> = {}): void {
+    protected text(
+        parent: Element,
+        text: string,
+        x: number,
+        y: number,
+        width: number,
+        anchor: string,
+        attributes: Record<string, string | number> = {}
+    ): void {
         const fontAttributes = { ...FONT, ...attributes };
         const fitted = this.paper
             ? util.breakText(text, { width }, fontAttributes, { svgDocument: this.paper.svg, ellipsis: true, maxLineCount: 1 })

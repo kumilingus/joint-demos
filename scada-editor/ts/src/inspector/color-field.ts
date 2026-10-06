@@ -152,7 +152,12 @@ interface ColorFieldOptions {
  * by the inspector as its own (it has the attribute and the type), and the swatches setting it.
  * `undefined` for the other fields and the colors of a list (the default content).
  */
-export function renderColorField(options: ColorFieldOptions, path: string, value: unknown, inspector: ui.Inspector): HTMLElement | undefined {
+export function renderColorField(
+    options: ColorFieldOptions,
+    path: string,
+    value: unknown,
+    inspector: ui.Inspector
+): HTMLElement | undefined {
     if (options.type !== 'color' || /\/\d+\//.test(path)) return undefined;
     const el = document.createElement('div');
     el.className = 'color-field-content';

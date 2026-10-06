@@ -222,7 +222,9 @@ const chartGenerators: Record<string, ChartGenerator> = {
     LineChart: (element, graph) => {
         const { min, max } = getScale(element);
         const values = dataOf<number[]>(element, 'values') || [];
-        const next = hasSteam(graph) ? roundTo(steamFlow(graph), max - min) : driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max);
+        const next = hasSteam(graph)
+            ? roundTo(steamFlow(graph), max - min)
+            : driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max);
         return { 'data/values': [...values, next].slice(-CHART_POINTS) };
     },
     // The steam produced in the last period (the mean flow; or near the last bar): a new bar on the right

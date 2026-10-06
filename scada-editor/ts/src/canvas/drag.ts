@@ -17,7 +17,14 @@ export function getDragDelegate(view: dia.ElementView, evt: dia.Event): dia.Elem
  * The press of the view moves the delegate from now on (grabbed where the view was pressed: at the point of the press),
  * moved to the pointer at once
  */
-export function delegateDrag(view: dia.ElementView, evt: dia.Event, delegate: dia.ElementView, pressed: dia.Point, x: number, y: number): void {
+export function delegateDrag(
+    view: dia.ElementView,
+    evt: dia.Event,
+    delegate: dia.ElementView,
+    pressed: dia.Point,
+    x: number,
+    y: number
+): void {
     const { paper } = view;
     if (!paper) return;
     paper.setDragging(evt);

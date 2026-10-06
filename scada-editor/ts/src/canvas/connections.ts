@@ -80,7 +80,9 @@ export const gridSide: anchors.GenericAnchor<'topLeft'> = function(this: dia.Lin
     const { x: left, y: top } = element.position();
     let x = lengthOf(opt.dx, width);
     let y = lengthOf(opt.dy, height);
-    const snap = (value: number, origin: number, max: number) => Math.max(0, Math.min(max, g.snapToGrid(origin + value, GRID_SIZE) - origin));
+    const snap = (value: number, origin: number, max: number) => {
+        return Math.max(0, Math.min(max, g.snapToGrid(origin + value, GRID_SIZE) - origin));
+    };
     if (x <= 0 || x >= width) {
         y = snap(y, top, height);
     } else {
