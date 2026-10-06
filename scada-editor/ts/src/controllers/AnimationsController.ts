@@ -10,13 +10,15 @@ import { Animations, getAnimationLevel } from '../runtime/animations';
  * What moves is the level of the diagram (see `AnimationLevel`).
  * Active in the runtime mode only.
  */
-export default class AnimationsController extends Controller {
-
-    animations: Animations;
+export default class AnimationsController extends Controller<[App, Animations]> {
 
     constructor(app: App) {
-        super(app);
-        this.animations = new Animations(app.paper);
+        // The animations of the paper: passed to the handlers too
+        super(app, new Animations(app.paper));
+    }
+
+    get animations(): Animations {
+        return this.callbackArguments[1];
     }
 
     startListening(): void {
@@ -29,9 +31,7 @@ export default class AnimationsController extends Controller {
 
         this.listenTo(graph, {
             // Switched on or off, opened or closed (a value glides by its view, see `glide.ts`)
-            'change:data': (_app: App, cell: dia.Cell) => {
-                if (this.animations.stateChanged(cell)) onStateChange(this.animations, cell);
-            }
+            'change:data': onDataChange
         });
     }
 
@@ -39,6 +39,10 @@ export default class AnimationsController extends Controller {
         super.stopListening();
         this.animations.stop();
     }
+}
+
+function onDataChange(_app: App, animations: Animations, cell: dia.Cell) {
+    if (animations.stateChanged(cell)) onStateChange(animations, cell);
 }
 
 /** The cell switched on or off, opened or closed: its animations, and of the pipes of an element */

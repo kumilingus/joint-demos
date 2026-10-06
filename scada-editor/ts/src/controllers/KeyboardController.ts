@@ -27,8 +27,8 @@ export default class KeyboardController extends Controller {
             'ctrl+g meta+g': onGroup,
             'ctrl+shift+g meta+shift+g': onUngroup,
             // Flipped horizontally, vertically (see `flipSelection()`)
-            'shift+h': (app: App, evt: dia.Event) => onFlip(app, evt, 'x'),
-            'shift+v': (app: App, evt: dia.Event) => onFlip(app, evt, 'y')
+            'shift+h': onFlipHorizontally,
+            'shift+v': onFlipVertically
         });
     }
 }
@@ -107,6 +107,14 @@ function onUngroup(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
     evt.preventDefault();
     ungroupSelection(app);
+}
+
+function onFlipHorizontally(app: App, evt: dia.Event) {
+    onFlip(app, evt, 'x');
+}
+
+function onFlipVertically(app: App, evt: dia.Event) {
+    onFlip(app, evt, 'y');
 }
 
 function onFlip(app: App, evt: dia.Event, axis: 'x' | 'y') {
