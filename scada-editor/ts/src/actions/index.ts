@@ -9,6 +9,6 @@ export { bringToFront, sendToBack, layerOver, layerUnder, moveToLayer, menuCell,
 export { splitLink, insertJoin, connectedEnds, disconnectSelection } from './pipes';
 export { topGroup, groupable, fitGroups, groupSelection, ungroupSelection } from './groups';
 export { saveDiagram, exportImage, confirmReplace, newDiagram, openDiagram, openExample } from './file';
-export { addImages, refreshPalette, scheduledPaletteRefresh, deleteImage } from './palette';
+export { addImages, refreshPalette, refreshFavorites, deleteImage } from './palette';
 export { zoomToFit, storedColorScheme, storeColorScheme } from './view';
 export { flipSelection, flipTargets } from './flip';

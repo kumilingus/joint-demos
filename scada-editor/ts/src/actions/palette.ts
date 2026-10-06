@@ -26,23 +26,14 @@ export function refreshPalette(app: App): void {
     const images = getImages(graph);
     loadCustomShapes(stencil, images);
     loadDerivedGroup(stencil, DerivedGroup.InUse, app.inUseShown ? keysInUse(graph) : new Set(), images);
-    loadDerivedGroup(stencil, DerivedGroup.Favorites, getFavorites(graph), images);
+    refreshFavorites(app);
 }
 
-/**
- * A refresh of the palette once for the changes of the moment (many cells added at once: a paste, a drop of a group):
- * called as often as they come, it refreshes after them
- */
-export function scheduledPaletteRefresh(app: App): () => void {
-    let scheduled = false;
-    return () => {
-        if (scheduled) return;
-        scheduled = true;
-        queueMicrotask(() => {
-            scheduled = false;
-            refreshPalette(app);
-        });
-    };
+/** The favorites group of the palette (the favorites changed) */
+export function refreshFavorites(app: App): void {
+    const { stencil, graph } = app;
+    if (!stencil) return;
+    loadDerivedGroup(stencil, DerivedGroup.Favorites, getFavorites(graph), getImages(graph));
 }
 
 /**
