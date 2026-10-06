@@ -100,6 +100,11 @@ export default class Arrow extends dia.Link {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** Whether the cell is an arrow */
+    static isArrow(cell: unknown): cell is Arrow {
+        return cell instanceof Arrow;
+    }
 }
 
 /** The end of the line moved back from the point it points at (towards the next point): by the length of the arrowhead */

@@ -142,7 +142,7 @@ export function openSettings(app: App): void {
     listener.listenTo(graph, 'change:animations', () => settings.set({ animations: getAnimationLevel(graph) }, FROM_DIAGRAM));
     // The screen back (an undo of its removal): selected, as when the settings are opened
     listener.listenTo(graph, 'add', (cell: unknown) => {
-        if (cell instanceof Screen) selectCell(app, cell);
+        if (Screen.isScreen(cell)) selectCell(app, cell);
     });
 
     // The size of the screen if there is one (no size without it)

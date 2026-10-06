@@ -1,7 +1,7 @@
 import { type dia } from '@joint/plus';
 import type { App } from '../app';
 import Screen from '../shapes/models/diagram/Screen';
-import Group, { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import { selectCell, selectCells, parentId } from './selection';
 import { DERIVED } from '../history';
 
@@ -22,7 +22,7 @@ export function topGroup(cell: dia.Cell): dia.Cell {
 
 /** The elements of the selection that can be grouped (not the screen; the siblings, see `toggleAtLevel()`) */
 export function groupable(app: App): dia.Element[] {
-    const elements = app.selection.filter(cell => cell.isElement() && !(cell instanceof Screen)) as dia.Element[];
+    const elements = app.selection.filter(cell => cell.isElement() && !Screen.isScreen(cell)) as dia.Element[];
     const level = elements.length > 0 ? parentId(elements[0]) : null;
     return elements.filter(element => parentId(element) === level);
 }
@@ -33,7 +33,7 @@ export function groupable(app: App): dia.Element[] {
  */
 export function fitGroups(cell: dia.Cell, { recorded = false } = {}): void {
     const options = (recorded ? {} : { ...DERIVED });
-    withGroups(cell).filter(isGroup).forEach(group => group.fitEmbeds(options));
+    withGroups(cell).filter(Group.isGroup).forEach(group => group.fitEmbeds(options));
 }
 
 /**
@@ -41,7 +41,7 @@ export function fitGroups(cell: dia.Cell, { recorded = false } = {}): void {
  * it is removed. `true` if it was.
  */
 export function dissolveLoneGroup(group: dia.Cell): boolean {
-    if (!isGroup(group) || group.getEmbeddedCells().filter(cell => cell.isElement()).length > 1) return false;
+    if (!Group.isGroup(group) || group.getEmbeddedCells().filter(cell => cell.isElement()).length > 1) return false;
     const parent = group.getParentCell();
     const embeds = group.getEmbeddedCells();
     group.unembed(embeds);
@@ -86,7 +86,7 @@ export function groupSelection(app: App): void {
 export function ungroupSelection(app: App): void {
     const { graph } = app;
     const [group] = app.selection.toArray();
-    if (app.selection.length !== 1 || !isGroup(group)) return;
+    if (app.selection.length !== 1 || !Group.isGroup(group)) return;
     const embeds = group.getEmbeddedCells();
     // The members go to the group it is in (if any).
     const parent = group.getParentCell();

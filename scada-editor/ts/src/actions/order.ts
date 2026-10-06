@@ -2,7 +2,7 @@ import { type dia, g, util } from '@joint/plus';
 import type { App } from '../app';
 import { Layer } from '../const';
 import Screen from '../shapes/models/diagram/Screen';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import { PIPE_HALF_WIDTH } from '../shapes/common/footprint';
 import { withGroups, topGroup } from './groups';
 
@@ -13,7 +13,9 @@ import { withGroups, topGroup } from './groups';
 
 /** The cells drawn: a group as its members (it has no z of its own to speak of, see `Group`) */
 function drawnCells(cells: dia.Cell[]): dia.Cell[] {
-    return cells.flatMap(cell => (isGroup(cell) ? cell.getEmbeddedCells({ deep: true }).filter(member => !isGroup(member)) : [cell]));
+    return cells.flatMap((cell) => {
+        return Group.isGroup(cell) ? cell.getEmbeddedCells({ deep: true }).filter(member => !Group.isGroup(member)) : [cell];
+    });
 }
 
 /**
@@ -59,7 +61,7 @@ function farthestLayer(app: App, direction: 1 | -1): Layer | null {
     const indexOf = (cell: dia.Cell) => layers.indexOf(graph.getCellLayerId(cell) as Layer);
     const cells = drawnCells(app.selection.toArray());
     const beyond = cells.flatMap(cell => overlapping(app, cell)
-        .filter(other => !isGroup(other) && !(other instanceof Screen) && !cells.includes(other))
+        .filter(other => !Group.isGroup(other) && !Screen.isScreen(other) && !cells.includes(other))
         .map(indexOf)
         .filter(index => (index - indexOf(cell)) * direction > 0));
     if (beyond.length === 0) return null;
@@ -135,8 +137,9 @@ function isDrawnBelow(graph: dia.Graph, cell: dia.Cell, other: dia.Cell): boolea
  * there (a group draws nothing); `null` if none of its members is there.
  */
 function drawnAt(graph: dia.Graph, cell: dia.Cell, point: dia.Point): dia.Cell | null {
-    if (!isGroup(cell)) return cell;
-    const members = graph.findElementsAtPoint(point).filter(element => !isGroup(element) && element.isEmbeddedIn(cell, { deep: true }));
+    if (!Group.isGroup(cell)) return cell;
+    const members = graph.findElementsAtPoint(point)
+        .filter(element => !Group.isGroup(element) && element.isEmbeddedIn(cell, { deep: true }));
     if (members.length === 0) return null;
     return members.reduce((top, member) => (isDrawnBelow(graph, top, member) ? member : top));
 }
@@ -166,7 +169,7 @@ export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.El
     const { graph } = app;
     const reference = drawnAt(graph, cell, point) ?? cell;
     const below = graph.findElementsAtPoint(point)
-        .filter(element => element !== cell && !isGroup(element) && !(element instanceof Screen))
+        .filter(element => element !== cell && !Group.isGroup(element) && !Screen.isScreen(element))
         .filter(element => !element.isEmbeddedIn(cell, { deep: true }) && isDrawnBelow(graph, element, reference))
         .map(element => ({ element, order: drawingOrder(graph, element) }));
     if (below.length === 0) return null;

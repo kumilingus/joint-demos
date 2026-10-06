@@ -50,4 +50,9 @@ export default class SignalLine extends dia.Link {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** Whether the cell is a signal line */
+    static isSignalLine(cell: unknown): cell is SignalLine {
+        return cell instanceof SignalLine;
+    }
 }

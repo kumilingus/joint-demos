@@ -1,6 +1,6 @@
 import { dia, highlighters, linkTools, type mvc, ui, V } from '@joint/plus';
 import Pipe, { pipeOutlineWidth } from '../shapes/models/piping/Pipe';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import { GRID_SIZE, SELECTION_COLOR, SELECTION_PADDING } from '../const';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from './tools';
 import Shape, { type ResizeOptions } from '../shapes/common/Shape';
@@ -47,7 +47,7 @@ export class SelectionFrame extends highlighters.stroke {
 function linkFrameWidth(link: dia.Cell): number {
     // A pipe: its outline; a wire: its line at its size (see `line-width.ts`); another link: its line
     const base = Number(link.attr('line/strokeWidthBase'));
-    const width = link instanceof Pipe ? pipeOutlineWidth(link) : base ? scaledWidth(link, base) : Number(link.attr('line/strokeWidth')) || 0;
+    const width = Pipe.isPipe(link) ? pipeOutlineWidth(link) : base ? scaledWidth(link, base) : Number(link.attr('line/strokeWidth')) || 0;
     return width + 6;
 }
 
@@ -71,11 +71,11 @@ function frameOptions(cell: dia.Cell): highlighters.StrokeHighlighterArguments {
         rx: 2,
         ry: 2,
         // A group (see `Group`): dashed, over the shapes (it is in the background layer itself)
-        ...(isGroup(cell) ? { layer: 'front' } : {}),
+        ...(Group.isGroup(cell) ? { layer: 'front' } : {}),
         attrs: {
             stroke: SELECTION_COLOR,
             strokeWidth: 1.5,
-            ...(isGroup(cell) ? { strokeDasharray: '6 4' } : {})
+            ...(Group.isGroup(cell) ? { strokeDasharray: '6 4' } : {})
         }
     };
 }
@@ -103,7 +103,7 @@ const HOVER_ID = 'hover';
 
 /** The badges of the selected groups (and none of the others) */
 export function showGroupBadges(paper: dia.Paper, selection: mvc.Collection<dia.Cell>): void {
-    paper.model.getElements().filter(isGroup).forEach((group) => {
+    paper.model.getElements().filter(Group.isGroup).forEach((group) => {
         const view = group.findView(paper);
         if (!view) return;
         const shown = Boolean(GroupBadge.get(view, GROUP_BADGE_ID));
@@ -183,7 +183,7 @@ export function showSelection(paper: dia.Paper, selection: mvc.Collection<dia.Ce
 function showSelectedTools(paper: dia.Paper, cell: dia.Cell): void {
     const cellView = cell.findView(paper);
     // A group is moved only (by its members), its frame is the one of the selection.
-    if (!cellView || isGroup(cell)) return;
+    if (!cellView || Group.isGroup(cell)) return;
     if (cell.isElement()) {
         // An element can be resized and rotated.
         new ui.FreeTransform({

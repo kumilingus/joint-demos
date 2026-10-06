@@ -4,7 +4,7 @@ import type { App } from '../app';
 import { inspectSelection } from '../inspector/inspector';
 import { isSettingsOpen } from '../inspector/settings';
 import Screen from '../shapes/models/diagram/Screen';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import { showSelection, updateGroupBadge } from '../canvas/selection';
 
 /**
@@ -33,7 +33,7 @@ function onSelectionChange(app: App) {
 /** The inspector of several cells shows their values (of a stand-in, see `selection-inspector.ts`): after an undo, a redo, again */
 function onHistoryChange(app: App) {
     const { selection } = app;
-    if (selection.length > 1 || isGroup(selection.at(0))) inspectSelection(app);
+    if (selection.length > 1 || Group.isGroup(selection.at(0))) inspectSelection(app);
 }
 
 /** The screen removed while it is edited (switched off, deleted, undone): the settings stay open. */
@@ -43,7 +43,7 @@ function onSelectionRemove(app: App, cell: dia.Cell) {
     // group, ...), the last one updates
     if (selection.toArray().some(selected => !graph.getCell(selected.id))) return;
     showSelection(paper, selection);
-    inspectSelection(app, cell instanceof Screen && isSettingsOpen(app));
+    inspectSelection(app, Screen.isScreen(cell) && isSettingsOpen(app));
 }
 
 /**
@@ -53,7 +53,7 @@ function onSelectionRemove(app: App, cell: dia.Cell) {
 function onMembersChange(app: App, cell: dia.Cell) {
     const { paper, selection } = app;
     const parents = [cell.get('parent'), cell.previous('parent')];
-    const groups = selection.filter(selected => isGroup(selected) && parents.includes(String(selected.id)));
+    const groups = selection.filter(selected => Group.isGroup(selected) && parents.includes(String(selected.id)));
     if (groups.length === 0) return;
     groups.forEach(group => updateGroupBadge(paper, group));
     if (selection.length === 1) inspectSelection(app);

@@ -5,7 +5,7 @@ import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, rememberColor, renderColorField } from './color-field';
 import type { ColorField } from '../shapes/common/Shape';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import { appearanceTargets, createAppearanceInspector, OUTLINE_WIDTH_OPTIONS } from './selection-inspector';
 import { getStyleFinish, hasFinish } from '../shapes/common/gradients';
 import { type Arrowhead, ARROWHEAD_LENGTHS, arrowheadMarker } from '../shapes/models/instruments/Arrow';
@@ -509,7 +509,7 @@ function renderMembersField(
         const tag = document.createElement('span');
         tag.className = 'scada-group-member-tag';
         tag.textContent = String(member.get('tag') ?? '');
-        const name = isGroup(member) ? 'Group' : member.prop(['label', 'text']) || descriptions[member.get('type')]?.title || member.get('type');
+        const name = Group.isGroup(member) ? 'Group' : member.prop(['label', 'text']) || descriptions[member.get('type')]?.title || member.get('type');
         button.append(tag, ` ${name}`);
         button.addEventListener('click', () => selectMember?.(member));
         item.append(button);
@@ -534,7 +534,7 @@ function getFieldValue(attribute: HTMLElement): { value: unknown } | undefined {
 
 /** The inputs of the cell: of a group, of an element, of a link */
 function inspectorInputs(cell: dia.Cell): Inputs {
-    if (isGroup(cell)) return groupInputs;
+    if (Group.isGroup(cell)) return groupInputs;
     if (cell.isElement()) return { ...getInputs(cell), ...layerInput('appearance') };
     // Merged deeply: the color and the outline of a pipe are both in its `attrs`
     return util.merge(
@@ -560,7 +560,7 @@ export function inspectSelection(app: App, keepSettings = false): void {
     const { selection } = app;
     if (keepSettings && selection.length === 0) return;
     const cell = selection.length === 1 ? selection.at(0) : null;
-    if (cell instanceof Screen) {
+    if (Screen.isScreen(cell)) {
         openSettings(app);
     } else if (cell) {
         openInspector(app, cell, member => selectCell(app, member));
@@ -617,7 +617,7 @@ function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.C
     trackPickedColors(inspector.el);
     const inspectors = [inspector];
     // A group: the appearance of its members, set now (it has none of its own) - under its fields, in its inspector
-    if (isGroup(cell)) {
+    if (Group.isGroup(cell)) {
         const appearance = renderAppearanceInspector(appearanceTargets([cell]), 'Members\' appearance',
             'Sets the members as they are now: the group has no color of its own, a shape added to it later keeps its own.');
         if (appearance) {

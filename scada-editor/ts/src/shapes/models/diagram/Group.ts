@@ -42,7 +42,10 @@ export default class Group extends Shape {
     preinitialize(): void {
         this.markup = [];
     }
+
+    /** Whether the cell is a group */
+    static isGroup(cell: dia.Cell | null | undefined): cell is Group {
+        return cell?.get('type') === 'Group';
+    }
 }
 
-/** Whether the cell is a group (see `Group`) */
-export const isGroup = (cell: dia.Cell | null | undefined): cell is Group => cell?.get('type') === 'Group';

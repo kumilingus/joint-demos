@@ -28,7 +28,7 @@ function detachedCopy(app: App, link: dia.Link): dia.Link {
 export function copySelection(app: App): void {
     const { graph, clipboard } = app;
     // A diagram has one screen.
-    const selection = app.selection.filter(cell => !(cell instanceof Screen));
+    const selection = app.selection.filter(cell => !Screen.isScreen(cell));
     if (selection.length === 0) return;
     const elements = selection.filter(cell => cell.isElement());
     if (elements.length > 0) {

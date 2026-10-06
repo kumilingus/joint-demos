@@ -12,7 +12,7 @@ const CLIP_ID = 'screen-clip';
 
 /** The screen of the diagram, if it has one */
 export function getScreen(graph: dia.Graph): Screen | undefined {
-    return graph.getElements().find((element): element is Screen => element instanceof Screen);
+    return graph.getElements().find(Screen.isScreen);
 }
 
 /** Add a screen in the middle of what the canvas shows (in one step of the history). */

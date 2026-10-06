@@ -1,7 +1,7 @@
 import { type dia } from '@joint/plus';
 import type { App } from '../app';
 import Screen from '../shapes/models/diagram/Screen';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import { withGroups, topGroup, fitGroups, dissolveLoneGroup } from './groups';
 
 /*
@@ -18,12 +18,12 @@ export function selectCells(app: App, cells: dia.Cell[]): void {
 
 /** Select all the cells: as a region selects them - not the screen, a group for its members (see `Group`) */
 export function selectAll(app: App): void {
-    selectCells(app, app.graph.getCells().filter(cell => !(cell instanceof Screen) && !cell.isEmbedded()));
+    selectCells(app, app.graph.getCells().filter(cell => !Screen.isScreen(cell) && !cell.isEmbedded()));
 }
 
 /** Select all the elements (a group for its members): as `selectAll()`, without the links */
 export function selectElements(app: App): void {
-    selectCells(app, app.graph.getCells().filter(cell => cell.isElement() && !(cell instanceof Screen) && !cell.isEmbedded()));
+    selectCells(app, app.graph.getCells().filter(cell => cell.isElement() && !Screen.isScreen(cell) && !cell.isEmbedded()));
 }
 
 /** Select all the connections (the links: pipes, wires, conveyors, signal lines, arrows), as `selectAll()` */
@@ -33,7 +33,7 @@ export function selectConnections(app: App): void {
 
 /** The cells of a type the selection has (see `selectSameType()`): not the groups, not the screen */
 function typedCells(app: App): dia.Cell[] {
-    return app.selection.toArray().filter(cell => !isGroup(cell) && !(cell instanceof Screen));
+    return app.selection.toArray().filter(cell => !Group.isGroup(cell) && !Screen.isScreen(cell));
 }
 
 /**

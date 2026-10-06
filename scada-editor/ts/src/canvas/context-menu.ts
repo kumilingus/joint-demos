@@ -8,7 +8,7 @@ import {
 } from '../actions';
 import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import type { Layer } from '../const';
 
 /*
@@ -108,7 +108,7 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
         { action: 'cut', label: 'Cut', shortcut: `${MOD}X`, run: () => cutSelection(app) },
         { action: 'copy', label: 'Copy', shortcut: `${MOD}C`, run: () => copySelection(app) },
         // Several elements (groups too) into a group, a single group back into its members (see `Group`)
-        ...(isGroup(cell) && app.selection.length === 1
+        ...(Group.isGroup(cell) && app.selection.length === 1
             ? [{ action: 'ungroup', label: 'Ungroup', shortcut: `${MOD}⇧G`, separated: true, run: () => ungroupSelection(app) }]
             : [{
                 action: 'group',

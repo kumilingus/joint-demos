@@ -83,4 +83,9 @@ export default class Screen extends dia.Element {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** Whether the cell is a screen */
+    static isScreen(cell: unknown): cell is Screen {
+        return cell instanceof Screen;
+    }
 }

@@ -71,4 +71,9 @@ export default class Label extends Shape {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** Whether the cell is a label */
+    static isLabel(cell: unknown): cell is Label {
+        return cell instanceof Label;
+    }
 }

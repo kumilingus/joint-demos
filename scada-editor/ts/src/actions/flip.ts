@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import type { App } from '../app';
 import Shape from '../shapes/common/Shape';
 import { flipOf } from '../shapes/attributes/flip';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 
 /*
  * The selected shapes flipped (their `flip`, see `flip.ts` of the attributes): each in its place, horizontally or vertically - the
@@ -13,7 +13,7 @@ export type FlipAxis = 'x' | 'y';
 
 /** The shapes of the selection (the members of its groups too) that can be flipped along the axis */
 export function flipTargets(app: App, axis: FlipAxis): Shape[] {
-    const elements = app.selection.toArray().flatMap(cell => (isGroup(cell) ? cell.getEmbeddedCells({ deep: true }) : [cell]));
+    const elements = app.selection.toArray().flatMap(cell => (Group.isGroup(cell) ? cell.getEmbeddedCells({ deep: true }) : [cell]));
     return [...new Set(elements)].filter((cell): cell is Shape => Shape.isShape(cell) && Boolean(cell.flippable?.includes(axis)));
 }
 

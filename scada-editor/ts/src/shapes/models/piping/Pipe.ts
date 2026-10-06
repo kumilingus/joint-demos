@@ -106,4 +106,9 @@ export default class Pipe extends dia.Link {
     preinitialize(): void {
         this.markup = markup;
     }
+
+    /** Whether the cell is a pipe */
+    static isPipe(cell: unknown): cell is Pipe {
+        return cell instanceof Pipe;
+    }
 }

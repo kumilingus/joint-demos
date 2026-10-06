@@ -24,14 +24,14 @@ export default class TagsController extends Controller {
 
 function onCellAdd(app: App, cell: dia.Cell, _collection: unknown, options: dia.Cell.Options) {
     const { graph } = app;
-    if (!cell.isElement() || cell instanceof Screen) return;
+    if (!cell.isElement() || Screen.isScreen(cell)) return;
     // In the same batch as the adding (undone together)
     ensureTag(graph, cell, options);
 }
 
 function onGraphReset(app: App) {
     const { graph } = app;
-    graph.getElements().filter(element => !(element instanceof Screen)).forEach(element => ensureTag(graph, element));
+    graph.getElements().filter(element => !Screen.isScreen(element)).forEach(element => ensureTag(graph, element));
 }
 
 /** A tag must not be empty or taken by another element: such a change is reverted. */

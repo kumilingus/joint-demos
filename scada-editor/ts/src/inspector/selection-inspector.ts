@@ -1,7 +1,7 @@
 import { dia, ui, util } from '@joint/plus';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, renderColorField } from './color-field';
 import { hasFinish, OUTLINE_WIDTHS, type OutlineWidth, type SurfaceFinish } from '../shapes/common/gradients';
-import { isGroup } from '../shapes/models/diagram/Group';
+import Group from '../shapes/models/diagram/Group';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { hasLineWidth, lineWidthField, type LineWidth } from '../shapes/common/line-width';
@@ -21,8 +21,8 @@ import { setStyle, styleOf, unsetStyle } from '../shapes/common/style';
  * not its pipes: their color is their medium), any other cell for itself.
  */
 export function appearanceTargets(cells: dia.Cell[]): dia.Cell[] {
-    const targets = cells.flatMap(cell => (isGroup(cell)
-        ? cell.getEmbeddedCells({ deep: true }).filter(member => member.isElement() && !isGroup(member))
+    const targets = cells.flatMap(cell => (Group.isGroup(cell)
+        ? cell.getEmbeddedCells({ deep: true }).filter(member => member.isElement() && !Group.isGroup(member))
         : [cell]));
     return [...new Set(targets)];
 }
