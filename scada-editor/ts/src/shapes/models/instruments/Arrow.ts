@@ -3,7 +3,6 @@ import { Layer, LABEL_COLOR } from '../../../const';
 import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
 import { fromStyleAttributes } from '../../attributes/from-style';
 import { styleOf } from '../../common/style';
-import LinkView from '../../views/LinkView';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -16,7 +15,7 @@ export type Arrowhead = 'none' | 'arrow' | 'open' | 'circle' | 'diamond';
 /**
  * The markers of the arrowheads, at the start of the line (pointing back, at the end turned around by
  * the library): in the color of the arrow (the library fills them with its stroke, see `sourceMarker`).
- * Outside of the line: from its end outwards (`x < 0`) - the line is shorter by their length (see `ArrowView`),
+ * Outside of the line: from its end outwards (`x < 0`) - the line is shorter by their length (see `arrow-connection`),
  * the tip where the arrow points. An open arrow is the exception: its line goes up to its tip (between its arms).
  */
 const MARKERS: Record<Exclude<Arrowhead, 'none'>, dia.SVGSimpleMarkerJSON> = {
@@ -31,6 +30,15 @@ export const ARROWHEAD_LENGTHS: Record<Arrowhead, number> = { none: 0, arrow: 12
 
 /** The marker of the arrowhead (`null`: none) */
 export const arrowheadMarker = (arrowhead: Arrowhead): dia.SVGSimpleMarkerJSON | null => (arrowhead === 'none' ? null : { ...MARKERS[arrowhead] });
+
+/** The path without the lengths at its start and its end - not past its middle (a short one stays as long as it can) */
+function trimPath(path: g.Path, start: number, end: number): g.Path {
+    const half = path.length() / 2;
+    let trimmed = path;
+    if (start > 0) trimmed = trimmed.divideAtLength(Math.min(start, half))?.[1] ?? trimmed;
+    if (end > 0) trimmed = trimmed.divideAtLength(trimmed.length() - Math.min(end, half))?.[0] ?? trimmed;
+    return trimmed;
+}
 
 /**
  * An arrow: an annotation (from a note to a part of the plant, ...), with an arrowhead at either end
@@ -55,6 +63,19 @@ export default class Arrow extends dia.Link {
                     return `url(#${this.paper!.defineMarker(definition)})`;
                 };
                 return { 'marker-start': marker('source', false), 'marker-end': marker('target', true) };
+            }
+        },
+        // `arrowConnection` in the attributes of the line (instead of `connection`): the path of the link without the
+        // lengths of its arrowheads at its ends - they are outside of it (see `MARKERS`), their tips at the ends (where
+        // it points, connected or not; the tools of the ends there too)
+        'arrow-connection': {
+            set(this: dia.LinkView) {
+                const { model } = this;
+                const length = (end: 'source' | 'target'): number => {
+                    const head: Arrowhead = model.get(`${end}Arrowhead`);
+                    return ARROWHEAD_LENGTHS[head] ?? 0;
+                };
+                return { d: trimPath(this.getConnection(), length('source'), length('target')).serialize() };
             }
         }
     };
@@ -84,7 +105,8 @@ export default class Arrow extends dia.Link {
                 line: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { stroke: 'color' },
-                    connection: true,
+                    // Ends where its arrowheads start (see `arrow-connection`)
+                    arrowConnection: true,
                     stroke: LABEL_COLOR,
                     strokeWidth: 2,
                     strokeLinejoin: 'round',
@@ -106,29 +128,3 @@ export default class Arrow extends dia.Link {
         return cell instanceof Arrow;
     }
 }
-
-/** The end of the line moved back from the point it points at (towards the next point): by the length of the arrowhead */
-function shorten(point: g.Point, next: g.Point, length: number): g.Point {
-    // Not past the middle of a short segment
-    const distance = Math.min(length, point.distance(next) / 2);
-    return distance > 0 ? point.clone().move(next, -distance) : point;
-}
-
-/**
- * The view of an arrow: its line (the path) ends where its arrowheads start - they are outside of it (see
- * `MARKERS`), their tips at the ends (where it points, connected or not; the tools of the ends there too).
- */
-export const ArrowView = LinkView.extend({
-    // Drawn again when its arrowheads change too (see `arrowheads`)
-    presentationAttributes: LinkView.addPresentationAttributes({
-        sourceArrowhead: dia.LinkView.Flags.UPDATE,
-        targetArrowhead: dia.LinkView.Flags.UPDATE
-    }),
-    findPath(this: dia.LinkView, route: g.Point[], sourcePoint: g.Point, targetPoint: g.Point) {
-        const { model } = this;
-        const length = (end: 'source' | 'target') => ARROWHEAD_LENGTHS[model.get(`${end}Arrowhead`) as Arrowhead] ?? 0;
-        const source = shorten(sourcePoint, route[0] ?? targetPoint, length('source'));
-        const target = shorten(targetPoint, route[route.length - 1] ?? sourcePoint, length('target'));
-        return dia.LinkView.prototype.findPath.call(this, route, source, target);
-    }
-});

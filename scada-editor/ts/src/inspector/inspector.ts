@@ -424,7 +424,7 @@ const ICON_TIP = 24;
 /** An arrowhead as a button: a short line ending with it (pointing outwards: left at the start, right at the end) */
 function arrowheadIcon(arrowhead: Arrowhead, end: 'source' | 'target'): string {
     const marker = arrowheadMarker(arrowhead);
-    // The line ends where the arrowhead starts (as on the canvas, see `ArrowView`)
+    // The line ends where the arrowhead starts (as on the canvas, see `arrow-connection` in `Arrow`)
     const lineEnd = ICON_TIP - ARROWHEAD_LENGTHS[arrowhead];
     const head = marker
         ? (marker.type === 'circle'
