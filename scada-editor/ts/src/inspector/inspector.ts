@@ -14,6 +14,7 @@ import { hasLineWidth, lineWidthField } from '../shapes/common/line-width';
 import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
 import { type DataKey, dataOf, hasData } from '../shapes/common/data';
 import type { App } from '../app';
+import { isTaggable } from '../plant/tags';
 import { closePanel, type PanelContent, showInPanel } from './panel';
 import { openSettings } from './settings';
 import Screen from '../shapes/models/diagram/Screen';
@@ -539,6 +540,8 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     // Merged deeply: the color and the outline of a pipe are both in its `attrs`
     return util.merge(
         {},
+        // A link with a tag (a conveyor, see `tags.ts`): its ID first
+        isTaggable(cell) ? { tag: { type: 'text', label: 'ID', group: 'link', index: 0 }} : {},
         isRouted(cell) ? linkInputs : {},
         colorInputs(cell, 'link', 2),
         outlineInputs(cell, 'link', 3),

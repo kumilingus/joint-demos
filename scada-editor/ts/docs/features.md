@@ -11,7 +11,7 @@ The editor builds process diagrams (P&ID-style or high-performance HMI screens) 
 - Move, resize, rotate, flip (the shapes that face a way); labels stay horizontal, on the side you choose.
 - Copy, cut, paste, delete, undo, redo.
 - Context menus on shapes and on the canvas.
-- Every element gets an ID (`P-101`, `HV-101`) - the tag the plant uses.
+- Every element and conveyor gets an ID (`P-101`, `HV-101`, `CV-101`) - the tag the plant uses. Pipes and wires have none.
 - An inspector for one shape or several at once, with help on its fields.
 
 ## Shapes

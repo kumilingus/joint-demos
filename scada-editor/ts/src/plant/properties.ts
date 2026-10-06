@@ -64,7 +64,7 @@ const newest: Property = {
 };
 
 const RUNNING = [
-    'Pump', 'Compressor', 'Fan', 'Blower', 'Motor', 'Turbine', 'ConveyorBelt', 'AirCooler', 'MixingTank',
+    'Pump', 'Compressor', 'Fan', 'Blower', 'Motor', 'Turbine', 'ConveyorBelt', 'Conveyor', 'AirCooler', 'MixingTank',
     'BucketElevator', 'Crusher', 'Mill', 'RotaryKiln', 'Reactor', 'Boiler', 'Generator', 'DieselGenerator', 'WindTurbine', 'Beacon'
 ];
 

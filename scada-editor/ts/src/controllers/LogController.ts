@@ -33,9 +33,9 @@ export default class LogController extends Controller<[App, Log]> {
         this.listenTo(toolbar, {
             'log:pointerclick': onLogPointerclick
         });
-        // An element clicked while the log is open: its tag in the filter of the log (or out of it)
+        // A cell clicked while the log is open: its tag in the filter of the log (or out of it)
         this.listenTo(paper, {
-            'element:pointerclick': onElementPointerclick
+            'cell:pointerclick': onCellPointerclick
         });
     }
 
@@ -58,7 +58,7 @@ function onLogPointerclick(app: App, log: Log) {
     log.toggle(el, toolbar.getWidgetByName('log')?.el);
 }
 
-function onElementPointerclick(_app: App, log: Log, elementView: dia.ElementView) {
-    const tag = getTag(elementView.model);
+function onCellPointerclick(_app: App, log: Log, cellView: dia.CellView) {
+    const tag = getTag(cellView.model);
     if (tag && log.isOpen) log.toggleFilterTag(tag);
 }

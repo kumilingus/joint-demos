@@ -91,7 +91,8 @@
       "id": "d6f7b32d-776e-4d8c-9e28-0b6f09f4c86e",
       "data": {
         "power": 1
-      }
+      },
+      "tag": "CV-101"
     },
     {
       "source": {
@@ -129,7 +130,8 @@
       "id": "2a535481-6ab8-480f-b291-593210146721",
       "data": {
         "power": 1
-      }
+      },
+      "tag": "CV-102"
     },
     {
       "source": {
@@ -168,7 +170,8 @@
       "id": "b2ddbf3b-f7b9-44d1-8309-7c36294e9a69",
       "data": {
         "power": 1
-      }
+      },
+      "tag": "CV-103"
     },
     {
       "source": {
@@ -197,7 +200,8 @@
       "id": "2dffcbf1-1deb-4864-9e2d-ee3f41cbf017",
       "data": {
         "power": 1
-      }
+      },
+      "tag": "CV-104"
     },
     {
       "source": {
@@ -595,7 +599,8 @@
       "id": "dcf11b1d-9129-4a2b-ae3a-7d9d1c1d6e8e",
       "data": {
         "power": 1
-      }
+      },
+      "tag": "CV-105"
     },
     {
       "source": {
@@ -631,7 +636,8 @@
       "id": "4b261895-32a9-40c3-a5ac-179b25941182",
       "data": {
         "power": 1
-      }
+      },
+      "tag": "CV-106"
     },
     {
       "source": {

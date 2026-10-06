@@ -31,12 +31,9 @@ const TagBadge = dia.HighlighterView.extend({
         'pointer-events': 'none'
     },
     highlight(this: dia.HighlighterView, cellView: dia.CellView) {
-        const element = cellView.model as dia.Element;
-        const tag = getTag(element) ?? '';
+        const tag = getTag(cellView.model) ?? '';
         const width = tag.length * BADGE_CHAR_WIDTH + 2 * BADGE_PADDING;
-        // The middle of the element: of its box as it is seen too (it is rotated around it)
-        const { width: w, height: h } = element.size();
-        const [x, y] = [w / 2, h / 2];
+        const { x, y } = badgeCenter(cellView);
         this.vel.empty().append([
             V('rect', { x: x - width / 2, y: y - BADGE_HEIGHT / 2, width, height: BADGE_HEIGHT, rx: BADGE_HEIGHT / 2, fill: 'var(--foreground)', stroke: 'var(--shape-canvas)', 'stroke-width': 2 }),
             V('text', {
@@ -52,11 +49,23 @@ const TagBadge = dia.HighlighterView.extend({
     },
     transform(this: dia.HighlighterView) {
         const { transformGroup, cellView } = this;
-        if (!transformGroup) return;
-        const { x, y } = cellView.model.position();
+        const { model } = cellView;
+        // A link: in the coordinates of the paper already (see `badgeCenter()`)
+        if (!transformGroup || !model.isElement()) return;
+        const { x, y } = model.position();
         transformGroup.attr('transform', `translate(${x},${y})`);
     }
 });
+
+/**
+ * Where the tag badge is: the middle of an element (in its coordinates: of its box as it is seen too, it is rotated
+ * around it), the middle of the route of a link (a conveyor, in the coordinates of the paper)
+ */
+function badgeCenter(cellView: dia.CellView): dia.Point {
+    if (cellView instanceof dia.LinkView) return cellView.getPointAtRatio(0.5);
+    const { width, height } = cellView.model.getBBox();
+    return { x: width / 2, y: height / 2 };
+}
 
 /** What the log shows on the paper of the app */
 export function logHooks(app: App): LogHooks {
@@ -77,9 +86,9 @@ export function logHooks(app: App): LogHooks {
         showTags: (shown) => {
             dia.HighlighterView.removeAll(paper, TAG_BADGE_ID);
             if (!shown) return;
-            // Of the elements the plant knows (with properties, see `plant/properties.ts`)
-            graph.getElements().filter(element => getTag(element) && propertiesOf(element).length > 0).forEach((element) => {
-                const view = element.findView(paper);
+            // Of the cells the plant knows (with properties, see `plant/properties.ts`): a conveyor too
+            graph.getCells().filter(cell => getTag(cell) && propertiesOf(cell).length > 0).forEach((cell) => {
+                const view = cell.findView(paper);
                 if (view) TagBadge.add(view, 'root', TAG_BADGE_ID, { layer: dia.Paper.Layers.FRONT, z: 1 });
             });
         },

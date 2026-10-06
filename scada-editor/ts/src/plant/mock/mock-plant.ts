@@ -97,14 +97,14 @@ function steamFlow(graph: dia.Graph): number {
     return flows.length > 0 ? flows.reduce((sum, value) => sum + value, 0) / flows.length : 0;
 }
 
-/** The next value of the tag of the element (see `properties.ts`), or `null` if it doesn't change this time */
-type Generator = (element: dia.Element, graph: dia.Graph) => TagValue | null;
+/** The next value of the tag of the cell (see `properties.ts`), or `null` if it doesn't change this time */
+type Generator = (cell: dia.Cell, graph: dia.Graph) => TagValue | null;
 
-/** The property of the element the mock changes: its only one (see `properties.ts`) */
-const propertyOf = (element: dia.Element) => propertiesOf(element)[0];
+/** The property of the cell the mock changes: its only one (see `properties.ts`) */
+const propertyOf = (cell: dia.Cell) => propertiesOf(cell)[0];
 
-/** The value of the property of the element now (as the diagram shows it: a real plant knows it itself) */
-const valueOf = (element: dia.Element) => readProperty(element, propertyOf(element));
+/** The value of the property of the cell now (as the diagram shows it: a real plant knows it itself) */
+const valueOf = (cell: dia.Cell) => readProperty(cell, propertyOf(cell));
 
 /** On / off, open / closed: switched now and then */
 const toggle = (probability: number): Generator => element => (chance(probability) ? !valueOf(element) : null);
@@ -144,6 +144,7 @@ const generators: Record<string, Generator> = {
     Motor: toggle(0.15),
     Turbine: toggle(0.15),
     ConveyorBelt: toggle(0.15),
+    Conveyor: toggle(0.15),
     AirCooler: toggle(0.15),
     MixingTank: toggle(0.15),
     BucketElevator: toggle(0.1),
@@ -382,17 +383,18 @@ interface PlantUpdate {
  * a table; `null` if nothing changes this time.
  */
 function createRandomUpdate(graph: dia.Graph, tags: TagIndex): PlantUpdate | TagUpdate | null {
-    const elements = graph.getElements().filter(element => getTag(element) && (element.get('type') in generators || element.get('type') in readoutGenerators));
-    if (elements.length === 0) return null;
-    const element = elements[Math.floor(Math.random() * elements.length)];
-    const tag = getTag(element)!;
-    const type = element.get('type');
-    if (type in readoutGenerators) {
-        const changes = readoutGenerators[type](element, graph, tags);
+    // The equipment (a conveyor: a link too) and the tables
+    const cells = graph.getCells().filter(cell => getTag(cell) && (cell.get('type') in generators || cell.get('type') in readoutGenerators));
+    if (cells.length === 0) return null;
+    const cell = cells[Math.floor(Math.random() * cells.length)];
+    const tag = getTag(cell)!;
+    const type = cell.get('type');
+    if (cell.isElement() && type in readoutGenerators) {
+        const changes = readoutGenerators[type](cell, graph, tags);
         return changes ? { tag, changes } : null;
     }
-    const value = generators[type](element, graph);
-    return value === null ? null : { tag, property: propertyOf(element), value };
+    const value = generators[type]?.(cell, graph) ?? null;
+    return value === null ? null : { tag, property: propertyOf(cell), value };
 }
 
 /** Apply an update to the element with its tag (a runtime change: not recorded in the history). */
