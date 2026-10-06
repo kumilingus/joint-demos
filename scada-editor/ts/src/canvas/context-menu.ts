@@ -48,7 +48,8 @@ function openMenu(app: App, evt: dia.Event, items: MenuItem[]): void {
             action: item.action,
             content: `<span>${item.label}</span>${item.shortcut ? `<kbd>${item.shortcut}</kbd>` : ''}${item.hint ? `<span class="scada-hint">${item.hint}</span>` : ''}`,
             attrs: {
-                class: item.separated ? 'tool separated' : 'tool',
+                // A line above it (see `canvas.css`): the toolbar's own classes untouched
+                ...(item.separated ? { 'data-separated': '' } : {}),
                 ...(item.disabled ? { disabled: 'disabled' } : {})
             }
         }))

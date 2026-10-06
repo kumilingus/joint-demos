@@ -106,12 +106,12 @@
 }
 
 /* A line above the item: the items in groups */
-.joint-context-toolbar .tool.separated {
+.joint-context-toolbar [data-separated] {
     position: relative;
     margin-top: 9px;
 }
 
-.joint-context-toolbar .tool.separated::before {
+.joint-context-toolbar [data-separated]::before {
     content: '';
     position: absolute;
     top: -5px;
