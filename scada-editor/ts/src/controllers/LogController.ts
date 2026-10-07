@@ -1,29 +1,30 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import Log from '../log/Log';
+import LogView from '../log/LogView';
 import { logHooks } from '../log/log-hooks';
 import type { PlantMessage } from '../plant/plant';
 import { getTag } from '../plant/tags';
 
 /**
- * The log of the messages between the diagram and the plant (see `log/Log.ts`): opened by the Log button.
+ * The log of the messages between the diagram and the plant (see `log/LogView.ts`): opened by the Log button, closed by it or
+ * by Escape.
  * Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open, the element
  * of the message clicked is tinted blue; the tags of the elements are shown, the elements of the messages pinged if asked.
  */
-export default class LogController extends Controller<[App, Log]> {
+export default class LogController extends Controller<[App, LogView]> {
 
     constructor(app: App) {
         // The log of the app (its options kept from a run to the next one): passed to the handlers too
-        super(app, new Log(logHooks(app)));
+        super(app, new LogView(logHooks(app)));
     }
 
-    get log(): Log {
+    get log(): LogView {
         return this.callbackArguments[1];
     }
 
     startListening(): void {
-        const { plant, toolbar, paper } = this.app;
+        const { plant, toolbar, paper, keyboard } = this.app;
         this.log.clear();
         // A listener of the plant (as any system): the updates and the commands
         this.listenTo(plant, {
@@ -32,6 +33,9 @@ export default class LogController extends Controller<[App, Log]> {
         });
         this.listenTo(toolbar, {
             'log:pointerclick': onLogPointerclick
+        });
+        this.listenTo(keyboard, {
+            'escape': onEscape
         });
         // A cell clicked while the log is open: its tag in the filter of the log (or out of it)
         this.listenTo(paper, {
@@ -45,20 +49,24 @@ export default class LogController extends Controller<[App, Log]> {
     }
 }
 
-function onPlantUpdate(_app: App, log: Log, message: PlantMessage) {
+function onPlantUpdate(_app: App, log: LogView, message: PlantMessage) {
     log.add('update', message);
 }
 
-function onPlantCommand(_app: App, log: Log, message: PlantMessage) {
+function onPlantCommand(_app: App, log: LogView, message: PlantMessage) {
     log.add('command', message);
 }
 
-function onLogPointerclick(app: App, log: Log) {
+function onLogPointerclick(app: App, log: LogView) {
     const { el, toolbar } = app;
     log.toggle(el, toolbar.getWidgetByName('log')?.el);
 }
 
-function onCellPointerclick(_app: App, log: Log, cellView: dia.CellView) {
+function onEscape(_app: App, log: LogView) {
+    log.close();
+}
+
+function onCellPointerclick(_app: App, log: LogView, cellView: dia.CellView) {
     const tag = getTag(cellView.model);
     if (tag && log.isOpen) log.toggleFilterTag(tag);
 }

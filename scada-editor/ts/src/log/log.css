@@ -1,4 +1,4 @@
-/* The log of the messages between the diagram and the plant (see `Log.ts`): a dialog that can be moved, the pings of the elements */
+/* The log of the messages between the diagram and the plant (see `LogView.ts`; the filter, the rows: `list/list.css`) - the pings of the elements */
 
 .scada-log-intro {
     margin: 0;
@@ -16,41 +16,21 @@
     border-bottom: 1px solid var(--border);
 }
 
-/* The filter of the messages: the words, the direction (a segmented control, as the switch of a valve) */
-.scada-log-filter {
+.scada-log-option {
     display: flex;
+    align-items: center;
     gap: 8px;
-    padding: 8px 14px;
-    border-bottom: 1px solid var(--border);
-}
-
-.scada-log-filter input {
-    flex: 1;
-    min-width: 0;
-    height: 28px;
-    padding: 0 8px;
-    border: 1px solid var(--input);
-    border-radius: var(--radius-md);
-    background: var(--background);
     color: var(--foreground);
-    font: 12px var(--font);
-}
-
-/* Its clear button: as the one of the search of the palette */
-.scada-log-filter input::-webkit-search-cancel-button {
-    width: 12px;
-    height: 12px;
-    background-color: var(--muted-foreground);
-    mask: var(--icon-close) center / contain no-repeat;
-    appearance: none;
+    font-size: 12px;
     cursor: pointer;
 }
 
-.scada-log-filter input:focus {
-    outline: 2px solid var(--ring, var(--selection));
-    outline-offset: -1px;
+.scada-log-option input {
+    margin: 0;
+    accent-color: var(--primary);
 }
 
+/* The direction of the messages, next to the filter: a segmented control (as the switch of a valve) */
 .scada-log-directions {
     display: flex;
     gap: 2px;
@@ -79,39 +59,9 @@
     color: var(--foreground);
 }
 
-.scada-log-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--foreground);
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.scada-log-option input {
-    margin: 0;
-    accent-color: var(--primary);
-}
-
-.scada-log-list .scada-log-message {
-    cursor: pointer;
-}
-
-.scada-log-list .scada-log-message:hover {
-    background: color-mix(in srgb, var(--selection) 10%, transparent);
-}
-
-/* The messages of the tag clicked: its element highlighted on the diagram */
-.scada-log-list .scada-log-message.selected {
-    background: color-mix(in srgb, var(--selection) 22%, transparent);
-}
-
-.scada-log-list {
-    height: 280px;
-    overflow-y: auto;
-    padding: 4px 0;
+/* The messages: in a monospace font; a row marked - the messages of the tag clicked (its element highlighted) */
+.scada-log .scada-list-rows {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 12px;
 }
 
 .scada-log-message {
@@ -119,11 +69,6 @@
     grid-template-columns: auto 74px 64px 48px 1fr;
     gap: 10px;
     padding: 3px 14px;
-    white-space: nowrap;
-}
-
-.scada-log-message:nth-child(odd) {
-    background: var(--muted);
 }
 
 .scada-log-time {

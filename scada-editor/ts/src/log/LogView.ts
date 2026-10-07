@@ -1,0 +1,250 @@
+import type { dia, mvc } from '@joint/plus';
+import FilterListView from '../list/FilterListView';
+import type { PlantEvent, PlantMessage } from '../plant/plant';
+
+/*
+ * The log of the messages between the diagram and the plant (in the runtime mode, see `plant.ts`): the updates the
+ * plant sends and the commands of the operator - the tag of an element, a property, its value. A listener of the plant
+ * as any other system. A list filtered by the words typed and the direction (see `FilterListView`), shown in a dialog
+ * that can be moved (the Log button of the toolbar).
+ */
+
+// The messages kept (the newest ones)
+const MAX_MESSAGES = 200;
+
+/** A message logged: of an event of the plant (see `plant.ts`) */
+interface LogEntry extends PlantMessage {
+    kind: PlantEvent;
+}
+
+// From the plant (down to the diagram), to it (up)
+const KIND_ARROWS: Record<PlantEvent, string> = {
+    update: '↓',
+    command: '↑'
+};
+
+/** What the log shows on the diagram (see `LogController`) */
+export interface LogHooks {
+    /** The element of the tag highlighted (a message of it clicked), or none */
+    highlight: (tag: string | null) => void;
+    /** The tags of the elements shown on the diagram, or not */
+    showTags: (shown: boolean) => void;
+    /** The elements pinged when a message of them comes, or not */
+    pingChanges: (pinged: boolean) => void;
+}
+
+/** Which messages the log shows: of all the directions or one (and the words of the filter) */
+type DirectionFilter = 'all' | PlantEvent;
+
+const DIRECTION_FILTERS: Array<[DirectionFilter, string]> = [['all', 'All'], ['update', 'Updates'], ['command', 'Commands']];
+
+/** What the log shows on the diagram: the tags, the pings of the changes */
+interface LogDisplay {
+    tags: boolean;
+    pings: boolean;
+}
+
+/**
+ * The log of an app (see `LogController`): its messages, kept while it is closed, shown while it is open. Its rows by the
+ * tags of the messages: a message clicked marks all of its tag (and highlights its element).
+ */
+export default class LogView extends FilterListView<LogEntry> {
+
+    protected title = 'Plant Messages';
+    protected width = 480;
+    protected placeholder = 'Filter: a tag or a property - or click an element';
+    protected emptyText = 'No messages';
+
+    protected hooks: LogHooks;
+    protected messages: LogEntry[] = [];
+    /** The direction of the messages shown (kept for the next opening) */
+    protected direction: DirectionFilter = 'all';
+    /** What it shows on the diagram (kept for the next opening) */
+    protected display: LogDisplay = { tags: false, pings: false };
+
+    constructor(hooks: LogHooks) {
+        super();
+        this.hooks = hooks;
+    }
+
+    preinitialize(): void {
+        super.preinitialize();
+        this.attributes = { class: 'scada-list scada-log' };
+    }
+
+    events(): mvc.EventsHash {
+        return {
+            ...super.events(),
+            'click .scada-log-directions button': 'onDirectionClickEvent',
+            'change .scada-log-option input': 'onOptionChangeEvent'
+        };
+    }
+
+    /** Log a message of an event of the plant: shown at the top of the log (if it is open) */
+    add(kind: PlantEvent, plantMessage: PlantMessage): void {
+        const message: LogEntry = { kind, ...plantMessage };
+        const { messages } = this;
+        messages.unshift(message);
+        messages.length = Math.min(messages.length, MAX_MESSAGES);
+        if (!this.isOpen) return;
+        this.insertRow(message);
+        const rows = this.rowsEl;
+        while (rows && rows.childElementCount > MAX_MESSAGES) rows.lastElementChild!.remove();
+    }
+
+    /** Forget the messages (a new run of the plant) */
+    clear(): void {
+        this.messages.length = 0;
+        this.renderList();
+        this.selectTag(null);
+    }
+
+    /** The tag in the text filter, or out of it if it is there (an element clicked on the diagram while the log is open) */
+    toggleFilterTag(tag: string): void {
+        if (!this.isOpen) return;
+        const words = this.filter.split(/\s+/).filter(Boolean);
+        const index = words.findIndex(word => word.toLowerCase() === tag.toLowerCase());
+        if (index === -1) {
+            words.push(tag);
+        } else {
+            words.splice(index, 1);
+        }
+        this.filter = words.join(' ');
+        if (this.input) this.input.value = this.filter;
+        this.renderList();
+    }
+
+    /** The newest first */
+    protected entries(): LogEntry[] {
+        return this.messages;
+    }
+
+    protected keyOf({ tag }: LogEntry): string {
+        return tag;
+    }
+
+    protected textOf({ tag, property }: LogEntry): string {
+        return `${tag} ${property}`;
+    }
+
+    /** Of the direction, with any of the words (the tags of several elements clicked) */
+    protected matches(message: LogEntry, words: string[]): boolean {
+        const { direction } = this;
+        if (direction !== 'all' && message.kind !== direction) return false;
+        const text = this.normalize(this.textOf(message));
+        return words.length === 0 || words.some(word => text.includes(word));
+    }
+
+    /** The intro, the options of what the log shows on the diagram */
+    protected renderHeader(): HTMLElement[] {
+        const intro = document.createElement('p');
+        intro.className = 'scada-log-intro';
+        intro.textContent = 'Live traffic between this diagram and the plant. Readings come in addressed by element tags, and whatever you do to a valve or a pump goes out as a command. The plant is simulated here - in a real deployment, the same messages would travel over OPC UA, MQTT, WebSockets or a REST API.';
+        // On the diagram: the tags (where the messages go), the elements pinged as their messages come
+        const settings = document.createElement('div');
+        settings.className = 'scada-log-options';
+        settings.append(this.renderOption('Show the tags', 'tags'), this.renderOption('Ping the changes', 'pings'));
+        return [intro, settings];
+    }
+
+    /** The filter with the direction (a segmented control, as the switch of a valve) */
+    protected renderFilter(): HTMLElement {
+        const row = super.renderFilter();
+        const directions = document.createElement('div');
+        directions.className = 'scada-log-directions';
+        directions.append(...DIRECTION_FILTERS.map(([direction, text]) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = text;
+            button.dataset.direction = direction;
+            button.setAttribute('aria-pressed', String(this.direction === direction));
+            return button;
+        }));
+        row.append(directions);
+        return row;
+    }
+
+    protected renderRow({ kind, tag, property, value, time }: LogEntry): HTMLElement {
+        const row = document.createElement('div');
+        row.className = 'scada-log-message';
+        row.dataset.kind = kind;
+        const cells: Array<[string, string]> = [
+            ['time', time.toLocaleTimeString([], { hour12: false }) + `.${String(time.getMilliseconds()).padStart(3, '0')}`],
+            ['kind', `${KIND_ARROWS[kind]} ${kind}`],
+            ['tag', tag],
+            ['property', property],
+            ['value', String(value)]
+        ];
+        row.append(...cells.map(([name, text]) => {
+            const cell = document.createElement('span');
+            cell.className = `scada-log-${name}`;
+            cell.textContent = text;
+            return cell;
+        }));
+        return row;
+    }
+
+    /** The messages of its tag marked, its element highlighted - clicked again: none */
+    protected onRowClick(tag: string): void {
+        this.selectTag(this.marked.has(tag) ? null : tag);
+    }
+
+    /** What it shows on the diagram: as asked */
+    protected onOpen(): void {
+        const { hooks, display } = this;
+        hooks.showTags(display.tags);
+        hooks.pingChanges(display.pings);
+    }
+
+    /** Nothing shown on the diagram */
+    protected onClose(): void {
+        const { hooks } = this;
+        this.selectTag(null);
+        hooks.showTags(false);
+        hooks.pingChanges(false);
+    }
+
+    /** The messages of the tag marked (the new ones too), its element highlighted - or none */
+    protected selectTag(tag: string | null): void {
+        this.marked = new Set(tag ? [tag] : []);
+        this.renderMarks();
+        this.hooks.highlight(tag);
+    }
+
+    /** A checkbox of what the log shows on the diagram (kept in `display`) */
+    protected renderOption(text: string, name: keyof LogDisplay): HTMLElement {
+        const label = document.createElement('label');
+        label.className = 'scada-log-option';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.dataset.option = name;
+        checkbox.checked = this.display[name];
+        label.append(checkbox, text);
+        return label;
+    }
+
+    /** A direction picked: the messages of it shown */
+    protected onDirectionClickEvent(evt: dia.Event): void {
+        const direction = DIRECTION_FILTERS.find(([value]) => value === evt.currentTarget?.dataset.direction)?.[0];
+        if (!direction) return;
+        this.direction = direction;
+        this.el.querySelectorAll<HTMLElement>('.scada-log-directions button').forEach((button) => {
+            button.setAttribute('aria-pressed', String(button.dataset.direction === direction));
+        });
+        this.renderList();
+    }
+
+    /** An option checked or unchecked: shown on the diagram, or not */
+    protected onOptionChangeEvent(evt: dia.Event): void {
+        const { target } = evt;
+        if (!(target instanceof HTMLInputElement)) return;
+        const { hooks, display } = this;
+        if (target.dataset.option === 'tags') {
+            display.tags = target.checked;
+            hooks.showTags(target.checked);
+        } else if (target.dataset.option === 'pings') {
+            display.pings = target.checked;
+            hooks.pingChanges(target.checked);
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import { dia, V } from '@joint/plus';
 import type { App } from '../app';
-import type { LogHooks } from './Log';
+import type { LogHooks } from './LogView';
 import type { PlantEvent, PlantMessage } from '../plant/plant';
 import { getTag } from '../plant/tags';
 import { propertiesOf } from '../plant/properties';
