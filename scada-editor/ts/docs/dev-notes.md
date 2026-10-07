@@ -29,7 +29,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `LockController` | edit | graph: `locked` - the pointer goes through a locked element (a class), not in the minimap |
 | `RuntimeController` | runtime | paper: a cell drag pans |
 | `MockPlantController` | runtime | the mock plant (`plant/mock/`) |
-| `LogController` | runtime | Log button; plant messages; element clicks filter the log |
+| `LogController` | runtime | Log button, `Escape`; plant messages; element clicks filter the log |
 | `AnimationsController` | runtime | graph: `data` - the animations again when a cell is switched, opened, closed |
 | `ElectricalController` | runtime | graph: `energized` |
 
@@ -178,7 +178,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 
 ## Log, tint, theme, style, animations
 
-- **Log** (`log/LogView.ts`, owned by `LogController`) - listens to the plant's `update` and `command`, keeps the last 200 messages of a run, in a `ui.Dialog`. Tags are badge highlighters, pings are ring highlighters behind the element, the element of the clicked message is tinted (`canvas/tint.ts`: a filter - gray multiplied by a theme color - on the children of the view but the ping).
+- **Log** (`log/LogView.ts`, owned by `LogController`) - listens to the plant's `update` and `command`, keeps the last 200 messages of a run; a `FilterListView` (as Find) in a `ui.Dialog`. Tags are badge highlighters, pings are ring highlighters behind the element, the element of the clicked message is tinted (`canvas/tint.ts`: a filter - gray multiplied by a theme color - on the children of the view but the ping).
 - **Theme** (`theme/theme-minimal.css`, `setTheme('minimal')`) - styles the JointJS+ components, every rule scoped to `.joint-theme-minimal`, using only `theme/tokens.css` (shadcn/ui variable names). Cascade layers: `joint` → `theme` → the app (unlayered), so the app always wins. Reuse: `theme/README.md`.
 - **Shape colors** - CSS variables (`--shape-*` in `shapes/shapes.css`); the dark scheme redefines them.
 - **Diagram style** (`diagram-style.ts`, saved as `graph.get('style')`) - `finish`, `color`, `outline`, `outlineWidth` (the uniform outline of outlined surfaces, `gradients.ts`; the pipe border, `pipeOutline` in `Pipe.ts`), `accent` for shapes without their own; `labelSize` (`small` 12, `medium` 14, `large` 16, `x-large` 18 px), `labelColor` (theme colors only), `canvas` (`--canvas-*`: a light and a dark tone; sets `--shape-canvas`, the grid is colored from it in `canvas.css`), `canvasGradient` (drawn on the `PaperScroller` element behind a transparent paper: it stays put while scrolling and zooming; added to the exported image). Applied as CSS variables, so the palette and the preview follow.

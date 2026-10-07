@@ -129,6 +129,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
   - *Ping the changes* - an element pings when its message arrives (blue update, amber command).
   - Filter by words, by All / Updates / Commands, or by clicking elements on the diagram.
   - Click a message to highlight its element (and mark its messages); click it again to clear.
+  - `Escape` closes it.
 
 ## Files
 
