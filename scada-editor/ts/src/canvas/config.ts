@@ -10,6 +10,7 @@ import Arrow from '../shapes/models/instruments/Arrow';
 import Screen from '../shapes/models/diagram/Screen';
 import { isTerminal } from '../shapes/common/ports';
 import ShapeView from '../shapes/views/ShapeView';
+import { isLocked } from './lock';
 
 /*
  * The options of the canvas: the paper (its interactions in each mode, its colors, its grid), the scroller, the
@@ -66,12 +67,14 @@ export const paperOptions: dia.Paper.Options = {
             }
         }
     },
-    // The end of a link (moved with its arrowhead) connects to an element (not to another link nor the screen; a label
-    // to an arrow only): a pipe to one of its pipe stubs if it has any (to its side otherwise), a wire to an electrical
-    // terminal, a signal line, an arrow and a conveyor to its body.
+    // The end of a link (moved with its arrowhead) connects to an element (not to another link, the screen nor a locked
+    // element; a label to an arrow only): a pipe to one of its pipe stubs if it has any (to its side otherwise), a wire
+    // to an electrical terminal, a signal line, an arrow and a conveyor to its body.
     validateConnection: (sourceView, sourceMagnet, targetView, targetMagnet, end, linkView) => {
         const [view, magnet] = end === 'source' ? [sourceView, sourceMagnet] : [targetView, targetMagnet];
         if (!view || !view.model.isElement() || Screen.isScreen(view.model)) return false;
+        // Nor to a locked one: the background (see `lock.ts`)
+        if (isLocked(view.model)) return false;
         // A label: an arrow only (from a note to a part of the plant)
         if (Label.isLabel(view.model)) return Arrow.isArrow(linkView.model);
         // Nor to a shape of the background
