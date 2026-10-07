@@ -404,3 +404,34 @@
     border-color: #dc2626;
     box-shadow: 0 0 0 3px rgb(220 38 38 / 0.12);
 }
+
+/* The ID field (see `tag-field.ts`): its input and, while it is empty, the button generating an ID */
+.joint-inspector .scada-tag-field-row {
+    display: flex;
+    gap: 8px;
+}
+
+.joint-inspector .scada-tag-field-row input {
+    flex: 1;
+    min-width: 0;
+}
+
+.joint-inspector .scada-tag-generate {
+    flex-shrink: 0;
+    align-self: stretch;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--background);
+    color: var(--foreground);
+    font: 500 12px var(--font);
+    cursor: pointer;
+}
+
+.joint-inspector .scada-tag-generate:hover {
+    background: var(--muted);
+}
+
+.joint-inspector .scada-tag-generate[hidden] {
+    display: none;
+}

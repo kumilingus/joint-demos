@@ -69,8 +69,10 @@ export interface ShapeFeatures {
     stubLength: number | null;
     /** How far the drawing reaches out of the bounding box (on top of the label below it, see `footprint.ts`). */
     overflow: Overflow;
-    /** The start of the generated tags (the IDs of the elements, see `tags.ts`): `P` for `P-101`. */
-    tagPrefix: string;
+    /** The start of the generated tags (the IDs of the elements, see `tags.ts`): `P` for `P-101`; none - no IDs. */
+    tagPrefix: string | null;
+    /** Whether a new one gets an ID (a part of the plant, see `tags.ts`). */
+    autoTag: boolean;
     /** The color the user sets, if any. */
     colorField: ColorField | null;
     /** The color of the outline the user sets, if any. */
@@ -135,9 +137,20 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
         return {};
     }
 
-    /** The initials of the type by default: `CV` for a `ControlValve`. */
-    get tagPrefix(): string {
+    /**
+     * The prefix of the series of its IDs (see `plant/tags.ts`): the initials of the type by default - `CV` for a
+     * `ControlValve`; none - never a part of the plant (a text, a zone)
+     */
+    get tagPrefix(): string | null {
         return String(this.get('type')).replace(/[^A-Z]/g, '');
+    }
+
+    /**
+     * Whether a new one gets an ID (dropped from the palette): a part of the plant - the equipment, the instruments, the
+     * charts of their values; not a picture, a background shape (an ID only when asked: the ID field of the inspector)
+     */
+    get autoTag(): boolean {
+        return true;
     }
 
     /** The color of the surfaces of the element, if it has any (see `surfaceAttributes`): the metal of the theme by default */

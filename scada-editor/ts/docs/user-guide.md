@@ -56,7 +56,8 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 
 ![The inspector of a valve](images/inspector.png)
 
-- **ID** - the tag the plant uses (*HV-101*), and the texts.
+- **ID** - the tag the plant uses (*HV-101*): optional - the equipment gets one when it is dropped, a picture or a background shape only when you type one or press *Generate* (the next free one of its kind); a copy gets a new one. A Label shape and a zone have none.
+- **Name**, **Unit**, ... - the texts.
 - **Appearance** - Finish (Auto, Shaded, Flat), Color, Outline, Outline width, Accent (the slashed swatch is Auto), Label position, Layer. *Outline width* shows while the shape is outlined: an outline color of its own, or flat.
 - **Values**, **Thresholds**, **Slices**, **Columns** - the data of the shape.
 - **Controls** - *Use controls* and *Control position*.
@@ -91,7 +92,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - *Finish* - Shaded (gradients) or Flat.
 - *Color*, *Outline*, *Accent* - the body, edge and detail colors.
 - *Outline width* - Thin, Normal or Thick: the outlines of outlined shapes and the borders of the pipes.
-- *Labels* - what the shape labels show: the *Name*, the *ID* (as a P&ID), or *ID + name* (the ID in bold above the name, as an operator display). A shape without a name shows its ID alone; the Label shape and zones keep their text.
+- *Labels* - what the shape labels show: the *Name*, the *ID* (as a P&ID), or *ID + name* (the ID in bold above the name, as an operator display). A shape without a name shows its ID alone, one without an ID its name; the Label shape and zones keep their text.
 - *Label size* - Small to X-Large, for shape labels and zones (not for the Label shape).
 - *Label color* - the text color of those labels.
 - *Canvas* - the background color (White / Black, Blue, Green, Violet, Gray as in ISA-101, Sand; each with a light and a dark tone); the grid follows.
@@ -107,7 +108,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 
 ## Find
 
-**Find** in the toolbar, or `Cmd` + `F` - in both modes. The shapes with an ID: their ID, name and kind (*P-101 · Feed Pump 1 · Pump*).
+**Find** in the toolbar, or `Cmd` + `F` - in both modes. The shapes with an ID or a name: their ID, name and kind (*P-101 · Feed Pump 1 · Pump*).
 
 - **Filter** - words of the ID, the name or the kind; every word has to match, dashes don't count (*p101* finds *P-101*).
 - **Click** a row - the shape is selected (edit mode) or highlighted (run mode), scrolled into view.

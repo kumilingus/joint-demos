@@ -4,6 +4,7 @@ import Screen from '../shapes/models/diagram/Screen';
 import Group from '../shapes/models/diagram/Group';
 import { selectCell, selectCells, parentId } from './selection';
 import { DERIVED } from '../history';
+import { tagNewCell } from '../plant/tags';
 
 /*
  * The groups of elements (see `Group`): grouping, ungrouping, fitting, the group a cell is in.
@@ -70,6 +71,8 @@ export function groupSelection(app: App): void {
     graph.startBatch('group');
     if (parent) parent.unembed([...elements, ...links]);
     const group = new Group();
+    // Its ID shown in its badge
+    tagNewCell(app.tags, group);
     graph.addCell(group);
     group.embed([...elements, ...links]);
     group.fitEmbeds();

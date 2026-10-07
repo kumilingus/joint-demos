@@ -8,6 +8,7 @@ import {
 } from '../actions';
 import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
+import { getTag } from '../plant/tags';
 import Group from '../shapes/models/diagram/Group';
 import type { Layer } from '../const';
 
@@ -126,11 +127,11 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
         ...(cell.get('type') === 'Pipe'
             ? [{ action: 'join', label: 'Insert Join', run: () => insertJoin(app, cell as dia.Link, { x, y }) }]
             : []),
-        // The element under this one at the pointer (hard to click otherwise): named by its ID
+        // The element under this one at the pointer (hard to click otherwise): named (see `hintOf()`)
         {
             action: 'below',
             label: 'Select Below',
-            hint: below ? String(below.get('tag') ?? '') : undefined,
+            hint: below ? hintOf(below) : undefined,
             disabled: !below,
             separated: true,
             run: () => below && selectCell(app, below)
@@ -166,12 +167,12 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
 /** The menu of the blank canvas: the copied cells pasted where it was opened */
 export function openBlankMenu(app: App, evt: dia.Event, x: number, y: number): void {
     const cells = app.graph.getCells();
-    // A locked element under the pointer (the pointer goes through it, see `lock.ts`): by its ID
+    // A locked element under the pointer (the pointer goes through it, see `lock.ts`): named (see `hintOf()`)
     const locked = lockedAt(app, { x, y });
     const lockedAll = lockedElements(app);
     openMenu(app, evt, [
         ...(locked
-            ? [{ action: 'unlock', label: 'Unlock', hint: String(locked.get('tag') ?? ''), run: () => unlockElements(app, [locked]) }]
+            ? [{ action: 'unlock', label: 'Unlock', hint: hintOf(locked), run: () => unlockElements(app, [locked]) }]
             : []),
         {
             action: 'paste',
@@ -227,4 +228,10 @@ function sameTypeHint(app: App): string | undefined {
 
 export function closeMenu(): void {
     ui.ContextToolbar.close();
+}
+
+/** A cell named in a menu (the hint of an item): by its ID, else its name, else its kind (`Image`) */
+function hintOf(cell: dia.Cell): string {
+    const type: string = cell.get('type');
+    return getTag(cell) ?? (cell.prop(['label', 'text']) || descriptions[type]?.title || type);
 }

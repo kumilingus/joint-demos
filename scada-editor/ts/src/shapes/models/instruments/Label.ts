@@ -25,8 +25,9 @@ export default class Label extends Shape {
         return { path: ['style', 'color'], part: ['label', 'fill'] };
     }
 
-    get tagPrefix(): string {
-        return 'TXT';
+    // A text: never a part of the plant - no ID (see `plant/tags.ts`)
+    get tagPrefix(): string | null {
+        return null;
     }
 
     defaults(): dia.Element.Attributes {

@@ -37,6 +37,11 @@ const markup = util.svg/* xml */`
 
 export default class Zone extends Shape {
 
+    // An area of the drawing (its name): never a part of the plant - no ID (see `plant/tags.ts`)
+    get tagPrefix(): string | null {
+        return null;
+    }
+
     get rotatable(): boolean {
         return false;
     }

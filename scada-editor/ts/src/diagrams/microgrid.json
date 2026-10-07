@@ -33,7 +33,6 @@
       "id": "7346f8b5-9775-4b34-afc5-016ba794bb69",
       "layer": "background",
       "z": -999,
-      "tag": "IMG-102",
       "imageId": "image-frame",
       "locked": true,
       "style": {
@@ -54,7 +53,6 @@
       "id": "1ccc7013-ec91-42a6-b78e-6454cdf43556",
       "layer": "background",
       "z": -999,
-      "tag": "BG-101",
       "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
       "style": {
         "color": "var(--color-amber)",
@@ -76,7 +74,6 @@
         "text": "",
         "position": "bottom"
       },
-      "tag": "IMG-101",
       "id": "080378d5-3ac0-4940-9803-ecd65eba13dc",
       "layer": "background",
       "z": -1,
@@ -119,7 +116,6 @@
       "id": "01520282-b166-40fc-b47c-5b921184e28a",
       "layer": "background",
       "z": 1,
-      "tag": "TXT-101",
       "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
       "style": {
         "color": "var(--color-amber)"
@@ -1346,7 +1342,6 @@
       "id": "29febbff-570a-4707-9c07-b76036dfb495",
       "layer": "instruments",
       "z": 6,
-      "tag": "TXT-102",
       "style": {
         "color": "var(--color-blue)"
       }

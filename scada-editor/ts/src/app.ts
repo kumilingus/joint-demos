@@ -14,6 +14,7 @@ import { addImages, clearSelection, refreshPalette, storedColorScheme, storeColo
 import { isControlEvent, setControlsOperable } from './runtime/controls';
 import { Plant } from './plant/plant';
 import TagIndex from './plant/TagIndex';
+import { tagNewCell } from './plant/tags';
 import { setTablesLive } from './shapes/views/TableView';
 import { getImages, IMAGES_ATTRIBUTE } from './palette/images';
 import { FAVORITES_ATTRIBUTE } from './palette/favorites';
@@ -232,7 +233,9 @@ export class App {
             this.createSnaplines();
             this.stencil = createStencil(this.el.querySelector('.scada-main')!, this.scroller, this.snaplines!, {
                 getImages: () => getImages(this.graph),
-                onUpload: images => addImages(this, images)
+                onUpload: images => addImages(this, images),
+                // A part of the plant gets an ID (see `plant/tags.ts`)
+                onDrop: cell => tagNewCell(this.tags, cell)
             });
         }
         if (mode === Mode.Runtime) {

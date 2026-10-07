@@ -27,7 +27,6 @@
       },
       "angle": 0,
       "type": "CustomImage",
-      "tag": "IMG-101",
       "id": "a6b1a638-988b-4a67-af1a-cfb29d8dba93",
       "layer": "background",
       "z": 14,
@@ -681,7 +680,6 @@
       },
       "angle": 0,
       "type": "Zone",
-      "tag": "Z-101",
       "id": "92f4d111-ba18-41fb-940a-3a2d5b32fa09",
       "layer": "equipment",
       "label": {
@@ -1023,7 +1021,6 @@
       },
       "angle": 0,
       "type": "Zone",
-      "tag": "Z-102",
       "id": "640a02e9-3a97-4add-bbb9-f715328e9222",
       "layer": "equipment",
       "label": {
@@ -1375,7 +1372,6 @@
       },
       "angle": 0,
       "type": "CustomImage",
-      "tag": "IMG-102",
       "id": "cb3b77f0-10cc-4a07-afea-8782173757c5",
       "layer": "background",
       "z": 2,
@@ -1412,7 +1408,6 @@
       },
       "angle": 0,
       "type": "Label",
-      "tag": "TXT-101",
       "id": "e7c2ecf7-7134-484b-a3ba-8b37feed12e0",
       "layer": "instruments",
       "parent": "1f40bf9f-a2fb-4841-bd01-be8d4d1491e3",
@@ -1435,7 +1430,6 @@
       },
       "angle": 0,
       "type": "Label",
-      "tag": "TXT-102",
       "id": "3d2239e9-69a3-4565-b6f2-cd51ae3baf74",
       "layer": "instruments",
       "style": {
@@ -1495,7 +1489,6 @@
       "angle": 0,
       "type": "Rectangle",
       "attrs": {},
-      "tag": "BG-101",
       "id": "a2e46871-9c62-459e-bef6-3a19800370c1",
       "layer": "background",
       "z": 3,
@@ -1512,7 +1505,6 @@
       },
       "angle": 0,
       "type": "Rectangle",
-      "tag": "BG-102",
       "id": "c1320b0c-731e-4beb-9797-316f1c721fda",
       "layer": "background",
       "z": 4,
@@ -1987,7 +1979,6 @@
       "id": "64d3b1d7-c406-4797-96e1-7d0ea88d899e",
       "layer": "equipment",
       "z": 1,
-      "tag": "Z-103",
       "label": {
         "text": "Condensate Return"
       }
@@ -2171,7 +2162,6 @@
       "id": "0f9e3b9e-42bc-4149-afd5-45f286ee18ad",
       "layer": "equipment",
       "z": 10,
-      "tag": "Z-104",
       "label": {
         "text": "Drain"
       }
@@ -2190,7 +2180,6 @@
       "id": "f453d450-c696-429d-a354-dc5c975198df",
       "layer": "equipment",
       "z": 12,
-      "tag": "Z-105",
       "label": {
         "text": "Gas Supply"
       },

@@ -12,8 +12,12 @@ const FIELD_HELP: Record<string, string> = {
     tag: `
         <strong>ID</strong> - the tag of the element in the plant (e.g. <em>P-101</em>): the plant data
         are addressed to it, a SCADA server sends the values by it.
+        <strong class="scada-tooltip-heading">Optional</strong>
+        Without one the element is not a part of the plant: a picture, a background. <em>Generate</em> gives it the next
+        free ID of its kind. The equipment gets one when it is dropped.
         <strong class="scada-tooltip-heading">Unique</strong>
-        An ID taken by another element (or an empty one) is not accepted. A copy gets a new one.`,
+        An ID taken by another element is not accepted. A copy gets a new one (of the same series: <em>FT-102</em>
+        after <em>FT-101</em>).`,
     layer: `
         <strong>Layers</strong>, from the top:
         <ol class="scada-tooltip-list">${Object.values(LAYER_NAMES).map(name => `<li>${name}</li>`).join('')}</ol>

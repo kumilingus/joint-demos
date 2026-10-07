@@ -8,9 +8,10 @@ import FilterListView from '../list/FilterListView';
  * of the toolbar, Ctrl+F).
  */
 
-/** A cell listed: what it is found by */
+/** A cell listed: what it is found by (its ID, its name: one of them at least) */
 export interface FindEntry {
     id: string;
+    /** Empty: not bound to the plant */
     tag: string;
     name: string;
     /** The name of its kind of shape (as in the palette); its description as the tooltip */
@@ -78,9 +79,13 @@ export default class FindView extends FilterListView<FindEntry> {
         this.renderMarks();
     }
 
-    /** By their tags: `P-2` before `P-10` */
+    /** By their IDs (`P-2` before `P-10`); the ones without at the end, by their names */
     protected entries(): FindEntry[] {
-        return this.hooks.entries().sort((a, b) => a.tag.localeCompare(b.tag, undefined, { numeric: true }));
+        const compare = (a: string, b: string) => a.localeCompare(b, undefined, { numeric: true });
+        return this.hooks.entries().sort((a, b) => {
+            if (Boolean(a.tag) !== Boolean(b.tag)) return a.tag ? -1 : 1;
+            return a.tag ? compare(a.tag, b.tag) : compare(a.name, b.name);
+        });
     }
 
     protected keyOf({ id }: FindEntry): string {

@@ -14,7 +14,8 @@ import { hasLineWidth, lineWidthField } from '../shapes/common/line-width';
 import { MAX_SLICES } from '../shapes/models/charts/DonutChart';
 import { type DataKey, dataOf, hasData } from '../shapes/common/data';
 import type { App } from '../app';
-import { isTaggable } from '../plant/tags';
+import { getTag, isTaggable } from '../plant/tags';
+import { renderTagField } from './tag-field';
 import type TagIndex from '../plant/TagIndex';
 import { closePanel, type PanelContent, showInPanel } from './panel';
 import { openSettings } from './settings';
@@ -87,7 +88,8 @@ function getInputs(element: dia.Element): Inputs {
     const inputs: Inputs = {};
     let index = 0;
 
-    inputs.tag = { type: 'text', label: 'ID', group: 'general', index: index++ };
+    // An ID (optional, see `tag-field.ts`): of a shape with a series of them, or one it has (a text, a zone has none)
+    if (isTaggable(element) || getTag(element)) inputs.tag = { type: 'text', label: 'ID', group: 'general', index: index++ };
 
     TEXTS.forEach(([path, label, group]) => {
         if (element.prop(path) === undefined) return;
@@ -527,9 +529,9 @@ function renderMembersField(
 }
 
 /** The custom contents of the fields: the colors (see `color-field.ts`), the members of a group (a click selects one) */
-function fieldContentRenderer(selectMember?: (member: dia.Cell) => void) {
+function fieldContentRenderer(tags: TagIndex, selectMember?: (member: dia.Cell) => void) {
     return (...args: Parameters<typeof renderColorField>): HTMLElement | undefined => {
-        return renderColorField(...args) ?? renderMembersField(selectMember, ...args);
+        return renderColorField(...args) ?? renderTagField(tags, ...args) ?? renderMembersField(selectMember, ...args);
     };
 }
 
@@ -540,8 +542,8 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     // Merged deeply: the color and the outline of a pipe are both in its `attrs`
     return util.merge(
         {},
-        // A link with a tag (a conveyor, see `tags.ts`): its ID first
-        isTaggable(cell) ? { tag: { type: 'text', label: 'ID', group: 'link', index: 0 }} : {},
+        // A link with a series of IDs (a conveyor, see `tags.ts`): its ID first
+        isTaggable(cell) || getTag(cell) ? { tag: { type: 'text', label: 'ID', group: 'link', index: 0 }} : {},
         isRouted(cell) ? linkInputs : {},
         colorInputs(cell, 'link', 2),
         outlineInputs(cell, 'link', 3),
@@ -607,10 +609,10 @@ function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.C
         },
         renderLabel,
         // The color fields with the swatches of the colors to pick again (see `color-field.ts`), the members of a group
-        renderFieldContent: fieldContentRenderer(onMemberSelect),
+        renderFieldContent: fieldContentRenderer(app.tags, onMemberSelect),
         // The color fields read here, any other by the inspector (the members of a group: read-only, never read)
         getFieldValue: attribute => (isColorField(attribute) ? getColorFieldValue(attribute) : undefined),
-        // An ID taken or empty: not set, told at the field (see `validateTag()`)
+        // An ID taken: not set, told at the field (see `validateTag()`)
         validateInput: (input: HTMLInputElement, path: string) => (path === 'tag' ? validateTag(app.tags, cell, input) : input.validity.valid)
     });
     inspector.render();
@@ -629,12 +631,13 @@ function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.C
 }
 
 /**
- * Whether the ID in the field can be the tag of the cell: not empty, not of another cell (see `TagIndex`). If not, the
- * browser tells why at the field (its validation message) and the cell keeps its tag; the field keeps the value to fix.
+ * Whether the ID in the field can be the tag of the cell: none (empty: not bound to the plant), or not of another cell
+ * (see `TagIndex`). If not, the browser tells why at the field (its validation message) and the cell keeps its tag; the
+ * field keeps the value to fix.
  */
 function validateTag(tags: TagIndex, cell: dia.Cell, input: HTMLInputElement): boolean {
     const tag = input.value.trim();
-    const message = !tag ? 'An ID is required.' : tags.isTaken(tag, cell) ? `${tag} is the ID of another element.` : '';
+    const message = tag && tags.isTaken(tag, cell) ? `${tag} is the ID of another element.` : '';
     input.setCustomValidity(message);
     if (message) input.reportValidity();
     return !message;

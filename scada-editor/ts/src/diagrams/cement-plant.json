@@ -11,7 +11,6 @@
       },
       "angle": 0,
       "type": "CustomImage",
-      "tag": "IMG-101",
       "id": "397cb3f0-9155-4215-af0e-c52c2a2892b6",
       "layer": "background",
       "z": -1,
@@ -50,7 +49,6 @@
       "id": "307df06b-40da-4564-99cc-f1541422b375",
       "layer": "background",
       "z": -999,
-      "tag": "BG-101",
       "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
       "style": {
         "color": "var(--color-slate)"
@@ -692,7 +690,6 @@
       "id": "46895847-9a71-40a9-adba-d461cab8f33a",
       "layer": "equipment",
       "z": 1,
-      "tag": "Z-101",
       "label": {
         "text": "From Quarry"
       },
@@ -972,7 +969,6 @@
       "id": "ee9a419c-7dc6-4415-8467-0eba18e531bd",
       "layer": "equipment",
       "z": 15,
-      "tag": "Z-102",
       "label": {
         "text": "To Cement Mill"
       }
@@ -991,7 +987,6 @@
       "id": "3202d67d-c3d3-45d5-b3b4-a023f3b76ddb",
       "layer": "equipment",
       "z": 16,
-      "tag": "Z-103",
       "label": {
         "text": "Coal"
       },
@@ -1219,7 +1214,6 @@
       "id": "3a8ef731-33ce-41e5-9324-6518e441da91",
       "layer": "background",
       "z": 1,
-      "tag": "TXT-101",
       "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
       "style": {
         "color": "var(--color-blue)"
@@ -1324,7 +1318,6 @@
       "id": "3780f686-b46c-4597-8906-a71287027d11",
       "layer": "background",
       "z": 0,
-      "tag": "BG-102",
       "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
       "style": {
         "color": "var(--color-slate)",
@@ -1345,7 +1338,6 @@
       "id": "d43845c3-514f-43d5-8242-9835e32f5b16",
       "layer": "background",
       "z": 21,
-      "tag": "IMG-104",
       "parent": "c5b921e6-cddb-482c-bb24-9822afc82abc",
       "label": {
         "text": ""
@@ -1398,7 +1390,6 @@
       },
       "angle": 0,
       "type": "Label",
-      "tag": "TXT-102",
       "id": "d2fc8ffc-bffc-4174-b02c-1781296b895e",
       "layer": "instruments",
       "style": {
@@ -1421,7 +1412,6 @@
       },
       "angle": 0,
       "type": "Label",
-      "tag": "TXT-103",
       "id": "a34205eb-cfc9-4c89-8199-677915e69671",
       "layer": "instruments",
       "style": {
@@ -1482,7 +1472,6 @@
       },
       "angle": 0,
       "type": "Label",
-      "tag": "TXT-104",
       "id": "c02bda7e-2271-46de-b4f8-8bd69b5e7876",
       "layer": "instruments",
       "style": {
@@ -1562,7 +1551,6 @@
       },
       "angle": 0,
       "type": "Label",
-      "tag": "TXT-105",
       "id": "e217674f-94bb-442c-8a36-c576d14864a5",
       "layer": "instruments",
       "style": {

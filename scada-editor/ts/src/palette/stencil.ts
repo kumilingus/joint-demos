@@ -163,10 +163,15 @@ function layoutGroup(graph: dia.Graph): void {
     });
 }
 
-/** The palette gets the images of the diagram (its shapes of the user) and tells when the user uploads some. */
-export interface StencilImages {
+/**
+ * What the palette gets from the app: the images of the diagram (its shapes of the user); it tells when the user uploads
+ * some, when a shape is dropped
+ */
+export interface StencilHooks {
     getImages: () => ImageLibrary;
     onUpload: (images: ImageEntry[]) => void;
+    /** The shape dropped on the canvas, before it is added (its ID, see `tagNewCell()`) */
+    onDrop: (cell: dia.Cell) => void;
 }
 
 /** The palette in its panel, the first of the container (left of the canvas). */
@@ -174,7 +179,7 @@ export function createStencil(
     container: HTMLElement,
     scroller: ui.PaperScroller,
     snaplines: ui.Snaplines,
-    { getImages, onUpload }: StencilImages
+    { getImages, onUpload, onDrop }: StencilHooks
 ): ui.Stencil {
 
     const el = document.createElement('div');
@@ -202,6 +207,12 @@ export function createStencil(
             const clone = cell.clone();
             Object.keys(paletteTooltip('')).forEach(name => clone.removeAttr(['root', name]));
             if (clone.isLink()) clone.labels([]);
+            return clone;
+        },
+        // The dropped shape (cloned from the dragged one): made ready before it is added - one step of the history
+        dragEndClone: (cell: dia.Cell) => {
+            const clone = cell.clone();
+            onDrop(clone);
             return clone;
         },
         // A click shows the shape in the inspector panel (see `PaletteController`): the dragging starts
@@ -473,7 +484,7 @@ function groupLabel(text: string, icon: string): HTMLElement {
 }
 
 /** A button in the group of the custom shapes: it uploads images (into the diagram, see `onUpload`). */
-function addUploadButton(stencil: ui.Stencil, onUpload: StencilImages['onUpload']): void {
+function addUploadButton(stencil: ui.Stencil, onUpload: StencilHooks['onUpload']): void {
     const groupEl = stencil.el.querySelector('.group[data-name="custom"]');
     if (!groupEl) return;
     const input = document.createElement('input');

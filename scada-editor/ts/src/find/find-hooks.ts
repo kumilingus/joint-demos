@@ -11,8 +11,8 @@ import { ping } from '../log/log-hooks';
 import { isScreenShown } from '../canvas/screen';
 
 /*
- * What the find list reads from the diagram and shows on it (its hooks, see `FindController`): the cells with a tag (not
- * the locked ones: the background); the cell of the entry clicked scrolled into view (to the middle: picked to close the
+ * What the find list reads from the diagram and shows on it (its hooks, see `FindController`): the cells with an ID or a
+ * name (not the locked ones: the background); the cell of the entry clicked scrolled into view (to the middle: picked to close the
  * list) - selected in the edit mode (the inspector shows it; with Ctrl / Cmd / Shift added to the selection, or out of
  * it), tinted and pinged in the runtime mode (as the element of a message clicked in the log).
  */
@@ -37,18 +37,20 @@ export function findHooks(app: App): FindHooks {
     const { graph, paper } = app;
     let tinted: dia.Element | null = null;
     return {
+        // By an ID or a name (a shape with neither: nothing to find it by)
         entries: () => graph.getCells()
-            .filter(cell => getTag(cell) && !isLocked(cell))
+            .filter(cell => !isLocked(cell))
             .map((cell) => {
                 const type: string = cell.get('type');
                 return {
                     id: String(cell.id),
-                    tag: getTag(cell)!,
+                    tag: getTag(cell) ?? '',
                     name: cell.prop(['label', 'text']) ?? '',
                     kind: descriptions[type]?.title ?? type,
                     description: descriptions[type]?.description ?? ''
                 };
-            }),
+            })
+            .filter(({ tag, name }) => tag || name),
         multiple: () => app.mode === Mode.Edit,
         show: (ids, { focus, center = false } = {}) => {
             if (tinted) setTint(paper, tinted, null);

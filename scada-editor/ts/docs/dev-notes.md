@@ -18,7 +18,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `CanvasController` | always | paper: blank drag (pan), pinch, pan |
 | `ControlsController` | always | graph: controls of added elements; the `command` event of an element → `app.plant` |
 | `SelectionController` | always | selection: free transform, link tools, inspector |
-| `TagsController` | always | graph: a free tag for every element |
+| `TagsController` | always | graph: the tags unique (a copy: the next free one of its series), an empty one removed |
 | `PipeColorController` | always | graph: pipe colors; a control valve shows its pipe's |
 | `GroupController` | always | graph: a member changed → its groups refit |
 | `ToolbarController` | each mode | toolbar buttons |
@@ -92,7 +92,8 @@ Every element extends `Shape` (`shapes/common/Shape.ts`) and overrides the gette
 | `graphLayer` | `Layer.Equipment` | `Layer.Instruments` |
 | `anchors` | `'sides'` | `'middles'` (a join) |
 | `stubLength` | `null` | `20`: pipe stub length |
-| `tagPrefix` | the type's initials | `'NRV'` |
+| `tagPrefix` | the type's initials; `null` - no IDs (a text, a zone) | `'NRV'` |
+| `autoTag` | `true` - a new one (dropped, a group created) gets an ID; `false` - only by *Generate* (a picture, a background shape) | `false` |
 | `overflow` | `{}` (a label below) | `{ top: 42 }`: drawing outside the bounding box |
 | `colorField` / `outlineField` | surface `color` / `outline` | `{ path: ['attrs', 'body', 'fill'] }` |
 | `accentField` | `null` | a boiler's flames |
@@ -181,7 +182,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 - **Log** (`log/LogView.ts`, owned by `LogController`) - listens to the plant's `update` and `command`, keeps the last 200 messages of a run; a `FilterListView` (as Find) in a `ui.Dialog`. Tags are badge highlighters, pings are ring highlighters behind the element, the element of the clicked message is tinted (`canvas/tint.ts`: a filter - gray multiplied by a theme color - on the children of the view but the ping).
 - **Theme** (`theme/theme-minimal.css`, `setTheme('minimal')`) - styles the JointJS+ components, every rule scoped to `.joint-theme-minimal`, using only `theme/tokens.css` (shadcn/ui variable names). Cascade layers: `joint` → `theme` → the app (unlayered), so the app always wins. Reuse: `theme/README.md`.
 - **Shape colors** - CSS variables (`--shape-*` in `shapes/shapes.css`); the dark scheme redefines them.
-- **Diagram style** (`diagram-style.ts`, saved as `graph.get('style')`) - `finish`, `color`, `outline`, `outlineWidth` (the uniform outline of outlined surfaces, `gradients.ts`; the pipe border, `pipeOutline` in `Pipe.ts`), `accent` for shapes without their own; `labelSize` (`small` 12, `medium` 14, `large` 16, `x-large` 18 px), `labelColor` (theme colors only), `labels` (`name`, `tag`, `both`: the text of the shape labels - `fromModel.shapeLabel` in `attributes/label.ts`, read from the cell's graph, so the palette shows names; a view update, see `isViewUpdateRequired()`), `canvas` (`--canvas-*`: a light and a dark tone; sets `--shape-canvas`, the grid is colored from it in `canvas.css`), `canvasGradient` (drawn on the `PaperScroller` element behind a transparent paper: it stays put while scrolling and zooming; added to the exported image). Applied as CSS variables, so the palette and the preview follow.
+- **Diagram style** (`diagram-style.ts`, saved as `graph.get('style')`) - `finish`, `color`, `outline`, `outlineWidth` (the uniform outline of outlined surfaces, `gradients.ts`; the pipe border, `pipeOutline` in `Pipe.ts`), `accent` for shapes without their own; `labelSize` (`small` 12, `medium` 14, `large` 16, `x-large` 18 px), `labelColor` (theme colors only), `labels` (`name`, `tag`, `both`: the text of the shape labels - `fromModel.shapeLabel` in `attributes/label.ts`, read from the cell's graph, so the palette shows names; a shape without an ID: its name; a view update, see `isViewUpdateRequired()`), `canvas` (`--canvas-*`: a light and a dark tone; sets `--shape-canvas`, the grid is colored from it in `canvas.css`), `canvasGradient` (drawn on the `PaperScroller` element behind a transparent paper: it stays put while scrolling and zooming; added to the exported image). Applied as CSS variables, so the palette and the preview follow.
 - **Animations** (`runtime/animations.ts`, Web Animations API, never the model) - kinds `equipment`, `flow`, `alarm`, `level`. Level `full`, or `alarms` (alarms and levels only; also with reduced motion). The palette preview runs them and switches the shape every 2.5 s.
 
 ## Where things are
@@ -199,7 +200,8 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 | Multi-selection inspector ("mixed") | `inspector/selection-inspector.ts` |
 | Save / open / export (WebP) | `actions/file.ts`; ports are not saved (`Shape.toJSON()`) |
 | Screen | `shapes/models/diagram/Screen.ts`, `canvas/screen.ts` |
-| Find (the tagged cells; the list's own selection changes flagged `find`) | `find/FindView.ts`, `find/find-hooks.ts`, `FindController` |
+| IDs (the tags: optional, unique, in series - `plant/tags.ts`: `tagNewCell()` at the palette drop and a new group, `ensureUniqueTag()` for copies, the *Generate* button of `inspector/tag-field.ts`) | `plant/tags.ts`, `TagIndex`, `TagsController` |
+| Find (the cells with an ID or a name; the list's own selection changes flagged `find`) | `find/FindView.ts`, `find/find-hooks.ts`, `FindController` |
 | A list filtered in a dialog (Find, the log): the filter, the rows marked by key, the dialog | `list/FilterListView.ts` (an `mvc.View`, kept between openings) |
 | Lock (`locked`, a group locks its members; skipped by the selection, the links, the minimap) | `canvas/lock.ts`, `actions/lock.ts`, `LockController`, `validateConnection` in `canvas/config.ts`, `cellVisibility` in `canvas/navigator.ts` |
 | Controls (front layer, upright, inert while editing) | `runtime/controls.ts` |

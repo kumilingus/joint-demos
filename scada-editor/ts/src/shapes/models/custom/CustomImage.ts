@@ -98,6 +98,11 @@ export default class CustomImage extends Shape {
         return 'IMG';
     }
 
+    // A picture: an ID only when asked (it can stand for a part of the plant, see `Shape.autoTag`)
+    get autoTag(): boolean {
+        return false;
+    }
+
     defaults(): dia.Element.Attributes {
         return {
             ...super.defaults,
