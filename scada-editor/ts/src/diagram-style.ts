@@ -23,6 +23,8 @@ export interface DiagramStyle {
     /** The labels of the elements (not the Label shape: a text of its own; of a zone the size only): their size, their color */
     labelSize?: LabelSize;
     labelColor?: string;
+    /** What the labels of the shapes show (as `labelSize`): their names, their IDs (the tags), or both */
+    labels?: LabelContent;
     /** The background of the paper (`--shape-canvas`: the surfaces in the color of the canvas too, its grid) */
     canvas?: string;
     /** The canvas in a subtle gradient of its color (top to bottom, see `--canvas-gradient-*` in `shapes.css`) */
@@ -30,6 +32,12 @@ export interface DiagramStyle {
 }
 
 export type LabelSize = 'small' | 'medium' | 'large' | 'x-large';
+
+/**
+ * What the labels of the shapes show: their names (by default), their IDs (the tags: as a P&ID), or both - the ID in bold
+ * above the name (as the operator displays of ISA-101)
+ */
+export type LabelContent = 'name' | 'tag' | 'both';
 
 /** The sizes of the labels of the elements to pick: their names, their sizes (px) - medium by default */
 export const LABEL_SIZES: Record<LabelSize, { name: string; px: number }> = {
@@ -46,7 +54,7 @@ export function getStyle(graph: dia.Graph): DiagramStyle {
 }
 
 // The CSS variables of the colors of the style (see `shapes.css`)
-const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize' | 'canvasGradient' | 'outlineWidth'>, string> = {
+const VARIABLES: Record<Exclude<keyof DiagramStyle, 'finish' | 'labelSize' | 'canvasGradient' | 'outlineWidth' | 'labels'>, string> = {
     color: '--style-color',
     outline: '--style-outline',
     accent: '--style-accent',
@@ -82,7 +90,7 @@ export function applyStyle(style: DiagramStyle): void {
 
 // The keys of the style whose change requires an update of the views (read when they are drawn, see `gradients.ts`); the
 // others are CSS variables
-const VIEW_UPDATE_KEYS: (keyof DiagramStyle)[] = ['finish', 'outlineWidth'];
+const VIEW_UPDATE_KEYS: (keyof DiagramStyle)[] = ['finish', 'outlineWidth', 'labels'];
 
 /** Whether the change of the style requires an update of the views (see `VIEW_UPDATE_KEYS`): always without a previous one */
 function isViewUpdateRequired(style: DiagramStyle, previous?: DiagramStyle): boolean {

@@ -22,8 +22,9 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
             {
                 // Its style (see `style.ts`): the surfaces of the element and of its pipe stubs (ports)
                 style: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
-                // Its texts (see `from-model`)
+                // Its texts (see `from-model`); its ID - the label shows it (see `labels` of the diagram style)
                 label: dia.ElementView.Flags.UPDATE,
+                tag: dia.ElementView.Flags.UPDATE,
                 unit: dia.ElementView.Flags.UPDATE,
                 function: dia.ElementView.Flags.UPDATE,
                 loop: dia.ElementView.Flags.UPDATE,

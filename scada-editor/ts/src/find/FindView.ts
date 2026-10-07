@@ -1,7 +1,7 @@
 import FilterListView from '../list/FilterListView';
 
 /*
- * Find a shape: the cells with a tag listed - their tag, their label, their kind - and filtered by the words typed (see
+ * Find a shape: the cells with a tag listed - their ID, their name, their kind - and filtered by the words typed (see
  * `FilterListView`). A row clicked shows its cell on the diagram (see `find-hooks.ts`). Where several can be shown (the
  * selection of the edit mode), as in a list of files: Ctrl / Cmd adds an entry or removes it, Shift the entries from the
  * one clicked before (the anchor) - Ctrl / Cmd + Shift adds them; Shift + up and down too. In both modes (the Find button
@@ -12,7 +12,7 @@ import FilterListView from '../list/FilterListView';
 export interface FindEntry {
     id: string;
     tag: string;
-    label: string;
+    name: string;
     /** The name of its kind of shape (as in the palette); its description as the tooltip */
     kind: string;
     description: string;
@@ -40,7 +40,7 @@ export interface FindHooks {
 export default class FindView extends FilterListView<FindEntry> {
 
     protected title = 'Find';
-    protected placeholder = 'A tag, a label or a kind of shape';
+    protected placeholder = 'An ID, a name or a kind of shape';
     protected emptyText = 'No shape found';
 
     protected hooks: FindHooks;
@@ -87,8 +87,8 @@ export default class FindView extends FilterListView<FindEntry> {
         return id;
     }
 
-    protected textOf({ tag, label, kind }: FindEntry): string {
-        return `${tag} ${label} ${kind}`;
+    protected textOf({ tag, name, kind }: FindEntry): string {
+        return `${tag} ${name} ${kind}`;
     }
 
     /** Without the dashes too: `b101` finds `B-101` */
@@ -96,9 +96,9 @@ export default class FindView extends FilterListView<FindEntry> {
         return super.normalize(text).replaceAll('-', '');
     }
 
-    protected renderRow({ tag, label, kind, description }: FindEntry): HTMLElement {
+    protected renderRow({ tag, name, kind, description }: FindEntry): HTMLElement {
         const row = document.createElement('div');
-        const cells: Array<[string, string]> = [['tag', tag], ['label', label], ['kind', kind]];
+        const cells: Array<[string, string]> = [['tag', tag], ['name', name], ['kind', kind]];
         row.append(...cells.map(([name, text]) => {
             const cell = document.createElement('span');
             cell.className = `scada-find-${name}`;

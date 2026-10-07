@@ -8,7 +8,7 @@ The editor builds process diagrams (P&ID-style or high-performance HMI screens) 
 
 - Drag and drop from a searchable palette, on a grid, with snaplines.
 - Move selected shapes only (the default on a tablet): a drag on any other shape pans the canvas.
-- Find a shape by its ID, label or kind, in both modes; several selected as in a list of files (`Cmd`, `Shift`, the arrows).
+- Find a shape by its ID, name or kind, in both modes; several selected as in a list of files (`Cmd`, `Shift`, the arrows).
 - The palette and the inspector hidden for more room (the toolbar, `Cmd + \`); the diagram stays in place.
 - Select by click, region, all, elements only, connections only, or same type.
 - Move, resize, rotate, flip (the shapes that face a way); labels stay horizontal, on the side you choose.
@@ -58,7 +58,7 @@ Also: uploaded images (saved with the diagram, with an opacity), Favorites, and 
 
 - Color, outline, accent - per shape or for the diagram; theme colors adapt to light and dark.
 - Outline width (thin, normal, thick) for outlined shapes and pipe borders - per shape or for the diagram.
-- Label size and color for the whole diagram (theme colors only).
+- Labels for the whole diagram: the names, the IDs (as a P&ID) or both (as an operator display); their size and color (theme colors only).
 - Canvas color - a light and a dark tone, flat or in a subtle gradient; the grid follows.
 - Light and dark themes: the editor, the canvas and the shapes, switched in the toolbar (the system setting by default).
 

@@ -3,6 +3,8 @@ import { LABEL_COLOR } from '../../const';
 import { getFootprint } from '../common/footprint';
 import { flipOf } from './flip';
 import { builtInSet } from './built-in';
+import { getTag } from '../../plant/tags';
+import { getStyle } from '../../diagram-style';
 
 /**
  * Where the label of a shape is: below it (the default - as the shape draws it), above it, on its left or right -
@@ -159,6 +161,24 @@ function drawText(
     return { x: layout.x, y: layout.y, 'text-anchor': layout.anchor, transform };
 }
 
+/** A part of a text in bold (the built-in `annotations` of a text) */
+type TextAnnotation = { start: number; end: number; attrs: TextAttributes };
+
+/**
+ * The text of the label of a shape: its name, its ID (the tag), or both - the ID in bold above the name - as the diagram
+ * shows them (`labels` of its style, see `diagram-style.ts`; none - a shape of the palette: the name). The ID alone (in
+ * bold with the name) if it has no name; a shape without an ID (not bound to the plant) its name only.
+ */
+function shapeLabelText(model: dia.Element, name: string): { text: string; annotations?: TextAnnotation[] } {
+    const content = model.graph ? getStyle(model.graph).labels : undefined;
+    const tag = getTag(model);
+    if (!tag || !content || content === 'name') return { text: name };
+    if (content === 'tag') return { text: tag };
+    // The ID in bold (alone if there is no name)
+    const annotations = [{ start: 0, end: tag.length, attrs: { 'font-weight': 700 }}];
+    return { text: name ? `${tag}\n${name}` : tag, annotations };
+}
+
 // The built-in definitions of the text: their `set` called with the layout
 const textSet = builtInSet('text');
 const textWrapSet = builtInSet('text-wrap');
@@ -168,16 +188,17 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
     'text-wrap': {},
     /**
      * `fromModel: { text: path }` in the attributes: the text of the model at the path (`['label', 'text']`, `['unit']`) -
-     * not stored in the attributes. A label (`['label', …]`): at its position (`label.position`, see `LabelPosition`), none - where the
-     * shape draws it; the size, the weight, the styles, the alignment (`label.size`,
-     * `label.weight`, `label.styles`, `label.align`) of a text of its own
-     * (the Label shape).
+     * not stored in the attributes. A label (`['label', …]`): at its position (`label.position`, see `LabelPosition`), none -
+     * where the shape draws it; the size, the weight, the styles, the alignment (`label.size`, `label.weight`,
+     * `label.styles`, `label.align`) of a text of its own (the Label shape). The label of a shape (`shapeLabel`, see
+     * `labelAttributes`): its name, its ID or both, as the diagram shows them (see `shapeLabelText()`).
      */
     'from-model': {
-        set(this: dia.ElementView, { text: path }: { text: string[] }, refBBox: g.Rect, node: Element, attrs: TextAttributes) {
+        set(this: dia.ElementView, { text: path, shapeLabel }: FromModel, refBBox: g.Rect, node: Element, attrs: TextAttributes) {
             const { model } = this;
             const value = model.prop(path);
-            const text = value == null ? '' : String(value);
+            const name = value == null ? '' : String(value);
+            const { text, annotations } = shapeLabel ? shapeLabelText(model, name) : { text: name, annotations: undefined };
             const label: ModelLabel | undefined = path[0] === 'label' ? model.get('label') : undefined;
             const own: TextAttributes = {
                 ...(label?.size ? { 'font-size': label.size } : {}),
@@ -186,7 +207,7 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
                 // Aligned in its box (a text of its own: the Label shape)
                 ...(label?.align ? alignedText(label.align, refBBox) : {})
             };
-            const textAttrs: TextAttributes = { ...attrs, ...own, text };
+            const textAttrs: TextAttributes = { ...attrs, ...own, text, ...(annotations ? { annotations } : {}) };
             const wrap = attrs['text-wrap'];
             const drawn = wrap
                 ? drawText(this, textWrapSet, wrap, refBBox, node, textAttrs, label?.position)
@@ -195,6 +216,12 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
         }
     }
 };
+
+/** `fromModel` in the attributes: the path of the text in the model; the label of a shape (its name, its ID or both) */
+interface FromModel {
+    text: string[];
+    shapeLabel?: boolean;
+}
 
 /** The label of an element in its model: its text, its position; the size, the weight, the styles, the alignment of a text of its own */
 export interface ModelLabel {
@@ -232,8 +259,8 @@ function alignedText(align: TextAlign, { width }: g.Rect): TextAttributes {
 
 /** The label of a shape: below it (see `LabelPosition`), as most of the shapes have it */
 export const labelAttributes = {
-    // The text of the label of the model, at its position (see `from-model`)
-    fromModel: { text: ['label', 'text'] },
+    // The text of the label of the model, at its position - the name, the ID or both (see `from-model`)
+    fromModel: { text: ['label', 'text'], shapeLabel: true },
     textAnchor: 'middle',
     textVerticalAnchor: 'top',
     x: 'calc(0.5*w)',

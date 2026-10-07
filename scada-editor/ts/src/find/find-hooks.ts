@@ -44,7 +44,7 @@ export function findHooks(app: App): FindHooks {
                 return {
                     id: String(cell.id),
                     tag: getTag(cell)!,
-                    label: cell.prop(['label', 'text']) ?? '',
+                    name: cell.prop(['label', 'text']) ?? '',
                     kind: descriptions[type]?.title ?? type,
                     description: descriptions[type]?.description ?? ''
                 };

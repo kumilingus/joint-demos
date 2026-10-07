@@ -55,9 +55,13 @@ function sideField(label: string): Inputs {
     };
 }
 
-/** The texts of the shapes that can be edited (see `from-model`): [the path in the model, label, group]. */
+/**
+ * The texts of the shapes that can be edited (see `from-model`): [the path in the model, label, group]. The text of
+ * the label of a shape is its name (its label shows it, its ID or both - see `labels` of the diagram style); of the Label
+ * shape and a zone, their text.
+ */
 const TEXTS: Array<[string[], string, string]> = [
-    [['label', 'text'], 'Label', 'general'],
+    [['label', 'text'], 'Name', 'general'],
     [['function'], 'Function', 'general'],
     [['loop'], 'Loop', 'general'],
     [['unit'], 'Unit', 'values']
@@ -89,7 +93,8 @@ function getInputs(element: dia.Element): Inputs {
         if (element.prop(path) === undefined) return;
         // A text of its own (the Label shape): on several lines
         const type = element.get('type') === 'Label' && path[0] === 'label' ? 'textarea' : 'text';
-        const input = { type, label, group, index: index++ } as Inputs;
+        const ownText = path[0] === 'label' && ['Label', 'Zone'].includes(element.get('type'));
+        const input = { type, label: ownText ? 'Text' : label, group, index: index++ } as Inputs;
         util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input));
     });
     // The label of a shape at a side of it (see `LabelPosition`): the shapes with labels of their own have none

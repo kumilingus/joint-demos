@@ -80,6 +80,19 @@ const FIELD_HELP: Record<string, string> = {
         Of the outlined shapes and the borders of the pipes without one of their own (their <em>Auto</em>).
         <strong class="scada-tooltip-heading">Auto</strong>
         The colors of the shapes themselves.`,
+    // What the labels of the shapes show (the style of the diagram, see `LabelContent`)
+    labels: `
+        <strong>Labels</strong> - what the labels of the shapes show. Saved with the diagram.
+        <strong class="scada-tooltip-heading">Name</strong>
+        The name of the shape (its <em>Name</em> in the inspector).
+        <strong class="scada-tooltip-heading">ID</strong>
+        The ID of the shape (its tag: <em>P-101</em>) - as on a P&amp;ID, where everything is labeled by its tag.
+        <strong class="scada-tooltip-heading">ID + name</strong>
+        The ID in bold above the name - as the operator displays (ISA-101): the plant speaks in tags, the name
+        says what it is. A shape without a name shows its ID alone.
+        <strong class="scada-tooltip-heading">Without an ID</strong>
+        A shape not bound to the plant (a picture, a background) shows its name. The Label shape and the zones keep
+        their text.`,
     screen: `
         <strong>Screen</strong> - the part of the diagram the run mode shows: in the whole window,
         fitted to it, without scrolling and zooming; the toolbar slides away (and back when the pointer

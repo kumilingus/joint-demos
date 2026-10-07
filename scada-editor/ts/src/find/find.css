@@ -1,4 +1,4 @@
-/* Find a shape (see `FindView.ts`): its rows - the tag, the label, the kind (the list: `list/list.css`) */
+/* Find a shape (see `FindView.ts`): its rows - the ID, the name, the kind (the list: `list/list.css`) */
 
 .scada-find .scada-list-row {
     display: grid;
@@ -12,7 +12,7 @@
     font-weight: 600;
 }
 
-.scada-find-label {
+.scada-find-name {
     overflow: hidden;
     text-overflow: ellipsis;
 }

@@ -35,7 +35,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Lock** - right-click a shape or a group: it stays where it is and the pointer goes through it (an image in the background, a frame) - not selected by a click, a region or *Select All*, no link connects to it, not in the minimap. To unlock, right-click it: the canvas menu offers *Unlock* (its ID) and *Unlock All*.
 - **Move** by dragging, or with the arrow keys (a grid step, five with `Shift`); **resize** and **rotate** a single shape with its handles. With *Move selected shapes only* (Settings) a drag moves a selected shape only - on any other it pans the canvas: click (tap) the shape first.
 - **Flip** - shapes that face a way (pump, check valve, strainer, manifold, turbine, compressor, fan, blower, cyclone, kiln, crusher, mill, bucket elevator): right-click *Flip Horizontally* (`Shift` + `H`) or *Flip Vertically* (`Shift` + `V`) mirrors them instead of turning them upside down; connected pipes stay on their stubs. The strainer and the manifold flip vertically too (the leg up, the outlets up).
-- **Label** - its text and *Label position* (top, left, right, bottom) in the inspector.
+- **Name** - in the inspector; the label of the shape shows it (or its ID, or both - *Labels* in the [settings](#settings)), at its *Label position* (top, left, right, bottom).
 - **Label shape** (a text on its own) - several lines (`Enter` in its text), its font size, style, weight and *Alignment* (left, center, right).
 - **Control position** - the side of a valve's buttons or slider (Controls group).
 
@@ -91,6 +91,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - *Finish* - Shaded (gradients) or Flat.
 - *Color*, *Outline*, *Accent* - the body, edge and detail colors.
 - *Outline width* - Thin, Normal or Thick: the outlines of outlined shapes and the borders of the pipes.
+- *Labels* - what the shape labels show: the *Name*, the *ID* (as a P&ID), or *ID + name* (the ID in bold above the name, as an operator display). A shape without a name shows its ID alone; the Label shape and zones keep their text.
 - *Label size* - Small to X-Large, for shape labels and zones (not for the Label shape).
 - *Label color* - the text color of those labels.
 - *Canvas* - the background color (White / Black, Blue, Green, Violet, Gray as in ISA-101, Sand; each with a light and a dark tone); the grid follows.
@@ -106,9 +107,9 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 
 ## Find
 
-**Find** in the toolbar, or `Cmd` + `F` - in both modes. The shapes with an ID: their ID, label and kind (*P-101 · Feed Pump 1 · Pump*).
+**Find** in the toolbar, or `Cmd` + `F` - in both modes. The shapes with an ID: their ID, name and kind (*P-101 · Feed Pump 1 · Pump*).
 
-- **Filter** - words of the ID, the label or the kind; every word has to match, dashes don't count (*p101* finds *P-101*).
+- **Filter** - words of the ID, the name or the kind; every word has to match, dashes don't count (*p101* finds *P-101*).
 - **Click** a row - the shape is selected (edit mode) or highlighted (run mode), scrolled into view.
 - **Several** (edit mode) - `Cmd` + click adds or removes a row, `Shift` + click selects the rows from the one clicked before, `Cmd` + `Shift` + click adds them.
 - **Keys** - `↑` / `↓` go through the rows (with `Shift`: a range), `Enter` picks the row and closes the list; a double click too. `Escape` closes it.

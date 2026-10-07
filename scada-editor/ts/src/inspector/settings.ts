@@ -188,6 +188,20 @@ export function openSettings(app: App): void {
                     index: 2.5
                 },
                 accent: { type: 'color', label: 'Accent', auto: true, graph, group: 'style', index: 3 },
+                // What the labels of the shapes show (see `LabelContent`)
+                labels: {
+                    type: 'select-button-group',
+                    label: 'Labels',
+                    help: 'labels',
+                    options: [
+                        { value: 'name', content: 'Name' },
+                        { value: 'tag', content: 'ID' },
+                        { value: 'both', content: 'ID + name' }
+                    ],
+                    defaultValue: 'name',
+                    group: 'style',
+                    index: 3.5
+                },
                 // The labels of the elements: a size, a color of the theme (a text readable in both schemes)
                 labelSize: {
                     type: 'select-button-group',
