@@ -25,6 +25,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `EditController` | edit | paper: cell click, region, context menus |
 | `PaletteController` | edit | palette: click, drop; graph: the derived groups |
 | `KeyboardController` | edit | shortcuts |
+| `LockController` | edit | graph: `locked` - the pointer goes through a locked element (a class), not in the minimap |
 | `RuntimeController` | runtime | paper: a cell drag pans |
 | `MockPlantController` | runtime | the mock plant (`plant/mock/`) |
 | `LogController` | runtime | Log button; plant messages; element clicks filter the log |
@@ -197,6 +198,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 | Multi-selection inspector ("mixed") | `inspector/selection-inspector.ts` |
 | Save / open / export (WebP) | `actions/file.ts`; ports are not saved (`Shape.toJSON()`) |
 | Screen | `shapes/models/diagram/Screen.ts`, `canvas/screen.ts` |
+| Lock (`locked`, a group locks its members; skipped by the selection, the links, the minimap) | `canvas/lock.ts`, `actions/lock.ts`, `LockController`, `validateConnection` in `canvas/config.ts`, `cellVisibility` in `canvas/navigator.ts` |
 | Controls (front layer, upright, inert while editing) | `runtime/controls.ts` |
 
 ## Gotchas

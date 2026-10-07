@@ -43,7 +43,7 @@ Also: uploaded images (saved with the diagram, with an opacity), Favorites, and 
 ## Layers and groups
 
 - Five layers (background, pipes, equipment, instruments, foreground): pipes stay under the equipment, gauges over their tanks.
-- Lock a shape (a background image, a frame): the pointer goes through it; unlocked from the canvas menu.
+- Lock a shape (a background image, a frame): the pointer goes through it, links don't connect to it, the minimap leaves it out; unlocked from the canvas menu.
 - Bring to front / send to back within a layer; move a covered shape into the layer above.
 - Groups: nested, moved, copied, deleted and styled as a whole.
 
