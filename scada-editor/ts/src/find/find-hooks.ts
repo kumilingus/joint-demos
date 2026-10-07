@@ -21,13 +21,13 @@ import { isScreenShown } from '../canvas/screen';
 export const FROM_FIND: SelectionOptions = { find: true };
 
 /**
- * The cell scrolled to the middle of the canvas: if it is not in view, or always (`center`) - not while the screen is
- * shown (the runtime mode: it fills the canvas, not panned - see `RuntimeController`)
+ * The cells scrolled to the middle of the canvas (the middle of their box): if they are not in view, or always (`center`)
+ * - not while the screen is shown (the runtime mode: it fills the canvas, not panned - see `RuntimeController`)
  */
-function scrollIntoView(app: App, cell: dia.Cell, center: boolean): void {
-    const { scroller } = app;
-    if (isScreenShown(app)) return;
-    const bbox = cell.getBBox();
+function scrollIntoView(app: App, cells: dia.Cell[], center: boolean): void {
+    const { graph, scroller } = app;
+    const bbox = graph.getCellsBBox(cells);
+    if (!bbox || isScreenShown(app)) return;
     if (!center && scroller.getVisibleArea().containsRect(bbox)) return;
     const { x, y } = bbox.center();
     scroller.center(x, y, { animation: { duration: 300 }});
@@ -54,8 +54,13 @@ export function findHooks(app: App): FindHooks {
             if (tinted) setTint(paper, tinted, null);
             tinted = null;
             const cells = ids.map(id => graph.getCell(id)).filter((cell): cell is dia.Cell => Boolean(cell));
+            // Picked (`center`): all of them in the middle; the one clicked (or moved to) in view otherwise
             const focused = focus ? graph.getCell(focus) : undefined;
-            if (focused) scrollIntoView(app, focused, center);
+            if (center) {
+                scrollIntoView(app, cells, true);
+            } else if (focused) {
+                scrollIntoView(app, [focused], false);
+            }
             if (app.mode === Mode.Edit) {
                 // None: nothing selected by the list (the selection left as it is - the list closed)
                 if (cells.length > 0 || focus) selectCells(app, cells, FROM_FIND);

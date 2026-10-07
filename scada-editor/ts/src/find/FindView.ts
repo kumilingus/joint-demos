@@ -22,7 +22,7 @@ export interface FindEntry {
 export interface ShowOptions {
     /** The entry clicked (or moved to): its cell scrolled into view */
     focus?: string;
-    /** ... to the middle of the canvas - picked to close the list (a double click, Enter) */
+    /** All the cells shown to the middle of the canvas instead - picked to close the list (a double click, Enter) */
     center?: boolean;
 }
 
@@ -128,7 +128,7 @@ export default class FindView extends FilterListView<FindEntry> {
     }
 
     /**
-     * Up and down: the previous, the next entry shown (with Shift: the range to it); Enter: the current entry (or the
+     * Up and down: the previous, the next entry shown (with Shift: the range to it); Enter: the entries marked (or the
      * first one) picked, the list closed
      */
     protected onKeydown(evt: KeyboardEvent): void {
@@ -138,11 +138,7 @@ export default class FindView extends FilterListView<FindEntry> {
             return;
         }
         if (evt.key === 'Enter') {
-            const entries = this.shownEntries();
-            const picked = entries.find(entry => entry.id === this.currentId) ?? entries[0];
-            if (!picked) return;
-            this.markOnly(picked.id, true);
-            this.close();
+            this.pick();
             return;
         }
         super.onKeydown(evt);
@@ -153,6 +149,19 @@ export default class FindView extends FilterListView<FindEntry> {
         this.marked.clear();
         this.currentId = this.anchorId = null;
         this.hooks.show([]);
+    }
+
+    /** The entries marked shown (all of them to the middle of the canvas), or the first one if none is; the list closed */
+    protected pick(): void {
+        const [first] = this.marked;
+        if (first) {
+            this.showMarked(first, true);
+        } else {
+            const [entry] = this.shownEntries();
+            if (!entry) return;
+            this.markOnly(entry.id, true);
+        }
+        this.close();
     }
 
     /**
