@@ -22,7 +22,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `PipeColorController` | always | graph: pipe colors; a control valve shows its pipe's |
 | `GroupController` | always | graph: a member changed → its groups refit |
 | `ToolbarController` | each mode | toolbar buttons |
-| `EditController` | edit | paper: cell click, region, context menus |
+| `EditController` | edit | paper: cell click, region, context menus; a cell not selected pans with *Move selected shapes only* |
 | `PaletteController` | edit | palette: click, drop; graph: the derived groups |
 | `KeyboardController` | edit | shortcuts |
 | `LockController` | edit | graph: `locked` - the pointer goes through a locked element (a class), not in the minimap |

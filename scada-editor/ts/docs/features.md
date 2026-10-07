@@ -7,6 +7,7 @@ The editor builds process diagrams (P&ID-style or high-performance HMI screens) 
 ## Editing
 
 - Drag and drop from a searchable palette, on a grid, with snaplines.
+- Move selected shapes only (the default on a tablet): a drag on any other shape pans the canvas.
 - Select by click, region, all, elements only, connections only, or same type.
 - Move, resize, rotate, flip (the shapes that face a way); labels stay horizontal, on the side you choose.
 - Copy, cut, paste, delete, undo, redo.

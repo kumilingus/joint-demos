@@ -13,7 +13,7 @@ import { closePanel, type PanelContent, showInPanel } from './panel';
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
  * a screen (see `screen.ts`) and its size, the animations of the run mode; the preferences of the editor (the
- * snaplines, the In Use group of the palette).
+ * snaplines, the In Use group of the palette, moving the selected shapes only).
  * While they are open, the screen can be
  * moved (and selected, resized); it is out of the way otherwise.
  */
@@ -54,6 +54,7 @@ interface ScreenSettings {
 interface EditorSettings {
     snaplines: boolean;
     inUse: boolean;
+    moveSelectedOnly: boolean;
 }
 
 /** A change of the settings following the diagram (not changing it back) */
@@ -104,7 +105,11 @@ export function openSettings(app: App): void {
     el.append(titleEl);
 
     // A cell (not in the graph): the inspector unsets its properties (`removeProp()`)
-    const editorSettings: EditorSettings = { snaplines: app.snaplinesEnabled, inUse: app.inUseShown };
+    const editorSettings: EditorSettings = {
+        snaplines: app.snaplinesEnabled,
+        inUse: app.inUseShown,
+        moveSelectedOnly: app.moveSelectedOnly
+    };
     const settings = new dia.Cell({
         ...getScreenSettings(graph),
         animations: getAnimationLevel(graph),
@@ -133,6 +138,9 @@ export function openSettings(app: App): void {
     });
     listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => app.setSnaplinesEnabled(enabled));
     listener.listenTo(settings, 'change:inUse', (_cell: dia.Cell, shown: boolean) => app.setInUseShown(shown));
+    listener.listenTo(settings, 'change:moveSelectedOnly', (_cell: dia.Cell, selectedOnly: boolean) => {
+        app.moveSelectedOnly = selectedOnly;
+    });
     // ... and follow it.
     listener.listenTo(graph, 'add remove reset change:size', () => {
         const { screen, size } = getScreenSettings(graph);
@@ -208,7 +216,9 @@ export function openSettings(app: App): void {
             // A moved or resized element aligns with the others
             snaplines: { type: 'toggle', label: 'Snaplines', group: 'editor', index: 1 },
             // The group of the palette with the shapes of the diagram
-            inUse: { type: 'toggle', label: 'In Use group', group: 'editor', index: 2 }
+            inUse: { type: 'toggle', label: 'In Use group', group: 'editor', index: 2 },
+            // A drag on a shape not selected pans the canvas (see `EditController`)
+            moveSelectedOnly: { type: 'toggle', label: 'Move selected shapes only', group: 'editor', index: 3 }
         },
         groups: {
             screen: { label: 'Screen', index: 1 },

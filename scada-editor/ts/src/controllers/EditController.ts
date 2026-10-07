@@ -1,4 +1,4 @@
-import type { dia } from '@joint/plus';
+import { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, clickTarget, dragCopy, dropCopy, selectAtLevel, toggleAtLevel } from '../actions';
@@ -14,7 +14,9 @@ import { preventSelectionInteraction, showHover } from '../canvas/selection';
  * a drag with Shift on the blank canvas selects the cells it touches (see `selection.ts`). The right click opens the
  * context menu of a cell or of the blank
  * canvas (see `context-menu.ts`). A drag with Cmd / Ctrl or Alt / Option moves a copy (the original stays, connected);
- * a click with Cmd / Ctrl is still a click (it adds to the selection).
+ * a click with Cmd / Ctrl is still a click (it adds to the selection). With *Move selected shapes only* (the settings,
+ * on by default on a tablet) a drag moves a selected cell only: on any other it pans the canvas (as the drag of the
+ * blank canvas) - a click selects it first.
  * Active in the edit mode only.
  */
 export default class EditController extends Controller {
@@ -24,6 +26,7 @@ export default class EditController extends Controller {
 
         this.listenTo(paper, {
             'cell:pointerclick': onCellPointerclick,
+            'cell:pointerdown': onCellPointerdown,
             'blank:pointerdown': onBlankPointerdown,
             'cell:contextmenu': onCellContextmenu,
             // A hovered cell shows what a click on it selects (the cell, its group, a member of the selected group).
@@ -48,6 +51,20 @@ function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {
     } else {
         selectAtLevel(app, model);
     }
+}
+
+/**
+ * Moving the selected cells only (see `App.moveSelectedOnly`): a press on a cell that is not selected (nor the group it
+ * would move) pans the canvas, the cell not moved - as Keynote, Pages on a tablet
+ */
+function onCellPointerdown(app: App, view: dia.CellView, evt: dia.Event) {
+    const { scroller, selection, moveSelectedOnly } = app;
+    if (!moveSelectedOnly) return;
+    // What the drag would move: the element or the group it is in (see `App.interactivityOf()`), the link
+    const moved = view instanceof dia.ElementView ? view.getDelegatedView() : view;
+    if (moved && selection.has(moved.model)) return;
+    view.preventDefaultInteraction(evt);
+    scroller.startPanning(evt);
 }
 
 function onBlankPointerdown(app: App, evt: dia.Event) {

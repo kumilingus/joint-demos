@@ -77,6 +77,11 @@ export class App {
     runtimeCells: dia.Cell.JSON[] | null = null;
     /** Whether the palette has the group of the shapes in use (see `refreshPalette()`) */
     inUseShown = true;
+    /**
+     * Whether a drag moves a selected cell only - on any other it pans the canvas (see `EditController`): by default
+     * on a device used with a finger (a tablet), where a drag mostly means to scroll
+     */
+    moveSelectedOnly = window.matchMedia('(pointer: coarse)').matches;
     selection = new mvc.Collection<dia.Cell>();
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;
