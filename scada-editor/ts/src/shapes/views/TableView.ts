@@ -113,7 +113,11 @@ export default class TableView extends dia.ElementView {
 
     render(): this {
         this.el.replaceChildren();
-        this.content = svg(this.el, 'g', {});
+        // A markup of the group it is drawn in: the selectors of the view (`root` - the frames of the selection, the
+        // highlighters of the log find it)
+        this.renderJSONMarkup([{ tagName: 'g', selector: 'content' }]);
+        const content = this.findNode('content');
+        this.content = content instanceof SVGGElement ? content : null;
         this.update();
         this.updateTransformation();
         return this;
