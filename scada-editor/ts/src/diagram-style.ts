@@ -86,11 +86,24 @@ export function applyDiagramStyle(app: App): void {
     applyStyle(style);
     // The canvas in a gradient: drawn behind the paper (on its scroller, see `canvas.css`) - the paper transparent
     app.paper.drawBackground({ color: style.canvasGradient ? 'transparent' : CANVAS_COLOR });
-    const papers: dia.Paper[] = [app.paper];
-    if (app.stencil) papers.push(...Object.keys(app.stencil.options.groups ?? {}).map(group => app.stencil!.getPaper(group)));
-    // The elements (their surfaces) rendered again, the links updated (the borders of the pipes)
-    papers.forEach((paper) => {
-        paper.model.getElements().forEach(element => element.findView(paper)?.render());
-        paper.model.getLinks().forEach(link => (link.findView(paper) as dia.LinkView | undefined)?.update());
+    const { paper, stencil } = app;
+    const papers: dia.Paper[] = [paper];
+    // The open groups of the palette: a closed one is not drawn (nothing to measure) - restyled when it is opened (see
+    // `PaletteController`)
+    if (stencil) {
+        const groups = Object.keys(stencil.options.groups ?? {}).filter(group => stencil.isGroupOpen(group));
+        papers.push(...groups.map(group => stencil.getPaper(group)));
+    }
+    papers.forEach(restylePaper);
+}
+
+/**
+ * The cells of the paper in the style of the diagram: their attributes evaluated again (the surfaces of the elements, the
+ * borders of the pipes) - requested from the paper: done when they are in the DOM (a diagram being loaded is not yet)
+ */
+export function restylePaper(paper: dia.Paper): void {
+    paper.model.getCells().forEach((cell) => {
+        const view = cell.findView(paper);
+        view?.requestUpdate(view.getFlag('UPDATE'));
     });
 }

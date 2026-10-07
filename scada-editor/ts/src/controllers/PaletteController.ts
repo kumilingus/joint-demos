@@ -3,6 +3,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, refreshFavorites, refreshPalette, selectCell } from '../actions';
 import { showShapePreview } from '../palette/shape-preview';
+import { restylePaper } from '../diagram-style';
 
 /**
  * A shape clicked in the palette (not dragged, see `dragThreshold`) is shown in the inspector panel,
@@ -24,7 +25,9 @@ export default class PaletteController extends Controller {
         this.listenTo(stencil, {
             'element:drop': onPaletteShapeDrop,
             // The events of the papers of its groups (the paper of the group first)
-            'group:cell:pointerclick': onPaletteShapeClick
+            'group:cell:pointerclick': onPaletteShapeClick,
+            // A group opened: in the style of the diagram (not restyled while it was closed, see `applyDiagramStyle()`)
+            'group:open': onGroupOpen
         });
     }
 }
@@ -48,3 +51,8 @@ function onPaletteShapeDrop(app: App, cellView: dia.CellView) {
     selectCell(app, cellView.model);
 }
 
+
+function onGroupOpen(app: App, group: string) {
+    const { stencil } = app;
+    if (stencil) restylePaper(stencil.getPaper(group));
+}
