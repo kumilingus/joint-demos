@@ -32,7 +32,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Select Same Type** - right-click a shape: all shapes of the selected types (*Pump · 2*).
 - **Select Below** - right-click where shapes overlap: the one underneath.
 - **Lock** - right-click a shape or a group: it stays where it is and the pointer goes through it (an image in the background, a frame) - not selected by a click, a region or *Select All*, no link connects to it, not in the minimap. To unlock, right-click it: the canvas menu offers *Unlock* (its ID) and *Unlock All*.
-- **Move** by dragging; **resize** and **rotate** a single shape with its handles. With *Move selected shapes only* (Settings) a drag moves a selected shape only - on any other it pans the canvas: click (tap) the shape first.
+- **Move** by dragging, or with the arrow keys (a grid step, five with `Shift`); **resize** and **rotate** a single shape with its handles. With *Move selected shapes only* (Settings) a drag moves a selected shape only - on any other it pans the canvas: click (tap) the shape first.
 - **Flip** - shapes that face a way (pump, check valve, strainer, manifold, turbine, compressor, fan, blower, cyclone, kiln, crusher, mill, bucket elevator): right-click *Flip Horizontally* (`Shift` + `H`) or *Flip Vertically* (`Shift` + `V`) mirrors them instead of turning them upside down; connected pipes stay on their stubs. The strainer and the manifold flip vertically too (the leg up, the outlets up).
 - **Label** - its text and *Label position* (top, left, right, bottom) in the inspector.
 - **Label shape** (a text on its own) - several lines (`Enter` in its text), its font size, style, weight and *Alignment* (left, center, right).
@@ -139,6 +139,7 @@ Edit mode, not while typing. `Cmd` on macOS, `Ctrl` elsewhere.
 | Select elements only | `Cmd` + `Shift` + `A` |
 | Group / ungroup | `Cmd` + `G` / `Cmd` + `Shift` + `G` |
 | Flip horizontally / vertically | `Shift` + `H` / `Shift` + `V` |
+| Move the selection (a grid step / five) | Arrow keys / `Shift` + arrow keys |
 | Duplicate (drag a copy) | `Cmd` or `Alt` + drag an element |
 | Delete | `Delete`, `Backspace` |
 | Close a menu, one group level up, clear the selection | `Escape` |

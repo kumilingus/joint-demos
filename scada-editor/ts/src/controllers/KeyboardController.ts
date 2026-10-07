@@ -1,13 +1,16 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { copySelection, cutSelection, flipSelection, groupSelection, paste, redo, removeSelection, selectAll, selectElements, selectUp, undo, ungroupSelection } from '../actions';
+import {
+    copySelection, cutSelection, flipSelection, groupSelection, moveSelection, paste, redo, removeSelection, selectAll,
+    selectElements, selectUp, undo, ungroupSelection
+} from '../actions';
 import { closeMenu } from '../canvas/context-menu';
 import { isTyping } from '../events';
 
 /**
- * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, flip, `Escape` one level
- * up (the group of the selected member, then nothing). Active in the edit mode only.
+ * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, flip, the arrows moving
+ * the selection, `Escape` one level up (the group of the selected member, then nothing). Active in the edit mode only.
  */
 export default class KeyboardController extends Controller {
 
@@ -29,7 +32,9 @@ export default class KeyboardController extends Controller {
             'ctrl+shift+g meta+shift+g': onUngroup,
             // Flipped horizontally, vertically (see `flipSelection()`)
             'shift+h': onFlipHorizontally,
-            'shift+v': onFlipVertically
+            'shift+v': onFlipVertically,
+            // A grid step, a few with Shift (see `moveSelection()`)
+            'left right up down shift+left shift+right shift+up shift+down': onArrow
         });
     }
 }
@@ -115,4 +120,12 @@ function onFlipVertically(app: App, evt: dia.Event) {
     if (isTyping(evt)) return;
     evt.preventDefault();
     flipSelection(app, 'y');
+}
+
+function onArrow(app: App, evt: dia.Event) {
+    if (isTyping(evt)) return;
+    const direction = ({ ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' } as const)[evt.key ?? ''];
+    if (!direction) return;
+    // Nothing selected: the canvas scrolls
+    if (moveSelection(app, direction, evt.shiftKey)) evt.preventDefault();
 }
