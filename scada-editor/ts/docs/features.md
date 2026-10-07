@@ -8,6 +8,7 @@ The editor builds process diagrams (P&ID-style or high-performance HMI screens) 
 
 - Drag and drop from a searchable palette, on a grid, with snaplines.
 - Move selected shapes only (the default on a tablet): a drag on any other shape pans the canvas.
+- Find a shape by its ID, label or kind, in both modes; several selected as in a list of files (`Cmd`, `Shift`, the arrows).
 - The palette and the inspector hidden for more room (the toolbar, `Cmd + \`); the diagram stays in place.
 - Select by click, region, all, elements only, connections only, or same type.
 - Move, resize, rotate, flip (the shapes that face a way); labels stay horizontal, on the side you choose.

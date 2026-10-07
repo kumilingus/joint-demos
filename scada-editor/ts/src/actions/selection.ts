@@ -1,4 +1,4 @@
-import { type dia } from '@joint/plus';
+import { type dia, type mvc } from '@joint/plus';
 import type { App } from '../app';
 import Screen from '../shapes/models/diagram/Screen';
 import Group from '../shapes/models/diagram/Group';
@@ -9,12 +9,15 @@ import { isLocked } from '../canvas/lock';
  * The selection: a cell, the cells, all of them, the level of the groups clicked, the removal of the selected cells.
  */
 
+/** The options of a change of the selection: where it comes from (the find list, see `FindController`) */
+export type SelectionOptions = mvc.Silenceable & { find?: boolean };
+
 export function selectCell(app: App, cell: dia.Cell): void {
     app.selection.reset([cell]);
 }
 
-export function selectCells(app: App, cells: dia.Cell[]): void {
-    app.selection.reset(cells);
+export function selectCells(app: App, cells: dia.Cell[], options: SelectionOptions = {}): void {
+    app.selection.reset(cells, options);
 }
 
 /** Select all the cells: as a region selects them - not the screen, a group for its members (see `Group`) */

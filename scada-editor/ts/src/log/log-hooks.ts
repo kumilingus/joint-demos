@@ -142,7 +142,7 @@ const Ping = dia.HighlighterView.extend({
 });
 
 /** The element pinged (again from the start if it is pinged now) */
-function ping(paper: dia.Paper, element: dia.Element, kind: PlantEvent): void {
+export function ping(paper: dia.Paper, element: dia.Element, kind: PlantEvent): void {
     const view = element.findView(paper);
     if (!view) return;
     Ping.remove(view, PING_ID);

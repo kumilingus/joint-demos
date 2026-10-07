@@ -22,6 +22,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `PipeColorController` | always | graph: pipe colors; a control valve shows its pipe's |
 | `GroupController` | always | graph: a member changed → its groups refit |
 | `ToolbarController` | each mode | toolbar buttons |
+| `FindController` | both (one instance: the filter kept) | Find button, `Cmd + F`, `Escape`; graph changes refresh the list; a selection on the canvas closes it |
 | `EditController` | edit | paper: cell click, region, context menus; a cell not selected pans with *Move selected shapes only* |
 | `PaletteController` | edit | palette: click, drop; graph: the derived groups |
 | `KeyboardController` | edit | shortcuts |
@@ -198,6 +199,8 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 | Multi-selection inspector ("mixed") | `inspector/selection-inspector.ts` |
 | Save / open / export (WebP) | `actions/file.ts`; ports are not saved (`Shape.toJSON()`) |
 | Screen | `shapes/models/diagram/Screen.ts`, `canvas/screen.ts` |
+| Find (the tagged cells; the list's own selection changes flagged `find`) | `find/FindView.ts`, `find/find-hooks.ts`, `FindController` |
+| A list filtered in a dialog (Find, the log): the filter, the rows marked by key, the dialog | `list/FilterListView.ts` (an `mvc.View`, kept between openings) |
 | Lock (`locked`, a group locks its members; skipped by the selection, the links, the minimap) | `canvas/lock.ts`, `actions/lock.ts`, `LockController`, `validateConnection` in `canvas/config.ts`, `cellVisibility` in `canvas/navigator.ts` |
 | Controls (front layer, upright, inert while editing) | `runtime/controls.ts` |
 

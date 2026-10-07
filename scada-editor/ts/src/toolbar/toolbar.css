@@ -9,14 +9,14 @@
 }
 
 /* The file, history, zoom and view buttons (and the settings): groups of square icon buttons. */
-.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="view"]) button {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="find"], [data-group="view"]) button {
     width: 36px;
     padding: 0;
     border-radius: 0;
     color: var(--muted-foreground);
 }
 
-.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="view"]) button:hover:not(:disabled) {
+.joint-toolbar :is([data-group="file"], [data-group="history"], [data-group="zoom"], [data-group="settings"], [data-group="find"], [data-group="view"]) button:hover:not(:disabled) {
     color: var(--foreground);
 }
 
@@ -35,6 +35,7 @@
 .joint-toolbar [data-name="export"] { --icon: var(--icon-image); }
 .joint-toolbar [data-name="settings"] { --icon: var(--icon-settings); }
 .joint-toolbar [data-name="log"] { --icon: var(--icon-log); }
+.joint-toolbar [data-name="find"] { --icon: var(--icon-search); }
 
 /* The color scheme button shows the one it switches to. */
 .joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-moon); }
@@ -59,7 +60,7 @@
 :root:fullscreen .joint-toolbar [data-name="fullscreen"] { --icon: var(--icon-minimize); }
 
 /* A group of one button: rounded on both sides; with its label (not a square icon) */
-.joint-toolbar [data-group="settings"] button {
+.joint-toolbar :is([data-group="settings"], [data-group="find"]) button {
     width: auto;
     padding: 0 12px;
     border-radius: var(--radius-md);

@@ -36,7 +36,8 @@ import {
     PipeColorController,
     GroupController,
     ToolbarController,
-    LockController
+    LockController,
+    FindController
 } from './controllers';
 // The mock of the plant (see `plant/mock/`): an app with a real plant deletes it and this line
 import MockPlantController from './plant/mock/MockPlantController';
@@ -143,6 +144,8 @@ export class App {
             new PipeColorController(this),
             new GroupController(this)
         ];
+        // In both modes: the filter of its list kept from one to the other
+        const findController = new FindController(this);
         this.modeControllers = {
             // Each listens to the toolbar of its mode.
             [Mode.Edit]: [
@@ -150,7 +153,8 @@ export class App {
                 new EditController(this),
                 new KeyboardController(this),
                 new PaletteController(this),
-                new LockController(this)
+                new LockController(this),
+                findController
             ],
             [Mode.Runtime]: [
                 new ToolbarController(this),
@@ -158,7 +162,8 @@ export class App {
                 new MockPlantController(this),
                 new LogController(this),
                 new AnimationsController(this),
-                new ElectricalController(this)
+                new ElectricalController(this),
+                findController
             ]
         };
 

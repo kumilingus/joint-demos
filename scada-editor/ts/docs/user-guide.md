@@ -6,7 +6,7 @@ What it offers: [features](features.md). How it is built: [developer notes](dev-
 
 ![The editor: the palette, the canvas, the inspector panel with the examples](images/editor-overview.png)
 
-Palette on the left, canvas in the middle, inspector panel on the right. The toolbar: new, open, save, export image, undo / redo, zoom, Settings, show / hide the palette and the inspector, full screen, light / dark, **Run**.
+Palette on the left, canvas in the middle, inspector panel on the right. The toolbar: new, open, save, export image, undo / redo, zoom, Settings, Find, show / hide the palette and the inspector, full screen, light / dark, **Run**.
 
 - **Examples** - with nothing selected, the inspector panel lists Boiler House, Microgrid and Cement Plant.
 - **New diagram** - starts with a screen and opens the settings.
@@ -104,6 +104,16 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - *In Use group* - shows or hides the In Use group in the palette.
 - *Move selected shapes only* - a drag on a shape that is not selected pans the canvas instead of moving it (a connection not attached to anything is then moved by its ends). On by default on a tablet or a phone.
 
+## Find
+
+**Find** in the toolbar, or `Cmd` + `F` - in both modes. The shapes with an ID: their ID, label and kind (*P-101 · Feed Pump 1 · Pump*).
+
+- **Filter** - words of the ID, the label or the kind; every word has to match, dashes don't count (*p101* finds *P-101*).
+- **Click** a row - the shape is selected (edit mode) or highlighted (run mode), scrolled into view.
+- **Several** (edit mode) - `Cmd` + click adds or removes a row, `Shift` + click selects the rows from the one clicked before, `Cmd` + `Shift` + click adds them.
+- **Keys** - `↑` / `↓` go through the rows (with `Shift`: a range), `Enter` picks the row and closes the list; a double click too. `Escape` closes it.
+- A shape selected on the canvas closes it; the list keeps its filter for the next time.
+
 ## Run mode
 
 ![Run mode with the log and the tags shown](images/run-mode-log.png)
@@ -142,6 +152,7 @@ Edit mode, not while typing. `Cmd` on macOS, `Ctrl` elsewhere.
 | Flip horizontally / vertically | `Shift` + `H` / `Shift` + `V` |
 | Move the selection (a grid step / five) | Arrow keys / `Shift` + arrow keys |
 | Hide / show the palette and the inspector | `Cmd` + `\` |
+| Find (in both modes) | `Cmd` + `F` |
 | Duplicate (drag a copy) | `Cmd` or `Alt` + drag an element |
 | Delete | `Delete`, `Backspace` |
-| Close a menu, one group level up, clear the selection | `Escape` |
+| Close a menu or Find, one group level up, clear the selection | `Escape` |

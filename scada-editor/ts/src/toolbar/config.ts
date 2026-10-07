@@ -74,6 +74,14 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         group: 'view',
         attrs: tooltip('Show / hide the inspector (Ctrl+\\ both panels)')
     }] : [];
+    // Find a shape (see `find/FindList.ts`): in both modes
+    const find: ui.Toolbar.Options['tools'] = [{
+        type: 'button',
+        name: 'find',
+        group: 'find',
+        text: 'Find',
+        attrs: tooltip('Find a shape by its tag, its label or its kind (Ctrl+F)')
+    }];
     const history: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
         type: 'undo',
         name: 'undo',
@@ -95,8 +103,10 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             zoom: { index: 4 },
             // The settings of the diagram: with the editing (on the left); the view of the app on the right
             settings: { index: 5 },
-            view: { index: 6, align: ui.Toolbar.Align.Right },
-            mode: { index: 7, align: ui.Toolbar.Align.Right }
+            // On the right: at the same place in both modes (the left differs), with the view (it changes nothing)
+            find: { index: 6, align: ui.Toolbar.Align.Right },
+            view: { index: 7, align: ui.Toolbar.Align.Right },
+            mode: { index: 8, align: ui.Toolbar.Align.Right }
         },
         tools: [{
             type: 'label',
@@ -127,6 +137,7 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         },
         ...settings,
         ...log,
+        ...find,
         ...panels,
         {
             // The whole page (hidden by the tool itself in an iframe, where the page can't be full screen)

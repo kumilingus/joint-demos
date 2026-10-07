@@ -1,0 +1,22 @@
+/* Find a shape (see `FindView.ts`): its rows - the tag, the label, the kind (the list: `list/list.css`) */
+
+.scada-find .scada-list-row {
+    display: grid;
+    grid-template-columns: 72px 1fr auto;
+    gap: 10px;
+    padding: 4px 14px;
+}
+
+.scada-find-tag {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 600;
+}
+
+.scada-find-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.scada-find-kind {
+    color: var(--muted-foreground);
+}
