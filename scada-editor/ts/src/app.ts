@@ -101,8 +101,11 @@ export class App {
         this.graph = createGraph();
         // The first listener of the graph: up to date for all the others
         this.tags = new TagIndex(this.graph);
-        // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings
-        this.graph.on(`change:${STYLE_ATTRIBUTE}`, () => applyDiagramStyle(this));
+        // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings - the
+        // graph's own (it triggers the `change:style` of its cells too: their own colors)
+        this.graph.on(`change:${STYLE_ATTRIBUTE}`, (model: unknown) => {
+            if (model === this.graph) applyDiagramStyle(this);
+        });
 
         this.history = new dia.CommandManager({ ...historyOptions, graph: this.graph });
 
