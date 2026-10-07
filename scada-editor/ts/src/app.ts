@@ -104,7 +104,7 @@ export class App {
         // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings - the
         // graph's own (it triggers the `change:style` of its cells too: their own colors)
         this.graph.on(`change:${STYLE_ATTRIBUTE}`, (model: unknown) => {
-            if (model === this.graph) applyDiagramStyle(this);
+            if (model === this.graph) applyDiagramStyle(this, this.graph.previous(STYLE_ATTRIBUTE));
         });
 
         this.history = new dia.CommandManager({ ...historyOptions, graph: this.graph });

@@ -1,4 +1,4 @@
-import type { dia } from '@joint/plus';
+import { type dia, util } from '@joint/plus';
 import type { App } from './app';
 import { type OutlineWidth, setStyleFinish, setStyleOutlineWidth, type SurfaceFinish } from './shapes/common/gradients';
 import { CANVAS_COLOR } from './const';
@@ -80,12 +80,27 @@ export function applyStyle(style: DiagramStyle): void {
     }
 }
 
-/** The style of the diagram on the document (see `diagram-style.ts`), its finish on the shapes: on the canvas, in the palette */
-export function applyDiagramStyle(app: App): void {
+// The keys of the style whose change requires an update of the views (read when they are drawn, see `gradients.ts`); the
+// others are CSS variables
+const VIEW_UPDATE_KEYS: (keyof DiagramStyle)[] = ['finish', 'outlineWidth'];
+
+/** Whether the change of the style requires an update of the views (see `VIEW_UPDATE_KEYS`): always without a previous one */
+function isViewUpdateRequired(style: DiagramStyle, previous?: DiagramStyle): boolean {
+    if (!previous) return true;
+    return !util.isEqual(util.pick(style, ...VIEW_UPDATE_KEYS), util.pick(previous, ...VIEW_UPDATE_KEYS));
+}
+
+/**
+ * The style of the diagram on the document (see `diagram-style.ts`), its finish on the shapes: on the canvas, in the palette.
+ * Changed from the previous style: the views updated only when that requires it (see `isViewUpdateRequired()`; the colors
+ * are CSS variables - the browser repaints them).
+ */
+export function applyDiagramStyle(app: App, previous?: DiagramStyle): void {
     const style = getStyle(app.graph);
     applyStyle(style);
     // The canvas in a gradient: drawn behind the paper (on its scroller, see `canvas.css`) - the paper transparent
     app.paper.drawBackground({ color: style.canvasGradient ? 'transparent' : CANVAS_COLOR });
+    if (!isViewUpdateRequired(style, previous)) return;
     const { paper, stencil } = app;
     const papers: dia.Paper[] = [paper];
     // The open groups of the palette: a closed one is not drawn (nothing to measure) - restyled when it is opened (see
