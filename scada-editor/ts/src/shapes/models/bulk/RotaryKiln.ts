@@ -69,7 +69,7 @@ export default class RotaryKiln extends Shape {
     }
 
     get overflow(): Overflow {
-        return { right: 24 };
+        return { right: 20 };
     }
 
     get tagPrefix(): string {
@@ -164,10 +164,11 @@ export default class RotaryKiln extends Shape {
                     surfaceStroke: 'edge',
                     strokeWidth: 2
                 },
+                // On the grid at the default size: its tip (the end a pipe connects to) and its axis
                 burner: {
                     x: 'calc(w)',
-                    y: `calc(${SHELL_Y + SHELL_HEIGHT / 2} * h - 5)`,
-                    width: 24,
+                    y: 'calc(0.4 * h - 5)',
+                    width: 20,
                     height: 10,
                     surfaceFill: 'pipe',
                     surfaceStroke: 'edge',
