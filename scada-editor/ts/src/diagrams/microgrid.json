@@ -3,7 +3,7 @@
     {
       "position": {
         "x": 770,
-        "y": 30
+        "y": 40
       },
       "size": {
         "width": 340,
@@ -38,8 +38,29 @@
     },
     {
       "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "angle": 0,
+      "type": "CustomImage",
+      "id": "7346f8b5-9775-4b34-afc5-016ba794bb69",
+      "layer": "background",
+      "z": -999,
+      "tag": "IMG-102",
+      "label": {
+        "text": ""
+      },
+      "imageId": "image-frame",
+      "locked": true
+    },
+    {
+      "position": {
         "x": 350,
-        "y": 30
+        "y": 40
       },
       "size": {
         "width": 540,
@@ -1120,7 +1141,7 @@
     {
       "position": {
         "x": 350,
-        "y": 55
+        "y": 65
       },
       "size": {
         "width": 420,
@@ -1304,7 +1325,7 @@
     {
       "position": {
         "x": 350,
-        "y": 30
+        "y": 40
       },
       "size": {
         "width": 760,
@@ -1324,6 +1345,12 @@
       "width": 420,
       "height": 150,
       "name": "Built with JointJS"
+    },
+    "image-frame": {
+      "href": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPgogIDxkZWZzPgogICAgPCEtLSBUaGUgd2Fsa3dheSBhbG9uZyB0aGUgZWRnZXM6IGhhdGNoZWQgLS0+CiAgICA8cGF0dGVybiBpZD0iaGF0Y2giIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+CiAgICAgIDxwYXRoIGQ9Ik0gMCAwIFYgMTYiIHN0cm9rZT0iIzgwODA4MCIgc3Ryb2tlLW9wYWNpdHk9IjAuMTIiIHN0cm9rZS13aWR0aD0iNSIvPgogICAgPC9wYXR0ZXJuPgogIDwvZGVmcz4KICA8IS0tIFRoZSB3YWxrd2F5IGFyb3VuZCB0aGUgZmxvb3IsIGl0cyBpbm5lciBlZGdlIC0tPgogIDxwYXRoIGQ9Ik0gMCAwIEggMTkyMCBWIDEwODAgSCAwIFogTSAyNCAyNCBWIDEwNTYgSCAxODk2IFYgMjQgWiIgZmlsbD0idXJsKCNoYXRjaCkiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPgogIDxyZWN0IHg9IjI0IiB5PSIyNCIgd2lkdGg9IjE4NzIiIGhlaWdodD0iMTAzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjODA4MDgwIiBzdHJva2Utb3BhY2l0eT0iMC4yNSIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=",
+      "width": 1920,
+      "height": 1080,
+      "name": "Frame"
     }
   },
   "favorites": [
