@@ -143,3 +143,7 @@
     filter: var(--tint-filter) drop-shadow(0 0 6px var(--tint-color));
 }
 
+/* A locked element (see `lock.ts`): as if it weren't there - the pointer on what is below it */
+.scada-locked {
+    pointer-events: none;
+}

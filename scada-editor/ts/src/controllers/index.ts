@@ -13,3 +13,4 @@ export { default as TagsController } from './TagsController';
 export { default as PipeColorController } from './PipeColorController';
 export { default as GroupController } from './GroupController';
 export { default as ToolbarController } from './ToolbarController';
+export { default as LockController } from './LockController';

@@ -3,6 +3,7 @@ import type { App } from '../app';
 import Screen from '../shapes/models/diagram/Screen';
 import Group from '../shapes/models/diagram/Group';
 import { withGroups, topGroup, fitGroups, dissolveLoneGroup } from './groups';
+import { isLocked } from '../canvas/lock';
 
 /*
  * The selection: a cell, the cells, all of them, the level of the groups clicked, the removal of the selected cells.
@@ -18,12 +19,13 @@ export function selectCells(app: App, cells: dia.Cell[]): void {
 
 /** Select all the cells: as a region selects them - not the screen, a group for its members (see `Group`) */
 export function selectAll(app: App): void {
-    selectCells(app, app.graph.getCells().filter(cell => !Screen.isScreen(cell) && !cell.isEmbedded()));
+    selectCells(app, app.graph.getCells().filter(cell => !Screen.isScreen(cell) && !cell.isEmbedded() && !isLocked(cell)));
 }
 
 /** Select all the elements (a group for its members): as `selectAll()`, without the links */
 export function selectElements(app: App): void {
-    selectCells(app, app.graph.getCells().filter(cell => cell.isElement() && !Screen.isScreen(cell) && !cell.isEmbedded()));
+    selectCells(app, app.graph.getCells()
+        .filter(cell => cell.isElement() && !Screen.isScreen(cell) && !cell.isEmbedded() && !isLocked(cell)));
 }
 
 /** Select all the connections (the links: pipes, wires, conveyors, signal lines, arrows), as `selectAll()` */
@@ -42,7 +44,7 @@ function typedCells(app: App): dia.Cell[] {
  */
 export function sameTypeCells(app: App): dia.Cell[] {
     const levels = new Set(typedCells(app).map(cell => `${cell.get('type')}|${parentId(cell)}`));
-    return app.graph.getCells().filter(cell => levels.has(`${cell.get('type')}|${parentId(cell)}`));
+    return app.graph.getCells().filter(cell => levels.has(`${cell.get('type')}|${parentId(cell)}`) && !isLocked(cell));
 }
 
 /** The types of the selected cells (see `selectSameType()`) */

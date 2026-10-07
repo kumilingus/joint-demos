@@ -35,7 +35,8 @@ import {
     TagsController,
     PipeColorController,
     GroupController,
-    ToolbarController
+    ToolbarController,
+    LockController
 } from './controllers';
 // The mock of the plant (see `plant/mock/`): an app with a real plant deletes it and this line
 import MockPlantController from './plant/mock/MockPlantController';
@@ -137,7 +138,8 @@ export class App {
                 new ToolbarController(this),
                 new EditController(this),
                 new KeyboardController(this),
-                new PaletteController(this)
+                new PaletteController(this),
+                new LockController(this)
             ],
             [Mode.Runtime]: [
                 new ToolbarController(this),

@@ -4,7 +4,7 @@ import {
     bringToFront, copySelection, cutSelection, elementBelow, groupable, groupSelection, layerOver, layerUnder, menuCell,
     moveToLayer, pasteAt, ungroupSelection, removeSelection, selectCell, sendToBack, splitLink, insertJoin,
     connectedEnds, disconnectSelection, sameTypeCells, flipSelection, flipTargets, selectAll, selectConnections,
-    selectedTypes, selectElements, selectSameType
+    selectedTypes, selectElements, selectSameType, lockable, lockSelection, lockedAt, lockedElements, unlockElements
 } from '../actions';
 import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
@@ -155,6 +155,10 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
             : []),
         // What goes away: the connections of an element, the selection
         ...(cell.isLink() ? [] : [disconnectItem(app)]),
+        // An element as if not there (a background image): unlocked from the menu of the blank canvas (see `openBlankMenu()`)
+        ...(cell.isLink()
+            ? []
+            : [{ action: 'lock', label: 'Lock', separated: true, disabled: lockable(app).length === 0, run: () => lockSelection(app) }]),
         { action: 'delete', label: 'Delete', shortcut: 'Del', separated: cell.isLink(), run: () => removeSelection(app) }
     ]);
 }
@@ -162,12 +166,28 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
 /** The menu of the blank canvas: the copied cells pasted where it was opened */
 export function openBlankMenu(app: App, evt: dia.Event, x: number, y: number): void {
     const cells = app.graph.getCells();
+    // A locked element under the pointer (the pointer goes through it, see `lock.ts`): by its ID
+    const locked = lockedAt(app, { x, y });
+    const lockedAll = lockedElements(app);
     openMenu(app, evt, [
-        { action: 'paste', label: 'Paste', shortcut: `${MOD}V`, disabled: app.clipboard.length === 0, run: () => pasteAt(app, { x, y }) },
+        ...(locked
+            ? [{ action: 'unlock', label: 'Unlock', hint: String(locked.get('tag') ?? ''), run: () => unlockElements(app, [locked]) }]
+            : []),
+        {
+            action: 'paste',
+            label: 'Paste',
+            shortcut: `${MOD}V`,
+            separated: Boolean(locked),
+            disabled: app.clipboard.length === 0,
+            run: () => pasteAt(app, { x, y })
+        },
         // Everything, the elements only, the connections only (the links of any kind: pipes, wires, ...)
         { action: 'select-all', label: 'Select All', shortcut: `${MOD}A`, separated: true, disabled: cells.length === 0, run: () => selectAll(app) },
         { action: 'select-elements', label: 'Select Elements', shortcut: `${MOD}⇧A`, disabled: !cells.some(cell => cell.isElement()), run: () => selectElements(app) },
-        { action: 'select-connections', label: 'Select Connections', disabled: !cells.some(cell => cell.isLink()), run: () => selectConnections(app) }
+        { action: 'select-connections', label: 'Select Connections', disabled: !cells.some(cell => cell.isLink()), run: () => selectConnections(app) },
+        ...(lockedAll.length > 0
+            ? [{ action: 'unlock-all', label: 'Unlock All', hint: String(lockedAll.length), separated: true, run: () => unlockElements(app, lockedAll) }]
+            : [])
     ]);
 }
 

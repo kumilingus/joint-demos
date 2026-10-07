@@ -12,3 +12,4 @@ export { saveDiagram, exportImage, confirmReplace, newDiagram, openDiagram, open
 export { addImages, refreshPalette, refreshFavorites, deleteImage } from './palette';
 export { zoomToFit, storedColorScheme, storeColorScheme } from './view';
 export { flipSelection, flipTargets } from './flip';
+export { lockable, lockSelection, lockedElements, lockedAt, unlockElements } from './lock';

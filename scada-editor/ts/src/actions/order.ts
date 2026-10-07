@@ -120,7 +120,7 @@ export function moveToLayer(app: App, layer: Layer, { back = false } = {}): void
 }
 
 /** Where the cell is drawn: its layer (from the bottom one up, see `Layer`), then its place in the layer (by z) */
-function drawingOrder(graph: dia.Graph, cell: dia.Cell): [number, number] {
+export function drawingOrder(graph: dia.Graph, cell: dia.Cell): [number, number] {
     const layerId = graph.getCellLayerId(cell);
     return [Object.values(Layer).indexOf(layerId as Layer), graph.getLayer(layerId).cellCollection.toArray().indexOf(cell)];
 }

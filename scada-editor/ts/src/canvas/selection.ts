@@ -5,6 +5,7 @@ import { GRID_SIZE, SELECTION_COLOR, SELECTION_PADDING } from '../const';
 import { SourceArrowhead, TargetArrowhead, VertexHandle } from './tools';
 import Shape, { type ResizeOptions } from '../shapes/common/Shape';
 import { scaledWidth } from '../shapes/common/line-width';
+import { isLocked } from './lock';
 
 /*
  * The selection on the canvas (`ui.Selection` over the collection of the app): the region
@@ -141,8 +142,9 @@ export function createSelection(scroller: ui.PaperScroller, collection: mvc.Coll
         collection,
         // The links in a region too: tested against their route (not their bounding box)
         selectLinks: true,
-        // The screen is selected in the settings only (see `settings.ts`), the members of a group with it.
-        filter: (cell: dia.Cell) => cell.get('type') === 'Screen' || cell.isEmbedded(),
+        // The screen is selected in the settings only (see `settings.ts`), the members of a group with it; a locked
+        // element not at all (see `lock.ts`).
+        filter: (cell: dia.Cell) => cell.get('type') === 'Screen' || cell.isEmbedded() || isLocked(cell),
         // A single selected cell is dragged as usual, several are moved together by the selection.
         allowCellInteraction: true,
         translateConnectedLinks: ui.Selection.ConnectedLinksTranslation.SUBGRAPH,
