@@ -195,8 +195,9 @@
 }
 
 /* The note over the appearance of the members of a group (see `inspector.ts`) */
+/* A note of the inspector (a field of its own, see `renderNoteField()`): in the padding of the fields */
 .scada-appearance-note {
-    margin: 0 16px 8px;
+    margin: 0;
     font-size: 12px;
     line-height: 1.4;
     color: var(--muted-foreground);
@@ -337,7 +338,8 @@
     border-radius: 3px;
 }
 
-[data-picker="side"] .select-button-group-button {
+/* Its buttons: found by their contents (the icon of the side, see `sideField()`) */
+[data-picker="side"] > :has(.scada-side-icon) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -346,12 +348,12 @@
 }
 
 /* On the right: the name, then the triangle (pointing out) */
-[data-picker="side"] .select-button-group-button:nth-child(3) { flex-direction: row-reverse; }
+[data-picker="side"] > :has([data-side="right"]) { flex-direction: row-reverse; }
 
-[data-picker="side"] .select-button-group-button:nth-child(1) { grid-area: 1 / 2; }
-[data-picker="side"] .select-button-group-button:nth-child(2) { grid-area: 2 / 1; justify-self: end; }
-[data-picker="side"] .select-button-group-button:nth-child(3) { grid-area: 2 / 3; justify-self: start; }
-[data-picker="side"] .select-button-group-button:nth-child(4) { grid-area: 3 / 2; }
+[data-picker="side"] > :has([data-side="top"]) { grid-area: 1 / 2; }
+[data-picker="side"] > :has([data-side="left"]) { grid-area: 2 / 1; justify-self: end; }
+[data-picker="side"] > :has([data-side="right"]) { grid-area: 2 / 3; justify-self: start; }
+[data-picker="side"] > :has([data-side="bottom"]) { grid-area: 3 / 2; }
 
 .scada-side-icon {
     flex: none;

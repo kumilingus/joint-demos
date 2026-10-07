@@ -255,9 +255,13 @@ export function renderColorField(
     return el;
 }
 
-/** The value of a color field (the `getFieldValue` of the inspector): of its native input */
+/** Whether the field (its element, see `getFieldValue` of the inspector) is a color field */
+export function isColorField(attribute: HTMLElement): boolean {
+    return attribute.classList.contains('scada-color-field-content');
+}
+
+/** The value of a color field (see `isColorField()`): of its native input */
 export function getColorFieldValue(attribute: HTMLElement): { value: string } | undefined {
-    if (!attribute.classList.contains('scada-color-field-content')) return undefined;
     const input = attribute.querySelector<HTMLInputElement>('input[type="color"]');
     return input ? { value: input.value } : undefined;
 }

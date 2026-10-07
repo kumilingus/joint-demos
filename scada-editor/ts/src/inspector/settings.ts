@@ -6,7 +6,7 @@ import Screen from '../shapes/models/diagram/Screen';
 import { renderLabel } from './help';
 import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from '../runtime/animations';
 import { type DiagramStyle, getStyle, LABEL_SIZES, STYLE_ATTRIBUTE } from '../diagram-style';
-import { CANVAS_COLORS, getColorFieldValue, renderColorField } from './color-field';
+import { CANVAS_COLORS, getColorFieldValue, isColorField, renderColorField } from './color-field';
 import { OUTLINE_WIDTHS, type OutlineWidth } from '../shapes/common/gradients';
 import { closePanel, type PanelContent, showInPanel } from './panel';
 
@@ -220,7 +220,7 @@ export function openSettings(app: App): void {
         renderLabel,
         // The color fields of the style (see `color-field.ts`)
         renderFieldContent: renderColorField,
-        getFieldValue: getColorFieldValue
+        getFieldValue: attribute => (isColorField(attribute) ? getColorFieldValue(attribute) : undefined)
     });
     inspector.render();
     el.append(inspector.el);

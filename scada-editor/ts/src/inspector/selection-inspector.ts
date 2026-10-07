@@ -1,5 +1,5 @@
 import { dia, ui, util } from '@joint/plus';
-import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, renderColorField } from './color-field';
+import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, isColorField, outlineFieldOf, renderColorField } from './color-field';
 import { hasFinish, OUTLINE_WIDTHS, type OutlineWidth, type SurfaceFinish } from '../shapes/common/gradients';
 import Group from '../shapes/models/diagram/Group';
 import { LAYER_NAMES } from '../canvas/layers';
@@ -89,7 +89,7 @@ function changeAll(cells: dia.Cell[], change: (cell: dia.Cell) => void): void {
  * The inspector of the appearance of the cells (not rendered), in a group of the inspector with the label;
  * `null` if none of them has a color or a finish to set.
  */
-export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.Inspector | null {
+export function createAppearanceInspector(cells: dia.Cell[], label: string, note?: string): ui.Inspector | null {
     const colored = cells.filter(cell => colorFieldOf(cell));
     const surfaced = cells.filter(cell => cell.isElement() && hasFinish(cell));
     const outlined = cells.filter(cell => outlineFieldOf(cell));
@@ -225,13 +225,31 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string): ui.
     standIn.on('change:layer', (_cell: dia.Cell, layer: string) => {
         if (layer) changeAll(cells, cell => cell.set('layer', layer));
     });
+    // A note under the heading (see `renderNoteField()`)
+    if (note) inputs.note = { type: 'note', text: note, group: 'appearance', index: -1 };
     return new ui.Inspector({
         cell: standIn,
         inputs,
         groups: { appearance: { label, index: 1 }},
         // The help of the fields (the layer; the colors draw their own labels with it, see `color-field.ts`)
         renderLabel,
-        renderFieldContent: renderColorField,
-        getFieldValue: getColorFieldValue
+        // A note (see `renderNoteField()`), the colors (see `color-field.ts`)
+        renderFieldContent: (options, ...rest) => renderNoteField(options) ?? renderColorField(options, ...rest),
+        getFieldValue: attribute => (isColorField(attribute) ? getColorFieldValue(attribute) : undefined)
     });
+}
+
+/** The options of a note of the inspector: `type: 'note'`, its `text` */
+interface NoteOptions {
+    type?: string;
+    text?: string;
+}
+
+/** A note of the inspector: a field without a value, a text of its own */
+function renderNoteField(options: NoteOptions): HTMLElement | undefined {
+    if (options.type !== 'note') return undefined;
+    const el = document.createElement('p');
+    el.className = 'scada-appearance-note';
+    el.textContent = options.text ?? '';
+    return el;
 }

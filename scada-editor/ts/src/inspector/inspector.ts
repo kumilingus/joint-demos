@@ -3,7 +3,7 @@ import { hasControl } from '../runtime/controls';
 import { isRouted } from '../shapes/common/routing';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
-import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, outlineFieldOf, rememberColor, renderColorField } from './color-field';
+import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, isColorField, outlineFieldOf, rememberColor, renderColorField } from './color-field';
 import type { ColorField } from '../shapes/common/Shape';
 import Group from '../shapes/models/diagram/Group';
 import { appearanceTargets, createAppearanceInspector, OUTLINE_WIDTH_OPTIONS } from './selection-inspector';
@@ -40,7 +40,7 @@ const SIDES: Array<[string, string, number]> = [['top', 'Top', 0], ['left', 'Lef
 
 /**
  * A side of the shape (a label, a control): the buttons as a cross around the shape - a triangle and the name on each side
- * (see `.scada-side-picker` in the styles), below unless set
+ * (`data-picker="side"`, see `inspector.css`), below unless set
  */
 function sideField(label: string): Inputs {
     return {
@@ -49,7 +49,7 @@ function sideField(label: string): Inputs {
         defaultValue: 'bottom',
         options: SIDES.map(([value, name, angle]) => ({
             value,
-            content: `<svg class="scada-side-icon" viewBox="0 0 10 10" aria-hidden="true"><path d="M 5 2 L 9 8 H 1 Z" transform="rotate(${angle} 5 5)"/></svg><span>${name}</span>`
+            content: `<svg class="scada-side-icon" data-side="${value}" viewBox="0 0 10 10" aria-hidden="true"><path d="M 5 2 L 9 8 H 1 Z" transform="rotate(${angle} 5 5)"/></svg><span>${name}</span>`
         })),
         attrs: { '.joint-select-button-group': { 'data-picker': 'side' }}
     };
@@ -528,12 +528,6 @@ function fieldContentRenderer(selectMember?: (member: dia.Cell) => void) {
     };
 }
 
-/** The value of a custom field: of a color one (the members of a group are read-only, no value) */
-function getFieldValue(attribute: HTMLElement): { value: unknown } | undefined {
-    if (attribute.classList.contains('scada-group-members')) return { value: undefined };
-    return getColorFieldValue(attribute);
-}
-
 /** The inputs of the cell: of a group, of an element, of a link */
 function inspectorInputs(cell: dia.Cell): Inputs {
     if (Group.isGroup(cell)) return groupInputs;
@@ -577,15 +571,9 @@ export function inspectSelection(app: App, keepSettings = false): void {
 
 /** The inspector of the appearance of the cells (see `selection-inspector.ts`), with a note under its heading */
 function renderAppearanceInspector(cells: dia.Cell[], label: string, note?: string): ui.Inspector | null {
-    const inspector = createAppearanceInspector(cells, label);
+    const inspector = createAppearanceInspector(cells, label, note);
     if (!inspector) return null;
     inspector.render();
-    if (note) {
-        const noteEl = document.createElement('p');
-        noteEl.className = 'scada-appearance-note';
-        noteEl.textContent = note;
-        inspector.el.querySelector('.group-label')?.after(noteEl);
-    }
     trackPickedColors(inspector.el);
     return inspector;
 }
@@ -615,7 +603,8 @@ function openInspector(app: App, cell: dia.Cell, onMemberSelect?: (member: dia.C
         renderLabel,
         // The color fields with the swatches of the colors to pick again (see `color-field.ts`), the members of a group
         renderFieldContent: fieldContentRenderer(onMemberSelect),
-        getFieldValue,
+        // The color fields read here, any other by the inspector (the members of a group: read-only, never read)
+        getFieldValue: attribute => (isColorField(attribute) ? getColorFieldValue(attribute) : undefined),
         // An ID taken or empty: not set, told at the field (see `validateTag()`)
         validateInput: (input: HTMLInputElement, path: string) => (path === 'tag' ? validateTag(app.tags, cell, input) : input.validity.valid)
     });
