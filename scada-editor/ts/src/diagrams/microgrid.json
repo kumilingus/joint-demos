@@ -2,27 +2,6 @@
   "cells": [
     {
       "position": {
-        "x": 770,
-        "y": 40
-      },
-      "size": {
-        "width": 340,
-        "height": 120
-      },
-      "angle": 0,
-      "type": "CustomImage",
-      "tag": "IMG-101",
-      "id": "080378d5-3ac0-4940-9803-ecd65eba13dc",
-      "layer": "background",
-      "z": -1,
-      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
-      "label": {
-        "text": ""
-      },
-      "imageId": "image-jointjs-badge"
-    },
-    {
-      "position": {
         "x": 0,
         "y": 0
       },
@@ -47,13 +26,14 @@
       },
       "angle": 0,
       "type": "CustomImage",
+      "label": {
+        "text": "",
+        "position": "bottom"
+      },
       "id": "7346f8b5-9775-4b34-afc5-016ba794bb69",
       "layer": "background",
       "z": -999,
       "tag": "IMG-102",
-      "label": {
-        "text": ""
-      },
       "imageId": "image-frame",
       "locked": true,
       "style": {
@@ -79,6 +59,70 @@
       "style": {
         "color": "var(--color-amber)",
         "opacity": 0.18
+      }
+    },
+    {
+      "position": {
+        "x": 770,
+        "y": 40
+      },
+      "size": {
+        "width": 340,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "CustomImage",
+      "label": {
+        "text": "",
+        "position": "bottom"
+      },
+      "tag": "IMG-101",
+      "id": "080378d5-3ac0-4940-9803-ecd65eba13dc",
+      "layer": "background",
+      "z": -1,
+      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
+      "imageId": "image-jointjs-badge"
+    },
+    {
+      "position": {
+        "x": 350,
+        "y": 40
+      },
+      "size": {
+        "width": 760,
+        "height": 120
+      },
+      "angle": 0,
+      "type": "Group",
+      "id": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
+      "layer": "background",
+      "z": 0,
+      "tag": "GRP-101"
+    },
+    {
+      "position": {
+        "x": 350,
+        "y": 65
+      },
+      "size": {
+        "width": 420,
+        "height": 100
+      },
+      "angle": 0,
+      "type": "Label",
+      "label": {
+        "text": "Microgrid",
+        "size": 80,
+        "weight": 600,
+        "align": "middle"
+      },
+      "id": "01520282-b166-40fc-b47c-5b921184e28a",
+      "layer": "background",
+      "z": 1,
+      "tag": "TXT-101",
+      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
+      "style": {
+        "color": "var(--color-amber)"
       }
     },
     {
@@ -495,14 +539,14 @@
       },
       "angle": 0,
       "type": "Busbar",
+      "label": {
+        "text": "Main Bus 400 V"
+      },
       "taps": 19,
       "id": "2f5316d3-4c9d-46ac-be85-47ff15eb7730",
       "layer": "equipment",
       "z": 1,
-      "tag": "BB-101",
-      "label": {
-        "text": "Main Bus 400 V"
-      }
+      "tag": "BB-101"
     },
     {
       "position": {
@@ -515,13 +559,17 @@
       },
       "angle": 0,
       "type": "WindTurbine",
+      "label": {
+        "text": "Wind Turbine",
+        "position": "left"
+      },
+      "data": {
+        "power": 1
+      },
       "id": "aaf377c2-db82-4f54-a5dc-42071c1ece48",
       "layer": "equipment",
       "z": 2,
-      "tag": "WT-101",
-      "data": {
-        "power": 1
-      }
+      "tag": "WT-101"
     },
     {
       "position": {
@@ -534,16 +582,17 @@
       },
       "angle": 0,
       "type": "CircuitBreaker",
-      "id": "4f09132b-3cdf-4405-87e9-66399bd56f4a",
-      "layer": "equipment",
-      "z": 3,
-      "tag": "CB-101",
+      "label": {
+        "text": "CB-W",
+        "position": "top"
+      },
       "data": {
         "open": false
       },
-      "label": {
-        "text": "CB-W"
-      }
+      "id": "4f09132b-3cdf-4405-87e9-66399bd56f4a",
+      "layer": "equipment",
+      "z": 3,
+      "tag": "CB-101"
     },
     {
       "position": {
@@ -556,6 +605,10 @@
       },
       "angle": 0,
       "type": "SolarArray",
+      "label": {
+        "text": "Solar Array",
+        "position": "bottom"
+      },
       "id": "7bed483b-44b3-4dd3-adbc-d2ab8f0727e5",
       "layer": "equipment",
       "z": 4,
@@ -572,21 +625,22 @@
       },
       "angle": 0,
       "type": "CircuitBreaker",
-      "id": "28004267-7662-4b16-9112-dd53f99cebf3",
-      "layer": "equipment",
-      "z": 5,
-      "tag": "CB-102",
+      "label": {
+        "text": "CB-S",
+        "position": "top"
+      },
       "data": {
         "open": false
       },
-      "label": {
-        "text": "CB-S"
-      }
+      "id": "28004267-7662-4b16-9112-dd53f99cebf3",
+      "layer": "equipment",
+      "z": 5,
+      "tag": "CB-102"
     },
     {
       "position": {
         "x": 980,
-        "y": 250
+        "y": 240
       },
       "size": {
         "width": 200,
@@ -594,21 +648,22 @@
       },
       "angle": 0,
       "type": "DieselGenerator",
-      "id": "3a9c65c0-16a7-4a77-aea9-ddb815e9e7aa",
-      "layer": "equipment",
-      "z": 6,
-      "tag": "DG-101",
+      "label": {
+        "text": "Diesel Backup",
+        "position": "bottom"
+      },
       "data": {
         "power": 0
       },
-      "label": {
-        "text": "Diesel Backup"
-      }
+      "id": "3a9c65c0-16a7-4a77-aea9-ddb815e9e7aa",
+      "layer": "equipment",
+      "z": 6,
+      "tag": "DG-101"
     },
     {
       "position": {
         "x": 750,
-        "y": 270
+        "y": 260
       },
       "size": {
         "width": 160,
@@ -616,16 +671,17 @@
       },
       "angle": 0,
       "type": "FuelTank",
-      "id": "534bc943-50a8-4cd3-9e1a-d6f9e39dd028",
-      "layer": "equipment",
-      "z": 7,
-      "tag": "DT-101",
+      "label": {
+        "text": "Day Tank",
+        "position": "bottom"
+      },
       "data": {
         "level": 70
       },
-      "label": {
-        "text": "Day Tank"
-      }
+      "id": "534bc943-50a8-4cd3-9e1a-d6f9e39dd028",
+      "layer": "equipment",
+      "z": 7,
+      "tag": "DT-101"
     },
     {
       "position": {
@@ -638,21 +694,22 @@
       },
       "angle": 0,
       "type": "CircuitBreaker",
-      "id": "1ab39615-bd0d-4ef6-9afb-25aa684a984e",
-      "layer": "equipment",
-      "z": 8,
-      "tag": "CB-103",
+      "label": {
+        "text": "CB-D",
+        "position": "top"
+      },
       "data": {
         "open": false
       },
-      "label": {
-        "text": "CB-D"
-      }
+      "id": "1ab39615-bd0d-4ef6-9afb-25aa684a984e",
+      "layer": "equipment",
+      "z": 8,
+      "tag": "CB-103"
     },
     {
       "position": {
         "x": 1260,
-        "y": 230
+        "y": 190
       },
       "size": {
         "width": 160,
@@ -660,14 +717,17 @@
       },
       "angle": 0,
       "type": "BatteryBank",
-      "attrs": {},
+      "label": {
+        "text": "Battery Bank",
+        "position": "bottom"
+      },
+      "data": {
+        "level": 80
+      },
       "id": "ed1fffe5-acf0-433e-b1af-22c2a31e07a0",
       "layer": "equipment",
       "z": 9,
-      "tag": "BESS-101",
-      "data": {
-        "level": 80
-      }
+      "tag": "BESS-101"
     },
     {
       "position": {
@@ -680,16 +740,17 @@
       },
       "angle": 0,
       "type": "CircuitBreaker",
-      "id": "e910e44a-6e24-4fe2-86e0-293ca7fbd15a",
-      "layer": "equipment",
-      "z": 10,
-      "tag": "CB-104",
+      "label": {
+        "text": "CB-B",
+        "position": "top"
+      },
       "data": {
         "open": false
       },
-      "label": {
-        "text": "CB-B"
-      }
+      "id": "e910e44a-6e24-4fe2-86e0-293ca7fbd15a",
+      "layer": "equipment",
+      "z": 10,
+      "tag": "CB-104"
     },
     {
       "position": {
@@ -721,11 +782,6 @@
         }
       ],
       "rows": 1,
-      "id": "14afbcc8-bb8c-4254-ab33-20222d3b08cc",
-      "layer": "equipment",
-      "z": 11,
-      "tag": "TB-101",
-      "sourceTag": "WT-101",
       "data": {
         "values": [
           [
@@ -739,7 +795,12 @@
         "color": "var(--shape-face)",
         "outline": "var(--shape-table-line)",
         "accent": "var(--shape-table-header)"
-      }
+      },
+      "id": "14afbcc8-bb8c-4254-ab33-20222d3b08cc",
+      "layer": "equipment",
+      "z": 11,
+      "tag": "TB-101",
+      "sourceTag": "WT-101"
     },
     {
       "position": {
@@ -771,11 +832,6 @@
         }
       ],
       "rows": 1,
-      "id": "6e84ae8d-d4f7-4dfe-8d9c-45baffb49188",
-      "layer": "equipment",
-      "z": 12,
-      "tag": "TB-102",
-      "sourceTag": "PV-101",
       "data": {
         "values": [
           [
@@ -789,12 +845,17 @@
         "color": "var(--shape-face)",
         "outline": "var(--shape-table-line)",
         "accent": "var(--shape-table-header)"
-      }
+      },
+      "id": "6e84ae8d-d4f7-4dfe-8d9c-45baffb49188",
+      "layer": "equipment",
+      "z": 12,
+      "tag": "TB-102",
+      "sourceTag": "PV-101"
     },
     {
       "position": {
         "x": 980,
-        "y": 200
+        "y": 180
       },
       "size": {
         "width": 140,
@@ -821,11 +882,6 @@
         }
       ],
       "rows": 1,
-      "id": "ce2728aa-841c-4734-ac63-4cccd7358fbe",
-      "layer": "equipment",
-      "z": 13,
-      "tag": "TB-103",
-      "sourceTag": "DG-101",
       "data": {
         "values": [
           [
@@ -839,12 +895,17 @@
         "color": "var(--shape-face)",
         "outline": "var(--shape-table-line)",
         "accent": "var(--shape-table-header)"
-      }
+      },
+      "id": "ce2728aa-841c-4734-ac63-4cccd7358fbe",
+      "layer": "equipment",
+      "z": 13,
+      "tag": "TB-103",
+      "sourceTag": "DG-101"
     },
     {
       "position": {
         "x": 1270,
-        "y": 200
+        "y": 150
       },
       "size": {
         "width": 140,
@@ -871,11 +932,6 @@
         }
       ],
       "rows": 1,
-      "id": "1aa2195e-00c6-489e-91a9-29aca864b0ef",
-      "layer": "equipment",
-      "z": 14,
-      "tag": "TB-104",
-      "sourceTag": "BESS-101",
       "data": {
         "values": [
           [
@@ -889,7 +945,12 @@
         "color": "var(--shape-face)",
         "outline": "var(--shape-table-line)",
         "accent": "var(--shape-table-header)"
-      }
+      },
+      "id": "1aa2195e-00c6-489e-91a9-29aca864b0ef",
+      "layer": "equipment",
+      "z": 14,
+      "tag": "TB-104",
+      "sourceTag": "BESS-101"
     },
     {
       "position": {
@@ -902,13 +963,14 @@
       },
       "angle": 0,
       "type": "SurgeArrester",
+      "label": {
+        "text": "Arrester",
+        "position": "left"
+      },
       "id": "4424d276-007d-4341-b0d6-4af37a8bffcd",
       "layer": "equipment",
       "z": 15,
-      "tag": "SA-101",
-      "label": {
-        "text": "Arrester"
-      }
+      "tag": "SA-101"
     },
     {
       "position": {
@@ -921,13 +983,14 @@
       },
       "angle": 0,
       "type": "Ground",
+      "label": {
+        "text": "Earth",
+        "position": "bottom"
+      },
       "id": "2ef2f39a-32fe-46cf-b260-013f8d3941cc",
       "layer": "equipment",
       "z": 16,
-      "tag": "GND-101",
-      "label": {
-        "text": "Earth"
-      }
+      "tag": "GND-101"
     },
     {
       "position": {
@@ -940,16 +1003,17 @@
       },
       "angle": 0,
       "type": "CircuitBreaker",
-      "id": "8aa250b9-2371-4b36-b658-ce11087b81d5",
-      "layer": "equipment",
-      "z": 17,
-      "tag": "CB-105",
+      "label": {
+        "text": "CB-L",
+        "position": "top"
+      },
       "data": {
         "open": false
       },
-      "label": {
-        "text": "CB-L"
-      }
+      "id": "8aa250b9-2371-4b36-b658-ce11087b81d5",
+      "layer": "equipment",
+      "z": 17,
+      "tag": "CB-105"
     },
     {
       "position": {
@@ -962,13 +1026,14 @@
       },
       "angle": 0,
       "type": "Switchgear",
+      "label": {
+        "text": "Lighting Switchgear",
+        "position": "top"
+      },
       "id": "3e6e97a1-94ae-49e8-a066-0839e3e585ae",
       "layer": "equipment",
       "z": 18,
-      "tag": "SWG-101",
-      "label": {
-        "text": "Lighting Switchgear"
-      }
+      "tag": "SWG-101"
     },
     {
       "position": {
@@ -981,13 +1046,14 @@
       },
       "angle": 0,
       "type": "Lamp",
+      "label": {
+        "text": "Hall",
+        "position": "bottom"
+      },
       "id": "c8649af8-9315-402b-838d-d004c9f34424",
       "layer": "equipment",
       "z": 19,
-      "tag": "LMP-101",
-      "label": {
-        "text": "Hall"
-      }
+      "tag": "LMP-101"
     },
     {
       "position": {
@@ -1000,13 +1066,14 @@
       },
       "angle": 0,
       "type": "Lamp",
+      "label": {
+        "text": "Yard",
+        "position": "bottom"
+      },
       "id": "ef7dc225-f764-4521-a328-06aa7491177e",
       "layer": "equipment",
       "z": 20,
-      "tag": "LMP-102",
-      "label": {
-        "text": "Yard"
-      }
+      "tag": "LMP-102"
     },
     {
       "position": {
@@ -1019,13 +1086,14 @@
       },
       "angle": 0,
       "type": "Heater",
+      "label": {
+        "text": "Office",
+        "position": "bottom"
+      },
       "id": "3c875a9f-814f-40b8-b720-2e5e0683735c",
       "layer": "equipment",
       "z": 21,
-      "tag": "HTR-101",
-      "label": {
-        "text": "Office"
-      }
+      "tag": "HTR-101"
     },
     {
       "position": {
@@ -1038,13 +1106,14 @@
       },
       "angle": 0,
       "type": "Lamp",
+      "label": {
+        "text": "Gate",
+        "position": "bottom"
+      },
       "id": "d3026c98-8405-43ed-a1e1-0fe7b109c88f",
       "layer": "equipment",
       "z": 22,
-      "tag": "LMP-103",
-      "label": {
-        "text": "Gate"
-      }
+      "tag": "LMP-103"
     },
     {
       "position": {
@@ -1057,13 +1126,14 @@
       },
       "angle": 0,
       "type": "Fuse",
+      "label": {
+        "text": "F-MCC",
+        "position": "bottom"
+      },
       "id": "b9fbeb79-c0a3-4301-92f9-39af70374922",
       "layer": "equipment",
       "z": 23,
-      "tag": "FU-101",
-      "label": {
-        "text": "F-MCC"
-      }
+      "tag": "FU-101"
     },
     {
       "position": {
@@ -1076,13 +1146,14 @@
       },
       "angle": 0,
       "type": "MotorControlCenter",
+      "label": {
+        "text": "MCC",
+        "position": "right"
+      },
       "id": "8f3d9567-16bd-4237-9f54-1692c119182f",
       "layer": "equipment",
       "z": 24,
-      "tag": "MCC-101",
-      "label": {
-        "text": "MCC"
-      }
+      "tag": "MCC-101"
     },
     {
       "position": {
@@ -1095,13 +1166,14 @@
       },
       "angle": 0,
       "type": "Heater",
+      "label": {
+        "text": "Tank Heater",
+        "position": "bottom"
+      },
       "id": "e34e40fe-80d7-4a49-bbd1-64d76494a908",
       "layer": "equipment",
       "z": 25,
-      "tag": "HTR-102",
-      "label": {
-        "text": "Tank Heater"
-      }
+      "tag": "HTR-102"
     },
     {
       "position": {
@@ -1114,13 +1186,14 @@
       },
       "angle": 0,
       "type": "Lamp",
+      "label": {
+        "text": "Pump Room",
+        "position": "bottom"
+      },
       "id": "b74eb15f-6517-4a53-9576-4d230a82f248",
       "layer": "equipment",
       "z": 26,
-      "tag": "LMP-104",
-      "label": {
-        "text": "Pump Room"
-      }
+      "tag": "LMP-104"
     },
     {
       "position": {
@@ -1133,37 +1206,14 @@
       },
       "angle": 0,
       "type": "Lamp",
+      "label": {
+        "text": "Workshop",
+        "position": "bottom"
+      },
       "id": "e41daf3a-5828-4d6a-9192-e0cc3c37b26f",
       "layer": "equipment",
       "z": 27,
-      "tag": "LMP-105",
-      "label": {
-        "text": "Workshop"
-      }
-    },
-    {
-      "position": {
-        "x": 350,
-        "y": 65
-      },
-      "size": {
-        "width": 420,
-        "height": 100
-      },
-      "angle": 0,
-      "type": "Label",
-      "id": "01520282-b166-40fc-b47c-5b921184e28a",
-      "layer": "background",
-      "z": 1,
-      "tag": "TXT-101",
-      "parent": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
-      "style": {
-        "color": "var(--color-amber)"
-      },
-      "label": {
-        "text": "Microgrid",
-        "size": 80
-      }
+      "tag": "LMP-105"
     },
     {
       "position": {
@@ -1176,13 +1226,18 @@
       },
       "angle": 0,
       "type": "ElectricMeter",
+      "label": {
+        "text": "Bus Voltage",
+        "position": "bottom"
+      },
+      "unit": "V",
+      "data": {
+        "value": 230
+      },
       "id": "82879419-6e17-4681-b94c-91794cce4de3",
       "layer": "instruments",
       "z": 2,
-      "tag": "EI-101",
-      "label": {
-        "text": "Bus Voltage"
-      }
+      "tag": "EI-101"
     },
     {
       "position": {
@@ -1195,10 +1250,10 @@
       },
       "angle": 0,
       "type": "Trend",
-      "id": "66726e3c-1844-40ef-a749-c546f4a99499",
-      "layer": "instruments",
-      "z": 3,
-      "tag": "TRD-101",
+      "label": {
+        "text": "Load (kW)",
+        "position": "bottom"
+      },
       "data": {
         "values": [
           42,
@@ -1215,9 +1270,10 @@
           62
         ]
       },
-      "label": {
-        "text": "Load (kW)"
-      }
+      "id": "66726e3c-1844-40ef-a749-c546f4a99499",
+      "layer": "instruments",
+      "z": 3,
+      "tag": "TRD-101"
     },
     {
       "position": {
@@ -1230,17 +1286,18 @@
       },
       "angle": 0,
       "type": "Display",
+      "label": {
+        "text": "Frequency",
+        "position": "bottom"
+      },
+      "unit": "Hz",
+      "data": {
+        "value": 50
+      },
       "id": "3791fa1c-3931-4c76-b45b-3c5fa6773c7e",
       "layer": "instruments",
       "z": 4,
-      "tag": "DI-101",
-      "data": {
-        "value": 50.0
-      },
-      "label": {
-        "text": "Frequency"
-      },
-      "unit": "Hz"
+      "tag": "DI-101"
     },
     {
       "position": {
@@ -1253,17 +1310,18 @@
       },
       "angle": 0,
       "type": "Display",
+      "label": {
+        "text": "Battery",
+        "position": "bottom"
+      },
+      "unit": "%",
+      "data": {
+        "value": 80
+      },
       "id": "07769402-aed6-4783-8e2e-ac2a215703be",
       "layer": "instruments",
       "z": 5,
-      "tag": "DI-102",
-      "data": {
-        "value": 80.0
-      },
-      "label": {
-        "text": "Battery"
-      },
-      "unit": "%"
+      "tag": "DI-102"
     },
     {
       "position": {
@@ -1276,19 +1334,21 @@
       },
       "angle": 0,
       "type": "Label",
+      "label": {
+        "text": "Starts when the battery is low",
+        "size": 14,
+        "weight": 600,
+        "align": "middle",
+        "styles": [
+          "italic"
+        ]
+      },
       "id": "29febbff-570a-4707-9c07-b76036dfb495",
       "layer": "instruments",
       "z": 6,
       "tag": "TXT-102",
       "style": {
         "color": "var(--color-blue)"
-      },
-      "label": {
-        "text": "Starts when the battery is low",
-        "size": 14,
-        "styles": [
-          "italic"
-        ]
       }
     },
     {
@@ -1324,22 +1384,6 @@
       "style": {
         "color": "var(--color-blue)"
       }
-    },
-    {
-      "position": {
-        "x": 350,
-        "y": 40
-      },
-      "size": {
-        "width": 760,
-        "height": 120
-      },
-      "angle": 0,
-      "type": "Group",
-      "id": "5967f76c-5031-4c33-92bb-7b775f5f22b0",
-      "layer": "background",
-      "z": 0,
-      "tag": "GRP-101"
     }
   ],
   "images": {
@@ -1366,6 +1410,7 @@
     "canvas": "var(--canvas-sand)",
     "canvasGradient": true,
     "labelSize": "large",
-    "labelColor": "var(--color-slate)"
+    "labelColor": "var(--color-slate)",
+    "labels": "both"
   }
 }
