@@ -1,10 +1,10 @@
-import type { App } from '../app';
+import type { App, SidePanel } from '../app';
 import { ColorScheme, Mode } from '../const';
 import { fitOptions, runtimeFitOptions } from '../canvas/config';
 import { getScreen, isScreenShown } from '../canvas/screen';
 
 /*
- * What the canvas shows, the color scheme of the app (remembered).
+ * What the canvas shows, the side panels, the color scheme of the app (remembered).
  */
 
 /** Show the whole diagram: on loading, entering the runtime mode (a wider canvas) and with the toolbar button. */
@@ -38,4 +38,24 @@ export function storeColorScheme(colorScheme: ColorScheme): void {
     } catch {
         // Not remembered, but switched.
     }
+}
+
+/**
+ * Show the side panel if it is hidden, hide it otherwise (see `App.setPanelShown()`): the diagram stays where it is on
+ * the screen - the canvas grows or shrinks on the side of the panel
+ */
+export function togglePanel(app: App, panel: SidePanel): void {
+    const { scroller } = app;
+    const area = scroller.getVisibleArea();
+    app.setPanelShown(panel, !app.isPanelShown(panel));
+    // The palette is on the left: the right edge of the canvas stays (the inspector on the right: the left one, as it is)
+    if (panel === 'palette') scroller.positionPoint(area.topRight(), '100%', 0);
+}
+
+/** Hide both side panels if any is shown, show both otherwise (as Figma's Cmd + \) */
+export function toggleSidePanels(app: App): void {
+    const shown = app.isPanelShown('palette') || app.isPanelShown('inspector');
+    (['palette', 'inspector'] as const).forEach((panel) => {
+        if (app.isPanelShown(panel) === shown) togglePanel(app, panel);
+    });
 }

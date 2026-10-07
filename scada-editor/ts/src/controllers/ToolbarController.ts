@@ -1,7 +1,7 @@
 import Controller from './Controller';
 import type { App } from '../app';
 import { ColorScheme, Mode } from '../const';
-import { exportImage, newDiagram, openDiagram, saveDiagram, zoomToFit } from '../actions';
+import { exportImage, newDiagram, openDiagram, saveDiagram, togglePanel, zoomToFit } from '../actions';
 import { isSettingsOpen, toggleSettings } from '../inspector/settings';
 
 /**
@@ -21,7 +21,9 @@ export default class ToolbarController extends Controller {
             'save:pointerclick': onSavePointerclick,
             'export:pointerclick': onExportPointerclick,
             'open:pointerclick': onOpenPointerclick,
-            'settings:pointerclick': toggleSettings,
+            'settings:pointerclick': onSettingsPointerclick,
+            'palette:pointerclick': onPalettePointerclick,
+            'inspector:pointerclick': onInspectorPointerclick,
             'colorScheme:pointerclick': onColorSchemePointerclick
         });
     }
@@ -56,4 +58,18 @@ function onOpenPointerclick(app: App) {
 
 function onZoomToFitPointerclick(app: App) {
     zoomToFit(app);
+}
+
+/** The settings are in the inspector panel: shown with them */
+function onSettingsPointerclick(app: App) {
+    app.setPanelShown('inspector', true);
+    toggleSettings(app);
+}
+
+function onPalettePointerclick(app: App) {
+    togglePanel(app, 'palette');
+}
+
+function onInspectorPointerclick(app: App) {
+    togglePanel(app, 'inspector');
 }

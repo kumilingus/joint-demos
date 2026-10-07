@@ -3,14 +3,15 @@ import Controller from './Controller';
 import type { App } from '../app';
 import {
     copySelection, cutSelection, flipSelection, groupSelection, moveSelection, paste, redo, removeSelection, selectAll,
-    selectElements, selectUp, undo, ungroupSelection
+    selectElements, selectUp, toggleSidePanels, undo, ungroupSelection
 } from '../actions';
 import { closeMenu } from '../canvas/context-menu';
 import { isTyping } from '../events';
 
 /**
  * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, flip, the arrows moving
- * the selection, `Escape` one level up (the group of the selected member, then nothing). Active in the edit mode only.
+ * the selection, the side panels shown or hidden, `Escape` one level up (the group of the selected member, then nothing).
+ * Active in the edit mode only.
  */
 export default class KeyboardController extends Controller {
 
@@ -34,7 +35,9 @@ export default class KeyboardController extends Controller {
             'shift+h': onFlipHorizontally,
             'shift+v': onFlipVertically,
             // A grid step, a few with Shift (see `moveSelection()`)
-            'left right up down shift+left shift+right shift+up shift+down': onArrow
+            'left right up down shift+left shift+right shift+up shift+down': onArrow,
+            // Both side panels (see `toggleSidePanels()`)
+            'ctrl+\\ meta+\\': onToggleSidePanels
         });
     }
 }
@@ -128,4 +131,10 @@ function onArrow(app: App, evt: dia.Event) {
     if (!direction) return;
     // Nothing selected: the canvas scrolls
     if (moveSelection(app, direction, evt.shiftKey)) evt.preventDefault();
+}
+
+function onToggleSidePanels(app: App, evt: dia.Event) {
+    if (isTyping(evt)) return;
+    evt.preventDefault();
+    toggleSidePanels(app);
 }

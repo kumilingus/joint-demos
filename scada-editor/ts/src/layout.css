@@ -47,6 +47,12 @@ body {
 
 /* Panels (palette and inspector) */
 
+/* Hidden by the buttons of the toolbar (see `App.setPanelShown()`): the canvas takes their place. */
+.scada-app[data-palette="hidden"] .scada-stencil-panel,
+.scada-app[data-inspector="hidden"] .scada-inspector-panel {
+    display: none;
+}
+
 .scada-stencil-panel,
 .scada-inspector-panel {
     position: relative;

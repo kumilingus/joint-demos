@@ -62,6 +62,18 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         text: 'Log',
         attrs: tooltip('The messages between the diagram and the plant: the updates, the commands')
     }] : [];
+    // The side panels shown or hidden (see `App.setPanelShown()`): in the edit mode (none in the runtime mode)
+    const panels: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
+        type: 'button',
+        name: 'palette',
+        group: 'view',
+        attrs: tooltip('Show / hide the palette (Ctrl+\\ both panels)')
+    }, {
+        type: 'button',
+        name: 'inspector',
+        group: 'view',
+        attrs: tooltip('Show / hide the inspector (Ctrl+\\ both panels)')
+    }] : [];
     const history: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
         type: 'undo',
         name: 'undo',
@@ -115,6 +127,7 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         },
         ...settings,
         ...log,
+        ...panels,
         {
             // The whole page (hidden by the tool itself in an iframe, where the page can't be full screen)
             type: 'fullscreen',

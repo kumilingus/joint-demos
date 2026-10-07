@@ -6,12 +6,13 @@ What it offers: [features](features.md). How it is built: [developer notes](dev-
 
 ![The editor: the palette, the canvas, the inspector panel with the examples](images/editor-overview.png)
 
-Palette on the left, canvas in the middle, inspector panel on the right. The toolbar: new, open, save, export image, undo / redo, zoom, Settings, full screen, light / dark, **Run**.
+Palette on the left, canvas in the middle, inspector panel on the right. The toolbar: new, open, save, export image, undo / redo, zoom, Settings, show / hide the palette and the inspector, full screen, light / dark, **Run**.
 
 - **Examples** - with nothing selected, the inspector panel lists Boiler House, Microgrid and Cement Plant.
 - **New diagram** - starts with a screen and opens the settings.
 - **The screen** - the dashed frame (*Screen 1920 × 1080*) is what the operator sees in run mode.
 - **Pan** by dragging the blank canvas, **zoom** with the toolbar or a pinch.
+- **More room** - hide the palette or the inspector with their toolbar buttons, or both with `Cmd` + `\`; the diagram stays where it is.
 
 ![The Cement Plant example](images/cement-plant.png)
 
@@ -140,6 +141,7 @@ Edit mode, not while typing. `Cmd` on macOS, `Ctrl` elsewhere.
 | Group / ungroup | `Cmd` + `G` / `Cmd` + `Shift` + `G` |
 | Flip horizontally / vertically | `Shift` + `H` / `Shift` + `V` |
 | Move the selection (a grid step / five) | Arrow keys / `Shift` + arrow keys |
+| Hide / show the palette and the inspector | `Cmd` + `\` |
 | Duplicate (drag a copy) | `Cmd` or `Alt` + drag an element |
 | Delete | `Delete`, `Backspace` |
 | Close a menu, one group level up, clear the selection | `Escape` |

@@ -40,6 +40,16 @@
 .joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-moon); }
 :root[data-color-scheme="dark"] .joint-toolbar [data-name="colorScheme"] { --icon: var(--icon-sun); }
 
+/* The side panel buttons: pressed while the panel is shown (see `App.setPanelShown()`) */
+.joint-toolbar [data-name="palette"] { --icon: var(--icon-panel-left); }
+.joint-toolbar [data-name="inspector"] { --icon: var(--icon-panel-right); }
+
+.scada-app:not([data-palette="hidden"]) .joint-toolbar [data-name="palette"],
+.scada-app:not([data-inspector="hidden"]) .joint-toolbar [data-name="inspector"] {
+    background: var(--muted);
+    color: var(--foreground);
+}
+
 .joint-toolbar-group[data-group="view"] {
     margin-right: 8px;
 }

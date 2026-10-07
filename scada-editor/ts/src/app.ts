@@ -44,6 +44,9 @@ import Snaplines from './canvas/Snaplines';
 import { showInspectorPlaceholder } from './inspector/placeholder';
 import { hideToolsOverPanel, type PanelContent } from './inspector/panel';
 
+/** A side panel of the edit mode (see `App.setPanelShown()`) */
+export type SidePanel = 'palette' | 'inspector';
+
 export class App {
 
     el: HTMLElement;
@@ -193,6 +196,15 @@ export class App {
         this.history.reset();
         zoomToFit(this);
         this.paper.unfreeze();
+    }
+
+    /** Show or hide a side panel of the edit mode: the palette, the inspector (the canvas takes its place) */
+    setPanelShown(panel: SidePanel, shown: boolean): void {
+        this.el.dataset[panel] = shown ? 'shown' : 'hidden';
+    }
+
+    isPanelShown(panel: SidePanel): boolean {
+        return this.el.dataset[panel] !== 'hidden';
     }
 
     /** The colors of the page (the design tokens in `theme/tokens.css`): the canvas and its grid follow them. */
