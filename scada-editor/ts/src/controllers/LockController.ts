@@ -2,6 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { hideLocked, showLocked } from '../canvas/lock';
+import { updateNavigatorVisibility } from '../canvas/navigator';
 
 /**
  * The locked elements (see `canvas/lock.ts`) shown as such - the pointer goes through them: added, loaded, locked or
@@ -25,8 +26,9 @@ export default class LockController extends Controller {
 }
 
 function onLockChange(app: App, cell: dia.Cell) {
-    const { paper } = app;
+    const { paper, navigator } = app;
     showLocked(paper, cell);
+    updateNavigatorVisibility(navigator, cell);
 }
 
 function onGraphReset(app: App) {

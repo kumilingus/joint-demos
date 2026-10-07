@@ -1,6 +1,7 @@
 import { dia, ui, util } from '@joint/plus';
 import { paperOptions } from './config';
 import { routingPaperOptions, routingPresentationAttributes } from '../shapes/common/routing';
+import { isLocked } from './lock';
 
 /*
  * The minimap. Its views are simplified: an element is a plain rectangle (the screen a tinted frame),
@@ -86,9 +87,18 @@ export function createNavigator(el: HTMLElement, scroller: ui.PaperScroller): ui
             defaultConnectionPoint: paperOptions.defaultConnectionPoint,
             ...routingPaperOptions,
             anchorNamespace: paperOptions.anchorNamespace,
-            background: { color: 'transparent' }
+            background: { color: 'transparent' },
+            // A locked element is the background (a floor, a frame - see `lock.ts`): not in the minimap (the visibility of
+            // the cells needs the view management of the paper)
+            viewManagement: true,
+            cellVisibility: (cell: dia.Cell) => !isLocked(cell)
         }
     });
     navigator.render();
     return navigator;
+}
+
+/** The cell and its members (deep) shown in the minimap, or not (locked or unlocked, see `cellVisibility` above) */
+export function updateNavigatorVisibility(navigator: ui.Navigator, cell: dia.Cell): void {
+    [cell, ...cell.getEmbeddedCells({ deep: true })].forEach(level => navigator.targetPaper.updateCellVisibility(level));
 }
