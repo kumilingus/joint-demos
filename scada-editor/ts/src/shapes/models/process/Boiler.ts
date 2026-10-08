@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type ControlKind } from '../Shape';
 import { dataOf } from '../../common/data';
 
 // The flames are drawn around the bottom center of the firebox.

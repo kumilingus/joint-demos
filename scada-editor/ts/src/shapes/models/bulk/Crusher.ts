@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type ControlKind, type Resizable } from '../../common/Shape';
+import Shape, { type ColorField, type ControlKind, type Resizable } from '../Shape';
 import type { Flip } from '../../attributes/flip';
 
 // The spokes of the flywheel, around its hub

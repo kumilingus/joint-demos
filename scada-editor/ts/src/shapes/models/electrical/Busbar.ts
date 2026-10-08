@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminal, terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 import { DERIVED } from '../../../history';
 
 /** The markup of the shape: parsed once, shared by all its elements. */

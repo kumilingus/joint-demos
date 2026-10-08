@@ -1,7 +1,7 @@
 import { type dia, g, util, V } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR } from '../../../const';
-import Shape from '../../common/Shape';
+import Shape from '../Shape';
 import { dataOf } from '../../common/data';
 
 /** A slice of a donut chart: what it is, how much of it and its color */

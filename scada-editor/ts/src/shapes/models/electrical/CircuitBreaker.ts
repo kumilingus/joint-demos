@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type ControlKind, type Resizable } from '../../common/Shape';
+import Shape, { type ControlKind, type Resizable } from '../Shape';
 import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */

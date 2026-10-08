@@ -3,7 +3,7 @@ import Pipe, { pipeOutlineWidth } from '../shapes/models/piping/Pipe';
 import Group from '../shapes/models/diagram/Group';
 import { GRID_SIZE, SELECTION_COLOR, SELECTION_PADDING } from '../const';
 import { SourceArrowhead, TargetArrowhead, Vertices, verticesOptions } from './tools';
-import Shape, { type ResizeOptions } from '../shapes/common/Shape';
+import Shape, { type ResizeOptions } from '../shapes/models/Shape';
 import { scaledWidth } from '../shapes/common/line-width';
 import { isLocked } from './lock';
 

@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`

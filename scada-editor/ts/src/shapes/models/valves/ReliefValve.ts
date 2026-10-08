@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable } from '../Shape';
 
 // The spring inside the bonnet: a zig-zag between the relative heights 0.08 and 0.42
 const SPRING = Array.from({ length: 7 }, (_, i) => {

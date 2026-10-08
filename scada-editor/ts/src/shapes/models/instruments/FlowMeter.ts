@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR, SURFACE_INK } from '../../../const';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */

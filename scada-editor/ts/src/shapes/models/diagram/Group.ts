@@ -1,7 +1,7 @@
 import type { dia } from '@joint/plus';
 import { Layer } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape from '../../common/Shape';
+import Shape from '../Shape';
 
 /**
  * A group of elements: its members embedded in it (see `groupSelection()` in `actions/groups.ts`). Nothing of

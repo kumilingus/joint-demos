@@ -3,7 +3,7 @@ import { PIPE_COLOR } from '../../../const';
 import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from '../Shape';
 import { dataOf } from '../../common/data';
 
 // The cover slides over the frame opening (the frame is 30 wide with 3 on each side).

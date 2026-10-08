@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { branchPorts, fittingPorts } from '../../common/ports';
 import { FITTING_STUB_LENGTH } from './Fitting';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 import type { Flip } from '../../attributes/flip';
 
 // The rounded ends of the header

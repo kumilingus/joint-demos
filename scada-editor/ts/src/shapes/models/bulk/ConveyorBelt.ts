@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ControlKind } from '../../common/Shape';
+import Shape, { type ControlKind } from '../Shape';
 
 /** A roller of the belt at `cx`, as big as the belt is tall (the shorter side, `s`). */
 const roller = (cx: string) => ({

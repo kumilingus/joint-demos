@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type ControlKind } from '../../common/Shape';
+import Shape, { type ControlKind } from '../Shape';
 import type { Flip } from '../../attributes/flip';
 
 // The stages of blades, growing with the casing (relative x positions)

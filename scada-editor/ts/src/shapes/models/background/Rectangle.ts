@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { BACKGROUND_FILL, Layer } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`

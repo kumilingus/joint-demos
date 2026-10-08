@@ -1,6 +1,6 @@
 import type { dia } from '@joint/plus';
 import type { App } from '../app';
-import Shape from '../shapes/common/Shape';
+import Shape from '../shapes/models/Shape';
 import { flipOf } from '../shapes/attributes/flip';
 import Group from '../shapes/models/diagram/Group';
 

@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { Layer, PIPE_COLOR, PIPE_OUTLINE } from '../../../const';
-import type { ColorField } from '../../common/Shape';
-import Connection from '../../common/Connection';
+import type { ColorField } from '../Shape';
+import Connection from '../Connection';
 import { lineWidthAttributes, scaledWidth, type StrokeWidths } from '../../common/line-width';
 import { fromStyleAttributes } from '../../attributes/from-style';
 import { outlineWidthOf } from '../../common/gradients';

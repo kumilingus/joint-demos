@@ -2,7 +2,7 @@ import { type dia, g, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { LABEL_COLOR, Layer, MAX_LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable } from '../Shape';
 import { type DataKey, dataOf } from '../../common/data';
 import { styleOf } from '../../common/style';
 

@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 // The sheds of the porcelain housing: at parts of the height
 const SHEDS = [0.28, 0.42, 0.56, 0.7];

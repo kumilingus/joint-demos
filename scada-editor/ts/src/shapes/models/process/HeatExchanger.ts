@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape from '../../common/Shape';
+import Shape from '../Shape';
 
 const nozzle = {
     width: 16,

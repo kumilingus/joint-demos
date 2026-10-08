@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from '../Shape';
 
 // A small blade of a fan, pointing up from its hub; the other two are rotated copies.
 const BLADE = 'M 0 0 C 2 -5 10 -12 4 -17 C -1 -15 -5 -8 0 0 Z';

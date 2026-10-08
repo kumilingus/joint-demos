@@ -1,9 +1,9 @@
 import { dia, type g } from '@joint/plus';
-import type { Overflow } from './footprint';
+import type { Overflow } from '../common/footprint';
 import { GRID_SIZE, Layer } from '../../const';
 import { DERIVED } from '../../history';
-import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttributes } from './gradients';
-import { flippedPorts, pipeAttributes } from './ports';
+import { hasOutline, hasSurface, materialAttributes, SURFACE_COLOR, surfaceAttributes } from '../common/gradients';
+import { flippedPorts, pipeAttributes } from '../common/ports';
 import { fromModelAttributes } from '../attributes/label';
 import { type Flip, flipAttributes, flipOf } from '../attributes/flip';
 import { computedAttributes } from '../attributes/computed';

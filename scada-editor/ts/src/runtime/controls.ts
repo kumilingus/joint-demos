@@ -1,5 +1,5 @@
 import { dia, util, type mvc } from '@joint/plus';
-import Shape from '../shapes/common/Shape';
+import Shape from '../shapes/models/Shape';
 import { besideElement, seenBBox, sideOf } from '../shapes/attributes/label';
 import { readProperty, type TagValue } from '../plant/properties';
 import { flipOf } from '../shapes/attributes/flip';

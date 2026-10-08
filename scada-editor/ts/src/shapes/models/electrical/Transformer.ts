@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 // A bushing on the lid, at a part of the width: a porcelain insulator with its sheds
 const bushing = (x: number) => ({

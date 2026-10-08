@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from '../Shape';
 import type { Flip } from '../../attributes/flip';
 
 // The spokes of the impeller, around the center of the casing

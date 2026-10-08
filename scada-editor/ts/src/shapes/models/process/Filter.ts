@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 import { SURFACE_INK } from '../../../const';
 
 /** The markup of the shape: parsed once, shared by all its elements. */

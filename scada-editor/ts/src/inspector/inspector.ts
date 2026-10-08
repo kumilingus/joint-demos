@@ -4,7 +4,7 @@ import { isRouted } from '../shapes/common/routing';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, isColorField, outlineFieldOf, rememberColor, renderColorField } from './color-field';
-import type { ColorField } from '../shapes/common/Shape';
+import type { ColorField } from '../shapes/models/Shape';
 import Group from '../shapes/models/diagram/Group';
 import { appearanceTargets, createAppearanceInspector, OUTLINE_WIDTH_OPTIONS } from './selection-inspector';
 import { getStyleFinish, hasFinish } from '../shapes/common/gradients';

@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import type { Overflow } from '../../common/footprint';
 import { Layer } from '../../../const';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`

@@ -1,7 +1,7 @@
 import { type dia, g, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable } from '../Shape';
 import type { Thresholds } from './Panel';
 import { Layer, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../../../const';
 import { dataOf } from '../../common/data';

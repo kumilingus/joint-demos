@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 
 /** Where the filter bags are across the housing (relative to the width) */
 export const BAGS = [0.2, 0.4, 0.6, 0.8];

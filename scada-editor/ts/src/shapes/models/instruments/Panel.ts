@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { Layer, LIQUID_COLOR, MAX_LIQUID_COLOR, MIN_LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 import { finishOf } from '../../common/gradients';
 import { type DataKey, dataOf } from '../../common/data';
 import { styleOf } from '../../common/style';

@@ -1,6 +1,6 @@
 import { type dia, type g, util } from '@joint/plus';
 import { Layer, LABEL_COLOR } from '../../../const';
-import Connection from '../../common/Connection';
+import Connection from '../Connection';
 import { fromStyleAttributes } from '../../attributes/from-style';
 import { styleOf } from '../../common/style';
 

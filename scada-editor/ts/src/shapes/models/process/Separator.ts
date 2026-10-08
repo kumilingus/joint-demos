@@ -3,7 +3,7 @@ import { pipePorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import { LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 
 const saddle = (x: number) => `M calc(${x} * w - 14) calc(h + 12) L calc(${x} * w - 8) calc(h - 6) H calc(${x} * w + 8) L calc(${x} * w + 14) calc(h + 12) Z`;
 

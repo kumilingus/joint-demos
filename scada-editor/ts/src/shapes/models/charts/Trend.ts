@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR } from '../../../const';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 import { dataOf } from '../../common/data';
 
 // The margins of the chart in the screen (the screen is 6 inside the bezel)

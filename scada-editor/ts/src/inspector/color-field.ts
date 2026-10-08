@@ -1,5 +1,5 @@
 import { type dia, type ui, util } from '@joint/plus';
-import type { ColorField } from '../shapes/common/Shape';
+import type { ColorField } from '../shapes/models/Shape';
 import { featuresOf } from '../shapes/common/features';
 import { renderLabel } from './help';
 import { dataOf } from '../shapes/common/data';

@@ -3,7 +3,7 @@ import { util, V } from '@joint/plus';
 import { GRID_SIZE } from '../../../const';
 import type { ImageEntry, ImagesPaperOptions } from '../../../palette/images';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 // The largest default size of an uploaded image (it keeps its aspect ratio)
 // The default size of an image: as much area as a square of this side (a wide image is wider, not smaller)...

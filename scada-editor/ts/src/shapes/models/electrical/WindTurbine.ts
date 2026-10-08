@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ControlKind, type Resizable } from '../../common/Shape';
+import Shape, { type ControlKind, type Resizable } from '../Shape';
 
 // A blade from the hub up, turned around it by the angle
 const blade = (angle: number) => `<path @selector='blade${angle}' transform='rotate(${angle})' d='M -4 -4 L -3 -58 Q 0 -64 3 -58 L 5 -4 Z' />`;

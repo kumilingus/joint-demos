@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type Resizable, type ControlKind } from '../../common/Shape';
+import Shape, { type Resizable, type ControlKind } from '../Shape';
 import type { Flip } from '../../attributes/flip';
 
 // One blade pointing up from the hub; the other two are rotated copies.

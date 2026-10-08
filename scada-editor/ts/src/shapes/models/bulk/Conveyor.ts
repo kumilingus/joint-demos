@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
-import type { ColorField } from '../../common/Shape';
-import Connection from '../../common/Connection';
+import type { ColorField } from '../Shape';
+import Connection from '../Connection';
 import { fromStyleAttributes } from '../../attributes/from-style';
 
 /** The markup of the shape: parsed once, shared by all its elements. */

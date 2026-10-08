@@ -1,6 +1,6 @@
 import { type dia, type g, util } from '@joint/plus';
 import { builtInSet } from './built-in';
-import type Shape from '../common/Shape';
+import type Shape from '../models/Shape';
 
 /*
  * The computed parts of a shape: `computed: true` on a part - its attributes (`attrs`) computed by the shape from its

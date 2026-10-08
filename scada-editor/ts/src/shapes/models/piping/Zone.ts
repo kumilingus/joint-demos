@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable } from '../Shape';
 
 /** The side the tip of the zone points to: where the pipe comes from. */
 export type TipSide = 'left' | 'right' | 'top' | 'bottom';

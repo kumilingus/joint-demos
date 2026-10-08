@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type ControlKind } from '../Shape';
 
 // The impeller at the bottom of the shaft
 const impellerTransform = 'translate(calc(w / 2), calc(0.8 * h))';

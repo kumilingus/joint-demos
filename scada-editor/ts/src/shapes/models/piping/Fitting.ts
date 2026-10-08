@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { fittingPorts, type Side } from '../../common/ports';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 // How far the pipe stubs reach out of a fitting
 export const FITTING_STUB_LENGTH = 20;

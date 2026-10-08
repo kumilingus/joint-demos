@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape from '../../common/Shape';
+import Shape from '../Shape';
 
 // The body of the silo between the roof and the hopper (relative heights)
 const BODY_TOP = 0.1;

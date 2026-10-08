@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 
 // The packing bed in the middle of the column (relative heights)
 const BED_TOP = 0.35;

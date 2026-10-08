@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 // The columns of the radiator
 const COLUMNS = [0.14, 0.3, 0.46, 0.62, 0.78];

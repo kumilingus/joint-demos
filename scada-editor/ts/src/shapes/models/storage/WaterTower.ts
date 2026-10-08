@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape from '../../common/Shape';
+import Shape from '../Shape';
 
 // The tank on the top (relative height of its bottom)
 const TANK_BOTTOM = 0.42;

@@ -1,5 +1,5 @@
 import { type dia, g } from '@joint/plus';
-import type Shape from './Shape';
+import type Shape from '../models/Shape';
 import { flipOf } from '../attributes/flip';
 
 /** How far the drawing of a shape reaches out of its model bounding box (on top of the default). */

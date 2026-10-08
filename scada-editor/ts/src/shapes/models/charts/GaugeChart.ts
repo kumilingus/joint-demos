@@ -2,7 +2,7 @@ import { type dia, g, util, V } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, LIQUID_COLOR } from '../../../const';
 import { arcPath, getScale, scaleFraction } from '../../common/charts';
-import Shape, { type ColorField } from '../../common/Shape';
+import Shape, { type ColorField } from '../Shape';
 import { dataOf } from '../../common/data';
 
 // The arc of the scale: from the bottom left, clockwise, to the bottom right (degrees, clockwise from the right)

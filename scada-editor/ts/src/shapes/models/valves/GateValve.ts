@@ -3,7 +3,7 @@ import { pipePorts, pipeThroughAttributes } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import { bowTieAttributes } from '../../common/valve-body';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from '../Shape';
 import { dataOf } from '../../common/data';
 
 // How high the handwheel is above the valve: the stem rises when the valve opens.

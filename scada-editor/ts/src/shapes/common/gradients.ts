@@ -1,5 +1,5 @@
 import type { dia } from '@joint/plus';
-import type Shape from './Shape';
+import type Shape from '../models/Shape';
 import { styleOf } from './style';
 import { getCellDefaults } from '../defaults';
 

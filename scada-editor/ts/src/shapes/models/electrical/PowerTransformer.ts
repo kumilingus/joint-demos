@@ -2,7 +2,7 @@ import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 // An insulator of a bushing on the top of the tank, at a part of the width: a stack of sheds
 const bushing = (x: number) => `M calc(${x} * w - 6) 0 H calc(${x} * w + 6) M calc(${x} * w - 8) -8 H calc(${x} * w + 8) M calc(${x} * w - 6) -16 H calc(${x} * w + 6) M calc(${x} * w - 8) -24 H calc(${x} * w + 8) M calc(${x} * w) 0 V -32`;

@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import { Layer, MAX_LIQUID_COLOR } from '../../../const';
-import Shape, { type Resizable, type ControlKind } from '../../common/Shape';
+import Shape, { type Resizable, type ControlKind } from '../Shape';
 import { dataOf } from '../../common/data';
 
 const LAMP_OFF_COLOR = '#9aa3ab';

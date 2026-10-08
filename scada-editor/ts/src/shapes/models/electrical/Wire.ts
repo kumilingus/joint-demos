@@ -1,6 +1,6 @@
 import { type dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
-import Connection from '../../common/Connection';
+import Connection from '../Connection';
 import { lineWidthAttributes, type StrokeWidths } from '../../common/line-width';
 import { fromStyleAttributes } from '../../attributes/from-style';
 

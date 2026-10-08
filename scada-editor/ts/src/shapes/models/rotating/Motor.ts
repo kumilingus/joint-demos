@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { labelAttributes } from '../../attributes/label';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type ControlKind } from '../Shape';
 
 // The cooling fins across the housing (relative x positions)
 const FINS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]

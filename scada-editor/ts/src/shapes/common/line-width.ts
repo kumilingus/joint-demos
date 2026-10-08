@@ -1,6 +1,6 @@
 import type { dia } from '@joint/plus';
 import { styleOf } from './style';
-import Connection from './Connection';
+import Connection from '../models/Connection';
 
 /*
  * The width of a link (a pipe, a wire): thin, normal or thick - its strokes scaled together (the line, the dashes of

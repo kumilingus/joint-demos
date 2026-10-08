@@ -1,7 +1,7 @@
 import { type dia, util } from '@joint/plus';
 import { terminalPorts } from '../../common/ports';
 import { labelAttributes } from '../../attributes/label';
-import Shape, { type Resizable } from '../../common/Shape';
+import Shape, { type Resizable } from '../Shape';
 
 // The cells of the panel: 6 columns, 3 rows
 const COLUMNS = [1, 2, 3, 4, 5].map(i => `M calc(${i / 6} * w) 4 V calc(0.64 * h)`).join(' ');

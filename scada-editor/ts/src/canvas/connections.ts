@@ -1,7 +1,7 @@
 import { anchors, type dia, g } from '@joint/plus';
 import { GRID_SIZE, PIPE_COLOR } from '../const';
 import { DERIVED } from '../history';
-import Shape from '../shapes/common/Shape';
+import Shape from '../shapes/models/Shape';
 import { styleOf } from '../shapes/common/style';
 
 /*

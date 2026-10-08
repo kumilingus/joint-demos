@@ -1,6 +1,6 @@
 import { dia } from '@joint/plus';
 import type { CellFeatures, ColorField } from './Shape';
-import type { StrokeWidths } from './line-width';
+import type { StrokeWidths } from '../common/line-width';
 
 /** The color of a link: of its line (a pipe, a wire, a signal line, an arrow) */
 const LINE_COLOR_FIELD: ColorField = { path: ['style', 'color'], part: ['line', 'stroke'] };

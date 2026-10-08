@@ -67,7 +67,8 @@ src/
   plant/              plant.ts (the interface), properties.ts, tags.ts, TagIndex.ts (the elements by their tags, `app.tags`); mock/ - the simulated plant
   log/                the log of plant messages, what it shows on the diagram (log-hooks)
   controllers/
-  shapes/             models/<palette group>/, views/, common/ (Shape, ports, footprint, routing, gradients, charts),
+  shapes/             models/ (Shape, Connection - the bases; <palette group>/), views/, common/ (ports, footprint, routing,
+                      gradients, charts, style, data, tag, features),
                       attributes/ (label, from-style, computed, flip), shapes.css (shape colors), index.ts (the namespace)
   theme/              the reusable `minimal` theme (see theme/README.md)
   diagrams/           the examples (saved JSON)
@@ -84,7 +85,7 @@ src/
 
 ## Shapes
 
-Every element extends `Shape` (`shapes/common/Shape.ts`) and overrides the getters that differ:
+Every element extends `Shape` (`shapes/models/Shape.ts`) and overrides the getters that differ:
 
 | Getter | Default | Example |
 |---|---|---|
@@ -101,7 +102,7 @@ Every element extends `Shape` (`shapes/common/Shape.ts`) and overrides the gette
 | `accentField` | `null` | a boiler's flames |
 | `getComputedAttrs(selector, bbox)` | `{}` | the computed parts (`computed: true`, `shapes/attributes/computed.ts`): a needle's rotation |
 
-Every link extends `Connection` (`shapes/common/Connection.ts`): `tagPrefix` (`null`; a conveyor `'CV'`), `autoTag`, `colorField` (its line), `outlineField`, `accentField` (`null`), `strokeWidths` (`null`; a pipe, a wire - their widths the user scales). What both share is `CellFeatures` (`Shape.ts`), read of any cell by `featuresOf()` (`shapes/common/features.ts`: `null` for a cell of neither - the screen).
+Every link extends `Connection` (`shapes/models/Connection.ts`): `tagPrefix` (`null`; a conveyor `'CV'`), `autoTag`, `colorField` (its line), `outlineField`, `accentField` (`null`), `strokeWidths` (`null`; a pipe, a wire - their widths the user scales). What both share is `CellFeatures` (`Shape.ts`), read of any cell by `featuresOf()` (`shapes/common/features.ts`: `null` for a cell of neither - the screen).
 
 A shape showing a value by a part (level panel, battery bank, fuel tank, thermometer) defines `glideProperty` and `glideKeyframes(value)`; its view glides the parts from the value it drew last to the current one when it draws again (`shapes/views/glide.ts`; on a paper `Animations` lets glide: run mode, not alarms only).
 

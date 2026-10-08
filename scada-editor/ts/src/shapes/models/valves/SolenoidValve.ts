@@ -4,7 +4,7 @@ import { labelAttributes } from '../../attributes/label';
 import { bowTieAttributes } from '../../common/valve-body';
 import { LIQUID_COLOR } from '../../../const';
 import type { Overflow } from '../../common/footprint';
-import Shape, { type ColorField, type Resizable, type ControlKind } from '../../common/Shape';
+import Shape, { type ColorField, type Resizable, type ControlKind } from '../Shape';
 import { dataOf } from '../../common/data';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
