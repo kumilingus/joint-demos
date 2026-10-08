@@ -29,6 +29,19 @@ export interface LogHooks {
     highlight: (tag: string | null) => void;
     /** The elements pinged when a message of them comes, or not */
     pingChanges: (pinged: boolean) => void;
+    /**
+     * The log filtered (by words, by a direction): the cells of the tags of the messages shown and the cells the words
+     * find by their tags brought forward; `null` - not filtered, all as they are
+     */
+    filterChange: (filter: LogFilter | null) => void;
+}
+
+/** What the log is filtered by (see `LogHooks.filterChange`) */
+export interface LogFilter {
+    /** The words of the filter (see `normalizeSearch()`) */
+    words: string[];
+    /** The tags of the messages shown */
+    tags: string[];
 }
 
 /** Which messages the log shows: of all the directions or one (and the words of the filter) */
@@ -58,6 +71,8 @@ export default class LogView extends FilterListView<LogEntry> {
     protected direction: DirectionFilter = 'all';
     /** What it shows on the diagram (kept for the next opening) */
     protected display: LogDisplay = { pings: false };
+    /** The filter the diagram shows last (see `updateFilter()`): only a change of it shown */
+    protected shownFilter = '';
 
     constructor(hooks: LogHooks) {
         super();
@@ -87,6 +102,8 @@ export default class LogView extends FilterListView<LogEntry> {
         this.insertRow(message);
         const rows = this.rowsEl;
         while (rows && rows.childElementCount > MAX_MESSAGES) rows.lastElementChild!.remove();
+        // Its tag shown, the tag of a message cropped out not any more
+        this.updateFilter();
     }
 
     /** Forget the messages (a new run of the plant) */
@@ -186,10 +203,28 @@ export default class LogView extends FilterListView<LogEntry> {
         this.selectTag(this.marked.has(tag) ? null : tag);
     }
 
+    /** The rows of the filter, the elements of their tags brought forward on the diagram */
+    protected renderList(): void {
+        super.renderList();
+        this.updateFilter();
+    }
+
+    /** The filter shown on the diagram (see `LogHooks.filterChange`), if it changed: none while the log is closed */
+    protected updateFilter(): void {
+        const words = this.filterWords();
+        const filtered = this.isOpen && (words.length > 0 || this.direction !== 'all');
+        const tags = filtered ? [...new Set(this.shownEntries().map(({ tag }) => tag))].sort() : [];
+        const key = filtered ? `${words.join(' ')}|${tags.join(' ')}` : '';
+        if (key === this.shownFilter) return;
+        this.shownFilter = key;
+        this.hooks.filterChange(filtered ? { words, tags } : null);
+    }
+
     /** What it shows on the diagram: as asked */
     protected onOpen(): void {
         const { hooks, display } = this;
         hooks.pingChanges(display.pings);
+        this.updateFilter();
     }
 
     /** Nothing shown on the diagram */
@@ -197,6 +232,7 @@ export default class LogView extends FilterListView<LogEntry> {
         const { hooks } = this;
         this.selectTag(null);
         hooks.pingChanges(false);
+        this.updateFilter();
     }
 
     /** The messages of the tag marked (the new ones too), its element highlighted - or none */

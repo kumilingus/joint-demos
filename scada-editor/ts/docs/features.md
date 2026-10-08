@@ -69,7 +69,7 @@ Also: uploaded images (saved with the diagram, with an opacity), Favorites, and 
 - Live data: gauges, levels, displays, charts and tables follow the plant; levels glide to new values.
 - Animations: pumps spin, belts carry, flames burn, liquid flows, live circuits light up. "Alarms only" keeps the steady plant still (ISA-101); also used when the system asks for reduced motion.
 - Operator controls: start / stop, open / close, a valve position slider. A control sends a command and shows it pending until the plant confirms the new state (request / confirm, as in real SCADA systems).
-- A log of plant messages (time, tag, property, value): filter by text, direction or element; ping elements as their messages arrive. Hold `Alt` (both modes) to see the IDs on the diagram.
+- A log of plant messages (time, tag, property, value): filter by text, direction or element - the rest of the diagram grayed; ping elements as their messages arrive. Hold `Alt` (both modes) to see the IDs on the diagram.
 
 ![Run mode with the log](images/run-mode-log.png)
 
