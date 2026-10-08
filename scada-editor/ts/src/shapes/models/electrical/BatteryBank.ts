@@ -83,7 +83,7 @@ export default class BatteryBank extends Shape {
                 charge: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'accent' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: GAUGE_PADDING,
                     y: 'calc(0.8 * h)',
@@ -119,7 +119,7 @@ export default class BatteryBank extends Shape {
     }
 
     /** The bar of the gauge as long as the charge (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         if (selector !== 'charge') return {};
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         return { width: `calc(${ratio} * w - ${2 * GAUGE_PADDING * ratio})` };

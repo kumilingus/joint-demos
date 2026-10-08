@@ -84,7 +84,7 @@ export default class FuelTank extends Shape {
                 fuel: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'accent' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(0.44 * w + 2)',
                     width: 'calc(0.12 * w - 4)',
@@ -131,7 +131,7 @@ export default class FuelTank extends Shape {
     }
 
     /** The fuel in the sight glass as high as the level, from its bottom (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         if (selector !== 'fuel') return {};
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         const height = GLASS_HEIGHT * ratio;

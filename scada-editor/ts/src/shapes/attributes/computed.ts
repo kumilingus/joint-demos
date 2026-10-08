@@ -4,7 +4,7 @@ import type Shape from '../common/Shape';
 
 /*
  * The computed parts of a shape: `computed: true` on a part - its attributes (`attrs`) computed by the shape from its
- * model when the element is drawn (`attrsOf()`, by the selector of the part: the rotation of a needle of its `data`,
+ * model when the element is drawn (`getComputedAttrs()`, by the selector of the part: the rotation of a needle of its `data`,
  * the bolts of a busbar of its `taps`), not stored in it. The view draws the element again when they change (see
  * `ShapeView`).
  * The attributes as the shapes write them: `calc()` of the size, a `text` (laid out by the built-in attribute), a `style`.
@@ -20,7 +20,7 @@ export const computedAttributes = {
             const selector = node.getAttribute('joint-selector');
             if (!selector) return {};
             const computed: Record<string, unknown> = {};
-            Object.entries(this.model.attrsOf(selector, refBBox)).forEach(([name, value]) => {
+            Object.entries(this.model.getComputedAttrs(selector, refBBox)).forEach(([name, value]) => {
                 if (name === 'text') {
                     textSet.call(this, value, refBBox, node, attrs, this);
                 } else if (name === 'style') {

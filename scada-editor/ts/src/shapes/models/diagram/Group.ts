@@ -6,7 +6,7 @@ import Shape from '../../common/Shape';
 /**
  * A group of elements: its members embedded in it (see `groupSelection()` in `actions/groups.ts`). Nothing of
  * it is drawn (an empty markup): a click on a member selects the group, a drag of a member moves it
- * (see `interactivityOf()` in `app.ts`). It is not resized nor rotated.
+ * (see `getInteractivity()` in `app.ts`). It is not resized nor rotated.
  */
 export default class Group extends Shape {
 

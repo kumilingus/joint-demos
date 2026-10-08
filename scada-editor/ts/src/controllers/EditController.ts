@@ -64,7 +64,7 @@ function onCellPointerdown(app: App, view: dia.CellView, evt: dia.Event) {
     const { scroller, selection, moveSelectedOnly } = app;
     // A drag of a copy (see `onElementPointerdown()`, `onLinkPointerdown()`): not panned
     if (!moveSelectedOnly || isDuplicateEvent(evt)) return;
-    // What the drag would move: the element or the group it is in (see `App.interactivityOf()`), the link
+    // What the drag would move: the element or the group it is in (see `App.getInteractivity()`), the link
     const moved = view instanceof dia.ElementView ? view.getDelegatedView() : view;
     if (moved && selection.has(moved.model)) return;
     view.preventDefaultInteraction(evt);

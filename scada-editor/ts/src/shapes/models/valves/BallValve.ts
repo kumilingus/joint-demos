@@ -64,7 +64,7 @@ export default class BallValve extends Shape {
                     strokeWidth: 2
                 },
                 bore: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     d: 'M -7 0 H 7',
                     stroke: '#333',
@@ -89,7 +89,7 @@ export default class BallValve extends Shape {
     }
 
     /** The bore across the flow (closed) or along it (open), see `computed.ts` */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         if (selector !== 'bore') return {};
         const angle = dataOf(this, 'open') ? 0 : 90;
         return { transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})` };

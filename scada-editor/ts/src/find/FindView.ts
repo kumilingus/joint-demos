@@ -94,11 +94,11 @@ export default class FindView extends FilterListView<FindEntry> {
         });
     }
 
-    protected keyOf({ id }: FindEntry): string {
+    protected getKey({ id }: FindEntry): string {
         return id;
     }
 
-    protected textOf({ tag, name, kind }: FindEntry): string {
+    protected getText({ tag, name, kind }: FindEntry): string {
         return `${tag} ${name} ${kind}`;
     }
 
@@ -192,7 +192,7 @@ export default class FindView extends FilterListView<FindEntry> {
         } else {
             this.markOnly(id);
         }
-        this.rowOf(id)?.scrollIntoView({ block: 'nearest' });
+        this.getRow(id)?.scrollIntoView({ block: 'nearest' });
     }
 
     /** The entry shown alone: the current one, the anchor */

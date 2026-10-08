@@ -58,7 +58,7 @@ export default class Beacon extends Shape {
                 },
                 // Around the lamp, over its surroundings (not a part of the footprint of the shape: shown while it's on only)
                 glow: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     cx: 'calc(w / 2)',
                     cy: 'calc(0.4 * w)',
@@ -68,7 +68,7 @@ export default class Beacon extends Shape {
                 },
                 // The dome from the top of the element (its center `0.4 * w` below it)
                 lamp: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     d: 'M calc(0.1 * w) calc(0.7 * h) V calc(0.4 * w) A calc(0.4 * w) calc(0.4 * w) 0 0 1 calc(0.9 * w) calc(0.4 * w) V calc(0.7 * h) Z',
                     stroke: '#333',
@@ -109,7 +109,7 @@ export default class Beacon extends Shape {
     }
 
     /** The lamp lit and glowing while the alarm is on (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         const on = Boolean(dataOf(this, 'power'));
         if (selector === 'lamp') return { fill: on ? MAX_LIQUID_COLOR : LAMP_OFF_COLOR };
         if (selector === 'glow') return { display: on ? 'block' : 'none' };

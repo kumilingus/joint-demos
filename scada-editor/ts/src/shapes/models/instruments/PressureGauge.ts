@@ -149,9 +149,9 @@ export default class PressureGauge extends Shape {
                     strokeWidth: 2,
                     strokeLinecap: 'round'
                 },
-                // The warning zones of the scale (see `attrsOf()`)
+                // The warning zones of the scale (see `getComputedAttrs()`)
                 lowZone: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     transform: dialTransform,
                     fill: 'none',
@@ -159,7 +159,7 @@ export default class PressureGauge extends Shape {
                     strokeWidth: 3
                 },
                 highZone: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     transform: dialTransform,
                     fill: 'none',
@@ -173,7 +173,7 @@ export default class PressureGauge extends Shape {
                 needle: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'accent' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     d: 'M -3 0 L 0 -20 L 3 0 Z',
                     fill: 'var(--color-red)',
@@ -222,7 +222,7 @@ export default class PressureGauge extends Shape {
      * The yellow zone from the start of the scale to the low threshold, the red one from the high threshold to the end;
      * the needle points to the value on the scale - drawn pointing up, at 270° (see `computed.ts`)
      */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         const { low, high } = this.thresholds;
         switch (selector) {
             case 'lowZone': return { d: zone(0, low) };

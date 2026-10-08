@@ -116,11 +116,11 @@ export default class LogView extends FilterListView<LogEntry> {
         return this.messages;
     }
 
-    protected keyOf({ tag }: LogEntry): string {
+    protected getKey({ tag }: LogEntry): string {
         return tag;
     }
 
-    protected textOf({ tag, property }: LogEntry): string {
+    protected getText({ tag, property }: LogEntry): string {
         return `${tag} ${property}`;
     }
 
@@ -128,7 +128,7 @@ export default class LogView extends FilterListView<LogEntry> {
     protected matches(message: LogEntry, words: string[]): boolean {
         const { direction } = this;
         if (direction !== 'all' && message.kind !== direction) return false;
-        const text = this.normalize(this.textOf(message));
+        const text = this.normalize(this.getText(message));
         return words.length === 0 || words.some(word => text.includes(word));
     }
 

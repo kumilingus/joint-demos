@@ -70,7 +70,7 @@ export default class Table extends Shape {
 
     // Not narrower than its columns, not lower than a row; by its sides and its bottom (the rows added below)
     get resizable(): Resizable {
-        return { minWidth: minWidthOf(this.columns), minHeight: Table.heightOf(this, 1), directions: ['left', 'right', 'bottom'] };
+        return { minWidth: minWidthOf(this.columns), minHeight: Table.getHeight(this, 1), directions: ['left', 'right', 'bottom'] };
     }
 
     // No label below it
@@ -105,13 +105,13 @@ export default class Table extends Shape {
     }
 
     /** The height of the title and the names of the columns of the table (those it shows) */
-    static headOf(table: dia.Element): number {
+    static getHeadHeight(table: dia.Element): number {
         return (table.get('header') ? TITLE_HEIGHT : 0) + (table.get('names') ? HEAD_HEIGHT : 0);
     }
 
     /** The height of the table with its rows (or as many) */
-    static heightOf(table: dia.Element, rows: number = table.get('rows') ?? 0): number {
-        return Table.headOf(table) + rows * ROW_HEIGHT;
+    static getHeight(table: dia.Element, rows: number = table.get('rows') ?? 0): number {
+        return Table.getHeadHeight(table) + rows * ROW_HEIGHT;
     }
 
     defaults(): dia.Element.Attributes {
@@ -161,7 +161,7 @@ export default class Table extends Shape {
      */
     protected fitRows(options: ChangeOptions): void {
         if (options.derived) return;
-        const rows = Math.max(1, Math.round((this.size().height - Table.headOf(this)) / ROW_HEIGHT));
+        const rows = Math.max(1, Math.round((this.size().height - Table.getHeadHeight(this)) / ROW_HEIGHT));
         if (rows !== this.get('rows')) this.set('rows', rows, { ...DERIVED, resized: true });
         this.fit(true);
     }
@@ -178,7 +178,7 @@ export default class Table extends Shape {
         const size = this.size();
         const minWidth = Math.ceil(minWidthOf(columns) / (2 * GRID_SIZE)) * 2 * GRID_SIZE;
         const fittedWidth = Math.max(size.width, minWidth);
-        const fittedHeight = height ? Table.heightOf(this) : size.height;
+        const fittedHeight = height ? Table.getHeight(this) : size.height;
         if (size.height !== fittedHeight || size.width !== fittedWidth) this.resize(fittedWidth, fittedHeight, DERIVED);
     }
 }

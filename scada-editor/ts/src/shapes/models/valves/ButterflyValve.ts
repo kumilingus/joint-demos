@@ -65,7 +65,7 @@ export default class ButterflyValve extends Shape {
                 lever: leverAttributes,
                 body: bowTieAttributes,
                 disc: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     d: 'M 0 -16 V 16',
                     stroke: '#333',
@@ -98,7 +98,7 @@ export default class ButterflyValve extends Shape {
     }
 
     /** The disc along the flow (open) or across it (closed), see `computed.ts` */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         if (selector !== 'disc') return {};
         const angle = dataOf(this, 'open') ? 90 : 0;
         return { transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})` };

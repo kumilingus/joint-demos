@@ -80,7 +80,7 @@ export default class CircuitBreaker extends Shape {
                     fill: '#1a1f24'
                 },
                 lever: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(0.5 * w - 8)',
                     width: 16,
@@ -92,7 +92,7 @@ export default class CircuitBreaker extends Shape {
                     strokeWidth: 1.5
                 },
                 window: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(0.25 * w)',
                     y: 'calc(0.64 * h)',
@@ -102,7 +102,7 @@ export default class CircuitBreaker extends Shape {
                     ry: 2
                 },
                 state: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(0.5 * w)',
                     y: 'calc(0.72 * h)',
@@ -131,7 +131,7 @@ export default class CircuitBreaker extends Shape {
     }
 
     /** The lever up (closed) or down (open), the state in its color in the window (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         const open = Boolean(dataOf(this, 'open'));
         switch (selector) {
             case 'lever': return { y: open ? 'calc(0.4 * h)' : 'calc(0.2 * h)' };

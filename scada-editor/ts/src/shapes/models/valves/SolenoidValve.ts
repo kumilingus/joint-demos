@@ -79,7 +79,7 @@ export default class SolenoidValve extends Shape {
                     strokeWidth: 2
                 },
                 coilLabel: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     text: 'S',
                     x: 'calc(w / 2)',
@@ -108,7 +108,7 @@ export default class SolenoidValve extends Shape {
     }
 
     /** The coil lit while the valve is open (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         return selector === 'coilLabel' ? { fill: dataOf(this, 'open') ? LIQUID_COLOR : '#bbb' } : {};
     }
 

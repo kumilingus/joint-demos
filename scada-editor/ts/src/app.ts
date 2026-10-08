@@ -117,7 +117,7 @@ export class App {
             ...paperOptions,
             model: this.graph,
             cellViewNamespace: cellNamespace,
-            interactive: this.interactivityOf(this.mode),
+            interactive: this.getInteractivity(this.mode),
             // Not an event of the paper on a control (in its layer, not in the view of the element: a press would be one
             // on the blank canvas, its default action - dragging the slider - prevented)
             guard: (evt: dia.Event) => isControlEvent(evt),
@@ -252,7 +252,7 @@ export class App {
         // A plant for the run (see `plant.ts`): before the controllers of the mode, they listen to it
         if (mode === Mode.Runtime) this.plant = new Plant(this.tags);
         this.modeControllers[mode].forEach(controller => controller.startListening());
-        this.paper.setInteractivity(this.interactivityOf(mode));
+        this.paper.setInteractivity(this.getInteractivity(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
         setTablesLive(this.paper, mode === Mode.Runtime);
         this.paper.setGrid(getGrid(mode));
@@ -282,7 +282,7 @@ export class App {
      * The interactivity of the mode (see `config.ts`) and the drag of a member of a group (see `Group`):
      * a selected one moves on its own, any other one moves the group it is in.
      */
-    protected interactivityOf(mode: Mode): dia.Paper.Options['interactive'] {
+    protected getInteractivity(mode: Mode): dia.Paper.Options['interactive'] {
         const base = interactivity[mode];
         if (!base) return false;
         return (cellView: dia.CellView) => {

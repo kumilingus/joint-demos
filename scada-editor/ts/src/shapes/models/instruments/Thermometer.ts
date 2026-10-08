@@ -108,7 +108,7 @@ export default class Thermometer extends Shape {
                 column: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'color' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(w / 2 - 4)',
                     width: 8,
@@ -119,9 +119,9 @@ export default class Thermometer extends Shape {
                     stroke: 'var(--shape-scale)',
                     strokeWidth: 1.5
                 },
-                // The temperature, next to the top of the column (see `attrsOf()`)
+                // The temperature, next to the top of the column (see `getComputedAttrs()`)
                 reading: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(w + 14)',
                     textVerticalAnchor: 'middle',
@@ -165,7 +165,7 @@ export default class Thermometer extends Shape {
      * The column rises from the bulb to the value on the scale (the scale spans 8% to 68% of the height), the reading
      * (in °C, the scale is 0 - 100 °C) is next to its top - by a transform, as it glides (see `glideKeyframes()`)
      */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         const value = Math.max(0, Math.min(100, Number(dataOf(this, 'value')) || 0));
         const top = Number(g.scale.linear([0, 100], [0.68, 0.08], value).toFixed(3));
         if (selector === 'column') return { y: `calc(${top} * h)`, height: `calc(${(0.95 - top).toFixed(3)} * h - 8)` };

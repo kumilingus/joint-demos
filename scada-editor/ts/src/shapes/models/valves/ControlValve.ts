@@ -96,7 +96,7 @@ export default class ControlValve extends Shape {
                     strokeLinecap: 'round'
                 },
                 cover: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(w / 2 - 12)',
                     y: 'calc(h / 2 - 12)',
@@ -153,7 +153,7 @@ export default class ControlValve extends Shape {
     }
 
     /** The more the valve is closed, the wider the cover (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         if (selector !== 'cover') return {};
         const open = Math.max(0, Math.min(1, dataOf<number>(this, 'open') ?? 1));
         return { width: Math.round(COVER_MAX_WIDTH * (1 - open)) };

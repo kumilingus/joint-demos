@@ -67,7 +67,7 @@ export default class GateValve extends Shape {
                     magnetSelector: 'body'
                 },
                 stem: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     stroke: '#555',
                     strokeWidth: 4
@@ -84,7 +84,7 @@ export default class GateValve extends Shape {
                 handwheel: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'accent' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(w / 2 - 20)',
                     width: 40,
@@ -114,7 +114,7 @@ export default class GateValve extends Shape {
     }
 
     /** The stem and the handwheel up (open) or down (closed), see `computed.ts` */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         const top = dataOf(this, 'open') ? HANDWHEEL_OPEN : HANDWHEEL_CLOSED;
         if (selector === 'stem') return { d: `M calc(w / 2) calc(h / 2) V ${top}` };
         if (selector === 'handwheel') return { y: top - 4 };

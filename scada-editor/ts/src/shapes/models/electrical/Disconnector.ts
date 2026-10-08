@@ -94,7 +94,7 @@ export default class Disconnector extends Shape {
                     strokeWidth: 4
                 },
                 blade: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     d: CLOSED_BLADE,
                     stroke: 'var(--shape-copper-2)',
@@ -129,7 +129,7 @@ export default class Disconnector extends Shape {
     }
 
     /** The blade open or closed (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         return selector === 'blade' ? { d: dataOf(this, 'open') ? OPEN_BLADE : CLOSED_BLADE } : {};
     }
 

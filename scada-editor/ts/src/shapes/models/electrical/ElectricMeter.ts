@@ -80,7 +80,7 @@ export default class ElectricMeter extends Shape {
                 value: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'accent' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(w - 26)',
                     y: 'calc(0.5 * h)',
@@ -117,7 +117,7 @@ export default class ElectricMeter extends Shape {
     }
 
     /** The reading with one decimal (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
     }
 

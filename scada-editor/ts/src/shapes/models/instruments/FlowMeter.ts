@@ -79,7 +79,7 @@ export default class FlowMeter extends Shape {
                 value: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'accent' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(w / 2)',
                     y: 'calc(0.36 * h + 3)',
@@ -115,7 +115,7 @@ export default class FlowMeter extends Shape {
     }
 
     /** The reading with one decimal (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         return selector === 'value' ? { text: (Number(dataOf(this, 'value')) || 0).toFixed(1) } : {};
     }
 

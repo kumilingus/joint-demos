@@ -71,7 +71,7 @@ export default class Busbar extends Shape {
                     stroke: 'var(--shape-copper-3)',
                     strokeWidth: 1.5
                 },
-                // The bolts of the taps (see `attrsOf()`)
+                // The bolts of the taps (see `getComputedAttrs()`)
                 bolts: {
                     computed: true,
                     stroke: '#5a3417',
@@ -147,7 +147,7 @@ export default class Busbar extends Shape {
     }
 
     /** A bolt where each tap is (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         if (selector !== 'bolts') return {};
         const count = Number(this.get('taps')) || 0;
         return { d: Array.from({ length: count }, (_, i) => `M ${tapX(i)} calc(0.5 * h) h 0.01`).join(' ') || 'M 0 0' };

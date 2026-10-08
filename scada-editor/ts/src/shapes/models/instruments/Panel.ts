@@ -184,7 +184,7 @@ export default class Panel extends Shape {
                 },
                 // The level as a number, above the track
                 value: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: 'calc(0.5 * w)',
                     y: 30,
@@ -200,7 +200,7 @@ export default class Panel extends Shape {
                     fill: TRACK_COLOR
                 },
                 liquid: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     x: TRACK_LEFT,
                     width: `calc(${TRACK_WIDTH} * w)`,
@@ -222,12 +222,12 @@ export default class Panel extends Shape {
                 },
                 ...Object.fromEntries(LABELED.map(i => [`value${i}`, valueAttributes(i)])),
                 lowMark: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     fill: MIN_LIQUID_COLOR
                 },
                 highMark: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     fill: MAX_LIQUID_COLOR
                 }
@@ -275,7 +275,7 @@ export default class Panel extends Shape {
                 : styleOf<string>(this, 'accent') ?? LIQUID_COLOR;
     }
 
-    /** The liquid at the level (0 - 100), as `attrsOf()` draws it, for the current size. */
+    /** The liquid at the level (0 - 100), as `getComputedAttrs()` draws it, for the current size. */
     // Its liquid glides to a new level (see `glide.ts`)
     get glideProperty(): DataKey {
         return 'level';
@@ -297,7 +297,7 @@ export default class Panel extends Shape {
      * is almost empty (below the low threshold) or full (above the high one). The thresholds are arrows beside the
      * track (see `computed.ts`).
      */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         const { level } = this;
         const { low, high } = this.thresholds;
         const ratio = level / 100;

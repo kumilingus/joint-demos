@@ -214,7 +214,7 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
      * The attributes of a computed part (by its selector, see `computed.ts`) for the model of the element and its
      * size: none by default - a shape with computed parts overrides it
      */
-    attrsOf(_selector: string, _bbox: g.Rect): Record<string, unknown> {
+    getComputedAttrs(_selector: string, _bbox: g.Rect): Record<string, unknown> {
         return {};
     }
 

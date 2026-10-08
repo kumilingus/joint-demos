@@ -44,10 +44,10 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
     protected abstract entries(): T[];
 
     /** The key of the entry: its row marked with the other rows of the key */
-    protected abstract keyOf(entry: T): string;
+    protected abstract getKey(entry: T): string;
 
     /** The text the words of the filter are found in */
-    protected abstract textOf(entry: T): string;
+    protected abstract getText(entry: T): string;
 
     /** The row of the entry (the class, the key and the mark of a row are added to it) */
     protected abstract renderRow(entry: T): HTMLElement;
@@ -158,7 +158,7 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
     }
 
     /** The first row of the key */
-    protected rowOf(key: string): HTMLElement | null {
+    protected getRow(key: string): HTMLElement | null {
         return this.rowsEl?.querySelector<HTMLElement>(`.scada-list-row[data-key="${CSS.escape(key)}"]`) ?? null;
     }
 
@@ -180,7 +180,7 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
 
     /** Whether the filter lets the entry through: its text has every word */
     protected matches(entry: T, words: string[]): boolean {
-        const text = this.normalize(this.textOf(entry));
+        const text = this.normalize(this.getText(entry));
         return words.every(word => text.includes(word));
     }
 
@@ -223,7 +223,7 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
     /** The row of the entry: its class, its key, its mark */
     protected renderEntry(entry: T): HTMLElement {
         const row = this.renderRow(entry);
-        const key = this.keyOf(entry);
+        const key = this.getKey(entry);
         row.classList.add('scada-list-row');
         row.dataset.key = key;
         row.classList.toggle('selected', this.marked.has(key));

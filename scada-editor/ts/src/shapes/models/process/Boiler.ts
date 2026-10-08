@@ -94,14 +94,14 @@ export default class Boiler extends Shape {
                 flameOuter: {
                     // In the colors of its style (see `from-style.ts`)
                     fromStyle: { fill: 'accent' },
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     d: 'M -22 10 C -28 -8 -12 -14 -14 -30 C -4 -20 0 -28 2 -42 C 12 -26 26 -18 22 10 Z',
                     transform: flamesTransform,
                     fill: 'var(--shape-flame)'
                 },
                 flameInner: {
-                    // Computed (see `attrsOf()`)
+                    // Computed (see `getComputedAttrs()`)
                     computed: true,
                     d: 'M -10 10 C -14 -2 -4 -6 -4 -16 C 2 -10 4 -16 6 -24 C 12 -14 16 -6 12 10 Z',
                     transform: flamesTransform,
@@ -124,7 +124,7 @@ export default class Boiler extends Shape {
     }
 
     /** The flames shown while the burner is on - out: the firebox dark (see `computed.ts`) */
-    attrsOf(selector: string): Record<string, unknown> {
+    getComputedAttrs(selector: string): Record<string, unknown> {
         if (selector !== 'flameOuter' && selector !== 'flameInner') return {};
         return { display: dataOf(this, 'power') ? 'block' : 'none' };
     }
