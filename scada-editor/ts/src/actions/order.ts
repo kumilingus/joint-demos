@@ -25,7 +25,9 @@ function drawnCells(cells: dia.Cell[]): dia.Cell[] {
 export function bringToFront(app: App): void {
     const { graph } = app;
     const cells = util.sortBy(drawnCells(app.selection.toArray()), cell => cell.z());
-    if (cells.length === 0) return;
+    if (cells.length === 0) {
+        return;
+    }
     graph.startBatch('to-front');
     cells.forEach(cell => cell.toFront());
     graph.stopBatch('to-front');
@@ -35,7 +37,9 @@ export function bringToFront(app: App): void {
 export function sendToBack(app: App): void {
     const { graph } = app;
     const cells = util.sortBy(drawnCells(app.selection.toArray()), cell => -cell.z());
-    if (cells.length === 0) return;
+    if (cells.length === 0) {
+        return;
+    }
     graph.startBatch('to-back');
     cells.forEach(cell => cell.toBack());
     graph.stopBatch('to-back');
@@ -64,7 +68,9 @@ function farthestLayer(app: App, direction: 1 | -1): Layer | null {
         .filter(other => !Group.isGroup(other) && !Screen.isScreen(other) && !cells.includes(other))
         .map(indexOf)
         .filter(index => (index - indexOf(cell)) * direction > 0));
-    if (beyond.length === 0) return null;
+    if (beyond.length === 0) {
+        return null;
+    }
     return layers[direction > 0 ? Math.max(...beyond) : Math.min(...beyond)];
 }
 
@@ -75,11 +81,17 @@ function farthestLayer(app: App, direction: 1 | -1): Layer | null {
  */
 function overlapping(app: App, cell: dia.Cell): dia.Element[] {
     const { graph, paper } = app;
-    if (cell.isElement()) return graph.findElementsUnderElement(cell);
-    if (!cell.isLink()) return [];
+    if (cell.isElement()) {
+        return graph.findElementsUnderElement(cell);
+    }
+    if (!cell.isLink()) {
+        return [];
+    }
     const view = paper.requireView<dia.LinkView>(cell);
     const connection = view?.getConnection();
-    if (!connection) return [];
+    if (!connection) {
+        return [];
+    }
     // Curved too: the path as straight segments (of its polylines, one of each of its subpaths)
     const segments = (connection.toPolylines() ?? []).flatMap(({ points }) => {
         return points.slice(1).map((point, index) => new g.Line(points[index], point));
@@ -87,9 +99,13 @@ function overlapping(app: App, cell: dia.Cell): dia.Element[] {
     const ends = [cell.getSourceElement(), cell.getTargetElement()];
     // The area of the connection as drawn (a curve reaches out of the bounding box of the link)
     const area = connection.bbox();
-    if (!area) return [];
+    if (!area) {
+        return [];
+    }
     return graph.findElementsInArea(area.inflate(PIPE_HALF_WIDTH)).filter((element) => {
-        if (ends.includes(element)) return false;
+        if (ends.includes(element)) {
+            return false;
+        }
         const box = element.getBBox().inflate(PIPE_HALF_WIDTH);
         return segments.some(segment => box.containsPoint(segment.start) || segment.intersect(box) !== null);
     });
@@ -106,7 +122,9 @@ export function moveToLayer(app: App, layer: Layer, { back = false } = {}): void
         .map(cell => ({ cell, order: drawingOrder(graph, cell) }))
         .sort((a, b) => ((a.order[0] - b.order[0]) || (a.order[1] - b.order[1])) * (back ? -1 : 1))
         .map(({ cell }) => cell);
-    if (cells.length === 0) return;
+    if (cells.length === 0) {
+        return;
+    }
     graph.startBatch('to-layer');
     cells.forEach((cell) => {
         cell.set('layer', layer);
@@ -139,10 +157,14 @@ function isDrawnBelow(graph: dia.Graph, cell: dia.Cell, other: dia.Cell): boolea
  * there (a group draws nothing); `null` if none of its members is there.
  */
 function drawnAt(graph: dia.Graph, cell: dia.Cell, point: dia.Point): dia.Cell | null {
-    if (!Group.isGroup(cell)) return cell;
+    if (!Group.isGroup(cell)) {
+        return cell;
+    }
     const members = graph.findElementsAtPoint(point)
         .filter(element => !Group.isGroup(element) && element.isEmbeddedIn(cell, { deep: true }));
-    if (members.length === 0) return null;
+    if (members.length === 0) {
+        return null;
+    }
     return members.reduce((top, member) => (isDrawnBelow(graph, top, member) ? member : top));
 }
 
@@ -155,7 +177,9 @@ export function menuCell(app: App, clicked: dia.Cell, point: dia.Point): dia.Cel
     // The selected one of the clicked cell and its groups, else the top group
     const cell = withGroups(clicked).find(level => selection.has(level)) ?? topGroup(clicked);
     const [selected] = selection.length === 1 ? selection.toArray() : [];
-    if (!selected || selected === cell || !selected.isElement()) return cell;
+    if (!selected || selected === cell || !selected.isElement()) {
+        return cell;
+    }
     const drawn = drawnAt(graph, selected, point);
     const atPoint = drawn !== null && graph.findElementsAtPoint(point).some(element => element === drawn);
     return atPoint && isDrawnBelow(graph, drawn, clicked) ? selected : cell;
@@ -174,7 +198,9 @@ export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.El
         .filter(element => element !== cell && !Group.isGroup(element) && !Screen.isScreen(element))
         .filter(element => !element.isEmbeddedIn(cell, { deep: true }) && isDrawnBelow(graph, element, reference))
         .map(element => ({ element, order: drawingOrder(graph, element) }));
-    if (below.length === 0) return null;
+    if (below.length === 0) {
+        return null;
+    }
     below.sort((a, b) => (b.order[0] - a.order[0]) || (b.order[1] - a.order[1]));
     const level = levelBelow(below[0].element, cell);
     return level.isElement() ? level : null;

@@ -88,10 +88,14 @@ function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {
 function onCellPointerdown(app: App, view: dia.CellView, evt: dia.Event) {
     const { scroller, selection, moveSelectedOnly } = app;
     // A drag of a copy (see `onElementPointerdown()`, `onLinkPointerdown()`): not panned
-    if (!moveSelectedOnly || isDuplicateEvent(evt)) return;
+    if (!moveSelectedOnly || isDuplicateEvent(evt)) {
+        return;
+    }
     // What the drag would move: the element or the group it is in (see `App.getInteractivity()`), the link
     const moved = view instanceof dia.ElementView ? view.getDelegatedView() : view;
-    if (moved && selection.has(moved.model)) return;
+    if (moved && selection.has(moved.model)) {
+        return;
+    }
     view.preventDefaultInteraction(evt);
     scroller.startPanning(evt);
 }
@@ -130,7 +134,9 @@ function onCellMouseleave(app: App) {
  */
 function onElementPointerdown(app: App, view: dia.ElementView, evt: dia.Event, x: number, y: number) {
     const { selectionView } = app;
-    if (!isDuplicateEvent(evt)) return;
+    if (!isDuplicateEvent(evt)) {
+        return;
+    }
     view.preventDefaultInteraction(evt);
     view.eventData(evt, { duplicatePressed: { x, y }});
     // Nor moved with the other selected cells (the selection moves them)
@@ -143,20 +149,28 @@ function onElementPointerdown(app: App, view: dia.ElementView, evt: dia.Event, x
  */
 function onElementPointermove(app: App, view: dia.ElementView, evt: dia.Event, x: number, y: number) {
     const { duplicatePressed } = view.eventData(evt);
-    if (!duplicatePressed || getDragDelegate(view, evt)) return;
+    if (!duplicatePressed || getDragDelegate(view, evt)) {
+        return;
+    }
     const moved = view.getDelegatedView();
-    if (moved && dragCopy(app, view, evt, moved, duplicatePressed, x, y)) view.eventData(evt, { duplicated: true });
+    if (moved && dragCopy(app, view, evt, moved, duplicatePressed, x, y)) {
+        view.eventData(evt, { duplicated: true });
+    }
 }
 
 /** The copy dropped: the copy and its move one step of the history */
 function onElementPointerup(app: App, view: dia.ElementView, evt: dia.Event) {
-    if (view.eventData(evt).duplicated) dropCopy(app);
+    if (view.eventData(evt).duplicated) {
+        dropCopy(app);
+    }
 }
 
 /** Cmd / Ctrl pressed on a link: not moved (see `onLinkPointermove()`), the point of the press kept - a click is a click */
 function onLinkPointerdown(app: App, view: dia.LinkView, evt: dia.Event, x: number, y: number) {
     const { selectionView } = app;
-    if (!isDuplicateEvent(evt)) return;
+    if (!isDuplicateEvent(evt)) {
+        return;
+    }
     view.preventDefaultInteraction(evt);
     view.eventData(evt, { linkCopyPoint: { x, y }});
     // Nor moved with the other selected cells (the selection moves them)
@@ -169,7 +183,9 @@ function onLinkPointerdown(app: App, view: dia.LinkView, evt: dia.Event, x: numb
  */
 function onLinkPointermove(app: App, view: dia.LinkView, evt: dia.Event, x: number, y: number) {
     const { linkCopyPoint: point, linkCopy } = view.eventData(evt);
-    if (!point) return;
+    if (!point) {
+        return;
+    }
     const copy = linkCopy ?? dragLinkCopy(app, view.model);
     // TODO: a link view cannot hand its drag over (`LinkView.drag()` moves its own link) - with a public
     // `delegateDrag()` the library would move the copy (the point kept, this move gone): clientIO/joint#3534
@@ -179,5 +195,7 @@ function onLinkPointermove(app: App, view: dia.LinkView, evt: dia.Event, x: numb
 
 /** The copy dropped: the copy and its move one step of the history */
 function onLinkPointerup(app: App, view: dia.LinkView, evt: dia.Event) {
-    if (view.eventData(evt).linkCopy) dropCopy(app);
+    if (view.eventData(evt).linkCopy) {
+        dropCopy(app);
+    }
 }

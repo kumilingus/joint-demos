@@ -113,7 +113,9 @@ export default class Busbar extends Shape {
     tapCount(): number {
         // The last one half of the spacing from the right end at least
         const fitting = Math.max(1, Math.floor(this.size().width / TAP_SPACING));
-        if (!this.graph) return Math.max(fitting, Number(this.get('taps')) || 0);
+        if (!this.graph) {
+            return Math.max(fitting, Number(this.get('taps')) || 0);
+        }
         return Math.max(fitting, this.connectedTaps());
     }
 
@@ -142,13 +144,17 @@ export default class Busbar extends Shape {
             ...taps.map(i => terminal({ id: `bottom${i}`, side: 'bottom', along: tapX(i - 1) }))
         ];
         const current = this.getPorts().map(port => port.id).join();
-        if (current === items.map(port => port.id).join()) return;
+        if (current === items.map(port => port.id).join()) {
+            return;
+        }
         this.prop('ports/items', items, { ...options, ...DERIVED, rewrite: true });
     }
 
     /** A bolt where each tap is (see `computed.ts`) */
     getComputedAttrs(selector: string): Record<string, unknown> {
-        if (selector !== 'bolts') return {};
+        if (selector !== 'bolts') {
+            return {};
+        }
         const count = Number(this.get('taps')) || 0;
         return { d: Array.from({ length: count }, (_, i) => `M ${tapX(i)} calc(0.5 * h) h 0.01`).join(' ') || 'M 0 0' };
     }

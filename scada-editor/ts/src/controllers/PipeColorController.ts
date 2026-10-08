@@ -27,6 +27,8 @@ function onGraphReset(app: App) {
 /** Of a link (the graph changes its style too: the style of the diagram, see `diagram-style.ts`) */
 function onLinkChange(app: App, cell: dia.Cell | dia.Graph) {
     const { graph } = app;
-    if (!(cell instanceof dia.Link)) return;
+    if (!(cell instanceof dia.Link)) {
+        return;
+    }
     showPipeColors(graph);
 }

@@ -58,7 +58,9 @@ export function selectedTypes(app: App): string[] {
 /** Select all the cells of the types of the selected ones (all the pumps, all the wires) */
 export function selectSameType(app: App): void {
     const cells = sameTypeCells(app);
-    if (cells.length > 0) selectCells(app, cells);
+    if (cells.length > 0) {
+        selectCells(app, cells);
+    }
 }
 
 /** Add the cell to the selection, or remove it if it is selected (cherry-picking). */
@@ -80,7 +82,9 @@ export const parentId = (cell: dia.Cell) => cell.getParentCell()?.id ?? null;
  */
 export function selectAtLevel(app: App, clicked: dia.Cell): void {
     const target = clickTarget(app, clicked);
-    if (target) selectCell(app, target);
+    if (target) {
+        selectCell(app, target);
+    }
 }
 
 /**
@@ -91,7 +95,9 @@ export function clickTarget(app: App, clicked: dia.Cell): dia.Cell | null {
     const levels = withGroups(clicked);
     const [selected] = app.selection.length === 1 ? app.selection.toArray() : [];
     const index = selected ? levels.indexOf(selected) : -1;
-    if (index === 0) return null;
+    if (index === 0) {
+        return null;
+    }
     const target = index > 0
         ? levels[index - 1]
         // A sibling of the selected cell (another member of its group), else the top group
@@ -112,8 +118,12 @@ export function toggleAtLevel(app: App, clicked: dia.Cell): void {
     }
     const level = parentId(selection.at(0));
     const sibling = withGroups(clicked).find(cell => parentId(cell) === level);
-    if (!sibling) return;
-    if (sibling !== clicked && selection.length === 1 && selection.has(sibling)) return;
+    if (!sibling) {
+        return;
+    }
+    if (sibling !== clicked && selection.length === 1 && selection.has(sibling)) {
+        return;
+    }
     toggleCell(app, sibling);
 }
 
@@ -134,7 +144,9 @@ export function clearSelection(app: App): void {
 
 export function removeSelection(app: App): void {
     const { selection } = app;
-    if (selection.length === 0) return;
+    if (selection.length === 0) {
+        return;
+    }
     removeCells(app, selection.toArray());
 }
 
@@ -148,8 +160,12 @@ export function removeCells(app: App, cells: dia.Cell[]): void {
     graph.startBatch('remove');
     graph.removeCells(cells);
     parents.forEach((parent) => {
-        if (!parent.graph) return;
-        if (!dissolveLoneGroup(parent)) fitGroups(parent, { recorded: true });
+        if (!parent.graph) {
+            return;
+        }
+        if (!dissolveLoneGroup(parent)) {
+            fitGroups(parent, { recorded: true });
+        }
     });
     graph.stopBatch('remove');
 }

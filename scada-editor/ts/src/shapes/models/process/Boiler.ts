@@ -125,7 +125,9 @@ export default class Boiler extends Shape {
 
     /** The flames shown while the burner is on - out: the firebox dark (see `computed.ts`) */
     getComputedAttrs(selector: string): Record<string, unknown> {
-        if (selector !== 'flameOuter' && selector !== 'flameInner') return {};
+        if (selector !== 'flameOuter' && selector !== 'flameInner') {
+            return {};
+        }
         return { display: dataOf(this, 'power') ? 'block' : 'none' };
     }
 

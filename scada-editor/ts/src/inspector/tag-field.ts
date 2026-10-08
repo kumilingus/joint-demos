@@ -21,11 +21,15 @@ export function renderTagField(
     inspector: ui.Inspector
 ): HTMLElement | undefined {
     const { cell } = inspector.options;
-    if (path !== 'tag' || !(cell instanceof dia.Cell)) return undefined;
+    if (path !== 'tag' || !(cell instanceof dia.Cell)) {
+        return undefined;
+    }
     const el = document.createElement('div');
     el.className = 'scada-tag-field';
     const label = renderLabel(options, path) ?? document.createElement('label');
-    if (!label.textContent) label.textContent = options.label ?? path;
+    if (!label.textContent) {
+        label.textContent = options.label ?? path;
+    }
     const input = document.createElement('input');
     input.type = 'text';
     input.dataset.attribute = path;

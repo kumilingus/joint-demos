@@ -41,5 +41,7 @@ function onTagChange(app: App, cell: dia.Cell, tag: unknown, options: dia.Cell.O
         return;
     }
     const current = getTag(cell);
-    if (current && tags.isTaken(current, cell)) cell.set('tag', cell.previous('tag'), options);
+    if (current && tags.isTaken(current, cell)) {
+        cell.set('tag', cell.previous('tag'), options);
+    }
 }

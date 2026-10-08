@@ -63,7 +63,9 @@ export function accentFieldOf(cell: dia.Cell): ColorField | null {
 export function fieldDefault(cell: dia.Cell, field: ColorField): string | undefined {
     const defaults = getCellDefaults(cell);
     // The color of its part (its own in the defaults of the shape), or of the default of the style
-    if (field.part) return field.defaultValue ?? util.getByPath(defaults, ['attrs', ...field.part].join('/'), '/');
+    if (field.part) {
+        return field.defaultValue ?? util.getByPath(defaults, ['attrs', ...field.part].join('/'), '/');
+    }
     return field.defaultValue ?? util.getByPath(defaults, field.path.join('/'), '/');
 }
 
@@ -80,14 +82,18 @@ let pixel: CanvasRenderingContext2D | null = null;
  * The computed color may be in another color space (`color-mix()` in oklab): it is painted and read back in sRGB.
  */
 function resolveColor(value: string): string {
-    if (isHexColor(value)) return value;
+    if (isHexColor(value)) {
+        return value;
+    }
     const probe = document.createElement('span');
     probe.style.color = value;
     document.body.append(probe);
     const computed = getComputedStyle(probe).color;
     probe.remove();
     pixel ??= document.createElement('canvas').getContext('2d', { willReadFrequently: true });
-    if (!pixel) return '#000000';
+    if (!pixel) {
+        return '#000000';
+    }
     pixel.clearRect(0, 0, 1, 1);
     pixel.fillStyle = computed;
     pixel.fillRect(0, 0, 1, 1);
@@ -113,20 +119,28 @@ function diagramColors(graph: dia.Graph): string[] {
     graph.getCells().forEach((cell) => {
         [colorFieldOf(cell), outlineFieldOf(cell), accentFieldOf(cell)].forEach((field) => {
             const value = field && cell.prop(field.path);
-            if (isHexColor(value)) colors.add(value.toLowerCase());
+            if (isHexColor(value)) {
+                colors.add(value.toLowerCase());
+            }
         });
         const slices = dataOf(cell, 'slices');
-        if (Array.isArray(slices)) slices.forEach(slice => isHexColor(slice?.color) && colors.add(slice.color.toLowerCase()));
+        if (Array.isArray(slices)) {
+            slices.forEach(slice => isHexColor(slice?.color) && colors.add(slice.color.toLowerCase()));
+        }
     });
     return [...colors];
 }
 
 /** Remember a picked color (the latest first) */
 export function rememberColor(color: string): void {
-    if (!isHexColor(color)) return;
+    if (!isHexColor(color)) {
+        return;
+    }
     const value = color.toLowerCase();
     const index = recentColors.indexOf(value);
-    if (index !== -1) recentColors.splice(index, 1);
+    if (index !== -1) {
+        recentColors.splice(index, 1);
+    }
     recentColors.unshift(value);
     recentColors.length = Math.min(recentColors.length, MAX_RECENT);
 }
@@ -161,13 +175,17 @@ export function renderColorField(
     inspector: ui.Inspector
 ): HTMLElement | undefined {
     const { cell } = inspector.options;
-    if (options.type !== 'color' || /\/\d+\//.test(path) || !(cell instanceof dia.Cell)) return undefined;
+    if (options.type !== 'color' || /\/\d+\//.test(path) || !(cell instanceof dia.Cell)) {
+        return undefined;
+    }
     const el = document.createElement('div');
     el.className = 'scada-color-field-content';
     // The content of a field includes its label (with the help of the field, if it has one).
     // The help of the field by its path, or of its kind by its label (a color is at a path of each shape's own)
     const label = renderLabel(options, path) ?? renderLabel(options, (options.label ?? '').toLowerCase()) ?? document.createElement('label');
-    if (!label.textContent) label.textContent = options.label ?? path;
+    if (!label.textContent) {
+        label.textContent = options.label ?? path;
+    }
     el.append(label);
     const input = document.createElement('input');
     input.type = 'color';
@@ -192,7 +210,9 @@ export function renderColorField(
     // The input and the swatches on a row
     const row = document.createElement('div');
     row.className = 'scada-color-field-row';
-    if (options.themeOnly) el.classList.add('scada-theme-only');
+    if (options.themeOnly) {
+        el.classList.add('scada-theme-only');
+    }
     row.append(input);
     el.append(row);
 
@@ -246,13 +266,17 @@ export function renderColorField(
     const [canvasName, canvasColor] = CANVAS_SWATCH;
     // Not of an outline (an outline in the color of the canvas is none)
     const withCanvas = !options.auto && canvasColor !== defaultColor;
-    if (withCanvas) swatches.append(themeSwatch(canvasColor, `${canvasName} (light / dark)`));
+    if (withCanvas) {
+        swatches.append(themeSwatch(canvasColor, `${canvasName} (light / dark)`));
+    }
     const graph = cell.graph ?? options.graph;
     [...new Set([...recentColors, ...(graph ? diagramColors(graph) : [])])]
         .filter(color => color !== String(defaultColor).toLowerCase())
         .slice(0, MAX_SWATCHES - (withCanvas ? 1 : 0))
         .forEach(color => swatches.append(createSwatch(color, color, () => pick(color))));
-    if (swatches.childElementCount > 0) row.append(swatches);
+    if (swatches.childElementCount > 0) {
+        row.append(swatches);
+    }
     return el;
 }
 

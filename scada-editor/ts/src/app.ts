@@ -117,7 +117,9 @@ export class App {
         // The style of the diagram on the document (see `diagram-style.ts`): loaded with it, changed in the settings - the
         // graph's own (it triggers the `change:style` of its cells too: their own colors)
         this.graph.on(`change:${STYLE_ATTRIBUTE}`, (model: unknown) => {
-            if (model === this.graph) applyDiagramStyle(this, this.graph.previous(STYLE_ATTRIBUTE));
+            if (model === this.graph) {
+                applyDiagramStyle(this, this.graph.previous(STYLE_ATTRIBUTE));
+            }
         });
 
         this.history = new dia.CommandManager({ ...historyOptions, graph: this.graph });
@@ -194,7 +196,9 @@ export class App {
     }
 
     setMode(mode: Mode): void {
-        if (mode === this.mode) return;
+        if (mode === this.mode) {
+            return;
+        }
         this.leaveMode(this.mode);
         this.mode = mode;
         this.enterMode(mode);
@@ -261,7 +265,9 @@ export class App {
             this.runtimeCells = this.graph.getCells().map(cell => cell.toJSON({ ignoreDefaults: false }));
         }
         // A plant for the run (see `plant.ts`): before the controllers of the mode, they listen to it
-        if (mode === Mode.Runtime) this.plant = new Plant(this.tags);
+        if (mode === Mode.Runtime) {
+            this.plant = new Plant(this.tags);
+        }
         this.modeControllers[mode].forEach(controller => controller.startListening());
         this.paper.setInteractivity(this.getInteractivity(mode));
         setControlsOperable(this.paper, mode === Mode.Runtime);
@@ -295,7 +301,9 @@ export class App {
      */
     protected getInteractivity(mode: Mode): dia.Paper.Options['interactive'] {
         const base = interactivity[mode];
-        if (!base) return false;
+        if (!base) {
+            return false;
+        }
         return (cellView: dia.CellView) => {
             const options = base(cellView);
             return typeof options === 'object' ? { ...options, stopDelegation: this.selection.has(cellView.model) } : options;
@@ -347,7 +355,9 @@ export class App {
 /** A part of the markup of the app (see `index.html`): there, or the app can't start */
 function partOf(container: ParentNode, selector: string): HTMLElement {
     const part = container.querySelector<HTMLElement>(selector);
-    if (!part) throw new Error(`The SCADA editor: no "${selector}" in the page`);
+    if (!part) {
+        throw new Error(`The SCADA editor: no "${selector}" in the page`);
+    }
     return part;
 }
 

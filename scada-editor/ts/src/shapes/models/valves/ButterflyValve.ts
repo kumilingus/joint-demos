@@ -99,7 +99,9 @@ export default class ButterflyValve extends Shape {
 
     /** The disc along the flow (open) or across it (closed), see `computed.ts` */
     getComputedAttrs(selector: string): Record<string, unknown> {
-        if (selector !== 'disc') return {};
+        if (selector !== 'disc') {
+            return {};
+        }
         const angle = dataOf(this, 'open') ? 90 : 0;
         return { transform: `translate(calc(w / 2), calc(h / 2)) rotate(${angle})` };
     }

@@ -30,17 +30,23 @@ function extentInBand(corners: Point[], horizontal: boolean, low: number, high: 
     const values: number[] = [];
     corners.forEach((a, i) => {
         const b = corners[(i + 1) % corners.length];
-        if (across(a) >= low && across(a) <= high) values.push(along(a));
+        if (across(a) >= low && across(a) <= high) {
+            values.push(along(a));
+        }
         // Where the edge crosses the lines of the band
         [low, high].forEach((line) => {
             const [from, to] = [across(a), across(b)];
-            if ((from - line) * (to - line) >= 0 || from === to) return;
+            if ((from - line) * (to - line) >= 0 || from === to) {
+                return;
+            }
             const t = (line - from) / (to - from);
             values.push(along(a) + t * (along(b) - along(a)));
         });
     });
     // The band misses the outline (it can't: it is centered on the center, inside)
-    if (values.length === 0) return 0;
+    if (values.length === 0) {
+        return 0;
+    }
     return direction === 1 ? Math.max(...values) : Math.min(...values);
 }
 
@@ -104,7 +110,9 @@ export function sideOf(position: unknown): LabelPosition {
  * nor when its pipe stubs point down (the outlets of a manifold)
  */
 function drawnBelowAsIs(element: dia.Element): boolean {
-    if (flipOf(element).includes('y')) return false;
+    if (flipOf(element).includes('y')) {
+        return false;
+    }
     const groups = Object.keys(element.prop(['ports', 'groups']) ?? {});
     return !groups.some(group => Object.values(element.getPortsPositions(group)).some(({ angle }) => angle === 90));
 }
@@ -118,7 +126,9 @@ function layoutOf(view: dia.ElementView, position: unknown, gap: number, size: {
     const side = sideOf(position);
     const element = view.model;
     const angle = element.angle();
-    if (side === 'bottom' && angle % 360 === 0 && drawnBelowAsIs(element)) return null;
+    if (side === 'bottom' && angle % 360 === 0 && drawnBelowAsIs(element)) {
+        return null;
+    }
     const point = besideElement(element, side, size, gap);
     const anchors = {
         bottom: { anchor: 'middle', verticalAnchor: 'top' },
@@ -131,7 +141,9 @@ function layoutOf(view: dia.ElementView, position: unknown, gap: number, size: {
     const { x, y } = new g.Point(point).rotate(new g.Point(width / 2, height / 2), angle);
     const layout: Layout = { ...anchors, x, y };
     // Rotated: turned back to horizontal
-    if (angle % 360 !== 0) layout.transform = `rotate(${-angle},${x},${y})`;
+    if (angle % 360 !== 0) {
+        layout.transform = `rotate(${-angle},${x},${y})`;
+    }
     return layout;
 }
 
@@ -149,14 +161,18 @@ function drawText(
     node: Element,
     attrs: TextAttributes,
     position: LabelPosition | undefined
-): ReturnType<dia.Cell.SetCallback<dia.ElementView>> {
+): TextAttributes | undefined {
     set.call(view, value, refBBox, node, attrs, view);
     // None: a text of its own (not a label at a side of the shape)
-    if (!position || !(node instanceof SVGGraphicsElement)) return undefined;
+    if (!position || !(node instanceof SVGGraphicsElement)) {
+        return undefined;
+    }
     const { width, height } = node.getBBox();
     const layout = layoutOf(view, position, LABEL_GAP, { width, height });
     const transform = layout?.transform ?? 'matrix(1,0,0,1,0,0)';
-    if (!layout) return { transform };
+    if (!layout) {
+        return { transform };
+    }
     set.call(view, value, refBBox, node, { ...attrs, x: layout.x, 'text-vertical-anchor': layout.verticalAnchor }, view);
     return { x: layout.x, y: layout.y, 'text-anchor': layout.anchor, transform };
 }
@@ -172,8 +188,12 @@ type TextAnnotation = { start: number; end: number; attrs: TextAttributes };
 function shapeLabelText(model: dia.Element, name: string): { text: string; annotations?: TextAnnotation[] } {
     const content = model.graph ? getStyle(model.graph).labels : undefined;
     const tag = getTag(model);
-    if (!tag || !content || content === 'name') return { text: name };
-    if (content === 'tag') return { text: tag };
+    if (!tag || !content || content === 'name') {
+        return { text: name };
+    }
+    if (content === 'tag') {
+        return { text: tag };
+    }
     // The ID in bold (alone if there is no name)
     const annotations = [{ start: 0, end: tag.length, attrs: { 'font-weight': 700 }}];
     return { text: name ? `${tag}\n${name}` : tag, annotations };
@@ -212,7 +232,10 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
             const drawn = wrap
                 ? drawText(this, textWrapSet, wrap, refBBox, node, textAttrs, label?.position)
                 : drawText(this, textSet, text, refBBox, node, textAttrs, label?.position);
-            return { ...own, ...(typeof drawn === 'object' && drawn !== null ? drawn : {}) };
+            if (!drawn) {
+                return own;
+            }
+            return { ...own, ...drawn };
         }
     }
 };
@@ -281,10 +304,14 @@ const LINE_HEIGHT = 1.2;
  * not measured; 0 otherwise
  */
 export function labelReach(element: dia.Element, side: 'top' | 'bottom'): number {
-    if (sideOf(element.prop(['label', 'position'])) !== side) return 0;
+    if (sideOf(element.prop(['label', 'position'])) !== side) {
+        return 0;
+    }
     const name = element.prop(['label', 'text']);
     const { text } = shapeLabelText(element, name == null ? '' : String(name));
-    if (!text) return 0;
+    if (!text) {
+        return 0;
+    }
     const size = LABEL_SIZES[(element.graph && getStyle(element.graph).labelSize) || 'medium'].px;
     return text.split('\n').length * size * LINE_HEIGHT + LABEL_GAP;
 }

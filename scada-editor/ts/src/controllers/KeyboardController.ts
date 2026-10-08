@@ -43,13 +43,17 @@ export default class KeyboardController extends Controller {
 }
 
 function onDelete(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     removeSelection(app);
 }
 
 function onEscape(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     closeMenu();
     // One level up: the group of the selected member (see `Group`)
     selectUp(app);
@@ -57,13 +61,17 @@ function onEscape(app: App, evt: dia.Event) {
 
 function onUndo(app: App, evt: dia.Event) {
     // Typing has an undo of its own.
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     undo(app);
 }
 
 function onRedo(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     redo(app);
 }
@@ -71,30 +79,40 @@ function onRedo(app: App, evt: dia.Event) {
 // Typing has a clipboard of its own.
 
 function onCopy(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     copySelection(app);
 }
 
 function onCut(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     cutSelection(app);
 }
 
 function onPaste(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     paste(app);
 }
 
 function onSelectAll(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     selectAll(app);
 }
 
 function onSelectElements(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     selectElements(app);
 }
@@ -102,39 +120,55 @@ function onSelectElements(app: App, evt: dia.Event) {
 // A group of the selected elements, its members back (see `Group`)
 
 function onGroup(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     groupSelection(app);
 }
 
 function onUngroup(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     ungroupSelection(app);
 }
 
 function onFlipHorizontally(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     flipSelection(app, 'x');
 }
 
 function onFlipVertically(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     flipSelection(app, 'y');
 }
 
 function onArrow(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     const direction = ({ ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down' } as const)[evt.key ?? ''];
-    if (!direction) return;
+    if (!direction) {
+        return;
+    }
     // Nothing selected: the canvas scrolls
-    if (moveSelection(app, direction, evt.shiftKey)) evt.preventDefault();
+    if (moveSelection(app, direction, evt.shiftKey)) {
+        evt.preventDefault();
+    }
 }
 
 function onToggleSidePanels(app: App, evt: dia.Event) {
-    if (isTyping(evt)) return;
+    if (isTyping(evt)) {
+        return;
+    }
     evt.preventDefault();
     toggleSidePanels(app);
 }

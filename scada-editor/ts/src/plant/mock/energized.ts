@@ -13,15 +13,21 @@ import { dataOf } from '../../shapes/common/data';
 /** Whether the element is a source of the power now */
 function isSource(element: dia.Element): boolean {
     const type = element.get('type');
-    if (['Battery', 'BatteryBank', 'SolarArray'].includes(type)) return true;
-    if (['Generator', 'DieselGenerator', 'WindTurbine'].includes(type)) return Boolean(dataOf(element, 'power'));
+    if (['Battery', 'BatteryBank', 'SolarArray'].includes(type)) {
+        return true;
+    }
+    if (['Generator', 'DieselGenerator', 'WindTurbine'].includes(type)) {
+        return Boolean(dataOf(element, 'power'));
+    }
     return false;
 }
 
 /** Whether the current passes the element (to its other terminals) */
 function isPassing(element: dia.Element): boolean {
     const type = element.get('type');
-    if (type === 'CircuitBreaker' || type === 'Disconnector') return !dataOf(element, 'open');
+    if (type === 'CircuitBreaker' || type === 'Disconnector') {
+        return !dataOf(element, 'open');
+    }
     return true;
 }
 
@@ -31,11 +37,17 @@ export function getEnergized(graph: dia.Graph): Set<dia.Cell> {
     const queue = graph.getElements().filter(isSource);
     queue.forEach(element => reached.add(element));
     for (let element = queue.shift(); element; element = queue.shift()) {
-        if (!isPassing(element)) continue;
+        if (!isPassing(element)) {
+            continue;
+        }
         graph.getConnectedLinks(element).forEach((link) => {
-            if (!(link instanceof Wire)) return;
+            if (!(link instanceof Wire)) {
+                return;
+            }
             [link.getSourceElement(), link.getTargetElement()].forEach((end) => {
-                if (!end || reached.has(end)) return;
+                if (!end || reached.has(end)) {
+                    return;
+                }
                 reached.add(end);
                 queue.push(end);
             });
@@ -43,9 +55,13 @@ export function getEnergized(graph: dia.Graph): Set<dia.Cell> {
     }
     const energized = new Set<dia.Cell>(reached);
     graph.getLinks().forEach((link) => {
-        if (!(link instanceof Wire)) return;
+        if (!(link instanceof Wire)) {
+            return;
+        }
         const [source, target] = [link.getSourceElement(), link.getTargetElement()];
-        if (source && target && reached.has(source) && reached.has(target)) energized.add(link);
+        if (source && target && reached.has(source) && reached.has(target)) {
+            energized.add(link);
+        }
     });
     return energized;
 }

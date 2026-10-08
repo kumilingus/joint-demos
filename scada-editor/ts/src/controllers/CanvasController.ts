@@ -29,15 +29,21 @@ export default class CanvasController extends Controller {
 function onBlankPointerdown(app: App, evt: dia.Event) {
     const { mode, scroller } = app;
     // In the edit mode, a drag with Shift selects a region (see `EditController`).
-    if (mode === Mode.Edit && evt.shiftKey) return;
+    if (mode === Mode.Edit && evt.shiftKey) {
+        return;
+    }
     // The screen stays fitted to the canvas.
-    if (isScreenShown(app)) return;
+    if (isScreenShown(app)) {
+        return;
+    }
     scroller.startPanning(evt);
 }
 
 function onPaperPinch(app: App, _evt: dia.Event, ox: number, oy: number, scale: number) {
     const { scroller } = app;
-    if (isScreenShown(app)) return;
+    if (isScreenShown(app)) {
+        return;
+    }
     scroller.zoom(scroller.zoom() * scale, {
         min: ZOOM.min,
         max: ZOOM.max,
@@ -50,7 +56,9 @@ function onPaperPinch(app: App, _evt: dia.Event, ox: number, oy: number, scale: 
 function onPaperPan(app: App, evt: dia.Event, tx: number, ty: number) {
     const { scroller } = app;
     evt.preventDefault();
-    if (isScreenShown(app)) return;
+    if (isScreenShown(app)) {
+        return;
+    }
     scroller.el.scrollLeft += tx;
     scroller.el.scrollTop += ty;
 }

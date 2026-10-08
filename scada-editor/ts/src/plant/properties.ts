@@ -99,7 +99,9 @@ export function readProperty(cell: dia.Cell, name: string): TagValue | undefined
 /** Show the value of the property on the element; `false` if it has no such property */
 export function writeProperty(cell: dia.Cell, name: string, value: TagValue, options?: dia.Cell.Options): boolean {
     const property = properties[cell.get('type')]?.[name];
-    if (!property) return false;
+    if (!property) {
+        return false;
+    }
     // Replaced (an array of values not merged into the one before)
     Object.entries(property.write(cell, value)).forEach(([path, change]) => cell.prop(path, change, { ...options, rewrite: true }));
     return true;

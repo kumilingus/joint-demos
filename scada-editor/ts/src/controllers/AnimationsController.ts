@@ -43,7 +43,11 @@ export default class AnimationsController extends Controller<[App, Animations]> 
 
 /** The cell switched on or off, opened or closed: its animations, and of the pipes of an element */
 function onDataChange(_app: App, animations: Animations, cell: dia.Cell) {
-    if (!animations.stateChanged(cell)) return;
+    if (!animations.stateChanged(cell)) {
+        return;
+    }
     animations.animate(cell);
-    if (cell.isElement()) animations.animatePipes(cell);
+    if (cell.isElement()) {
+        animations.animatePipes(cell);
+    }
 }

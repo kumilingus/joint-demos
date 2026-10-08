@@ -177,7 +177,9 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
             this.on('change:flip', (_cell: dia.Cell, _flip: unknown, options: dia.Cell.Options) => this.flipPorts(options));
         }
         // In the layer of its kind (unless it says otherwise, e.g. in the JSON)
-        if (!this.has('layer')) this.set('layer', this.graphLayer, { silent: true });
+        if (!this.has('layer')) {
+            this.set('layer', this.graphLayer, { silent: true });
+        }
     }
 
     /** The flip its ports are laid out with (see `flipPorts()`): declared - set in `initialize()`, called by the constructor */
@@ -186,7 +188,9 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
     /** The ports of its defaults with their stubs flipped as the element (see `flipStub()`), when its flip changes */
     protected flipPorts(options: dia.Cell.Options = {}): void {
         const flip = flipOf(this);
-        if (flip === (this.portsFlip ?? '')) return;
+        if (flip === (this.portsFlip ?? '')) {
+            return;
+        }
         this.portsFlip = flip;
         const { unset: _unset, ...setOptions } = options;
         this.set('ports', flippedPorts(this.defaults().ports, flip), { ...setOptions, ...DERIVED });
@@ -201,11 +205,15 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
         const { ports: _ports, ...json } = super.toJSON(options);
         // No finish of its own (Auto: of the diagram, see `finishOf()`)
         const style: Record<string, unknown> | undefined = json.style;
-        if (style?.finish === 'auto') delete style.finish;
+        if (style?.finish === 'auto') {
+            delete style.finish;
+        }
         // No style, no data of its own: none (an empty one left by a value removed)
         (['style', 'data'] as const).forEach((key) => {
             const value = json[key];
-            if (value && typeof value === 'object' && Object.keys(value).length === 0) delete json[key];
+            if (value && typeof value === 'object' && Object.keys(value).length === 0) {
+                delete json[key];
+            }
         });
         return json;
     }
@@ -224,7 +232,9 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
      */
     resizeOptions(): ResizeOptions | null {
         const { resizable } = this;
-        if (resizable === false) return null;
+        if (resizable === false) {
+            return null;
+        }
         const { width = 0, height = 0 } = this.defaults().size || {};
         return {
             minWidth: minSize(width),

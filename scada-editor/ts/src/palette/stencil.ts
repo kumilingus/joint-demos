@@ -55,8 +55,12 @@ const SEARCH_PATHS: Record<string, string[]> = {
  * derived groups (favorites, in use): their shapes are in their own groups too - found there, not twice.
  */
 function matchShape(cell: dia.Cell, keyword: string, groupId: string): boolean {
-    if (!keyword) return true;
-    if (Object.values(DerivedGroup).some(group => group === groupId)) return false;
+    if (!keyword) {
+        return true;
+    }
+    if (Object.values(DerivedGroup).some(group => group === groupId)) {
+        return false;
+    }
     const paths = [...SEARCH_PATHS['*'], ...(SEARCH_PATHS[cell.get('type')] ?? [])];
     const search = keyword.toLowerCase();
     return paths.some(path => String(util.getByPath(cell.attributes, path, '/') ?? '').toLowerCase().includes(search));
@@ -112,7 +116,9 @@ function setTooltip(cell: dia.Cell): void {
     // An image of the user: its name
     const name = cell.get('type') === 'CustomImage' ? cell.prop(['label', 'text']) : title;
     cell.attr('root', paletteTooltip(name));
-    if (cell.isLink()) cell.labels([nameLabel(name)]);
+    if (cell.isLink()) {
+        cell.labels([nameLabel(name)]);
+    }
 }
 
 /**
@@ -207,7 +213,9 @@ export function createStencil(
         dragStartClone: (cell: dia.Cell) => {
             const clone = cell.clone();
             Object.keys(paletteTooltip('')).forEach(name => clone.removeAttr(['root', name]));
-            if (clone.isLink()) clone.labels([]);
+            if (clone.isLink()) {
+                clone.labels([]);
+            }
             return clone;
         },
         // The dropped shape (cloned from the dragged one): made ready before it is added - one step of the history
@@ -415,9 +423,13 @@ function createShapes(): Record<string, dia.Cell[]> {
  */
 export function paletteKey(cell: dia.Cell): string {
     const type = cell.get('type');
-    if (type === 'CustomImage') return `${type}:${cell.get('imageId')}`;
+    if (type === 'CustomImage') {
+        return `${type}:${cell.get('imageId')}`;
+    }
     // A table (its names of the columns shown), a readout (neither the title nor the names): two shapes of the palette
-    if (type === 'Table') return cell.get('names') ? 'Table' : 'Table:list';
+    if (type === 'Table') {
+        return cell.get('names') ? 'Table' : 'Table:list';
+    }
     return type;
 }
 
@@ -433,7 +445,9 @@ export function loadDerivedGroup(stencil: ui.Stencil, group: DerivedGroup, keys:
     // Shown before loading: the paper is fitted on load (a hidden group has nothing to measure). The element of the
     // group by the stencil's markup (internal): TODO - removed and added again once `ui.Stencil` can (add / remove groups)
     const groupEl = stencil.el.querySelector<HTMLElement>(`.group[data-name="${group}"]`);
-    if (groupEl) groupEl.hidden = shapes.length === 0;
+    if (groupEl) {
+        groupEl.hidden = shapes.length === 0;
+    }
     stencil.loadGroup(shapes, group);
 }
 
@@ -487,7 +501,9 @@ function groupLabel(text: string, icon: string): HTMLElement {
 /** A button in the group of the custom shapes: it uploads images (into the diagram, see `onUpload`). */
 function addUploadButton(stencil: ui.Stencil, onUpload: StencilHooks['onUpload']): void {
     const groupEl = stencil.el.querySelector('.group[data-name="custom"]');
-    if (!groupEl) return;
+    if (!groupEl) {
+        return;
+    }
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -507,7 +523,9 @@ function addUploadButton(stencil: ui.Stencil, onUpload: StencilHooks['onUpload']
         // The same files can be uploaded again.
         input.value = '';
         const images = (await Promise.all(files.map(readImageFile))).filter((image): image is ImageEntry => image !== null);
-        if (images.length === 0) return;
+        if (images.length === 0) {
+            return;
+        }
         onUpload(images);
         stencil.openGroup('custom');
     });

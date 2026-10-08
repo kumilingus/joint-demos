@@ -53,10 +53,14 @@ export default class TagIndex extends mvc.Listener<[]> {
 
     protected add(cell: dia.Cell): void {
         const tag = getTag(cell);
-        if (tag && !this.cells.has(tag)) this.cells.set(tag, cell);
+        if (tag && !this.cells.has(tag)) {
+            this.cells.set(tag, cell);
+        }
     }
 
     protected remove(cell: dia.Cell, tag: string | undefined): void {
-        if (tag && this.cells.get(tag) === cell) this.cells.delete(tag);
+        if (tag && this.cells.get(tag) === cell) {
+            this.cells.delete(tag);
+        }
     }
 }

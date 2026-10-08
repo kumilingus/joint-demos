@@ -133,13 +133,21 @@ const ANGLE_BY_SIDE: Record<string, number> = { right: 0, bottom: 90, left: 180,
  * element (a bug): a pipe on a stub of a rotated element would leave it the wrong way.
  */
 function portDirection(end: dia.Link.EndJSON, graph: dia.Graph | undefined): string | undefined {
-    if (!graph || !end.id || end.port === undefined) return undefined;
+    if (!graph || !end.id || end.port === undefined) {
+        return undefined;
+    }
     const element = graph.getCell(end.id);
-    if (!element?.isElement() || !element.angle()) return undefined;
+    if (!element?.isElement() || !element.angle()) {
+        return undefined;
+    }
     const port = element.getPort(String(end.port));
-    if (!port) return undefined;
+    if (!port) {
+        return undefined;
+    }
     const position = element.getPortsPositions(port.group ?? '')[String(end.port)];
-    if (!position) return undefined;
+    if (!position) {
+        return undefined;
+    }
     const bbox = element.getBBox();
     const side = bbox.sideNearestToPoint(new g.Point(bbox.x + position.x, bbox.y + position.y));
     const angle = g.normalizeAngle(Math.round((ANGLE_BY_SIDE[side] + element.angle()) / 90) * 90);

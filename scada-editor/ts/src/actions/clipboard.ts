@@ -40,7 +40,9 @@ export function copySelection(app: App): void {
     const { graph, clipboard } = app;
     // A diagram has one screen.
     const selection = app.selection.filter(cell => !Screen.isScreen(cell));
-    if (selection.length === 0) return;
+    if (selection.length === 0) {
+        return;
+    }
     const elements = selection.filter(cell => cell.isElement());
     const copied = new Set(elements.flatMap(element => [element, ...element.getEmbeddedCells({ deep: true })]).map(cell => cell.id));
     // The links between the copied elements are copied with them (as they are).
@@ -53,7 +55,9 @@ export function copySelection(app: App): void {
 /** Copy the selected cells and remove them (in one step of the history). */
 export function cutSelection(app: App): void {
     const { selection, graph } = app;
-    if (selection.length === 0) return;
+    if (selection.length === 0) {
+        return;
+    }
     copySelection(app);
     graph.startBatch('cut');
     removeCells(app, selection.toArray());
@@ -66,7 +70,9 @@ export function cutSelection(app: App): void {
  */
 export function paste(app: App): void {
     const { graph, clipboard } = app;
-    if (clipboard.length === 0) return;
+    if (clipboard.length === 0) {
+        return;
+    }
     graph.startBatch('paste');
     const cells = clipboard.pasteCells(graph, { translate: PASTE_OFFSET });
     graph.stopBatch('paste');
@@ -80,7 +86,9 @@ export function paste(app: App): void {
  */
 export function pasteAt(app: App, point: dia.Point): void {
     const { graph, clipboard } = app;
-    if (clipboard.length === 0) return;
+    if (clipboard.length === 0) {
+        return;
+    }
     graph.startBatch('paste');
     const cells = clipboard.pasteCellsAtPoint(graph, new g.Point(point).snapToGrid(GRID_SIZE));
     graph.stopBatch('paste');

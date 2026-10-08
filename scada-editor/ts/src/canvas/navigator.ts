@@ -26,9 +26,15 @@ const NavigatorElementView = dia.ElementView.extend({
         size: [UpdateFlags.Update]
     },
     confirmUpdate: function(flags: number) {
-        if (this.hasFlag(flags, UpdateFlags.Render)) this.render();
-        if (this.hasFlag(flags, UpdateFlags.Update)) this.update();
-        if (this.hasFlag(flags, UpdateFlags.Transform)) this.updateTransformation();
+        if (this.hasFlag(flags, UpdateFlags.Render)) {
+            this.render();
+        }
+        if (this.hasFlag(flags, UpdateFlags.Update)) {
+            this.update();
+        }
+        if (this.hasFlag(flags, UpdateFlags.Transform)) {
+            this.updateTransformation();
+        }
         return 0;
     },
     render: function() {
@@ -49,7 +55,9 @@ const NavigatorElementView = dia.ElementView.extend({
     },
     update: function() {
         const { model, body } = this;
-        if (!body) return;
+        if (!body) {
+            return;
+        }
         const { width, height } = model.size();
         body.setAttribute('width', String(width));
         body.setAttribute('height', String(height));

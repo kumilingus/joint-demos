@@ -29,7 +29,9 @@ export function delegateDrag(
     y: number
 ): void {
     const { paper } = view;
-    if (!paper) return;
+    if (!paper) {
+        return;
+    }
     paper.setDragging(evt);
     view.eventData(evt, { defaultInteractionPrevented: false, action: 'move', delegatedView: delegate });
     const position = delegate.model.position();

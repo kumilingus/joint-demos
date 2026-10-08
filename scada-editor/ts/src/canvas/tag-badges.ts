@@ -46,7 +46,9 @@ const TagBadge = dia.HighlighterView.extend({
         const { transformGroup, cellView } = this;
         const { model } = cellView;
         // A link: in the coordinates of the paper already (see `badgeCenter()`)
-        if (!transformGroup || !model.isElement()) return;
+        if (!transformGroup || !model.isElement()) {
+            return;
+        }
         const { x, y } = model.position();
         transformGroup.attr('transform', `translate(${x},${y})`);
     }
@@ -58,8 +60,12 @@ const TagBadge = dia.HighlighterView.extend({
  * the middle of the route of a link (a conveyor, in the coordinates of the paper)
  */
 function badgeCenter(cellView: dia.CellView, badgeWidth: number): dia.Point {
-    if (cellView instanceof dia.LinkView) return cellView.getPointAtRatio(0.5);
-    if (Group.isGroup(cellView.model)) return { x: badgeWidth / 2, y: 0 };
+    if (cellView instanceof dia.LinkView) {
+        return cellView.getPointAtRatio(0.5);
+    }
+    if (Group.isGroup(cellView.model)) {
+        return { x: badgeWidth / 2, y: 0 };
+    }
     const { width, height } = cellView.model.getBBox();
     return { x: width / 2, y: height / 2 };
 }
@@ -89,13 +95,17 @@ export default class TagBadges {
         dia.HighlighterView.removeAll(paper, TAG_BADGE_ID);
         paper.model.getCells().filter(cell => getTag(cell)).forEach((cell) => {
             const view = cell.findView(paper);
-            if (view) TagBadge.add(view, 'root', TAG_BADGE_ID, { layer: dia.Paper.Layers.FRONT, z: 1 });
+            if (view) {
+                TagBadge.add(view, 'root', TAG_BADGE_ID, { layer: dia.Paper.Layers.FRONT, z: 1 });
+            }
         });
     }
 
     /** Shown after the delay (ms) - unless hidden before */
     showSoon(delay: number): void {
-        if (this.shown || this.blocked || this.timer !== null) return;
+        if (this.shown || this.blocked || this.timer !== null) {
+            return;
+        }
         this.timer = window.setTimeout(() => {
             this.timer = null;
             this.show();
@@ -109,7 +119,9 @@ export default class TagBadges {
     }
 
     hide(): void {
-        if (this.timer !== null) window.clearTimeout(this.timer);
+        if (this.timer !== null) {
+            window.clearTimeout(this.timer);
+        }
         this.timer = null;
         this.blocked = false;
         this.shown = false;
@@ -118,6 +130,8 @@ export default class TagBadges {
 
     /** Drawn again if shown */
     refresh(): void {
-        if (this.shown) this.show();
+        if (this.shown) {
+            this.show();
+        }
     }
 }

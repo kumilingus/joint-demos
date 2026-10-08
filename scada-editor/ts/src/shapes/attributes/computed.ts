@@ -18,7 +18,9 @@ export const computedAttributes = {
         // Of a shape only (see `Shape.attributes`)
         set(this: dia.ElementView<Shape>, _drawn: boolean, refBBox: g.Rect, node: Element, attrs: Record<string, unknown>) {
             const selector = node.getAttribute('joint-selector');
-            if (!selector) return {};
+            if (!selector) {
+                return {};
+            }
             const computed: Record<string, unknown> = {};
             Object.entries(this.model.getComputedAttrs(selector, refBBox)).forEach(([name, value]) => {
                 if (name === 'text') {

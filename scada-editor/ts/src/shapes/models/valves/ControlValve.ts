@@ -154,7 +154,9 @@ export default class ControlValve extends Shape {
 
     /** The more the valve is closed, the wider the cover (see `computed.ts`) */
     getComputedAttrs(selector: string): Record<string, unknown> {
-        if (selector !== 'cover') return {};
+        if (selector !== 'cover') {
+            return {};
+        }
         const open = Math.max(0, Math.min(1, dataOf<number>(this, 'open') ?? 1));
         return { width: Math.round(COVER_MAX_WIDTH * (1 - open)) };
     }

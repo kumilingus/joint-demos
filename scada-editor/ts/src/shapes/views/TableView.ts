@@ -37,7 +37,9 @@ export function setTablesLive(paper: dia.Paper, live: boolean): void {
     }
     paper.model.getElements().forEach((element) => {
         const view = element.findView(paper);
-        if (view instanceof TableView) view.updateValues(true);
+        if (view instanceof TableView) {
+            view.updateValues(true);
+        }
     });
 }
 
@@ -63,7 +65,9 @@ function svg<K extends keyof SVGElementTagNameMap>(
 
 /** The color of the field of the table: its own, or the default (see `ColorField`) */
 function colorOf(table: dia.Element, field: ReturnType<typeof colorFieldOf>): string {
-    if (!field) return 'none';
+    if (!field) {
+        return 'none';
+    }
     return table.prop(field.path) ?? fieldDefault(table, field) ?? 'none';
 }
 
@@ -135,7 +139,9 @@ export default class TableView extends dia.ElementView {
     /** The whole table drawn again (rendered, resized): the structure, its values and colors */
     update(): void {
         const { content: el, model } = this;
-        if (!el) return;
+        if (!el) {
+            return;
+        }
         el.replaceChildren();
         const { width, height } = model.size();
         const { columns } = model;
@@ -198,10 +204,14 @@ export default class TableView extends dia.ElementView {
     updateValues(all = false): void {
         const { values } = this.model;
         const live = Boolean(this.paper && livePapers.has(this.paper));
-        if (all) this.shown = [];
+        if (all) {
+            this.shown = [];
+        }
         this.cells.forEach((row, rowIndex) => row.forEach((cell, column) => {
             const value = live ? values[rowIndex]?.[column] ?? '' : '';
-            if (this.shown[rowIndex]?.[column] === value) return;
+            if (this.shown[rowIndex]?.[column] === value) {
+                return;
+            }
             (this.shown[rowIndex] ??= [])[column] = value;
             if (cell instanceof SVGCircleElement) {
                 cell.setAttribute('fill', STATE_COLORS[value] ?? 'none');

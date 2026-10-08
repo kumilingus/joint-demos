@@ -66,15 +66,21 @@ function previewState(cell: dia.Cell): PreviewState | null {
         // The class of a live circuit (as in the runtime mode, see `ElectricalController`)
         return (_cell, view, on) => {
             highlighters.addClass.remove(view, ENERGIZED_HIGHLIGHTER_ID);
-            if (on) highlighters.addClass.add(view, 'root', ENERGIZED_HIGHLIGHTER_ID, { className: 'energized' });
+            if (on) {
+                highlighters.addClass.add(view, 'root', ENERGIZED_HIGHLIGHTER_ID, { className: 'energized' });
+            }
             return on ? 'Energized' : 'Off';
         };
     }
     // A reading (see `plant/properties.ts`): between two values - of a scale (0 - 100), or around the one it shows (by a tenth)
-    if (!cell.isElement()) return null;
+    if (!cell.isElement()) {
+        return null;
+    }
     const element = cell;
     const property = propertiesOf(element).find(name => typeof readProperty(element, name) === 'number');
-    if (!property) return null;
+    if (!property) {
+        return null;
+    }
     const shown = Number(readProperty(element, property)) || 50;
     const scale = property === 'level' || SCALED_TYPES.includes(element.get('type'));
     const values = scale ? [75, 25] : [shown * 1.1, shown * 0.9].map(value => Number(value.toFixed(1)));
@@ -100,7 +106,9 @@ class ShapePreview implements PanelContent {
     }
 
     remove(): void {
-        if (this.timer !== null) window.clearInterval(this.timer);
+        if (this.timer !== null) {
+            window.clearInterval(this.timer);
+        }
         this.animations?.stop();
         highlighters.mask.remove(this.cellView, PALETTE_HIGHLIGHTER_ID);
         this.paper?.remove();
@@ -150,7 +158,9 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
     });
     const copy = cell.clone();
     // A link without its name (the label of the palette, see `setTooltip()` in `stencil.ts`): the title says it.
-    if (copy.isLink()) copy.labels([]);
+    if (copy.isLink()) {
+        copy.labels([]);
+    }
     paper.model.addCell(copy);
     // The paper renders the shape at once (not async): its view is there to be animated.
     const view = copy.findView(paper);
@@ -163,7 +173,9 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
     const state = previewState(copy);
     let on = true;
     const show = () => {
-        if (!state) return;
+        if (!state) {
+            return;
+        }
         stateEl.textContent = state(copy, view, on) ?? '';
         stateEl.classList.toggle('on', on);
         // A level, a charge, a column glide to the new value by their views (as in the runtime mode, see `glide.ts`)

@@ -39,7 +39,9 @@ export const OUTLINE_WIDTH_OPTIONS = [
 /** The default color of the cell (of its shape) */
 function defaultColorOf(cell: dia.Cell): unknown {
     const field = colorFieldOf(cell);
-    if (!field) return undefined;
+    if (!field) {
+        return undefined;
+    }
     const { path, defaultValue } = field;
     return util.getByPath(getCellDefaults(cell), path.join('/'), '/') ?? defaultValue;
 }
@@ -58,14 +60,18 @@ const AUTO = 'auto';
 /** The outline color of the cell: its own, or the default of its shape; `undefined` - none (Auto) */
 function outlineOf(cell: dia.Cell): string | undefined {
     const field = outlineFieldOf(cell);
-    if (!field) return undefined;
+    if (!field) {
+        return undefined;
+    }
     return cell.prop(field.path) ?? fieldDefault(cell, field);
 }
 
 /** The accent color of the cell: its own, or the default of its shape */
 function accentOf(cell: dia.Cell): string | undefined {
     const field = accentFieldOf(cell);
-    if (!field) return undefined;
+    if (!field) {
+        return undefined;
+    }
     return cell.prop(field.path) ?? fieldDefault(cell, field);
 }
 
@@ -85,7 +91,9 @@ function setField(cell: dia.Cell, field: ColorField | null, color: string): void
 /** Set the outline color of the cell, or none (`undefined`, Auto): back to the default of its shape, if it has one */
 function setOutline(cell: dia.Cell, outline: string | undefined): void {
     const field = outlineFieldOf(cell);
-    if (!field) return;
+    if (!field) {
+        return;
+    }
     const value = outline ?? fieldDefault(cell, field);
     if (value === undefined) {
         // The path as a string: `removeProp()` doesn't unset a top-level property given as an array
@@ -121,7 +129,9 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string, note
     // Outlined as one (see `outlineWidthInputs()` in `inspector.ts`): the pipes, the shapes that can be outlined - set
     // on those not outlined now too (it applies once they are: an outline color, flat)
     const bordered = cells.filter(cell => cell.get('type') === 'Pipe' || outlineFieldOf(cell)?.path.join('/') === 'style/outline');
-    if (cells.length === 0) return null;
+    if (cells.length === 0) {
+        return null;
+    }
     const { graph } = cells[0];
 
     const colors = colored.map(colorOf);
@@ -208,7 +218,9 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string, note
         };
     }
     standIn.on('change:outlineWidth', (_cell: dia.Cell, width: string) => {
-        if (width) changeAll(bordered, cell => (width === 'auto' ? unsetStyle(cell, 'outlineWidth') : setStyle(cell, 'outlineWidth', width)));
+        if (width) {
+            changeAll(bordered, cell => (width === 'auto' ? unsetStyle(cell, 'outlineWidth') : setStyle(cell, 'outlineWidth', width)));
+        }
     });
     standIn.on('change:accent', (_cell: dia.Cell, accent: string) => {
         changeAll(accented, cell => setField(cell, accentFieldOf(cell), accent));
@@ -229,7 +241,9 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string, note
         };
     }
     standIn.on('change:lineWidth', (_cell: dia.Cell, lineWidth: LineWidth) => {
-        if (lineWidth) changeAll(widened, cell => setStyle(cell, 'lineWidth', lineWidth));
+        if (lineWidth) {
+            changeAll(widened, cell => setStyle(cell, 'lineWidth', lineWidth));
+        }
     });
     // Their layer: the one they are all in, or none (mixed); last, as of a single cell (see `inspector.ts`)
     inputs.layer = {
@@ -246,10 +260,14 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string, note
         index: 100
     };
     standIn.on('change:layer', (_cell: dia.Cell, layer: string) => {
-        if (layer) changeAll(cells, cell => cell.set('layer', layer));
+        if (layer) {
+            changeAll(cells, cell => cell.set('layer', layer));
+        }
     });
     // A note under the heading (see `renderNoteField()`)
-    if (note) inputs.note = { type: 'note', text: note, group: 'appearance', index: -1 };
+    if (note) {
+        inputs.note = { type: 'note', text: note, group: 'appearance', index: -1 };
+    }
     return new ui.Inspector({
         cell: standIn,
         inputs,
@@ -270,7 +288,9 @@ interface NoteOptions {
 
 /** A note of the inspector: a field without a value, a text of its own */
 function renderNoteField(options: NoteOptions): HTMLElement | undefined {
-    if (options.type !== 'note') return undefined;
+    if (options.type !== 'note') {
+        return undefined;
+    }
     const el = document.createElement('p');
     el.className = 'scada-appearance-note';
     el.textContent = options.text ?? '';

@@ -123,7 +123,9 @@ const HOVER_ID = 'hover';
 export function showGroupBadges(paper: dia.Paper, selection: mvc.Collection<dia.Cell>): void {
     paper.model.getElements().filter(Group.isGroup).forEach((group) => {
         const view = group.findView(paper);
-        if (!view) return;
+        if (!view) {
+            return;
+        }
         const shown = Boolean(GroupBadge.get(view, GROUP_BADGE_ID));
         if (selection.has(group) && !shown) {
             GroupBadge.add(view, 'root', GROUP_BADGE_ID, { layer: 'front' });
@@ -136,16 +138,22 @@ export function showGroupBadges(paper: dia.Paper, selection: mvc.Collection<dia.
 /** The badge of the group again (its members changed: an undo, ...), if it has one */
 export function updateGroupBadge(paper: dia.Paper, group: dia.Cell): void {
     const view = group.findView(paper);
-    if (view) GroupBadge.update(view, GROUP_BADGE_ID, true);
+    if (view) {
+        GroupBadge.update(view, GROUP_BADGE_ID, true);
+    }
 }
 
 /** Frame the hovered cell: what a click selects (see `clickTarget()`), framed as selected, faintly - or none */
 export function showHover(paper: dia.Paper, cell: dia.Cell | null): void {
     const view = cell && cell.findView(paper);
     // Framed already (the frames of the paper know the hovered cell)
-    if (view && CellFrame.get(view, HOVER_ID)) return;
+    if (view && CellFrame.get(view, HOVER_ID)) {
+        return;
+    }
     CellFrame.removeAll(paper, HOVER_ID);
-    if (!cell || !view) return;
+    if (!cell || !view) {
+        return;
+    }
     const options = frameOptions(cell);
     CellFrame.add(view, 'root', HOVER_ID, {
         ...options,
@@ -182,8 +190,12 @@ export function createSelection(scroller: ui.PaperScroller, collection: mvc.Coll
  */
 export function preventSelectionInteraction(selection: ui.Selection, evt: dia.Event): void {
     const { action, interactionPrevented } = selection.eventData(evt);
-    if (interactionPrevented) return;
-    if (action === 'translating') selection.options.graph?.stopBatch('selection-translate');
+    if (interactionPrevented) {
+        return;
+    }
+    if (action === 'translating') {
+        selection.options.graph?.stopBatch('selection-translate');
+    }
     selection.eventData(evt, { interactionPrevented: true });
 }
 
@@ -195,14 +207,18 @@ export function showSelection(paper: dia.Paper, selection: mvc.Collection<dia.Ce
     hideSelectedTools(paper);
     showGroupBadges(paper, selection);
     showHover(paper, null);
-    if (selection.length === 1) showSelectedTools(paper, selection.at(0));
+    if (selection.length === 1) {
+        showSelectedTools(paper, selection.at(0));
+    }
 }
 
 /** A cell selected alone: an element with the free transform, a pipe with the link tools */
 function showSelectedTools(paper: dia.Paper, cell: dia.Cell): void {
     const cellView = cell.findView(paper);
     // A group is moved only (by its members), its frame is the one of the selection.
-    if (!cellView || Group.isGroup(cell)) return;
+    if (!cellView || Group.isGroup(cell)) {
+        return;
+    }
     if (cell.isElement()) {
         // An element can be resized and rotated.
         new ui.FreeTransform({
@@ -230,19 +246,29 @@ function showSelectedTools(paper: dia.Paper, cell: dia.Cell): void {
 
 /** The resize handles: those of the shape, or for the constraints - all of them, unless the width or the height can't change. */
 function resizeDirections({ minWidth, maxWidth, minHeight, maxHeight, directions }: ResizeOptions): dia.Direction[] {
-    if (directions) return directions;
+    if (directions) {
+        return directions;
+    }
     const fixedWidth = minWidth !== undefined && minWidth === maxWidth;
     const fixedHeight = minHeight !== undefined && minHeight === maxHeight;
-    if (fixedWidth && fixedHeight) return [];
-    if (fixedWidth) return ['top', 'bottom'];
-    if (fixedHeight) return ['left', 'right'];
+    if (fixedWidth && fixedHeight) {
+        return [];
+    }
+    if (fixedWidth) {
+        return ['top', 'bottom'];
+    }
+    if (fixedHeight) {
+        return ['left', 'right'];
+    }
     return ['top-left', 'top', 'top-right', 'right', 'bottom-right', 'bottom', 'bottom-left', 'left'];
 }
 
 /** How the shape can be transformed: resized (down to its minimal size, keeping its aspect ratio, ...) and rotated. */
 function getTransformOptions(cell: dia.Cell): Partial<ui.FreeTransform.Options> {
     // The screen: any size, not rotated
-    if (!Shape.isShape(cell)) return { allowRotation: false };
+    if (!Shape.isShape(cell)) {
+        return { allowRotation: false };
+    }
     const resizeOptions = cell.resizeOptions();
     return {
         allowRotation: cell.rotatable,

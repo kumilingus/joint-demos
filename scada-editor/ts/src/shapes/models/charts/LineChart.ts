@@ -21,7 +21,9 @@ const markup = util.svg/* xml */`
 /** The line (or the area under it) through the values (on the scale), across the plot */
 function seriesPath(values: number[], scale: Scale, bbox: dia.BBox, closed: boolean): string {
     const plot = plotArea(bbox);
-    if (values.length === 0) return 'M 0 0';
+    if (values.length === 0) {
+        return 'M 0 0';
+    }
     const last = Math.max(1, values.length - 1);
     const points = values.map((value, index) => `${plot.x + plot.width * index / last} ${plotY(plot, value, scale)}`);
     const line = `M ${points.join(' L ')}`;
@@ -72,7 +74,9 @@ export default class LineChart extends Shape {
                 // One of them only: it is where it is.
                 const both = Number.isFinite(low) && Number.isFinite(high);
                 const value = !both ? (which === 'low' ? low : high) : which === 'low' ? Math.min(low, high) : Math.max(low, high);
-                if (!Number.isFinite(value)) return { d: 'M 0 0' };
+                if (!Number.isFinite(value)) {
+                    return { d: 'M 0 0' };
+                }
                 const plot = plotArea(refBBox);
                 const y = plotY(plot, value, getScale(this.model));
                 return { d: `M ${plot.x} ${y} H ${plot.x + plot.width}` };

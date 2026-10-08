@@ -132,7 +132,9 @@ export default class FuelTank extends Shape {
 
     /** The fuel in the sight glass as high as the level, from its bottom (see `computed.ts`) */
     getComputedAttrs(selector: string): Record<string, unknown> {
-        if (selector !== 'fuel') return {};
+        if (selector !== 'fuel') {
+            return {};
+        }
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         const height = GLASS_HEIGHT * ratio;
         return {

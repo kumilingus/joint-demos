@@ -64,7 +64,9 @@ function legendY(count: number, index: number, bbox: dia.BBox): number {
 /** The ring segment of the slice: from the top, clockwise, after the slices before it */
 function slicePath(slices: Slice[], index: number, bbox: dia.BBox): string {
     const parts = shares(slices);
-    if (!parts[index]) return 'M 0 0';
+    if (!parts[index]) {
+        return 'M 0 0';
+    }
     const { center, radius } = donut(bbox);
     const inner = radius * HOLE;
     const start = parts.slice(0, index).reduce((sum, part) => sum + part, 0);
@@ -116,7 +118,9 @@ export default class DonutChart extends Shape {
             set(this: dia.ElementView, index: number, refBBox: dia.BBox) {
                 const slices = getSlices(this.model);
                 const slice = slices[index];
-                if (!slice) return { display: 'none' };
+                if (!slice) {
+                    return { display: 'none' };
+                }
                 return { display: 'inline', y: legendY(slices.length, index, refBBox) - 5, fill: slice.color || 'none' };
             }
         },
@@ -125,7 +129,9 @@ export default class DonutChart extends Shape {
             set(this: dia.ElementView, index: number, refBBox: dia.BBox, node: Element) {
                 const slices = getSlices(this.model);
                 const slice = slices[index];
-                if (!slice) return { display: 'none' };
+                if (!slice) {
+                    return { display: 'none' };
+                }
                 const text = `${slice.label ?? ''} ${Math.round(shares(slices)[index] * 100)} %`;
                 if (node instanceof SVGElement) {
                     V(node).text(text, { textVerticalAnchor: 'middle' });

@@ -28,12 +28,18 @@ function toggled(element: dia.Element, axis: FlipAxis): string {
 /** Flip the selected shapes along the axis (those that can be) */
 export function flipSelection(app: App, axis: FlipAxis): void {
     const targets = flipTargets(app, axis);
-    if (targets.length === 0) return;
+    if (targets.length === 0) {
+        return;
+    }
     app.graph.startBatch('flip');
     targets.forEach((shape) => {
         const flip = toggled(shape, axis);
         // Not flipped: none (absent in the JSON)
-        if (flip) shape.set('flip', flip); else shape.unset('flip');
+        if (flip) {
+            shape.set('flip', flip);
+        } else {
+            shape.unset('flip');
+        }
     });
     app.graph.stopBatch('flip');
 }

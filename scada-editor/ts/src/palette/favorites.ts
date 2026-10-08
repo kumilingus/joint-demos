@@ -40,6 +40,8 @@ export function toggleFavorite(graph: dia.Graph, key: string): boolean {
 /** Forget a shape that doesn't exist anymore (a deleted image). */
 export function removeFavorite(graph: dia.Graph, key: string): void {
     const favorites = getFavorites(graph);
-    if (!favorites.delete(key)) return;
+    if (!favorites.delete(key)) {
+        return;
+    }
     setFavorites(graph, favorites);
 }

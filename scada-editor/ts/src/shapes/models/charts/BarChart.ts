@@ -21,7 +21,9 @@ const markup = util.svg/* xml */`
 /** The bars of the values (on the scale) side by side across the plot, as one path */
 function barsPath(values: number[], scale: Scale, bbox: dia.BBox): string {
     const plot = plotArea(bbox);
-    if (values.length === 0) return 'M 0 0';
+    if (values.length === 0) {
+        return 'M 0 0';
+    }
     const slot = plot.width / values.length;
     const width = slot * BAR_WIDTH;
     const bottom = plot.y + plot.height;

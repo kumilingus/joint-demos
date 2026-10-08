@@ -26,7 +26,9 @@ function onLinkConnect(_app: App, linkView: dia.LinkView, _evt: dia.Event, _cell
 }
 
 function onRoutingChange(_app: App, link: dia.Cell, _routing: unknown, options: dia.Cell.Options) {
-    if (!link.isLink()) return;
+    if (!link.isLink()) {
+        return;
+    }
     link.unset('router', options);
     link.unset('connector', options);
 }

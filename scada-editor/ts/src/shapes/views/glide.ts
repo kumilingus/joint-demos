@@ -25,7 +25,11 @@ const glidingPapers = new WeakSet<dia.Paper>();
 
 /** Let the values glide on the paper, or not */
 export function setGliding(paper: dia.Paper, gliding: boolean): void {
-    if (gliding) glidingPapers.add(paper); else glidingPapers.delete(paper);
+    if (gliding) {
+        glidingPapers.add(paper);
+    } else {
+        glidingPapers.delete(paper);
+    }
 }
 
 /** The value a view drew last, its glide (by the view) */
@@ -34,13 +38,17 @@ const glidesOf = new WeakMap<dia.ElementView, { drawnValue: number; glides: Anim
 /** The parts of the element glide from the value the view drew last to the value now (drawn already): its view drawn again */
 export function glide(view: dia.ElementView): void {
     const { model } = view;
-    if (!isGliding(model)) return;
+    if (!isGliding(model)) {
+        return;
+    }
     const value = Number(dataOf(model, model.glideProperty)) || 0;
     const last = glidesOf.get(view);
     const glides = last?.glides ?? [];
     glidesOf.set(view, { drawnValue: value, glides });
     const drawn = last?.drawnValue;
-    if (drawn === undefined || drawn === value || !view.paper || !glidingPapers.has(view.paper)) return;
+    if (drawn === undefined || drawn === value || !view.paper || !glidingPapers.has(view.paper)) {
+        return;
+    }
     glides.forEach(animation => animation.cancel());
     const [from, to] = [model.glideKeyframes(drawn), model.glideKeyframes(value)];
     glidesOf.set(view, { drawnValue: value, glides: Object.keys(to).flatMap((selector) => {

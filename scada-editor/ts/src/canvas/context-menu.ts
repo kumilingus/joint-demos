@@ -87,7 +87,9 @@ function keepInWindow(el: HTMLElement, evt: dia.Event): void {
         const left = x - rect.width;
         dx = (left >= WINDOW_MARGIN ? left : Math.max(WINDOW_MARGIN, innerWidth - WINDOW_MARGIN - rect.width)) - rect.left;
     }
-    if (dx === 0 && dy === 0) return;
+    if (dx === 0 && dy === 0) {
+        return;
+    }
     const style = getComputedStyle(el);
     el.style.left = `${parseFloat(style.left) + dx}px`;
     el.style.top = `${parseFloat(style.top) + dy}px`;
@@ -97,7 +99,9 @@ function keepInWindow(el: HTMLElement, evt: dia.Event): void {
 export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: number, y: number): void {
     // The element selected below the clicked one keeps the menu (going on down, see `menuCell()`).
     const cell = menuCell(app, clicked, { x, y });
-    if (!app.selection.has(cell)) selectCell(app, cell);
+    if (!app.selection.has(cell)) {
+        selectCell(app, cell);
+    }
     // The front and the back are those of the layer of the cell (see `layers.ts`): named in the menu
     const layers = new Set(app.selection.map(selected => app.graph.getCellLayerId(selected)));
     const [layer] = layers;
@@ -203,7 +207,9 @@ function flipItems(app: App): MenuItem[] {
     if (flipTargets(app, 'y').length > 0) {
         items.push({ action: 'flip-y', label: 'Flip Vertically', shortcut: `${SHIFT}V`, run: () => flipSelection(app, 'y') });
     }
-    if (items.length > 0) items[0].separated = true;
+    if (items.length > 0) {
+        items[0].separated = true;
+    }
     return items;
 }
 
@@ -223,7 +229,9 @@ function disconnectItem(app: App): MenuItem {
 /** The hint of Select Same Type: the type (its name in the palette) or how many types, and how many cells */
 function sameTypeHint(app: App): string | undefined {
     const types = selectedTypes(app);
-    if (types.length === 0) return undefined;
+    if (types.length === 0) {
+        return undefined;
+    }
     const name = types.length === 1 ? descriptions[types[0]]?.title ?? types[0] : `${types.length} types`;
     return `${name} · ${sameTypeCells(app).length}`;
 }

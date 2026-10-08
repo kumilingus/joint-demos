@@ -49,7 +49,9 @@ export class Plant {
      */
     update(tag: string, property: string, value: TagValue): boolean {
         const element = this.tags.get(tag);
-        if (!element || !writeProperty(element, property, value, RUNTIME)) return false;
+        if (!element || !writeProperty(element, property, value, RUNTIME)) {
+            return false;
+        }
         this.trigger('update', { tag, property, value, time: new Date() });
         return true;
     }

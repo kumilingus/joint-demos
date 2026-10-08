@@ -116,8 +116,12 @@ export default class GateValve extends Shape {
     /** The stem and the handwheel up (open) or down (closed), see `computed.ts` */
     getComputedAttrs(selector: string): Record<string, unknown> {
         const top = dataOf(this, 'open') ? HANDWHEEL_OPEN : HANDWHEEL_CLOSED;
-        if (selector === 'stem') return { d: `M calc(w / 2) calc(h / 2) V ${top}` };
-        if (selector === 'handwheel') return { y: top - 4 };
+        if (selector === 'stem') {
+            return { d: `M calc(w / 2) calc(h / 2) V ${top}` };
+        }
+        if (selector === 'handwheel') {
+            return { y: top - 4 };
+        }
         return {};
     }
 

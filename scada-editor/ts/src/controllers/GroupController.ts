@@ -19,11 +19,19 @@ export default class GroupController extends Controller {
 
 /** Of a member: moved, resized or rotated (the graph changes too: its attributes - the images, the style, ...) */
 function onCellChange(_app: App, cell: dia.Cell | dia.Graph, options: ChangeOptions) {
-    if (!(cell instanceof dia.Cell) || !cell.isEmbedded() || options.derived) return;
+    if (!(cell instanceof dia.Cell) || !cell.isEmbedded() || options.derived) {
+        return;
+    }
     const { changed } = cell;
-    if (!('position' in changed || 'size' in changed || 'angle' in changed)) return;
+    if (!('position' in changed || 'size' in changed || 'angle' in changed)) {
+        return;
+    }
     // Moved with an element it is in (the group): its groups move as a whole
-    if (options.translateBy && options.translateBy !== cell.id) return;
+    if (options.translateBy && options.translateBy !== cell.id) {
+        return;
+    }
     const parent = cell.getParentCell();
-    if (parent) fitGroups(parent);
+    if (parent) {
+        fitGroups(parent);
+    }
 }

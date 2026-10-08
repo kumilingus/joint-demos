@@ -15,7 +15,9 @@ export default class PaletteController extends Controller {
 
     startListening(): void {
         const { stencil, graph, history } = this.app;
-        if (!stencil) return;
+        if (!stencil) {
+            return;
+        }
         refreshPalette(this.app);
         // A change of the diagram recorded - once for all of it (a paste, a drop of a group: one batch), an undo, a redo;
         // a diagram loaded (its history reset): the shapes in use, the images of the user
@@ -54,5 +56,7 @@ function onPaletteShapeDrop(app: App, cellView: dia.CellView) {
 
 function onGroupOpen(app: App, group: string) {
     const { stencil } = app;
-    if (stencil) restylePaper(stencil.getPaper(group));
+    if (stencil) {
+        restylePaper(stencil.getPaper(group));
+    }
 }

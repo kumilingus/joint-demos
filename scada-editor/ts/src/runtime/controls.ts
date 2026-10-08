@@ -83,12 +83,18 @@ abstract class Control extends dia.HighlighterView {
     /** A command of the operator (see `command()`): pending until the plant does it */
     protected request(property: string, value: TagValue): void {
         const { model } = this.cellView;
-        if (!model.isElement()) return;
-        if (this.pending) window.clearTimeout(this.pending.timer);
+        if (!model.isElement()) {
+            return;
+        }
+        if (this.pending) {
+            window.clearTimeout(this.pending.timer);
+        }
         // Not done in a while (no plant, refused): not pending any more, the state as it is
         const timer = window.setTimeout(() => {
             this.pending = null;
-            if (this.el.isConnected) this.update();
+            if (this.el.isConnected) {
+                this.update();
+            }
         }, PENDING_TIMEOUT);
         this.pending = { property, value, timer };
         command(model, property, value);
@@ -134,7 +140,9 @@ abstract class Control extends dia.HighlighterView {
      */
     protected transform(): void {
         const { transformGroup, cellView } = this;
-        if (!transformGroup) return;
+        if (!transformGroup) {
+            return;
+        }
         const { x, y } = cellView.model.position();
         transformGroup.attr('transform', `translate(${x},${y})`);
     }
@@ -184,7 +192,9 @@ class PumpControl extends Control {
 
     protected highlight(cellView: dia.CellView): void {
         const { model } = cellView;
-        if (!model.isElement()) return;
+        if (!model.isElement()) {
+            return;
+        }
         this.renderChildren();
         this.placeInCorner(model);
         const input = this.getNode('input', HTMLInputElement);
@@ -220,7 +230,9 @@ class ToggleValveControl extends Control {
 
     protected highlight(cellView: dia.CellView): void {
         const { model } = cellView;
-        if (!model.isElement()) return;
+        if (!model.isElement()) {
+            return;
+        }
         this.renderChildren();
         const isOpen = Boolean(dataOf(model, 'open'));
         this.placeBeside(model, TOGGLE_SIZE.width, TOGGLE_SIZE.height);
@@ -240,9 +252,13 @@ class ToggleValveControl extends Control {
     onButtonClick(evt: dia.Event): void {
         const { model } = this.cellView;
         const { currentTarget } = evt;
-        if (!model.isElement() || !(currentTarget instanceof HTMLElement)) return;
+        if (!model.isElement() || !(currentTarget instanceof HTMLElement)) {
+            return;
+        }
         const open = currentTarget.dataset.open === 'true';
-        if (open !== readProperty(model, 'open')) this.request('open', open);
+        if (open !== readProperty(model, 'open')) {
+            this.request('open', open);
+        }
     }
 }
 
@@ -265,7 +281,9 @@ class SliderValveControl extends Control {
 
     protected highlight(cellView: dia.CellView): void {
         const { model } = cellView;
-        if (!model.isElement()) return;
+        if (!model.isElement()) {
+            return;
+        }
         const open = dataOf<number>(model, 'open') ?? 0;
         if (!this.childNodes) {
             // Render the slider only once so that the user can keep dragging it.
@@ -292,7 +310,9 @@ class SliderValveControl extends Control {
     onInput(evt: dia.Event): void {
         const { target } = evt;
         const value = this.getNode('value', HTMLOutputElement);
-        if (!(target instanceof HTMLInputElement)) return;
+        if (!(target instanceof HTMLInputElement)) {
+            return;
+        }
         this.moving = true;
         if (value) {
             value.textContent = getOpenText(Number(target.value) / 100);
@@ -310,8 +330,12 @@ class SliderValveControl extends Control {
 }
 
 function getOpenText(open: number): string {
-    if (open === 0) return 'Closed';
-    if (open === 1) return 'Open';
+    if (open === 0) {
+        return 'Closed';
+    }
+    if (open === 1) {
+        return 'Open';
+    }
     return `${open * 100}% open`;
 }
 
@@ -330,9 +354,13 @@ export function usesControl(element: dia.Element): boolean {
 /** Show the control of the element, or remove it if the element doesn't use one (any more). */
 export function updateControl(paper: dia.Paper, element: dia.Element): void {
     const elementView = element.findView(paper);
-    if (!elementView) return;
+    if (!elementView) {
+        return;
+    }
     dia.HighlighterView.remove(elementView, CONTROL_HIGHLIGHTER_ID);
-    if (!hasControl(element) || !usesControl(element)) return;
+    if (!hasControl(element) || !usesControl(element)) {
+        return;
+    }
     // In the front layer of the paper: over the shapes, upright (see `Control.transform()`)
     const options = { layer: dia.Paper.Layers.FRONT };
     switch (element.control) {
@@ -367,7 +395,9 @@ export function removeControls(paper: dia.Paper): void {
  * the element (a switch, a slider: see `Control.placeBeside()`; a checkbox is in its corner); 0 otherwise
  */
 export function controlReach(element: dia.Element, side: 'top' | 'bottom'): number {
-    if (!hasControl(element) || !usesControl(element) || sideOf(element.get('controlPosition')) !== side) return 0;
+    if (!hasControl(element) || !usesControl(element) || sideOf(element.get('controlPosition')) !== side) {
+        return 0;
+    }
     const size = element.control === 'toggle' ? TOGGLE_SIZE : element.control === 'slider' ? SLIDER_SIZE : null;
     return size ? size.height + CONTROL_GAP : 0;
 }

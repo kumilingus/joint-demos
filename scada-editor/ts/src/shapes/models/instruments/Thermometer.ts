@@ -168,8 +168,12 @@ export default class Thermometer extends Shape {
     getComputedAttrs(selector: string): Record<string, unknown> {
         const value = Math.max(0, Math.min(100, Number(dataOf(this, 'value')) || 0));
         const top = Number(g.scale.linear([0, 100], [0.68, 0.08], value).toFixed(3));
-        if (selector === 'column') return { y: `calc(${top} * h)`, height: `calc(${(0.95 - top).toFixed(3)} * h - 8)` };
-        if (selector === 'reading') return { y: 0, transform: `translate(0, calc(${top} * h))`, text: `${Math.round(value)} °C` };
+        if (selector === 'column') {
+            return { y: `calc(${top} * h)`, height: `calc(${(0.95 - top).toFixed(3)} * h - 8)` };
+        }
+        if (selector === 'reading') {
+            return { y: 0, transform: `translate(0, calc(${top} * h))`, text: `${Math.round(value)} °C` };
+        }
         return {};
     }
 

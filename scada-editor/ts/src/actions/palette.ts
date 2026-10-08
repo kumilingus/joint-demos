@@ -22,7 +22,9 @@ export function addImages(app: App, images: ImageEntry[]): void {
 /** The groups of the palette made of the diagram: the shapes in use (unless hidden, empty), the favorites, the images of the user. */
 export function refreshPalette(app: App): void {
     const { stencil, graph } = app;
-    if (!stencil) return;
+    if (!stencil) {
+        return;
+    }
     const images = getImages(graph);
     loadCustomShapes(stencil, images);
     loadDerivedGroup(stencil, DerivedGroup.InUse, app.inUseShown ? keysInUse(graph) : new Set(), images);
@@ -32,7 +34,9 @@ export function refreshPalette(app: App): void {
 /** The favorites group of the palette (the favorites changed) */
 export function refreshFavorites(app: App): void {
     const { stencil, graph } = app;
-    if (!stencil) return;
+    if (!stencil) {
+        return;
+    }
     loadDerivedGroup(stencil, DerivedGroup.Favorites, getFavorites(graph), getImages(graph));
 }
 
@@ -43,7 +47,9 @@ export function refreshFavorites(app: App): void {
 export function deleteImage(app: App, imageId: string): void {
     const { graph } = app;
     const { [imageId]: image, ...rest } = getImages(graph);
-    if (!image) return;
+    if (!image) {
+        return;
+    }
     clearSelection(app);
     // Not a favorite anymore (the favorites are not in the history: an undo doesn't make it one again)
     removeFavorite(graph, `CustomImage:${imageId}`);

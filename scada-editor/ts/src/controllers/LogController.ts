@@ -94,5 +94,7 @@ function onLogClose(app: App) {
 
 function onCellPointerclick(_app: App, log: LogView, cellView: dia.CellView) {
     const tag = getTag(cellView.model);
-    if (tag && log.isOpen) log.toggleFilterTag(tag);
+    if (tag && log.isOpen) {
+        log.toggleFilterTag(tag);
+    }
 }

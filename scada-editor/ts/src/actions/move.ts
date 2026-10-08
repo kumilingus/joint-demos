@@ -28,7 +28,9 @@ export function moveSelection(app: App, direction: MoveDirection, large = false)
     const selected = selection.toArray();
     // A member of a selected group moves with it
     const moved = selected.filter(cell => !cell.getAncestors().some(ancestor => selection.has(ancestor)));
-    if (moved.length === 0) return false;
+    if (moved.length === 0) {
+        return false;
+    }
     const step = large ? LARGE_STEP : GRID_SIZE;
     const [dx, dy] = DIRECTIONS[direction].map(unit => unit * step);
     const elements = new Set(moved.filter(cell => cell.isElement()).flatMap(cell => [cell, ...cell.getEmbeddedCells({ deep: true })]));
@@ -38,7 +40,9 @@ export function moveSelection(app: App, direction: MoveDirection, large = false)
     ]);
     graph.startBatch('move');
     moved.forEach((cell) => {
-        if (cell.isElement()) cell.translate(dx, dy);
+        if (cell.isElement()) {
+            cell.translate(dx, dy);
+        }
     });
     links.forEach(link => link.translate(dx, dy));
     graph.stopBatch('move');

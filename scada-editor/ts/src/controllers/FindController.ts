@@ -64,15 +64,21 @@ function onEscape(_app: App, view: FindView) {
 }
 
 function onDiagramChange(_app: App, view: FindView) {
-    if (view.isOpen) view.refresh();
+    if (view.isOpen) {
+        view.refresh();
+    }
 }
 
 function onSelectionReset(app: App, view: FindView, _selection: unknown, options: SelectionOptions) {
     const { selection } = app;
-    if (!options.find) view.selectedElsewhere(selection.length > 0);
+    if (!options.find) {
+        view.selectedElsewhere(selection.length > 0);
+    }
 }
 
 function onSelectionChange(app: App, view: FindView, _cell: unknown, _selection: unknown, options: SelectionOptions) {
     const { selection } = app;
-    if (!options.find) view.selectedElsewhere(selection.length > 0);
+    if (!options.find) {
+        view.selectedElsewhere(selection.length > 0);
+    }
 }

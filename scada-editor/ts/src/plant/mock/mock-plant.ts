@@ -183,17 +183,23 @@ const readoutGenerators: Record<string, (element: dia.Element, graph: dia.Graph,
         const values = dataOf<string[][]>(element, 'values') ?? [];
         const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
         const source = sourceOf(element, tags);
-        if (source && !isRunning(source)) return null;
+        if (source && !isRunning(source)) {
+            return null;
+        }
         const cells = values.flatMap((row, rowIndex) => row
             .map((value, column) => ({ value, rowIndex, column, kind: kinds[column] }))
             .filter(({ value, kind }) => (kind === 'state'
                 ? !source && (value === 'on' || value === 'off')
                 : /^-?\d+(\.\d+)?$/.test(value))));
-        if (cells.length === 0) return null;
+        if (cells.length === 0) {
+            return null;
+        }
         const { value, rowIndex, column, kind } = cells[Math.floor(Math.random() * cells.length)];
         let next: string;
         if (kind === 'state') {
-            if (!chance(0.4)) return null;
+            if (!chance(0.4)) {
+                return null;
+            }
             next = value === 'on' ? 'off' : 'on';
         } else {
             const number = Number(value);
@@ -233,7 +239,9 @@ const chartGenerators: Record<string, ChartGenerator> = {
     BarChart: (element, graph, tick, periodFlows) => {
         if (!hasSteam(graph)) {
             // A new bar now and then, near the last one
-            if (tick % BAR_PERIOD !== 0) return null;
+            if (tick % BAR_PERIOD !== 0) {
+                return null;
+            }
             const { min, max } = getScale(element);
             const values = dataOf<number[]>(element, 'values') || [];
             return { 'data/values': [...values.slice(1), driftOnScale(values[values.length - 1] ?? (min + max) / 2, min, max, 0.08)] };
@@ -259,7 +267,9 @@ const chartGenerators: Record<string, ChartGenerator> = {
         return {
             'data/slices': slices.map((slice, index) => {
                 // The others as they are
-                if (index > 1) return slice;
+                if (index > 1) {
+                    return slice;
+                }
                 const value = index === 0 ? Math.min(flow, BASE_LOAD) : Math.max(0, flow - BASE_LOAD);
                 return { ...slice, value: Number(Math.max(0, follow(Number(slice.value) || 0, value, 0.3)).toFixed(1)) };
             })
@@ -288,8 +298,12 @@ const SWITCHES = ['CircuitBreaker', 'Disconnector'];
 
 /** Whether the element runs: switched on (a pump, a generator), open (a valve) or closed (a breaker), or neither */
 function isRunning(cell: dia.Cell): boolean {
-    if (hasData(cell, 'power')) return Boolean(dataOf(cell, 'power'));
-    if (hasData(cell, 'open')) return SWITCHES.includes(cell.get('type')) ? !dataOf(cell, 'open') : Boolean(dataOf(cell, 'open'));
+    if (hasData(cell, 'power')) {
+        return Boolean(dataOf(cell, 'power'));
+    }
+    if (hasData(cell, 'open')) {
+        return SWITCHES.includes(cell.get('type')) ? !dataOf(cell, 'open') : Boolean(dataOf(cell, 'open'));
+    }
     return true;
 }
 
@@ -306,7 +320,9 @@ const isNumber = (value: string) => /^-?\d+(\.\d+)?$/.test(value);
 function readoutStates(graph: dia.Graph, tags: TagIndex): void {
     graph.getElements().filter(element => element.get('type') === 'Table').forEach((table) => {
         const source = sourceOf(table, tags);
-        if (!source) return;
+        if (!source) {
+            return;
+        }
         const running = isRunning(source);
         const kinds: Array<string | undefined> = (table.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
         const values = dataOf<string[][]>(table, 'values') ?? [];
@@ -322,7 +338,9 @@ function readoutStates(graph: dia.Graph, tags: TagIndex): void {
         }
         const state = running ? 'on' : 'off';
         const next = numbers.map(row => row.map((value, column) => (kinds[column] === 'state' && value !== 'alarm' ? state : value)));
-        if (JSON.stringify(next) !== JSON.stringify(values)) setData(table, 'values', next, RUNTIME);
+        if (JSON.stringify(next) !== JSON.stringify(values)) {
+            setData(table, 'values', next, RUNTIME);
+        }
     });
 }
 
@@ -334,13 +352,21 @@ function fillTables(graph: dia.Graph): void {
     graph.getElements().filter(element => element.get('type') === 'Table').forEach((table) => {
         const kinds: Array<string | undefined> = (table.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
         const values = dataOf<string[][]>(table, 'values') ?? [];
-        if (values.every(row => row.every(value => value !== ''))) return;
+        if (values.every(row => row.every(value => value !== ''))) {
+            return;
+        }
         const filled = values.map((row, r) => row.map((value, c) => {
-            if (value !== '') return value;
-            if (kinds[c] === 'state') return 'on';
+            if (value !== '') {
+                return value;
+            }
+            if (kinds[c] === 'state') {
+                return 'on';
+            }
             if (kinds[c] === 'number') {
                 const numbers = values.map(other => other[c]).filter(isNumber);
-                if (numbers.length === 0) return random(0, 100).toFixed(1);
+                if (numbers.length === 0) {
+                    return random(0, 100).toFixed(1);
+                }
                 const sample = numbers[Math.floor(Math.random() * numbers.length)];
                 return drift(Number(sample), Math.abs(Number(sample)) * 0.2, 0, Number.MAX_VALUE).toFixed(sample.split('.')[1]?.length ?? 0);
             }
@@ -354,7 +380,9 @@ function fillTables(graph: dia.Graph): void {
 function restoreReadouts(graph: dia.Graph): void {
     graph.getElements().forEach((element) => {
         const numbers = runningValues.get(element);
-        if (!numbers) return;
+        if (!numbers) {
+            return;
+        }
         runningValues.delete(element);
         // The numbers only: the states as they are (of the source now)
         const kinds: Array<string | undefined> = (element.get('columns') ?? []).map((column: { kind?: string }) => column.kind);
@@ -385,10 +413,14 @@ interface PlantUpdate {
 function createRandomUpdate(graph: dia.Graph, tags: TagIndex): PlantUpdate | TagUpdate | null {
     // The equipment (a conveyor: a link too) and the tables
     const cells = graph.getCells().filter(cell => getTag(cell) && (cell.get('type') in generators || cell.get('type') in readoutGenerators));
-    if (cells.length === 0) return null;
+    if (cells.length === 0) {
+        return null;
+    }
     const cell = cells[Math.floor(Math.random() * cells.length)];
     const tag = getTag(cell);
-    if (!tag) return null;
+    if (!tag) {
+        return null;
+    }
     const type = cell.get('type');
     if (cell.isElement() && type in readoutGenerators) {
         const changes = readoutGenerators[type](cell, graph, tags);
@@ -401,7 +433,9 @@ function createRandomUpdate(graph: dia.Graph, tags: TagIndex): PlantUpdate | Tag
 /** Apply an update to the element with its tag (a runtime change: not recorded in the history). */
 function applyUpdate(tags: TagIndex, { tag, changes }: TagUpdate): void {
     const element = tags.get(tag);
-    if (!element) return;
+    if (!element) {
+        return;
+    }
     // Replaced (an array of values not merged into the one before)
     Object.entries(changes).forEach(([path, value]) => element.prop(path, value, { ...RUNTIME, rewrite: true }));
 }
@@ -431,7 +465,9 @@ export class MockPlant {
     }
 
     start(plant: Plant): void {
-        if (this.running) return;
+        if (this.running) {
+            return;
+        }
         this.plant = plant;
         // The commands of the operator done (as a SCADA server answers them: with the new state)
         plant.on('command', this.respond, this);
@@ -457,8 +493,12 @@ export class MockPlant {
         restoreReadouts(this.graph);
         // Not a part of the diagram: not saved with it
         this.graph.getCells().forEach(cell => cell.removeProp('energized', RUNTIME));
-        if (this.timer !== null) window.clearTimeout(this.timer);
-        if (this.chartTimer !== null) window.clearInterval(this.chartTimer);
+        if (this.timer !== null) {
+            window.clearTimeout(this.timer);
+        }
+        if (this.chartTimer !== null) {
+            window.clearInterval(this.chartTimer);
+        }
         this.timer = null;
         this.chartTimer = null;
         this.tick = 0;
@@ -480,7 +520,9 @@ export class MockPlant {
 
     /** A generator, a pump or a switch changed (on, off, open, closed): the energized circuits, the states of the readouts */
     protected onDataChange(cell: dia.Cell): void {
-        if (!hasData(cell, 'power') && !hasData(cell, 'open')) return;
+        if (!hasData(cell, 'power') && !hasData(cell, 'open')) {
+            return;
+        }
         this.updateEnergized();
         this.updateReadouts();
     }
@@ -494,7 +536,9 @@ export class MockPlant {
         const energized = getEnergized(this.graph);
         this.graph.getCells().forEach((cell) => {
             const value = energized.has(cell);
-            if (Boolean(cell.get('energized')) === value) return;
+            if (Boolean(cell.get('energized')) === value) {
+                return;
+            }
             if (value) {
                 cell.set('energized', true, RUNTIME);
             } else {

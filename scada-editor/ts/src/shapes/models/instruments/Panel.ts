@@ -245,7 +245,9 @@ export default class Panel extends Shape {
         'track-shine': {
             set(this: dia.ElementView) {
                 const { paper } = this;
-                if (!paper || finishOf(this.model) === 'flat') return { fill: 'none' };
+                if (!paper || finishOf(this.model) === 'flat') {
+                    return { fill: 'none' };
+                }
                 return { fill: `url(#${paper.defineGradient(shineGradient)})` };
             }
         }

@@ -32,7 +32,9 @@ export interface Column {
 
 /** The width of the column if it is not auto: its own, or of a column of states */
 function fixedWidth({ kind, width }: Column): number | null {
-    if (width && width > 0) return width;
+    if (width && width > 0) {
+        return width;
+    }
     return kind === 'state' ? STATE_COLUMN_WIDTH : null;
 }
 
@@ -45,7 +47,9 @@ export function columnLayout(columns: Column[], width: number): { starts: number
     const autos = fixed.filter(w => w === null).length;
     const rest = width - fixed.reduce<number>((sum, w) => sum + (w ?? 0), 0);
     const widths = fixed.map(w => w ?? rest / autos);
-    if (autos === 0 && widths.length > 0) widths[widths.length - 1] += rest;
+    if (autos === 0 && widths.length > 0) {
+        widths[widths.length - 1] += rest;
+    }
     const starts = widths.map((_, column) => widths.slice(0, column).reduce((sum, w) => sum + w, 0));
     return { starts, widths };
 }
@@ -160,9 +164,13 @@ export default class Table extends Shape {
      * the steps of the grid (a row each) already, any other one (set, loaded) is fitted
      */
     protected fitRows(options: ChangeOptions): void {
-        if (options.derived) return;
+        if (options.derived) {
+            return;
+        }
         const rows = Math.max(1, Math.round((this.size().height - Table.getHeadHeight(this)) / ROW_HEIGHT));
-        if (rows !== this.get('rows')) this.set('rows', rows, { ...DERIVED, resized: true });
+        if (rows !== this.get('rows')) {
+            this.set('rows', rows, { ...DERIVED, resized: true });
+        }
         this.fit(true);
     }
 
@@ -174,11 +182,15 @@ export default class Table extends Shape {
         const { columns, values } = this;
         const rows: number = this.get('rows') ?? 0;
         const fitted = Array.from({ length: rows }, (_, row) => Array.from({ length: columns.length }, (_, column) => values[row]?.[column] ?? ''));
-        if (JSON.stringify(fitted) !== JSON.stringify(values)) setData(this, 'values', fitted, DERIVED);
+        if (JSON.stringify(fitted) !== JSON.stringify(values)) {
+            setData(this, 'values', fitted, DERIVED);
+        }
         const size = this.size();
         const minWidth = Math.ceil(minWidthOf(columns) / (2 * GRID_SIZE)) * 2 * GRID_SIZE;
         const fittedWidth = Math.max(size.width, minWidth);
         const fittedHeight = height ? Table.getHeight(this) : size.height;
-        if (size.height !== fittedHeight || size.width !== fittedWidth) this.resize(fittedWidth, fittedHeight, DERIVED);
+        if (size.height !== fittedHeight || size.width !== fittedWidth) {
+            this.resize(fittedWidth, fittedHeight, DERIVED);
+        }
     }
 }

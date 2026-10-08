@@ -10,7 +10,9 @@ const ENERGIZED_HIGHLIGHTER_ID = 'energized';
 /** The cell shown energized, or not (by its `energized`) */
 export function showEnergized(paper: dia.Paper, cell: dia.Cell): void {
     const view = cell.findView(paper);
-    if (!view) return;
+    if (!view) {
+        return;
+    }
     if (cell.get('energized')) {
         if (!highlighters.addClass.get(view, ENERGIZED_HIGHLIGHTER_ID)) {
             highlighters.addClass.add(view, 'root', ENERGIZED_HIGHLIGHTER_ID, { className: 'energized' });

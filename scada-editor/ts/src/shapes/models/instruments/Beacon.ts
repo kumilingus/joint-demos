@@ -111,8 +111,12 @@ export default class Beacon extends Shape {
     /** The lamp lit and glowing while the alarm is on (see `computed.ts`) */
     getComputedAttrs(selector: string): Record<string, unknown> {
         const on = Boolean(dataOf(this, 'power'));
-        if (selector === 'lamp') return { fill: on ? MAX_LIQUID_COLOR : LAMP_OFF_COLOR };
-        if (selector === 'glow') return { display: on ? 'block' : 'none' };
+        if (selector === 'lamp') {
+            return { fill: on ? MAX_LIQUID_COLOR : LAMP_OFF_COLOR };
+        }
+        if (selector === 'glow') {
+            return { display: on ? 'block' : 'none' };
+        }
         return {};
     }
 

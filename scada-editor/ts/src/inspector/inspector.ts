@@ -94,10 +94,14 @@ function getInputs(element: dia.Element): Inputs {
     let index = 0;
 
     // An ID (optional, see `tag-field.ts`): of a shape with a series of them, or one it has (a text, a zone has none)
-    if (isTaggable(element) || getTag(element)) inputs.tag = { type: 'text', label: 'ID', group: 'general', index: index++ };
+    if (isTaggable(element) || getTag(element)) {
+        inputs.tag = { type: 'text', label: 'ID', group: 'general', index: index++ };
+    }
 
     TEXTS.forEach(([path, label, group]) => {
-        if (element.prop(path) === undefined) return;
+        if (element.prop(path) === undefined) {
+            return;
+        }
         // A text of its own (the Label shape): on several lines
         const type = element.get('type') === 'Label' && path[0] === 'label' ? 'textarea' : 'text';
         const ownText = path[0] === 'label' && ['Label', 'Zone'].includes(element.get('type'));
@@ -162,7 +166,8 @@ function getInputs(element: dia.Element): Inputs {
 
     // The finish of the surfaces (see `SurfaceFinish`): first, it decides how their color is drawn
     if (hasFinish(element)) {
-        inputs.style = { ...(isInputs(inputs.style) ? inputs.style : {}), finish: {
+        const style = isInputs(inputs.style) ? inputs.style : {};
+        inputs.style = { ...style, finish: {
             type: 'select-button-group',
             label: 'Finish',
             help: 'finish',
@@ -362,7 +367,9 @@ function getInputs(element: dia.Element): Inputs {
     // The values (see `data.ts`): at the paths of the data
     const data = Object.fromEntries(DATA_KEYS.filter(key => key in inputs).map(key => [key, inputs[key]]));
     DATA_KEYS.forEach(key => delete inputs[key]);
-    if (Object.keys(data).length > 0) inputs.data = data;
+    if (Object.keys(data).length > 0) {
+        inputs.data = data;
+    }
 
     return inputs;
 }
@@ -388,7 +395,9 @@ const linkInputs: Inputs = {
  */
 function colorInputs(cell: dia.Cell, group: string, index: number): Inputs {
     const field = colorFieldOf(cell);
-    if (!field) return {};
+    if (!field) {
+        return {};
+    }
     const { path, defaultValue } = field;
     const input: Inputs = { type: 'color', label: 'Color', group, index, ...(defaultValue ? { defaultValue } : {}) };
     return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input);
@@ -409,8 +418,12 @@ function outlineInputs(cell: dia.Cell, group: string, index: number): Inputs {
  */
 function outlineWidthInputs(cell: dia.Cell, group: string, index: number): Inputs {
     const input = { type: 'select-button-group', label: 'Outline width', help: 'outlineWidth', options: OUTLINE_WIDTH_OPTIONS, defaultValue: 'auto', group, index };
-    if (cell.get('type') === 'Pipe') return { style: { outlineWidth: input }};
-    if (outlineFieldOf(cell)?.path.join('/') !== 'style/outline') return {};
+    if (cell.get('type') === 'Pipe') {
+        return { style: { outlineWidth: input }};
+    }
+    if (outlineFieldOf(cell)?.path.join('/') !== 'style/outline') {
+        return {};
+    }
     const flat = cell.isElement() && hasFinish(cell)
         ? [{ eq: { 'style/finish': 'flat' }}, ...(getStyleFinish() === 'flat' ? [{ nin: { 'style/finish': ['shaded'] }}] : [])]
         : [];
@@ -424,7 +437,9 @@ function accentInputs(cell: dia.Cell, group: string, index: number): Inputs {
 
 /** A color field at the path of the field (Auto if it has no default: none of the cell's own) */
 function fieldInputs(cell: dia.Cell, field: ColorField | null, label: string, group: string, index: number): Inputs {
-    if (!field) return {};
+    if (!field) {
+        return {};
+    }
     // No color of its own by default (none, or none at all): Auto
     const defaultColor = fieldDefault(cell, field);
     const auto = defaultColor === undefined || defaultColor === 'none';
@@ -511,7 +526,9 @@ function renderMembersField(
     _value: unknown,
     inspector: ui.Inspector
 ): HTMLElement | undefined {
-    if (options.type !== 'group-members') return undefined;
+    if (options.type !== 'group-members') {
+        return undefined;
+    }
     const el = document.createElement('div');
     el.className = 'scada-group-members';
     const label = document.createElement('label');
@@ -546,8 +563,12 @@ function fieldContentRenderer(tags: TagIndex, selectMember?: (member: dia.Cell) 
 
 /** The inputs of the cell: of a group, of an element, of a link */
 function inspectorInputs(cell: dia.Cell): Inputs {
-    if (Group.isGroup(cell)) return groupInputs;
-    if (cell.isElement()) return { ...getInputs(cell), ...layerInput('appearance') };
+    if (Group.isGroup(cell)) {
+        return groupInputs;
+    }
+    if (cell.isElement()) {
+        return { ...getInputs(cell), ...layerInput('appearance') };
+    }
     // Merged deeply: the color and the outline of a pipe are both in its `attrs`
     const inputs: Inputs = {};
     util.merge(
@@ -574,7 +595,9 @@ function inspectorInputs(cell: dia.Cell): Inputs {
  */
 export function inspectSelection(app: App, keepSettings = false): void {
     const { selection } = app;
-    if (keepSettings && selection.length === 0) return;
+    if (keepSettings && selection.length === 0) {
+        return;
+    }
     const cell = selection.length === 1 ? selection.at(0) : null;
     if (Screen.isScreen(cell)) {
         openSettings(app);
@@ -590,7 +613,9 @@ export function inspectSelection(app: App, keepSettings = false): void {
 /** The inspector of the appearance of the cells (see `selection-inspector.ts`), with a note under its heading */
 function renderAppearanceInspector(cells: dia.Cell[], label: string, note?: string): ui.Inspector | null {
     const inspector = createAppearanceInspector(cells, label, note);
-    if (!inspector) return null;
+    if (!inspector) {
+        return null;
+    }
     inspector.render();
     trackPickedColors(inspector.el);
     return inspector;
@@ -650,7 +675,9 @@ function validateTag(tags: TagIndex, cell: dia.Cell, input: HTMLInputElement): b
     const tag = input.value.trim();
     const message = tag && tags.isTaken(tag, cell) ? `${tag} is the ID of another element.` : '';
     input.setCustomValidity(message);
-    if (message) input.reportValidity();
+    if (message) {
+        input.reportValidity();
+    }
     return !message;
 }
 
@@ -663,7 +690,9 @@ function inspectorContent([inspector, ...nested]: ui.Inspector[]): PanelContent 
         el: inspector.el,
         remove: () => {
             const focused = document.activeElement;
-            if (focused instanceof HTMLElement && inspector.el.contains(focused)) focused.blur();
+            if (focused instanceof HTMLElement && inspector.el.contains(focused)) {
+                focused.blur();
+            }
             [...nested, inspector].forEach((each) => {
                 savePickedColors(each.el);
                 each.remove();
@@ -680,15 +709,21 @@ const PICKED = 'picked';
 
 function onColorInput(evt: Event): void {
     const { target } = evt;
-    if (target instanceof HTMLInputElement && target.type === 'color') target.dataset[PICKED] = 'true';
+    if (target instanceof HTMLInputElement && target.type === 'color') {
+        target.dataset[PICKED] = 'true';
+    }
 }
 
 function onColorChange(evt: Event): void {
     const { target } = evt;
-    if (!(target instanceof HTMLInputElement)) return;
+    if (!(target instanceof HTMLInputElement)) {
+        return;
+    }
     delete target.dataset[PICKED];
     // To be picked again (see `color-field.ts`)
-    if (target.type === 'color') rememberColor(target.value);
+    if (target.type === 'color') {
+        rememberColor(target.value);
+    }
 }
 
 /** Keep track of the colors picked in the inspector (its element), see `savePickedColors()` */

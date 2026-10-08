@@ -98,7 +98,9 @@ export default class LogView extends FilterListView<LogEntry> {
         const { messages } = this;
         messages.unshift(message);
         messages.length = Math.min(messages.length, MAX_MESSAGES);
-        if (!this.isOpen) return;
+        if (!this.isOpen) {
+            return;
+        }
         this.insertRow(message);
         const rows = this.rowsEl;
         while (rows?.lastElementChild && rows.childElementCount > MAX_MESSAGES) rows.lastElementChild.remove();
@@ -115,7 +117,9 @@ export default class LogView extends FilterListView<LogEntry> {
 
     /** The tag in the text filter, or out of it if it is there (an element clicked on the diagram while the log is open) */
     toggleFilterTag(tag: string): void {
-        if (!this.isOpen) return;
+        if (!this.isOpen) {
+            return;
+        }
         const words = this.filter.split(/\s+/).filter(Boolean);
         const index = words.findIndex(word => word.toLowerCase() === tag.toLowerCase());
         if (index === -1) {
@@ -124,7 +128,9 @@ export default class LogView extends FilterListView<LogEntry> {
             words.splice(index, 1);
         }
         this.filter = words.join(' ');
-        if (this.input) this.input.value = this.filter;
+        if (this.input) {
+            this.input.value = this.filter;
+        }
         this.renderList();
     }
 
@@ -144,7 +150,9 @@ export default class LogView extends FilterListView<LogEntry> {
     /** Of the direction, with any of the words (the tags of several elements clicked) */
     protected matches(message: LogEntry, words: string[]): boolean {
         const { direction } = this;
-        if (direction !== 'all' && message.kind !== direction) return false;
+        if (direction !== 'all' && message.kind !== direction) {
+            return false;
+        }
         const text = this.normalize(this.getText(message));
         return words.length === 0 || words.some(word => text.includes(word));
     }
@@ -215,7 +223,9 @@ export default class LogView extends FilterListView<LogEntry> {
         const filtered = this.isOpen && (words.length > 0 || this.direction !== 'all');
         const tags = filtered ? [...new Set(this.shownEntries().map(({ tag }) => tag))].sort() : [];
         const key = filtered ? `${words.join(' ')}|${tags.join(' ')}` : '';
-        if (key === this.shownFilter) return;
+        if (key === this.shownFilter) {
+            return;
+        }
         this.shownFilter = key;
         this.hooks.filterChange(filtered ? { words, tags } : null);
     }
@@ -257,7 +267,9 @@ export default class LogView extends FilterListView<LogEntry> {
     /** A direction picked: the messages of it shown */
     protected onDirectionClickEvent(evt: dia.Event): void {
         const direction = DIRECTION_FILTERS.find(([value]) => value === evt.currentTarget?.dataset.direction)?.[0];
-        if (!direction) return;
+        if (!direction) {
+            return;
+        }
         this.direction = direction;
         this.el.querySelectorAll<HTMLElement>('.scada-log-directions button').forEach((button) => {
             button.setAttribute('aria-pressed', String(button.dataset.direction === direction));
@@ -268,7 +280,9 @@ export default class LogView extends FilterListView<LogEntry> {
     /** An option checked or unchecked: shown on the diagram, or not */
     protected onOptionChangeEvent(evt: dia.Event): void {
         const { target } = evt;
-        if (!(target instanceof HTMLInputElement)) return;
+        if (!(target instanceof HTMLInputElement)) {
+            return;
+        }
         const { hooks, display } = this;
         if (target.dataset.option === 'pings') {
             display.pings = target.checked;

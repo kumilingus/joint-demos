@@ -35,7 +35,9 @@ export function isScreenShown(app: App): boolean {
 /** Show the screen only, clipped (see `canvas.css` for the rest): on entering the runtime mode. */
 export function showScreen(app: App): void {
     const screen = app.mode === Mode.Runtime ? getScreen(app.graph) : undefined;
-    if (!screen) return;
+    if (!screen) {
+        return;
+    }
     const { paper } = app;
     // The cells are clipped by the screen: in the coordinates of the diagram (the layers are transformed).
     const clipPath = V('clipPath', { id: CLIP_ID }).append(V('rect', screen.getBBox().toJSON()));
@@ -54,7 +56,9 @@ export function showScreen(app: App): void {
  * and slide up under the button being clicked. The toolbar is created again for each mode (the listener with it).
  */
 function holdToolbarWhilePressed(el: HTMLElement): void {
-    if (el.dataset.held) return;
+    if (el.dataset.held) {
+        return;
+    }
     el.dataset.held = 'true';
     el.addEventListener('pointerdown', () => {
         el.classList.add('pressed');
@@ -74,7 +78,9 @@ function revealToolbar(el: HTMLElement): void {
     const conceal = () => el.classList.remove('revealed');
     el.addEventListener('mouseleave', conceal, { once: true });
     window.setTimeout(() => {
-        if (!el.matches(':hover')) conceal();
+        if (!el.matches(':hover')) {
+            conceal();
+        }
     }, REVEAL_DURATION);
 }
 

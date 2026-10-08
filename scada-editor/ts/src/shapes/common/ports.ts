@@ -178,11 +178,17 @@ export interface ShapePorts {
 
 /** The stub of the port, if it is the port of a stub (see `StubPort`) */
 function stubOf(item: dia.Element.Port): Stub | null {
-    if (!('stub' in item)) return null;
+    if (!('stub' in item)) {
+        return null;
+    }
     const { stub } = item;
-    if (typeof stub !== 'object' || stub === null || !('id' in stub) || !('side' in stub)) return null;
+    if (typeof stub !== 'object' || stub === null || !('id' in stub) || !('side' in stub)) {
+        return null;
+    }
     const side = SIDES.find(value => value === stub.side);
-    if (typeof stub.id !== 'string' || !side) return null;
+    if (typeof stub.id !== 'string' || !side) {
+        return null;
+    }
     return { ...stub, id: stub.id, side };
 }
 
@@ -201,17 +207,27 @@ export function flipStub(stub: Stub, flip: string): Stub {
     let { side, at = 0.5 } = stub;
     const vertical = side === 'left' || side === 'right';
     if (flip.includes('x')) {
-        if (vertical) side = side === 'left' ? 'right' : 'left'; else at = 1 - at;
+        if (vertical) {
+            side = side === 'left' ? 'right' : 'left';
+        } else {
+            at = 1 - at;
+        }
     }
     if (flip.includes('y')) {
-        if (vertical) at = 1 - at; else side = side === 'top' ? 'bottom' : 'top';
+        if (vertical) {
+            at = 1 - at;
+        } else {
+            side = side === 'top' ? 'bottom' : 'top';
+        }
     }
     return { ...stub, side, at };
 }
 
 /** The ports of the stubs flipped (the other ports as they are): their ids stay, the pipes follow them */
 export function flippedPorts(ports: dia.Element.Attributes['ports'], flip: string): dia.Element.Attributes['ports'] {
-    if (!ports?.items) return ports;
+    if (!ports?.items) {
+        return ports;
+    }
     const items = ports.items.map((item) => {
         const stub = stubOf(item);
         const length = Number(ports.groups?.[item.group ?? '']?.size?.width) || 0;

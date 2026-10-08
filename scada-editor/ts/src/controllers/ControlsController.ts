@@ -41,7 +41,9 @@ function onGraphReset(app: App) {
 
 function onCellAdd(app: App, cell: dia.Cell) {
     const { paper } = app;
-    if (!cell.isElement()) return;
+    if (!cell.isElement()) {
+        return;
+    }
     updateControl(paper, cell);
 }
 
@@ -54,5 +56,7 @@ function onControlsChange(app: App, element: dia.Element) {
 function onCommand(app: App, element: dia.Element, property: string, value: TagValue) {
     const { plant } = app;
     const tag = getTag(element);
-    if (tag) plant?.send(tag, property, value);
+    if (tag) {
+        plant?.send(tag, property, value);
+    }
 }

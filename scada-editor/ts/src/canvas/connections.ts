@@ -49,7 +49,9 @@ function pinAnywhere(element: dia.Element, coords: g.PlainPoint): g.Point {
 export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end, view, magnet, coords, link) => {
     const { model: element } = view;
     // Connected to an element only (see `validateConnection`)
-    if (!element.isElement()) return end;
+    if (!element.isElement()) {
+        return end;
+    }
     const { width, height } = element.size();
     const type = link.get('type');
     // An arrow points anywhere on the element (see `Arrow`), a conveyor drops onto (or takes from) the equipment
@@ -82,7 +84,9 @@ const lengthOf = (value: number | string | undefined, length: number) =>
 export const gridSide: anchors.GenericAnchor<'topLeft'> = function(this: dia.LinkView, view, magnet, ref, opt, endType, linkView) {
     const { model: element } = view;
     // Of an element only (see `connectionStrategy`): as `topLeft` otherwise
-    if (!element.isElement()) return anchors.topLeft.call(this, view, magnet, ref, opt, endType, linkView);
+    if (!element.isElement()) {
+        return anchors.topLeft.call(this, view, magnet, ref, opt, endType, linkView);
+    }
     const { width, height } = element.size();
     const { x: left, y: top } = element.position();
     let x = lengthOf(opt.dx, width);
@@ -115,9 +119,13 @@ const SHOWS_PIPE = ['ControlValve'];
 
 /** The element showing its pipe in the color of the pipe (see `pipeColorAt()`): derived, not in the history */
 function showPipeColor(graph: dia.Graph, element: dia.Element): void {
-    if (!SHOWS_PIPE.includes(element.get('type'))) return;
+    if (!SHOWS_PIPE.includes(element.get('type'))) {
+        return;
+    }
     const color = pipeColorAt(graph, element);
-    if (element.attr('liquid/stroke') !== color) element.attr('liquid/stroke', color, DERIVED);
+    if (element.attr('liquid/stroke') !== color) {
+        element.attr('liquid/stroke', color, DERIVED);
+    }
 }
 
 /** All the elements showing their pipes */

@@ -26,8 +26,12 @@ export const FROM_FIND: SelectionOptions = { find: true };
 function scrollIntoView(app: App, cells: dia.Cell[], center: boolean): void {
     const { graph, scroller } = app;
     const bbox = graph.getCellsBBox(cells);
-    if (!bbox || isScreenShown(app)) return;
-    if (!center && scroller.getVisibleArea().containsRect(bbox)) return;
+    if (!bbox || isScreenShown(app)) {
+        return;
+    }
+    if (!center && scroller.getVisibleArea().containsRect(bbox)) {
+        return;
+    }
     const { x, y } = bbox.center();
     scroller.center(x, y, { animation: { duration: 300 }});
 }
@@ -61,7 +65,9 @@ export function findHooks(app: App): FindHooks {
             }
             if (app.mode === Mode.Edit) {
                 // None: nothing selected by the list (the selection left as it is - the list closed)
-                if (cells.length > 0 || focus) selectCells(app, cells, FROM_FIND);
+                if (cells.length > 0 || focus) {
+                    selectCells(app, cells, FROM_FIND);
+                }
                 return;
             }
             // The runtime mode: one at a time (see `multiple`) - marked (an arrow pointing at it, flashed: see `marker.ts`) while

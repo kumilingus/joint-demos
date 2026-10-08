@@ -43,13 +43,19 @@ export function fitGroups(cell: dia.Cell, { recorded = false } = {}): void {
  * it is removed. `true` if it was.
  */
 export function dissolveLoneGroup(group: dia.Cell): boolean {
-    if (!Group.isGroup(group) || group.getEmbeddedCells().filter(cell => cell.isElement()).length > 1) return false;
+    if (!Group.isGroup(group) || group.getEmbeddedCells().filter(cell => cell.isElement()).length > 1) {
+        return false;
+    }
     const parent = group.getParentCell();
     const embeds = group.getEmbeddedCells();
     group.unembed(embeds);
-    if (parent) parent.embed(embeds);
+    if (parent) {
+        parent.embed(embeds);
+    }
     group.remove();
-    if (parent) fitGroups(parent, { recorded: true });
+    if (parent) {
+        fitGroups(parent, { recorded: true });
+    }
     return true;
 }
 
@@ -61,7 +67,9 @@ export function dissolveLoneGroup(group: dia.Cell): boolean {
 export function groupSelection(app: App): void {
     const { graph } = app;
     const elements = groupable(app);
-    if (elements.length < 2) return;
+    if (elements.length < 2) {
+        return;
+    }
     const members = new Set<dia.Cell>(elements.flatMap(element => [element, ...element.getEmbeddedCells({ deep: true })]));
     // The group they are in (the new group goes in it)
     const parent = elements[0].getParentCell();
@@ -70,7 +78,9 @@ export function groupSelection(app: App): void {
         return parentId(link) === (parent?.id ?? null) && source && target && members.has(source) && members.has(target);
     });
     graph.startBatch('group');
-    if (parent) parent.unembed([...elements, ...links]);
+    if (parent) {
+        parent.unembed([...elements, ...links]);
+    }
     const group = new Group();
     // Its ID shown in its badge
     tagNewCell(app.tags, group);
@@ -90,13 +100,17 @@ export function groupSelection(app: App): void {
 export function ungroupSelection(app: App): void {
     const { graph } = app;
     const [group] = app.selection.toArray();
-    if (app.selection.length !== 1 || !Group.isGroup(group)) return;
+    if (app.selection.length !== 1 || !Group.isGroup(group)) {
+        return;
+    }
     const embeds = group.getEmbeddedCells();
     // The members go to the group it is in (if any).
     const parent = group.getParentCell();
     graph.startBatch('ungroup');
     group.unembed(embeds);
-    if (parent) parent.embed(embeds);
+    if (parent) {
+        parent.embed(embeds);
+    }
     group.remove();
     graph.stopBatch('ungroup');
     selectCells(app, embeds.filter(cell => cell.isElement()));

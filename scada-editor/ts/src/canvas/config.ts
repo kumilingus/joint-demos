@@ -72,23 +72,41 @@ export const paperOptions: dia.Paper.Options = {
     // to an electrical terminal, a signal line, an arrow and a conveyor to its body.
     validateConnection: (sourceView, sourceMagnet, targetView, targetMagnet, end, linkView) => {
         const [view, magnet] = end === 'source' ? [sourceView, sourceMagnet] : [targetView, targetMagnet];
-        if (!view || !view.model.isElement() || Screen.isScreen(view.model)) return false;
+        if (!view || !view.model.isElement() || Screen.isScreen(view.model)) {
+            return false;
+        }
         // Nor to a locked one: the background (see `lock.ts`)
-        if (isLocked(view.model)) return false;
+        if (isLocked(view.model)) {
+            return false;
+        }
         // A label: an arrow only (from a note to a part of the plant)
-        if (Label.isLabel(view.model)) return Arrow.isArrow(linkView.model);
+        if (Label.isLabel(view.model)) {
+            return Arrow.isArrow(linkView.model);
+        }
         // Nor to a shape of the background
-        if (['Rectangle', 'Ellipse'].includes(view.model.get('type'))) return false;
+        if (['Rectangle', 'Ellipse'].includes(view.model.get('type'))) {
+            return false;
+        }
         const element = view.model;
         const portId = magnet ? view.findAttribute('port', magnet) : null;
-        if (linkView.model instanceof Wire) return portId ? isTerminal(element.getPort(portId)) : false;
-        if (SignalLine.isSignalLine(linkView.model) || Arrow.isArrow(linkView.model)) return !portId;
+        if (linkView.model instanceof Wire) {
+            return portId ? isTerminal(element.getPort(portId)) : false;
+        }
+        if (SignalLine.isSignalLine(linkView.model) || Arrow.isArrow(linkView.model)) {
+            return !portId;
+        }
         // A conveyor: to the body of an element (not to a pipe stub nor a terminal), not to an electrical one
-        if (linkView.model instanceof Conveyor) return !portId && !(element.getPorts().length > 0 && element.getPorts().every(isTerminal));
+        if (linkView.model instanceof Conveyor) {
+            return !portId && !(element.getPorts().length > 0 && element.getPorts().every(isTerminal));
+        }
         // A pipe: not to an electrical element
         const ports = element.getPorts();
-        if (ports.length === 0) return true;
-        if (ports.every(isTerminal)) return false;
+        if (ports.length === 0) {
+            return true;
+        }
+        if (ports.every(isTerminal)) {
+            return false;
+        }
         return portId ? !isTerminal(element.getPort(portId)) : false;
     }
 };
@@ -119,7 +137,9 @@ const MAJOR_GRID_FACTOR = 5;
 
 /** The grid is drawn only while the diagram is edited (it is what the elements snap to). */
 export function getGrid(mode: Mode): dia.Paper.GridOptions | false {
-    if (mode === Mode.Runtime) return false;
+    if (mode === Mode.Runtime) {
+        return false;
+    }
     // Thin lines, and thick ones every few of them: in the tones of the canvas (`--canvas-grid*` in `shapes.css`, of the
     // color scheme and the style of the diagram)
     return {

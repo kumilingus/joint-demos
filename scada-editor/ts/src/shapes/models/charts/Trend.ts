@@ -118,7 +118,9 @@ export default class Trend extends Shape {
 
     /** The line through the values, across the whole width of the chart (see `computed.ts`) */
     getComputedAttrs(selector: string): Record<string, unknown> {
-        if (selector !== 'line') return {};
+        if (selector !== 'line') {
+            return {};
+        }
         const values = dataOf<number[]>(this, 'values') || [];
         const last = Math.max(1, values.length - 1);
         const d = values.map((value, index) => {

@@ -120,7 +120,9 @@ export default class BatteryBank extends Shape {
 
     /** The bar of the gauge as long as the charge (see `computed.ts`) */
     getComputedAttrs(selector: string): Record<string, unknown> {
-        if (selector !== 'charge') return {};
+        if (selector !== 'charge') {
+            return {};
+        }
         const ratio = Math.max(0, Math.min(100, Number(dataOf(this, 'level')) || 0)) / 100;
         return { width: `calc(${ratio} * w - ${2 * GAUGE_PADDING * ratio})` };
     }

@@ -97,7 +97,9 @@ export function toggleSettings(app: App): void {
  * or resizes the screen) and follows it (the screen resized with the free transform, an undo, ...).
  */
 export function openSettings(app: App): void {
-    if (isSettingsOpen(app)) return;
+    if (isSettingsOpen(app)) {
+        return;
+    }
     const { graph } = app;
     const el = document.createElement('div');
     el.className = 'scada-settings';
@@ -121,7 +123,9 @@ export function openSettings(app: App): void {
     const listener = new mvc.Listener<[]>();
     // The settings change the diagram (the settings of the diagram are its cells)...
     listener.listenTo(settings, 'change:screen', (_cell: dia.Cell, enabled: boolean, options: SettingsOptions) => {
-        if (options.diagram) return;
+        if (options.diagram) {
+            return;
+        }
         if (enabled) {
             addScreen(app);
         } else {
@@ -129,14 +133,20 @@ export function openSettings(app: App): void {
         }
     });
     listener.listenTo(settings, 'change:size', (_cell: dia.Cell, size: dia.Size | undefined, options: SettingsOptions) => {
-        if (!options.diagram && size) getScreen(graph)?.resize(size.width, size.height);
+        if (!options.diagram && size) {
+            getScreen(graph)?.resize(size.width, size.height);
+        }
     });
     listener.listenTo(settings, 'change:style', (_cell: dia.Cell, style: DiagramStyle, options: SettingsOptions) => {
-        if (!options.diagram) graph.set(STYLE_ATTRIBUTE, { ...style });
+        if (!options.diagram) {
+            graph.set(STYLE_ATTRIBUTE, { ...style });
+        }
     });
     listener.listenTo(graph, `change:${STYLE_ATTRIBUTE}`, () => settings.set({ style: getStyle(graph) }, FROM_DIAGRAM));
     listener.listenTo(settings, 'change:animations', (_cell: dia.Cell, level: AnimationLevel, options: SettingsOptions) => {
-        if (!options.diagram) graph.set(ANIMATIONS_ATTRIBUTE, level);
+        if (!options.diagram) {
+            graph.set(ANIMATIONS_ATTRIBUTE, level);
+        }
     });
     // The settings of the editor: remembered in this browser (see `preferences.ts`)
     listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => {
@@ -155,12 +165,16 @@ export function openSettings(app: App): void {
     listener.listenTo(graph, 'add remove reset change:size', () => {
         const { screen, size } = getScreenSettings(graph);
         settings.set({ screen }, FROM_DIAGRAM);
-        if (size) settings.set({ size }, FROM_DIAGRAM);
+        if (size) {
+            settings.set({ size }, FROM_DIAGRAM);
+        }
     });
     listener.listenTo(graph, 'change:animations', () => settings.set({ animations: getAnimationLevel(graph) }, FROM_DIAGRAM));
     // The screen back (an undo of its removal): selected, as when the settings are opened
     listener.listenTo(graph, 'add', (cell: unknown) => {
-        if (Screen.isScreen(cell)) selectCell(app, cell);
+        if (Screen.isScreen(cell)) {
+            selectCell(app, cell);
+        }
     });
 
     // The size of the screen if there is one (no size without it)
@@ -262,5 +276,7 @@ export function openSettings(app: App): void {
 }
 
 export function closeSettings(app: App): void {
-    if (isSettingsOpen(app)) closePanel(app);
+    if (isSettingsOpen(app)) {
+        closePanel(app);
+    }
 }

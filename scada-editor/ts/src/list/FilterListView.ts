@@ -64,7 +64,9 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
 
     /** Open the list in a dialog in the container (its filter focused); the button active while it is open */
     open(container: HTMLElement, button?: Element): void {
-        if (this.dialog) return;
+        if (this.dialog) {
+            return;
+        }
         this.button = button ?? null;
         this.button?.classList.add('active');
         this.render();
@@ -144,16 +146,22 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
     /** The rows of the entries the filter lets through (the filter or the entries changed) */
     protected renderList(): void {
         const rows = this.rowsEl;
-        if (!rows) return;
+        if (!rows) {
+            return;
+        }
         const entries = this.shownEntries();
         rows.replaceChildren(...entries.map(entry => this.renderEntry(entry)));
-        if (entries.length === 0) rows.append(this.renderEmpty());
+        if (entries.length === 0) {
+            rows.append(this.renderEmpty());
+        }
     }
 
     /** The row of a new entry at the top, if the filter lets it through */
     protected insertRow(entry: T): void {
         const rows = this.rowsEl;
-        if (!rows || !this.matches(entry, this.filterWords())) return;
+        if (!rows || !this.matches(entry, this.filterWords())) {
+            return;
+        }
         rows.querySelector('.scada-list-empty')?.remove();
         rows.prepend(this.renderEntry(entry));
     }
@@ -203,7 +211,9 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
      * field (nor the Escape of the diagram: one level of the groups up)
      */
     protected onKeydown(evt: KeyboardEvent): void {
-        if (evt.key !== 'Escape') return;
+        if (evt.key !== 'Escape') {
+            return;
+        }
         evt.stopPropagation();
         this.close();
     }
@@ -248,22 +258,32 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
     // The events of the view (see `events`): the native ones passed on, a row by its key
 
     protected onFilterInputEvent(evt: dia.Event): void {
-        if (!(evt.target instanceof HTMLInputElement)) return;
+        if (!(evt.target instanceof HTMLInputElement)) {
+            return;
+        }
         this.filter = evt.target.value;
         this.renderList();
     }
 
     protected onRowClickEvent(evt: dia.Event): void {
         const { currentTarget, originalEvent } = evt;
-        if (!(currentTarget instanceof HTMLElement) || !(originalEvent instanceof MouseEvent)) return;
-        if (originalEvent.detail > 1 || currentTarget.dataset.key === undefined) return;
+        if (!(currentTarget instanceof HTMLElement) || !(originalEvent instanceof MouseEvent)) {
+            return;
+        }
+        if (originalEvent.detail > 1 || currentTarget.dataset.key === undefined) {
+            return;
+        }
         this.onRowClick(currentTarget.dataset.key, originalEvent);
     }
 
     protected onRowDblclickEvent(evt: dia.Event): void {
         const { currentTarget, originalEvent } = evt;
-        if (!(currentTarget instanceof HTMLElement) || !(originalEvent instanceof MouseEvent)) return;
-        if (currentTarget.dataset.key === undefined) return;
+        if (!(currentTarget instanceof HTMLElement) || !(originalEvent instanceof MouseEvent)) {
+            return;
+        }
+        if (currentTarget.dataset.key === undefined) {
+            return;
+        }
         this.onRowDblclick(currentTarget.dataset.key, originalEvent);
     }
 
@@ -273,6 +293,8 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
 
     protected onKeydownEvent(evt: dia.Event): void {
         const { originalEvent } = evt;
-        if (originalEvent instanceof KeyboardEvent) this.onKeydown(originalEvent);
+        if (originalEvent instanceof KeyboardEvent) {
+            this.onKeydown(originalEvent);
+        }
     }
 }

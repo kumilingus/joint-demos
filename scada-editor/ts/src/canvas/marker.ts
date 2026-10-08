@@ -61,7 +61,9 @@ const Marker = dia.HighlighterView.extend({
         const { transformGroup, cellView } = this;
         const { model } = cellView;
         // A link: in the coordinates of the paper already (see `tipOf()`)
-        if (!transformGroup || !model.isElement()) return;
+        if (!transformGroup || !model.isElement()) {
+            return;
+        }
         const { x, y } = model.position();
         transformGroup.attr('transform', `translate(${x},${y})`);
     }
@@ -73,15 +75,21 @@ const Marker = dia.HighlighterView.extend({
  * below it (clear of them below) if the arrow would leave the screen above (of the model: the area the run mode shows)
  */
 function tipOf(cellView: dia.CellView): dia.Point & { up: boolean } {
-    if (cellView instanceof dia.LinkView) return { ...cellView.getPointAtRatio(0.5), up: false };
-    if (!(cellView instanceof dia.ElementView)) return { x: 0, y: 0, up: false };
+    if (cellView instanceof dia.LinkView) {
+        return { ...cellView.getPointAtRatio(0.5), up: false };
+    }
+    if (!(cellView instanceof dia.ElementView)) {
+        return { x: 0, y: 0, up: false };
+    }
     const { model } = cellView;
     const origin = model.position();
     const drawing = getFootprint(model, { label: false });
     // Above: the tip over the top of the drawing, its label and control there (in the coordinates of the element)
     const above = drawing.topMiddle().offset(0, -Math.max(labelReach(model, 'top'), controlReach(model, 'top')) - ARROW_GAP);
     const screen = model.graph ? getScreen(model.graph) : undefined;
-    if (!screen || above.y - ARROW_HEIGHT >= screen.getBBox().y) return { ...above.difference(origin).toJSON(), up: false };
+    if (!screen || above.y - ARROW_HEIGHT >= screen.getBBox().y) {
+        return { ...above.difference(origin).toJSON(), up: false };
+    }
     const below = drawing.bottomMiddle().offset(0, Math.max(labelReach(model, 'bottom'), controlReach(model, 'bottom')) + ARROW_GAP);
     return { ...below.difference(origin).toJSON(), up: true };
 }
@@ -90,7 +98,11 @@ function tipOf(cellView: dia.CellView): dia.Point & { up: boolean } {
 export function setMarker(paper: dia.Paper, cell: dia.Cell | null): void {
     dia.HighlighterView.removeAll(paper, MARKER_ID);
     const view = cell?.findView(paper);
-    if (!cell || !view) return;
+    if (!cell || !view) {
+        return;
+    }
     Marker.add(view, 'root', MARKER_ID, { layer: dia.Paper.Layers.FRONT, z: 2 });
-    if (cell.isElement()) ping(paper, cell, MARKER_COLOR, `${MARKER_ID}-flash`);
+    if (cell.isElement()) {
+        ping(paper, cell, MARKER_COLOR, `${MARKER_ID}-flash`);
+    }
 }

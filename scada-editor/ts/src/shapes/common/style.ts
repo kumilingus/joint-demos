@@ -23,5 +23,7 @@ export function setStyle(cell: dia.Cell, key: StyleKey, value: unknown, options:
 
 /** None of the value of its own (Auto) */
 export function unsetStyle(cell: dia.Cell, key: StyleKey, options: dia.Cell.Options = {}): void {
-    if (styleOf(cell, key) !== undefined) cell.removeProp(['style', key], options);
+    if (styleOf(cell, key) !== undefined) {
+        cell.removeProp(['style', key], options);
+    }
 }

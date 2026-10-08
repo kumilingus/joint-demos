@@ -13,7 +13,9 @@ export default class Snaplines extends ui.Snaplines {
         // The view the press moves: of the gesture (a delegate) or the one it would move (an embedded one's ancestor)
         const pressed = elementView as dia.ElementView;
         const view = getDragDelegate(pressed, evt) ?? pressed.getDelegatedView();
-        if (!view) return;
+        if (!view) {
+            return;
+        }
         const { additionalSnapPoints } = this.options;
         const points = additionalSnapPoints ? additionalSnapPoints.call(this, view, { type: 'move' }) : undefined;
         // The offset of the delegate (the one moved), not of the pressed one

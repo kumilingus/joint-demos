@@ -29,11 +29,15 @@ const Ping = dia.HighlighterView.extend({
 /** The element pinged in the color (again from the start if it is pinged by the id now) */
 export function ping(paper: dia.Paper, element: dia.Element, color: string, id: string): void {
     const view = element.findView(paper);
-    if (!view) return;
+    if (!view) {
+        return;
+    }
     Ping.remove(view, id);
     const added = Ping.add(view, 'root', id, { layer: null, z: 0, color });
     window.setTimeout(() => {
-        if (Ping.get(view, id) === added) Ping.remove(view, id);
+        if (Ping.get(view, id) === added) {
+            Ping.remove(view, id);
+        }
     }, PING_DURATION);
 }
 

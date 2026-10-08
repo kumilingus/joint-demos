@@ -66,7 +66,9 @@ function sizeOf(cellView: dia.CellView): dia.Size {
  * (so that the center comes from the model, not from the rendered shape).
  */
 function spin(target: SVGElement | null, [x, y]: [number, number], duration: number): Animation[] {
-    if (!target) return [];
+    if (!target) {
+        return [];
+    }
     const origin = { transformBox: 'view-box', transformOrigin: `${x}px ${y}px` };
     return [target.animate([
         { ...origin, transform: 'rotate(0deg)' },
@@ -80,7 +82,9 @@ function spin(target: SVGElement | null, [x, y]: [number, number], duration: num
  */
 function stir(view: dia.CellView, height: number, duration: number): Animation[] {
     const target = node(view, 'impeller');
-    if (!target) return [];
+    if (!target) {
+        return [];
+    }
     const size = sizeOf(view);
     const at = `translate(${size.width / 2}px, ${size.height * height}px)`;
     const origin = { transformBox: 'view-box', transformOrigin: '0px 0px' };
@@ -102,11 +106,15 @@ const BELT_SPEED = 60;
 function carry(view: dia.CellView): Animation[] {
     const { width, height } = sizeOf(view);
     const [start, end] = [height / 2, width - height / 2 - BOX_WIDTH];
-    if (end <= start) return [];
+    if (end <= start) {
+        return [];
+    }
     const duration = (end - start) / BELT_SPEED * 1000;
     return BOX_POSITIONS.flatMap((position, index) => {
         const target = node(view, `box${index + 1}`);
-        if (!target) return [];
+        if (!target) {
+            return [];
+        }
         const x = position * width;
         return [target.animate([
             { transform: `translateX(${start - x}px)`, opacity: 0 },
@@ -119,7 +127,9 @@ function carry(view: dia.CellView): Animation[] {
 
 /** The dashes of the stroke move along its path (from its start to its end) by one period of the pattern per cycle */
 function dashAlong(target: SVGElement | null, pattern: number[], duration: number): Animation[] {
-    if (!target) return [];
+    if (!target) {
+        return [];
+    }
     const period = pattern[0] + pattern[1];
     return [target.animate([
         { strokeDashoffset: period },
@@ -129,7 +139,9 @@ function dashAlong(target: SVGElement | null, pattern: number[], duration: numbe
 
 /** The node swings around a point (of the coordinate system it is drawn in) by the angle and back */
 function swing(target: SVGElement | null, [x, y]: [number, number], angle: number, duration: number): Animation[] {
-    if (!target) return [];
+    if (!target) {
+        return [];
+    }
     const origin = { transformBox: 'view-box', transformOrigin: `${x}px ${y}px` };
     return [target.animate([
         { ...origin, transform: 'rotate(0deg)' },
@@ -143,7 +155,9 @@ function swing(target: SVGElement | null, [x, y]: [number, number], angle: numbe
  */
 function turnShaft(view: dia.CellView, height: number): Animation[] {
     const target = node(view, 'shaftMark');
-    if (!target) return [];
+    if (!target) {
+        return [];
+    }
     const travel = Math.max(0, height - 2);
     return [target.animate([
         { transform: 'translateY(0)', opacity: 0 },
@@ -157,7 +171,9 @@ function turnShaft(view: dia.CellView, height: number): Animation[] {
 function flicker(view: dia.CellView): Animation[] {
     return ['flameOuter', 'flameInner'].flatMap((selector, index) => {
         const target = node(view, selector);
-        if (!target) return [];
+        if (!target) {
+            return [];
+        }
         return [target.animate([{ opacity: 1 }, { opacity: 0.65 }, { opacity: 1 }], {
             ...LOOP,
             duration: 500 + index * 170
@@ -175,9 +191,15 @@ const isOn = (model: dia.Cell) => Boolean(dataOf(model, 'power'));
 
 /** Whether the liquid passes the element: a switched off pump or a closed valve stops it. */
 function isPassing(element: dia.Element | null): boolean {
-    if (!element) return true;
-    if (hasData(element, 'power') && element.get('type') !== 'Beacon') return isOn(element);
-    if (hasData(element, 'open')) return Boolean(dataOf(element, 'open'));
+    if (!element) {
+        return true;
+    }
+    if (hasData(element, 'power') && element.get('type') !== 'Beacon') {
+        return isOn(element);
+    }
+    if (hasData(element, 'open')) {
+        return Boolean(dataOf(element, 'open'));
+    }
     return true;
 }
 
@@ -200,7 +222,9 @@ function flowAlong(target: SVGElement): Animation {
 const flow: Animator = (linkView) => {
     const target = node(linkView, 'flow');
     const { model } = linkView;
-    if (!target || !model.isLink() || !isFlowing(model)) return [];
+    if (!target || !model.isLink() || !isFlowing(model)) {
+        return [];
+    }
     return [flowAlong(target)];
 };
 
@@ -246,7 +270,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
     RotaryKiln: {
         kind: 'equipment',
         animate: (view) => {
-            if (!isOn(view.model)) return [];
+            if (!isOn(view.model)) {
+                return [];
+            }
             const hotZone = node(view, 'hotZone');
             return [
                 ...flicker(view),
@@ -261,7 +287,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'equipment',
         animate: view => BAGS.flatMap((_, index) => {
             const target = node(view, `bag${index + 1}`);
-            if (!target) return [];
+            if (!target) {
+                return [];
+            }
             return [target.animate([
                 { transform: 'translateY(0)', offset: 0 },
                 { transform: 'translateY(-3px)', offset: 0.04 },
@@ -299,7 +327,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'flow',
         animate: view => {
             const target = node(view, 'flow');
-            if (!target || !dataOf(view.model, 'open')) return [];
+            if (!target || !dataOf(view.model, 'open')) {
+                return [];
+            }
             return [flowAlong(target)];
         }
     },
@@ -312,7 +342,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'equipment',
         animate: view => {
             const target = node(view, 'smoke');
-            if (!target) return [];
+            if (!target) {
+                return [];
+            }
             return [target.animate([
                 { transform: 'translateY(0)', opacity: 0.9 },
                 { transform: 'translateY(-12px)', opacity: 0.3 }
@@ -323,7 +355,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'equipment',
         animate: view => {
             const target = node(view, 'plume');
-            if (!target) return [];
+            if (!target) {
+                return [];
+            }
             const { width } = sizeOf(view);
             // The plume grows out of the top of the tower.
             const origin = { transformBox: 'view-box', transformOrigin: `${width / 2}px 10px` };
@@ -347,7 +381,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'equipment',
         animate: (view) => {
             const target = node(view, 'steam');
-            if (!target || !isOn(view.model)) return [];
+            if (!target || !isOn(view.model)) {
+                return [];
+            }
             return [target.animate([
                 { strokeDashoffset: 16, strokeOpacity: 0.7 },
                 { strokeDashoffset: 0, strokeOpacity: 0.7 }
@@ -359,7 +395,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'equipment',
         animate: (view) => {
             const target = node(view, 'rotor');
-            if (!target || !isOn(view.model)) return [];
+            if (!target || !isOn(view.model)) {
+                return [];
+            }
             const [x, y] = center(view);
             const origin = { transformBox: 'view-box', transformOrigin: `${x}px ${y}px` };
             return [target.animate([
@@ -378,7 +416,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'equipment',
         animate: view => {
             const target = node(view, 'smoke');
-            if (!target || !isOn(view.model)) return [];
+            if (!target || !isOn(view.model)) {
+                return [];
+            }
             return [target.animate([
                 { transform: 'translateY(0)', opacity: 0.9 },
                 { transform: 'translateY(-12px)', opacity: 0.2 }
@@ -389,7 +429,9 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         kind: 'alarm',
         animate: view => {
             const target = node(view, 'glow');
-            if (!target || !isOn(view.model)) return [];
+            if (!target || !isOn(view.model)) {
+                return [];
+            }
             return [target.animate([{ opacity: 0.3 }, { opacity: 1 }], {
                 ...LOOP,
                 duration: 500,
@@ -443,11 +485,17 @@ export class Animations {
         // Not every type of element is animated, nor every kind at the level.
         // A link: its own (a conveyor), or the flow of a pipe
         const animator = animators[cell.get('type')] ?? (cell.isLink() ? { kind: 'flow' as const, animate: flow } : undefined);
-        if (!animator || !this.allows(animator.kind)) return;
+        if (!animator || !this.allows(animator.kind)) {
+            return;
+        }
         const cellView = cell.findView(this.paper);
-        if (!cellView) return;
+        if (!cellView) {
+            return;
+        }
         const animations = animator.animate(cellView);
-        if (animations.length > 0) this.running.set(cell.id, animations);
+        if (animations.length > 0) {
+            this.running.set(cell.id, animations);
+        }
     }
 
     /** Whether the cell is in another state than it is animated in (switched, opened, closed since) */

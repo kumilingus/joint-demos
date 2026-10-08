@@ -54,9 +54,13 @@ export function exportImage(app: App): void {
     clearSelection(app);
     showHover(paper, null);
     removeControls(paper);
-    if (screen) paper.updateCellVisibility(screen, { cellVisibility: () => false });
+    if (screen) {
+        paper.updateCellVisibility(screen, { cellVisibility: () => false });
+    }
     format.toDataURL(paper, (dataURL, error) => {
-        if (error) return;
+        if (error) {
+            return;
+        }
         const link = document.createElement('a');
         link.href = dataURL;
         link.download = IMAGE_FILE_NAME;
@@ -69,10 +73,14 @@ export function exportImage(app: App): void {
         useComputedStyles: 'full',
         ...(screen ? { area: screen.getBBox() } : { padding: 20 }),
         beforeSerialize: (svg) => {
-            if (gradient) drawGradient(svg, gradient);
+            if (gradient) {
+                drawGradient(svg, gradient);
+            }
         }
     });
-    if (screen) paper.updateCellVisibility(screen);
+    if (screen) {
+        paper.updateCellVisibility(screen);
+    }
     addControls(paper);
     selectCells(app, selected);
 }
@@ -80,7 +88,9 @@ export function exportImage(app: App): void {
 /** The gradient of the canvas under the whole image (its view box): from the top color to the bottom one */
 function drawGradient(svg: SVGSVGElement, [top, bottom]: string[]): void {
     const [x, y, width, height] = (svg.getAttribute('viewBox') ?? '').split(/[\s,]+/).map(Number);
-    if (![x, y, width, height].every(Number.isFinite)) return;
+    if (![x, y, width, height].every(Number.isFinite)) {
+        return;
+    }
     const id = 'scada-export-canvas-gradient';
     const gradient = V('linearGradient', { id, x1: 0, y1: 0, x2: 0, y2: 1 }).append([
         V('stop', { offset: 0, style: `stop-color: ${top}` }),
@@ -97,23 +107,31 @@ export function confirmReplace(app: App, question: string): boolean {
 
 /** A new diagram instead of this one: an empty screen; `false` if the user keeps this one */
 export function newDiagram(app: App): boolean {
-    if (!confirmReplace(app, 'Start a new diagram?')) return false;
+    if (!confirmReplace(app, 'Start a new diagram?')) {
+        return false;
+    }
     app.loadJSON({ cells: [new Screen().toJSON()] });
     return true;
 }
 
 /** Let the user pick a JSON file of a diagram and load it (asked first if the diagram was changed). */
 export function openDiagram(app: App): void {
-    if (!confirmReplace(app, 'Open a diagram?')) return;
+    if (!confirmReplace(app, 'Open a diagram?')) {
+        return;
+    }
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/json,.json';
     input.addEventListener('change', async() => {
         const [file] = Array.from(input.files || []);
-        if (!file) return;
+        if (!file) {
+            return;
+        }
         try {
             const json = JSON.parse(await file.text());
-            if (!Array.isArray(json?.cells)) throw new Error('no cells');
+            if (!Array.isArray(json?.cells)) {
+                throw new Error('no cells');
+            }
             // Throws before anything changes if the file can't be loaded.
             app.loadJSON(json);
         } catch (error) {
@@ -125,6 +143,8 @@ export function openDiagram(app: App): void {
 
 /** Open the example instead of the diagram: as a file, asked first if the diagram was changed */
 export function openExample(app: App, example: Example): void {
-    if (!confirmReplace(app, `Open the ${example.name} example?`)) return;
+    if (!confirmReplace(app, `Open the ${example.name} example?`)) {
+        return;
+    }
     app.loadJSON(example.json);
 }

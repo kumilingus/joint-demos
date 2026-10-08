@@ -39,5 +39,7 @@ export function hideToolsOverPanel(app: App): void {
  * clicked) hidden too, as the ones before (see `hideToolsOverPanel()`)
  */
 export function hideNewToolsOverPanel(app: App): void {
-    if (app.inspectorEl.matches(':hover')) app.paper.hideTools();
+    if (app.inspectorEl.matches(':hover')) {
+        app.paper.hideTools();
+    }
 }

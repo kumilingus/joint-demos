@@ -35,8 +35,12 @@ export const arrowheadMarker = (arrowhead: Arrowhead): dia.SVGSimpleMarkerJSON |
 function trimPath(path: g.Path, start: number, end: number): g.Path {
     const half = path.length() / 2;
     let trimmed = path;
-    if (start > 0) trimmed = trimmed.divideAtLength(Math.min(start, half))?.[1] ?? trimmed;
-    if (end > 0) trimmed = trimmed.divideAtLength(trimmed.length() - Math.min(end, half))?.[0] ?? trimmed;
+    if (start > 0) {
+        trimmed = trimmed.divideAtLength(Math.min(start, half))?.[1] ?? trimmed;
+    }
+    if (end > 0) {
+        trimmed = trimmed.divideAtLength(trimmed.length() - Math.min(end, half))?.[0] ?? trimmed;
+    }
     return trimmed;
 }
 
@@ -57,7 +61,9 @@ export default class Arrow extends Connection {
                 const color = styleOf<string>(this.model, 'color') ?? String(attrs.stroke ?? LABEL_COLOR);
                 const marker = (end: 'source' | 'target', turned: boolean) => {
                     const head = arrowheadMarker(this.model.get(`${end}Arrowhead`));
-                    if (!head) return 'none';
+                    if (!head) {
+                        return 'none';
+                    }
                     // As the library defines them: in the color of the line, the one at the end turned around
                     const definition = { stroke: color, fill: color, ...(turned ? { transform: 'rotate(180)' } : {}), ...head };
                     return this.paper ? `url(#${this.paper.defineMarker(definition)})` : 'none';

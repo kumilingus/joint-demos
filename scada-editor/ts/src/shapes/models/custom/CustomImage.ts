@@ -22,7 +22,9 @@ const SIZE_STEP = 2 * GRID_SIZE;
 /** The image of the element, from its paper (see `ImagesPaperOptions`); `null` for a paper without images. */
 function findImage(elementView: dia.ElementView, imageId: string): ImageEntry | null {
     const { paper } = elementView;
-    if (!paper) return null;
+    if (!paper) {
+        return null;
+    }
     // Its own options (see `ImagesPaperOptions`): the options of a paper take any keys, typed as `any`
     const options = paper.options as ImagesPaperOptions;
     return options.getImages?.()[imageId] ?? null;
@@ -42,7 +44,9 @@ function defineImage(paper: dia.Paper, imageId: string, { href, width, height }:
         definitions.set(paper, images);
     }
     let id = images.get(imageId);
-    if (id) return id;
+    if (id) {
+        return id;
+    }
     id = `scada-image-${++counter}`;
     // Shown whole in the size of the element (its aspect ratio is kept by the resizing).
     V('symbol', { id, viewBox: `0 0 ${width} ${height}`, preserveAspectRatio: 'xMidYMid meet' })
@@ -66,7 +70,9 @@ function definePlaceholder(paper: dia.Paper): string {
         definitions.set(paper, images);
     }
     let id = images.get(PLACEHOLDER_ID);
-    if (id) return id;
+    if (id) {
+        return id;
+    }
     id = `scada-image-${++counter}`;
     V('symbol', { id, class: 'scada-missing-image', viewBox: '0 0 48 48', preserveAspectRatio: 'xMidYMid meet' })
         .append([
@@ -156,10 +162,14 @@ export default class CustomImage extends Shape {
             set(this: dia.ElementView, _ref: boolean, _refBBox: unknown, _node: unknown, _attrs: unknown, elementView: dia.ElementView) {
                 const { paper } = elementView;
                 const imageId = String(this.model.get('imageId') ?? '');
-                if (!paper) return {};
+                if (!paper) {
+                    return {};
+                }
                 const image = imageId ? findImage(elementView, imageId) : null;
                 // An image that is not in the diagram (an element pasted from another one): a placeholder
-                if (!image) return { href: `#${definePlaceholder(paper)}` };
+                if (!image) {
+                    return { href: `#${definePlaceholder(paper)}` };
+                }
                 return { href: `#${defineImage(paper, imageId, image)}` };
             },
             unset: 'href'

@@ -21,7 +21,9 @@ export function lockable(app: App): dia.Element[] {
 export function lockSelection(app: App): void {
     const { graph } = app;
     const elements = lockable(app);
-    if (elements.length === 0) return;
+    if (elements.length === 0) {
+        return;
+    }
     clearSelection(app);
     graph.startBatch('lock');
     elements.forEach(element => element.set('locked', true));
@@ -49,7 +51,9 @@ export function lockedAt(app: App, point: dia.Point): dia.Element | null {
 /** Unlock the elements: selected (to be moved, to see which) */
 export function unlockElements(app: App, elements: dia.Element[]): void {
     const { graph } = app;
-    if (elements.length === 0) return;
+    if (elements.length === 0) {
+        return;
+    }
     graph.startBatch('unlock');
     elements.forEach(element => element.removeProp('locked'));
     graph.stopBatch('unlock');

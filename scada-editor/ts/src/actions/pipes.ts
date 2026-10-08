@@ -101,7 +101,9 @@ export function disconnectSelection(app: App): void {
     // The ends disconnected of each link (both of them: a link between two selected elements)
     const disconnected = new Map<dia.Link, LinkEnd[]>();
     connectedEnds(app).forEach(([link, end]) => disconnected.set(link, [...(disconnected.get(link) ?? []), end]));
-    if (disconnected.size === 0) return;
+    if (disconnected.size === 0) {
+        return;
+    }
     graph.startBatch('disconnect');
     disconnected.forEach((ends, link) => {
         // Rendered now if it isn't (out of the viewport): the ends as drawn, their directions (the route keeps its shape)

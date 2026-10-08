@@ -51,18 +51,26 @@ export default class TagBadgesController extends Controller<[App, TagBadges]> {
 function onWindowKeydown(_app: App, badges: TagBadges, evt: KeyboardEvent) {
     if (evt.key !== 'Alt') {
         // Until Alt is released (its repeated presses do not show them again)
-        if (evt.altKey) badges.block();
+        if (evt.altKey) {
+            badges.block();
+        }
         return;
     }
     // Not the menu of the browser (Windows: Alt alone activates it) - in a field, as it types
-    if (!isTyping(evt)) evt.preventDefault();
+    if (!isTyping(evt)) {
+        evt.preventDefault();
+    }
     badges.showSoon(SHOW_DELAY);
 }
 
 /** Alt released: the badges hidden (not the menu of the browser either: Windows opens it on the release) */
 function onWindowKeyup(_app: App, badges: TagBadges, evt: KeyboardEvent) {
-    if (evt.key !== 'Alt') return;
-    if (!isTyping(evt)) evt.preventDefault();
+    if (evt.key !== 'Alt') {
+        return;
+    }
+    if (!isTyping(evt)) {
+        evt.preventDefault();
+    }
     badges.hide();
 }
 

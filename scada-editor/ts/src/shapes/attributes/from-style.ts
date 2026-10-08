@@ -13,7 +13,9 @@ export const fromStyleAttributes = {
             const attributes: Record<string, unknown> = {};
             Object.entries(keys).forEach(([name, key]) => {
                 const value = styleOf(this.model, key);
-                if (value !== undefined) attributes[util.toKebabCase(name)] = value;
+                if (value !== undefined) {
+                    attributes[util.toKebabCase(name)] = value;
+                }
             });
             return attributes;
         }

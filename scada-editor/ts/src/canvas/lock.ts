@@ -22,7 +22,9 @@ export function lockOwner(cell: dia.Cell): dia.Cell | null {
 export function showLocked(paper: dia.Paper, cell: dia.Cell): void {
     [cell, ...cell.getEmbeddedCells({ deep: true })].forEach((level) => {
         const view = level.findView(paper);
-        if (!view) return;
+        if (!view) {
+            return;
+        }
         if (isLocked(level)) {
             if (!highlighters.addClass.get(view, LOCKED_HIGHLIGHTER_ID)) {
                 highlighters.addClass.add(view, 'root', LOCKED_HIGHLIGHTER_ID, { className: 'scada-locked' });

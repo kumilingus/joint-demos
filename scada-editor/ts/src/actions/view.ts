@@ -25,7 +25,9 @@ const COLOR_SCHEME_KEY = 'scada-editor:color-scheme';
 export function storedColorScheme(): ColorScheme {
     try {
         const stored = localStorage.getItem(COLOR_SCHEME_KEY);
-        if (stored === ColorScheme.Light || stored === ColorScheme.Dark) return stored;
+        if (stored === ColorScheme.Light || stored === ColorScheme.Dark) {
+            return stored;
+        }
     } catch {
         // No storage (a private window): the system decides.
     }
@@ -49,13 +51,17 @@ export function togglePanel(app: App, panel: SidePanel): void {
     const area = scroller.getVisibleArea();
     app.setPanelShown(panel, !app.isPanelShown(panel));
     // The palette is on the left: the right edge of the canvas stays (the inspector on the right: the left one, as it is)
-    if (panel === 'palette') scroller.positionPoint(area.topRight(), '100%', 0);
+    if (panel === 'palette') {
+        scroller.positionPoint(area.topRight(), '100%', 0);
+    }
 }
 
 /** Hide both side panels if any is shown, show both otherwise (as Figma's Cmd + \) */
 export function toggleSidePanels(app: App): void {
     const shown = app.isPanelShown('palette') || app.isPanelShown('inspector');
     (['palette', 'inspector'] as const).forEach((panel) => {
-        if (app.isPanelShown(panel) === shown) togglePanel(app, panel);
+        if (app.isPanelShown(panel) === shown) {
+            togglePanel(app, panel);
+        }
     });
 }

@@ -45,7 +45,9 @@ interface Segment {
  */
 function restingY(skyline: Segment[], index: number, width: number, stripWidth: number): number | null {
     const { x } = skyline[index];
-    if (x + width > stripWidth) return null;
+    if (x + width > stripWidth) {
+        return null;
+    }
     let y = 0;
     for (let i = index; i < skyline.length && skyline[i].x < x + width; i++) {
         y = Math.max(y, skyline[i].y);
@@ -109,7 +111,9 @@ function packInOrder<T>(ordered: Array<PackItem<T>>, width: number, gap: number)
         let y = Infinity;
         for (let index = 0; index < skyline.length; index++) {
             const restingOn = restingY(skyline, index, itemWidth, width);
-            if (restingOn === null || restingOn >= y) continue;
+            if (restingOn === null || restingOn >= y) {
+                continue;
+            }
             [x, y] = [skyline[index].x, restingOn];
         }
         placements.push({ data: item.data, x, y });
@@ -134,9 +138,13 @@ function packBestFit<T>(items: Array<PackItem<T>>, width: number, gap: number): 
         // The widest rectangle (then the tallest) fitting on it, not reaching over its neighbors
         let best = -1;
         remaining.forEach((item, i) => {
-            if (item.width + gap > segment.width) return;
+            if (item.width + gap > segment.width) {
+                return;
+            }
             const bestItem = remaining[best];
-            if (!bestItem || item.width > bestItem.width || (item.width === bestItem.width && item.height > bestItem.height)) best = i;
+            if (!bestItem || item.width > bestItem.width || (item.width === bestItem.width && item.height > bestItem.height)) {
+                best = i;
+            }
         });
         if (best === -1) {
             // Nothing fits: raise it to the lower neighbor (or place the widest rectangle bottom-left, if it is alone).
@@ -174,6 +182,8 @@ export function pack<T>(items: Array<PackItem<T>>, stripWidth: number, options: 
         .reduce((best, candidate) => (candidate.height < best.height ? candidate : best));
     const room = width - gap - packing.width;
     const offset = align === 'middle' ? room / 2 : align === 'right' ? room : 0;
-    if (offset > 0) packing.placements.forEach((placement) => { placement.x += offset; });
+    if (offset > 0) {
+        packing.placements.forEach((placement) => { placement.x += offset; });
+    }
     return packing;
 }

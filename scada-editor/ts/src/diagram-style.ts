@@ -95,7 +95,9 @@ const VIEW_UPDATE_KEYS: (keyof DiagramStyle)[] = ['finish', 'outlineWidth', 'lab
 
 /** Whether the change of the style requires an update of the views (see `VIEW_UPDATE_KEYS`): always without a previous one */
 function isViewUpdateRequired(style: DiagramStyle, previous?: DiagramStyle): boolean {
-    if (!previous) return true;
+    if (!previous) {
+        return true;
+    }
     return !util.isEqual(util.pick(style, ...VIEW_UPDATE_KEYS), util.pick(previous, ...VIEW_UPDATE_KEYS));
 }
 
@@ -109,7 +111,9 @@ export function applyDiagramStyle(app: App, previous?: DiagramStyle): void {
     applyStyle(style);
     // The canvas in a gradient: drawn behind the paper (on its scroller, see `canvas.css`) - the paper transparent
     app.paper.drawBackground({ color: style.canvasGradient ? 'transparent' : CANVAS_COLOR });
-    if (!isViewUpdateRequired(style, previous)) return;
+    if (!isViewUpdateRequired(style, previous)) {
+        return;
+    }
     const { paper, stencil } = app;
     const papers: dia.Paper[] = [paper];
     // The open groups of the palette: a closed one is not drawn (nothing to measure) - restyled when it is opened (see

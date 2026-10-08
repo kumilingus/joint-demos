@@ -26,15 +26,23 @@ const PORT_END_OVERHANG = 3;
 function withoutLabel(element: dia.Element, overflow: Required<Overflow>): Required<Overflow> {
     const { x, y } = element.attr('label') || {};
     // A label of the model (see `from-model`)
-    if (element.prop(['label', 'text']) === undefined) return overflow;
+    if (element.prop(['label', 'text']) === undefined) {
+        return overflow;
+    }
     // On the right: `calc(w + 10)` (from the start of the text)
     const right = typeof x === 'string' ? x.match(/^calc\(w\s*\+\s*(\d+(?:\.\d+)?)\)$/) : null;
-    if (right) return { ...overflow, right: Math.min(overflow.right, Number(right[1])) };
+    if (right) {
+        return { ...overflow, right: Math.min(overflow.right, Number(right[1])) };
+    }
     // Below: `calc(h + 18)` (from the top of the text)
     const below = typeof y === 'string' ? y.match(/^calc\(h\s*\+\s*(\d+(?:\.\d+)?)\)$/) : null;
-    if (below) return { ...overflow, bottom: Math.min(overflow.bottom, Number(below[1])) };
+    if (below) {
+        return { ...overflow, bottom: Math.min(overflow.bottom, Number(below[1])) };
+    }
     // Above: `-10` (from the bottom of the text)
-    if (typeof y === 'number' && y < 0) return { ...overflow, top: Math.min(overflow.top, -y) };
+    if (typeof y === 'number' && y < 0) {
+        return { ...overflow, top: Math.min(overflow.top, -y) };
+    }
     return overflow;
 }
 
@@ -50,8 +58,12 @@ export interface FootprintOptions {
  */
 export function getFootprint(cell: dia.Cell, { label = true }: FootprintOptions = {}): g.Rect {
     const bbox = cell.getBBox();
-    if (cell.isLink()) return bbox.inflate(PIPE_HALF_WIDTH);
-    if (!cell.isElement()) return bbox;
+    if (cell.isLink()) {
+        return bbox.inflate(PIPE_HALF_WIDTH);
+    }
+    if (!cell.isElement()) {
+        return bbox;
+    }
 
     const element = cell;
     let footprint = bbox.clone();

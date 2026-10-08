@@ -34,7 +34,9 @@ const scaleAngle = (value: number) => g.scale.linear([0, 100], [SCALE_START, SCA
 
 /** An arc of the scale between two values (nothing if they're the same). */
 function zone(from: number, to: number): string {
-    if (to <= from) return 'M 0 0';
+    if (to <= from) {
+        return 'M 0 0';
+    }
     const point = (value: number) => {
         const angle = scaleAngle(value) * Math.PI / 180;
         return `${(ZONE_RADIUS * Math.cos(angle)).toFixed(2)} ${(ZONE_RADIUS * Math.sin(angle)).toFixed(2)}`;

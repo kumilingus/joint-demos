@@ -113,7 +113,9 @@ const FIELD_HELP: Record<string, string> = {
 export function renderLabel(options: { label?: string; help?: string }, path: string): HTMLElement | undefined {
     // By its own key (a field of the style of a cell, of the diagram: the same path), else by its path
     const help = FIELD_HELP[options.help ?? path];
-    if (!help) return undefined;
+    if (!help) {
+        return undefined;
+    }
     const label = document.createElement('label');
     label.textContent = options.label ?? path;
     const mark = document.createElement('span');

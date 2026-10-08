@@ -37,11 +37,15 @@ export function nextTag(tags: TagIndex, cell: dia.Cell): string {
 
 /** A new shape tagged if it is a part of the plant (`autoTag`, see `Shape`): before it is added (one step of the history) */
 export function tagNewCell(tags: TagIndex, cell: dia.Cell): void {
-    if (!getTag(cell) && isTaggable(cell) && featuresOf(cell)?.autoTag) cell.set('tag', nextTag(tags, cell));
+    if (!getTag(cell) && isTaggable(cell) && featuresOf(cell)?.autoTag) {
+        cell.set('tag', nextTag(tags, cell));
+    }
 }
 
 /** A tag taken by another cell (a copy, a diagram loaded) replaced by the next free one of its series */
 export function ensureUniqueTag(tags: TagIndex, cell: dia.Cell, options?: dia.Cell.Options): void {
     const tag = getTag(cell);
-    if (tag && tags.isTaken(tag, cell)) cell.set('tag', nextTag(tags, cell), options);
+    if (tag && tags.isTaken(tag, cell)) {
+        cell.set('tag', nextTag(tags, cell), options);
+    }
 }

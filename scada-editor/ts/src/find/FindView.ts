@@ -62,7 +62,9 @@ export default class FindView extends FilterListView<FindEntry> {
 
     /** Opened with an empty filter: a new search (the filter of the last one is not kept) */
     open(container: HTMLElement, button?: Element): void {
-        if (!this.isOpen) this.filter = '';
+        if (!this.isOpen) {
+            this.filter = '';
+        }
         super.open(container, button);
     }
 
@@ -89,7 +91,9 @@ export default class FindView extends FilterListView<FindEntry> {
     protected entries(): FindEntry[] {
         const compare = (a: string, b: string) => a.localeCompare(b, undefined, { numeric: true });
         return this.hooks.entries().sort((a, b) => {
-            if (Boolean(a.tag) !== Boolean(b.tag)) return a.tag ? -1 : 1;
+            if (Boolean(a.tag) !== Boolean(b.tag)) {
+                return a.tag ? -1 : 1;
+            }
             return a.tag ? compare(a.tag, b.tag) : compare(a.name, b.name);
         });
     }
@@ -164,7 +168,9 @@ export default class FindView extends FilterListView<FindEntry> {
             this.showMarked(first, true);
         } else {
             const [entry] = this.shownEntries();
-            if (!entry) return;
+            if (!entry) {
+                return;
+            }
             this.markOnly(entry.id, true);
         }
         this.close();
@@ -176,7 +182,9 @@ export default class FindView extends FilterListView<FindEntry> {
      */
     protected markNext(step: 1 | -1, range: boolean): void {
         const entries = this.shownEntries();
-        if (entries.length === 0) return;
+        if (entries.length === 0) {
+            return;
+        }
         const index = entries.findIndex(entry => entry.id === this.currentId);
         const next = index === -1
             ? (step === 1 ? 0 : entries.length - 1)
@@ -199,7 +207,9 @@ export default class FindView extends FilterListView<FindEntry> {
 
     /** The entry added to the ones shown, or out of them: the current one, the anchor */
     protected toggleMark(id: string): void {
-        if (!this.marked.delete(id)) this.marked.add(id);
+        if (!this.marked.delete(id)) {
+            this.marked.add(id);
+        }
         this.currentId = this.anchorId = id;
         this.showMarked(id);
     }
@@ -212,7 +222,9 @@ export default class FindView extends FilterListView<FindEntry> {
         const range = from === -1 ? [id] : ids.slice(Math.min(from, to), Math.max(from, to) + 1);
         this.marked = new Set(add ? [...this.marked, ...range] : range);
         this.currentId = id;
-        if (from === -1) this.anchorId = id;
+        if (from === -1) {
+            this.anchorId = id;
+        }
         this.showMarked(id);
     }
 

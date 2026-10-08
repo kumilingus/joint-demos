@@ -23,7 +23,9 @@ export function loadPreferences(defaults: Preferences): Preferences {
     const stored = readStored();
     const preferences = { ...defaults };
     keysOf(defaults).forEach((key) => {
-        if (typeof stored[key] === 'boolean') preferences[key] = stored[key];
+        if (typeof stored[key] === 'boolean') {
+            preferences[key] = stored[key];
+        }
     });
     return preferences;
 }
