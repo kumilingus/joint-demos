@@ -71,6 +71,8 @@ export default class TagBadges {
     protected shown = false;
     /** The badges shown soon (see `showSoon()`), none */
     protected timer: number | null = null;
+    /** Not shown until hidden (see `block()`) */
+    protected blocked = false;
 
     constructor(paper: dia.Paper) {
         this.paper = paper;
@@ -93,16 +95,23 @@ export default class TagBadges {
 
     /** Shown after the delay (ms) - unless hidden before */
     showSoon(delay: number): void {
-        if (this.shown || this.timer !== null) return;
+        if (this.shown || this.blocked || this.timer !== null) return;
         this.timer = window.setTimeout(() => {
             this.timer = null;
             this.show();
         }, delay);
     }
 
+    /** Hidden, and not shown soon until hidden again (Alt a modifier until it is released) */
+    block(): void {
+        this.hide();
+        this.blocked = true;
+    }
+
     hide(): void {
         if (this.timer !== null) window.clearTimeout(this.timer);
         this.timer = null;
+        this.blocked = false;
         this.shown = false;
         dia.HighlighterView.removeAll(this.paper, TAG_BADGE_ID);
     }

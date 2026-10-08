@@ -44,18 +44,25 @@ export default class TagBadgesController extends Controller<[App, TagBadges]> {
     }
 }
 
-/** Alt pressed (not while typing: a character of its own): the badges after the delay */
+/**
+ * Alt pressed: the badges after the delay - in a field too (the filter of Find); another key with it (Alt a modifier:
+ * a character on macOS, a code on Windows, a shortcut): none
+ */
 function onWindowKeydown(_app: App, badges: TagBadges, evt: KeyboardEvent) {
-    if (evt.key !== 'Alt' || isTyping(evt)) return;
-    // Not the menu of the browser (Windows: Alt alone activates it)
-    evt.preventDefault();
+    if (evt.key !== 'Alt') {
+        // Until Alt is released (its repeated presses do not show them again)
+        if (evt.altKey) badges.block();
+        return;
+    }
+    // Not the menu of the browser (Windows: Alt alone activates it) - in a field, as it types
+    if (!isTyping(evt)) evt.preventDefault();
     badges.showSoon(SHOW_DELAY);
 }
 
 /** Alt released: the badges hidden (not the menu of the browser either: Windows opens it on the release) */
 function onWindowKeyup(_app: App, badges: TagBadges, evt: KeyboardEvent) {
     if (evt.key !== 'Alt') return;
-    evt.preventDefault();
+    if (!isTyping(evt)) evt.preventDefault();
     badges.hide();
 }
 
