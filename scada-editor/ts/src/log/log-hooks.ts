@@ -50,8 +50,9 @@ export function logHooks(app: App): LogHooks {
                 removePings(paper, PING_ID);
             };
         },
-        // The tags of the messages shown, and the tags with a word of the filter (as the log finds them, see
-        // `normalizeSearch()`: a cell clicked before its first message); not filtered - nothing dimmed
+        // The tags of the messages shown, and the tags starting with a word of the filter (`p101`: P-101, not GRP-101;
+        // as the log normalizes them, see `normalizeSearch()`: a cell clicked before its first message); not filtered -
+        // nothing dimmed
         filterChange: (filter) => {
             if (!filter) {
                 undimCells();
@@ -59,7 +60,7 @@ export function logHooks(app: App): LogHooks {
             }
             const { words, tags: shown } = filter;
             const found = graph.getCells().map(getTag).filter((tag): tag is string => {
-                return tag !== undefined && words.some(word => normalizeSearch(tag).includes(word));
+                return tag !== undefined && words.some(word => normalizeSearch(tag).startsWith(word));
             });
             dimCellsExceptTags(app, [...new Set([...shown, ...found])]);
         }
