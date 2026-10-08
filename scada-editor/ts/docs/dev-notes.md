@@ -24,7 +24,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `TagBadgesController` | always | the window: `Alt` held - the ID badges (`canvas/tag-badges.ts`, highlighters); graph changes draw them again |
 | `ToolbarController` | each mode | toolbar buttons |
 | `FindController` | both (one instance) | Find button, `Cmd + F`, `Escape`; graph changes refresh the list; a selection on the canvas closes it |
-| `EditController` | edit | paper: cell click, region, context menus; a cell not selected pans with *Move selected shapes only* |
+| `EditController` | edit | paper: cell click, region, context menus, `Cmd` + drag of a cell (a copy dragged); a cell not selected pans with *Move selected shapes only* |
 | `PaletteController` | edit | palette: click, drop; graph: the derived groups |
 | `KeyboardController` | edit | shortcuts |
 | `LockController` | edit | graph: `locked` - the pointer goes through a locked element (a class), not in the minimap |
@@ -214,5 +214,5 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 - **Import cycles** - `shapes/common/footprint.ts` imports `Shape` as a type only.
 - **Stencil** - `fitPaperToContent()` is overridden (not in the typings); the `cellCursor` option breaks link hit-testing, fixed in the theme.
 - **Context menus** (`ui.ContextToolbar`) - one open at a time, no submenus; kept inside the window by `keepInWindow()` (`canvas/context-menu.ts`).
-- **Workarounds of missing APIs** - the drag handed over to the copy of a duplicating drag (`canvas/drag.ts`, `ElementView`'s internal event data) and `preventSelectionInteraction()` (`canvas/selection.ts`, `ui.Selection`'s internals): to be replaced when JointJS / JointJS+ expose them.
+- **Workarounds of missing APIs** - the drag handed over to the copy of a duplicating drag (`canvas/drag.ts`, `ElementView`'s internal event data; a link's copy moved by `EditController` itself: clientIO/joint#3534), the guard of the vertices tool (`canvas/tools.ts`: clientIO/joint#3540) and `preventSelectionInteraction()` (`canvas/selection.ts`, `ui.Selection`'s internals): to be replaced when JointJS / JointJS+ expose them.
 - **The mock is random** beyond a few couplings (feedwater follows the feed pumps, charts follow the flow, the beacon follows the pressure).

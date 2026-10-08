@@ -1,8 +1,8 @@
-import { dia, highlighters, linkTools, type mvc, ui, V } from '@joint/plus';
+import { dia, highlighters, type mvc, ui, V } from '@joint/plus';
 import Pipe, { pipeOutlineWidth } from '../shapes/models/piping/Pipe';
 import Group from '../shapes/models/diagram/Group';
 import { GRID_SIZE, SELECTION_COLOR, SELECTION_PADDING } from '../const';
-import { SourceArrowhead, TargetArrowhead, VertexHandle } from './tools';
+import { SourceArrowhead, TargetArrowhead, Vertices, verticesOptions } from './tools';
 import Shape, { type ResizeOptions } from '../shapes/common/Shape';
 import { scaledWidth } from '../shapes/common/line-width';
 import { isLocked } from './lock';
@@ -203,7 +203,7 @@ function showSelectedTools(paper: dia.Paper, cell: dia.Cell): void {
     // A pipe can be reshaped (vertices) and reconnected (arrowheads).
     cellView.addTools(new dia.ToolsView({
         tools: [
-            new linkTools.Vertices({ handleClass: VertexHandle }),
+            new Vertices(verticesOptions),
             // Reconnect the end, or move its anchor along the side of the same element
             new SourceArrowhead(),
             new TargetArrowhead()

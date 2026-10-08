@@ -156,6 +156,6 @@ Edit mode, not while typing. `Cmd` on macOS, `Ctrl` elsewhere.
 | Hide / show the palette and the inspector | `Cmd` + `\` |
 | Find (in both modes) | `Cmd` + `F` |
 | See the IDs on the diagram (in both modes) | hold `Alt` (`Option`) |
-| Duplicate (drag a copy) | `Cmd` + drag an element |
+| Duplicate (drag a copy) | `Cmd` + drag a shape, or a connection (the copy detached from what it connected) |
 | Delete | `Delete`, `Backspace` |
 | Close a menu or Find, one group level up, clear the selection | `Escape` |

@@ -1,7 +1,7 @@
 import { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { clearSelection, clickTarget, dragCopy, dropCopy, selectAtLevel, toggleAtLevel } from '../actions';
+import { clearSelection, clickTarget, dragCopy, dragLinkCopy, dropCopy, selectAtLevel, toggleAtLevel } from '../actions';
 import { getDragDelegate } from '../canvas/drag';
 import { isDuplicateEvent, isSelectionEvent } from '../events';
 import { openBlankMenu, openCellMenu } from '../canvas/context-menu';
@@ -13,7 +13,7 @@ import { preventSelectionInteraction, showHover } from '../canvas/selection';
  * (or removes it, of the same level only), a hovered cell is framed faintly with what the click selects,
  * a drag with Shift on the blank canvas selects the cells it touches (see `selection.ts`). The right click opens the
  * context menu of a cell or of the blank
- * canvas (see `context-menu.ts`). A drag with Cmd / Ctrl moves a copy (the original stays, connected);
+ * canvas (see `context-menu.ts`). A drag with Cmd / Ctrl moves a copy (the original stays, connected; of a link: detached);
  * a click with Cmd / Ctrl is still a click (it adds to the selection). With *Move selected shapes only* (the settings,
  * on by default on a tablet) a drag moves a selected cell only: on any other it pans the canvas (as the drag of the
  * blank canvas) - a click selects it first.
@@ -36,7 +36,10 @@ export default class EditController extends Controller {
             // A drag with Cmd / Ctrl: a copy dragged
             'element:pointerdown': onElementPointerdown,
             'element:pointermove': onElementPointermove,
-            'element:pointerup': onElementPointerup
+            'element:pointerup': onElementPointerup,
+            'link:pointerdown': onLinkPointerdown,
+            'link:pointermove': onLinkPointermove,
+            'link:pointerup': onLinkPointerup
         });
     }
 }
@@ -59,7 +62,8 @@ function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {
  */
 function onCellPointerdown(app: App, view: dia.CellView, evt: dia.Event) {
     const { scroller, selection, moveSelectedOnly } = app;
-    if (!moveSelectedOnly) return;
+    // A drag of a copy (see `onElementPointerdown()`, `onLinkPointerdown()`): not panned
+    if (!moveSelectedOnly || isDuplicateEvent(evt)) return;
     // What the drag would move: the element or the group it is in (see `App.interactivityOf()`), the link
     const moved = view instanceof dia.ElementView ? view.getDelegatedView() : view;
     if (moved && selection.has(moved.model)) return;
@@ -122,4 +126,33 @@ function onElementPointermove(app: App, view: dia.ElementView, evt: dia.Event, x
 /** The copy dropped: the copy and its move one step of the history */
 function onElementPointerup(app: App, view: dia.ElementView, evt: dia.Event) {
     if (view.eventData(evt).duplicated) dropCopy(app);
+}
+
+/** Cmd / Ctrl pressed on a link: not moved (see `onLinkPointermove()`), the point of the press kept - a click is a click */
+function onLinkPointerdown(app: App, view: dia.LinkView, evt: dia.Event, x: number, y: number) {
+    const { selectionView } = app;
+    if (!isDuplicateEvent(evt)) return;
+    view.preventDefaultInteraction(evt);
+    view.eventData(evt, { linkCopyPoint: { x, y }});
+    // Nor moved with the other selected cells (the selection moves them)
+    preventSelectionInteraction(selectionView, evt);
+}
+
+/**
+ * A move of the press with the key: the first one a copy of the link, detached at its ends (see `dragLinkCopy()`) and
+ * selected; the copy moved with the pointer (in grid steps: the points of the paper are snapped)
+ */
+function onLinkPointermove(app: App, view: dia.LinkView, evt: dia.Event, x: number, y: number) {
+    const { linkCopyPoint: point, linkCopy } = view.eventData(evt);
+    if (!point) return;
+    const copy = linkCopy ?? dragLinkCopy(app, view.model);
+    // TODO: a link view cannot hand its drag over (`LinkView.drag()` moves its own link) - with a public
+    // `delegateDrag()` the library would move the copy (the point kept, this move gone): clientIO/joint#3534
+    copy.translate(x - point.x, y - point.y);
+    view.eventData(evt, { linkCopy: copy, linkCopyPoint: { x, y }});
+}
+
+/** The copy dropped: the copy and its move one step of the history */
+function onLinkPointerup(app: App, view: dia.LinkView, evt: dia.Event) {
+    if (view.eventData(evt).linkCopy) dropCopy(app);
 }

@@ -131,3 +131,17 @@ export function dragCopy(
 export function dropCopy(app: App): void {
     app.graph.stopBatch(DUPLICATE_BATCH);
 }
+
+/**
+ * A copy of the link dragged (`Cmd` / `Ctrl` + a drag of it, see `EditController`): detached at both ends where they
+ * are (see `detachedCopy()`), added and selected alone - the original stays, with its connections. Moved with the
+ * pointer by `EditController`, dropped by `dropCopy()` (one step of the history).
+ */
+export function dragLinkCopy(app: App, link: dia.Link): dia.Link {
+    const { graph } = app;
+    graph.startBatch(DUPLICATE_BATCH);
+    const copy = detachedCopy(app, link, new Set());
+    graph.addCell(copy);
+    selectCell(app, copy);
+    return copy;
+}

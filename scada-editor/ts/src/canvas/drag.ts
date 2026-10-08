@@ -5,6 +5,9 @@ import type { dia } from '@joint/plus';
  * `EditController`): as an embedded element hands its move over to its parent - by the data of the event of the
  * pressed view (`action`, `delegatedView`, as `ElementView.dragStart()` sets them; not a public API of JointJS yet).
  * The pressed view keeps the press: it forwards the moves and the release to the delegate, the snaplines snap it.
+ *
+ * TODO: the keys of the event data are internals of `ElementView` - a public `delegateDrag()`, `getDragDelegate()`
+ * would replace this file: clientIO/joint#3534
  */
 
 /** The view moved by the press of the view: itself, its parent (an embedded one), a delegate - `null` if none moves */
