@@ -113,7 +113,7 @@ export default class TableView extends dia.ElementView {
             flags = this.removeFlag(flags, Flags.COLORS);
         }
         if (this.hasFlag(flags, Flags.TAG)) {
-            markTag(this);
+            markTag(this.el, this.model);
             flags = this.removeFlag(flags, Flags.TAG);
         }
         return flags;
@@ -128,7 +128,7 @@ export default class TableView extends dia.ElementView {
         this.content = content instanceof SVGGElement ? content : null;
         this.update();
         this.updateTransformation();
-        markTag(this);
+        markTag(this.el, this.model);
         return this;
     }
 

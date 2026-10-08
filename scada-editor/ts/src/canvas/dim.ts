@@ -1,9 +1,10 @@
 import type { App } from '../app';
+import { CONTROL_VIEW_CLASS } from '../runtime/controls';
 
 /*
- * The cells of some IDs brought forward, the others dimmed (the log filtered by them): one CSS rule listing the IDs
- * matched (on the views: `data-tag`, see `markTag()`), nothing of the diagram changes. The screen is not dimmed (it is
- * the canvas of the runtime mode).
+ * The cells of some IDs brought forward, the others dimmed with their controls (the log filtered by them): one CSS rule
+ * listing the IDs matched (on the views and the controls: `data-tag`, see `markTag()`), nothing of the diagram changes.
+ * The screen is not dimmed (it is the canvas of the runtime mode).
  */
 
 const STYLE_ID = 'scada-dim';
@@ -34,7 +35,8 @@ export function dimCellsExceptTags(app: App, tags: string[]): void {
         document.head.append(style);
     }
     const kept = ['[data-type="Screen"]', ...tags.map(tag => `[data-tag=${CSS.escape(tag)}]`)].join(', ');
-    style.textContent = `.scada-app[data-mode="${app.mode}"] .scada-diagram .joint-cell:not(${kept}) { ${DIMMED} }`;
+    const dimmed = `:is(.joint-cell, .${CONTROL_VIEW_CLASS}):not(${kept})`;
+    style.textContent = `.scada-app[data-mode="${app.mode}"] .scada-diagram ${dimmed} { ${DIMMED} }`;
 }
 
 /** None of the cells dimmed */

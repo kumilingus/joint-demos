@@ -9,7 +9,7 @@ import { markTag } from '../common/tag';
 const LinkView = dia.LinkView.extend({
     update(this: dia.LinkView, ...args: unknown[]) {
         dia.LinkView.prototype.update.apply(this, args);
-        markTag(this);
+        markTag(this.el, this.model);
     },
     presentationAttributes: dia.LinkView.addPresentationAttributes({
         style: dia.LinkView.Flags.UPDATE,

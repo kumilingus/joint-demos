@@ -16,7 +16,7 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
         update(this: dia.ElementView, ...args: unknown[]) {
             dia.ElementView.prototype.update.apply(this, args);
             this.el.toggleAttribute('data-canvas', styleOf(this.model, 'color') === CANVAS_COLOR);
-            markTag(this);
+            markTag(this.el, this.model);
             // A value shown by a part: glides from the one drawn last (see `glide.ts`)
             glide(this);
         },

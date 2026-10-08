@@ -4,6 +4,7 @@ import { besideElement, seenBBox, sideOf } from '../shapes/attributes/label';
 import { readProperty, type TagValue } from '../plant/properties';
 import { flipOf } from '../shapes/attributes/flip';
 import { dataOf } from '../shapes/common/data';
+import { markTag } from '../shapes/common/tag';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -29,6 +30,9 @@ const CONTROL_GAP = 6;
 
 /** The class of the root of every control. */
 const CONTROL_CLASS = 'scada-control';
+
+/** The class of the view of a control (the highlighter): its element's ID on it (see `Control.markElement()`) */
+export const CONTROL_VIEW_CLASS = 'scada-control-view';
 
 /** Whether the event started on a control (and not on the element under it). */
 export function isControlEvent(evt: dia.Event): boolean {
@@ -110,6 +114,12 @@ abstract class Control extends dia.HighlighterView {
         this.el.querySelectorAll('foreignObject > *').forEach(node => node.toggleAttribute('inert', inert));
     }
 
+    /** Its element's ID on it, as on the element's view (see `markTag()`): dimmed with the element (see `canvas/dim.ts`) */
+    protected markElement(cellView: dia.CellView): void {
+        this.el.classList.add(CONTROL_VIEW_CLASS);
+        markTag(this.el, cellView.model);
+    }
+
     /** The nodes of `children` by their `@selector`. */
     protected get nodes(): Record<string, HTMLElement> {
         return this.childNodes as Record<string, HTMLElement>;
@@ -175,6 +185,7 @@ class PumpControl extends Control {
         (this.nodes.input as HTMLInputElement).checked = Boolean(dataOf(cellView.model, 'power'));
         this.updatePending(cellView.model as dia.Element);
         this.updateInert(cellView);
+        this.markElement(cellView);
     }
 
     /** Asked to run or to stop: the checkbox shows the state of the pump until the plant changes it (pending) */
@@ -211,6 +222,7 @@ class ToggleValveControl extends Control {
         buttonOn.toggleAttribute('data-pending', asked === true);
         buttonOff.toggleAttribute('data-pending', asked === false);
         this.updateInert(cellView);
+        this.markElement(cellView);
     }
 
     /** The state of the button (open or closed) asked for, unless the valve is in it */
@@ -254,6 +266,7 @@ class SliderValveControl extends Control {
             this.nodes.value.textContent = asked === null ? getOpenText(open) : `→ ${getOpenText(asked)}`;
         }
         this.updateInert(cellView);
+        this.markElement(cellView);
     }
 
     onInput(evt: dia.Event): void {
