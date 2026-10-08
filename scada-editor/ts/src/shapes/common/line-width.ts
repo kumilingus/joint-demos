@@ -1,5 +1,6 @@
 import type { dia } from '@joint/plus';
 import { styleOf } from './style';
+import Connection from './Connection';
 
 /*
  * The width of a link (a pipe, a wire): thin, normal or thick - its strokes scaled together (the line, the dashes of
@@ -52,5 +53,5 @@ export const lineWidthAttributes = {
 
 /** Whether the user chooses the width of the link (see `lineWidthAttributes`) */
 export function hasLineWidth(cell: dia.Cell): boolean {
-    return (cell as dia.Cell & { strokeWidths?: StrokeWidths }).strokeWidths !== undefined;
+    return Connection.isConnection(cell) && cell.strokeWidths !== null;
 }

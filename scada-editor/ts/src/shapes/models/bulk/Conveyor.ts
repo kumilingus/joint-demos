@@ -1,6 +1,7 @@
-import { dia, util } from '@joint/plus';
+import { type dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
 import type { ColorField } from '../../common/Shape';
+import Connection from '../../common/Connection';
 import { fromStyleAttributes } from '../../attributes/from-style';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -23,7 +24,7 @@ export const CLEAT_PATTERN = [3, 13];
  * straight, inclined or turning on its route. While it runs (`power`) the cleats across the belt move from its start
  * to its end in the runtime mode.
  */
-export default class Conveyor extends dia.Link {
+export default class Conveyor extends Connection {
 
     // Its colors (see `style.ts`)
     static attributes: typeof dia.Link.attributes = { ...fromStyleAttributes };

@@ -1,5 +1,7 @@
 import type { dia } from '@joint/plus';
 import type TagIndex from './TagIndex';
+import { featuresOf } from '../shapes/common/features';
+import { getTag } from '../shapes/common/tag';
 
 /*
  * The tags: the IDs of the cells (`P-101`, `FT-101`, ...) - a cell bound to the plant has one, any other has none.
@@ -12,17 +14,12 @@ import type TagIndex from './TagIndex';
  * ID field of the inspector). A copy gets one if the original had one.
  */
 
-/** A cell whose tags can be generated: its shape has the prefix of their series */
-export type Taggable = dia.Cell & { tagPrefix: string };
+/** The prefix of the series of the cell's tags (see above); none - they can't be generated */
+const tagPrefixOf = (cell: dia.Cell): string | null => featuresOf(cell)?.tagPrefix ?? null;
 
 /** Whether the cell's tags can be generated (see above) */
-export function isTaggable(cell: dia.Cell): cell is Taggable {
-    return 'tagPrefix' in cell && typeof cell.tagPrefix === 'string';
-}
-
-/** The tag of the cell; none (`undefined`): not bound to the plant */
-export function getTag(cell: dia.Cell): string | undefined {
-    return cell.get('tag') || undefined;
+export function isTaggable(cell: dia.Cell): boolean {
+    return tagPrefixOf(cell) !== null;
 }
 
 /** The prefix of the series of the tag (the text before its number: `FT-101` → `FT`), none if it has no number */
@@ -34,14 +31,13 @@ function seriesOf(tag: string): string | null {
 /** The next free tag for the cell: in the series of its tag, else of its shape (`ID` - neither) */
 export function nextTag(tags: TagIndex, cell: dia.Cell): string {
     const tag = getTag(cell);
-    const prefix = (tag && seriesOf(tag)) || (isTaggable(cell) ? cell.tagPrefix : 'ID');
+    const prefix = (tag && seriesOf(tag)) || (tagPrefixOf(cell) ?? 'ID');
     return tags.next(prefix);
 }
 
 /** A new shape tagged if it is a part of the plant (`autoTag`, see `Shape`): before it is added (one step of the history) */
 export function tagNewCell(tags: TagIndex, cell: dia.Cell): void {
-    const autoTag = !('autoTag' in cell) || cell.autoTag !== false;
-    if (!getTag(cell) && isTaggable(cell) && autoTag) cell.set('tag', nextTag(tags, cell));
+    if (!getTag(cell) && isTaggable(cell) && featuresOf(cell)?.autoTag) cell.set('tag', nextTag(tags, cell));
 }
 
 /** A tag taken by another cell (a copy, a diagram loaded) replaced by the next free one of its series */

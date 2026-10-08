@@ -3,7 +3,7 @@ import { LABEL_COLOR } from '../../const';
 import { getFootprint } from '../common/footprint';
 import { flipOf } from './flip';
 import { builtInSet } from './built-in';
-import { getTag } from '../../plant/tags';
+import { getTag } from '../common/tag';
 import { getStyle, LABEL_SIZES } from '../../diagram-style';
 
 /**

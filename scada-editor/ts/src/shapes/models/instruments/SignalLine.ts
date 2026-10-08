@@ -1,6 +1,6 @@
-import { dia, util } from '@joint/plus';
+import { type dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
-import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
+import Connection from '../../common/Connection';
 import { fromStyleAttributes } from '../../attributes/from-style';
 
 /** The markup of the shape: parsed once, shared by all its elements. */
@@ -10,15 +10,10 @@ const markup = util.svg/* xml */`
 `;
 
 /** A signal line: an instrument (a transmitter) connected to what it measures or controls. */
-export default class SignalLine extends dia.Link {
+export default class SignalLine extends Connection {
 
     // Its color (see `style.ts`)
     static attributes: typeof dia.Link.attributes = { ...fromStyleAttributes };
-
-    // The color of its line (see `ColorField`)
-    get colorField(): ColorField {
-        return LINE_COLOR_FIELD;
-    }
 
     defaults(): dia.Link.Attributes {
         return {

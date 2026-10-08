@@ -1,5 +1,5 @@
 import { dia, V } from '@joint/plus';
-import { getTag } from '../plant/tags';
+import { getTag } from '../shapes/common/tag';
 import Group from '../shapes/models/diagram/Group';
 
 /*

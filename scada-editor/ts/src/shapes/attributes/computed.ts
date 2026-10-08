@@ -1,5 +1,6 @@
 import { type dia, type g, util } from '@joint/plus';
 import { builtInSet } from './built-in';
+import type Shape from '../common/Shape';
 
 /*
  * The computed parts of a shape: `computed: true` on a part - its attributes (`attrs`) computed by the shape from its
@@ -9,23 +10,17 @@ import { builtInSet } from './built-in';
  * The attributes as the shapes write them: `calc()` of the size, a `text` (laid out by the built-in attribute), a `style`.
  */
 
-/** A shape with computed parts */
-export interface Computed {
-    /** The attributes of the part (by its selector) for the model of the element and its size */
-    attrsOf(selector: string, bbox: g.Rect): Record<string, unknown>;
-}
-
 // The built-in text: its lines, its anchors
 const textSet = builtInSet('text');
 
 export const computedAttributes = {
     computed: {
-        set(this: dia.ElementView, _drawn: boolean, refBBox: g.Rect, node: Element, attrs: Record<string, unknown>) {
-            const model = this.model as dia.Element & Partial<Computed>;
+        // Of a shape only (see `Shape.attributes`)
+        set(this: dia.ElementView<Shape>, _drawn: boolean, refBBox: g.Rect, node: Element, attrs: Record<string, unknown>) {
             const selector = node.getAttribute('joint-selector');
-            if (!selector || typeof model.attrsOf !== 'function') return {};
+            if (!selector) return {};
             const computed: Record<string, unknown> = {};
-            Object.entries(model.attrsOf(selector, refBBox)).forEach(([name, value]) => {
+            Object.entries(this.model.attrsOf(selector, refBBox)).forEach(([name, value]) => {
                 if (name === 'text') {
                     textSet.call(this, value, refBBox, node, attrs, this);
                 } else if (name === 'style') {

@@ -1,5 +1,5 @@
 import { type dia, mvc } from '@joint/plus';
-import { getTag } from './tags';
+import { getTag } from '../shapes/common/tag';
 
 // The first number of a prefix: `P-101`
 const FIRST_NUMBER = 101;

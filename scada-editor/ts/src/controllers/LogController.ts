@@ -4,7 +4,7 @@ import type { App } from '../app';
 import LogView from '../log/LogView';
 import { logHooks } from '../log/log-hooks';
 import type { PlantMessage } from '../plant/plant';
-import { getTag } from '../plant/tags';
+import { getTag } from '../shapes/common/tag';
 
 /**
  * The log of the messages between the diagram and the plant (see `log/LogView.ts`): opened by the Log button, closed by

@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
 import { addControls, removeControls, updateControl } from '../runtime/controls';
-import { getTag } from '../plant/tags';
+import { getTag } from '../shapes/common/tag';
 import type { TagValue } from '../plant/properties';
 
 /**

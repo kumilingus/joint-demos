@@ -1,6 +1,6 @@
-import { dia, type g, util } from '@joint/plus';
+import { type dia, type g, util } from '@joint/plus';
 import { Layer, LABEL_COLOR } from '../../../const';
-import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
+import Connection from '../../common/Connection';
 import { fromStyleAttributes } from '../../attributes/from-style';
 import { styleOf } from '../../common/style';
 
@@ -44,7 +44,7 @@ function trimPath(path: g.Path, start: number, end: number): g.Path {
  * An arrow: an annotation (from a note to a part of the plant, ...), with an arrowhead at either end
  * (`sourceArrowhead`, `targetArrowhead`, set in the inspector), connected to an element or not.
  */
-export default class Arrow extends dia.Link {
+export default class Arrow extends Connection {
 
     static attributes: typeof dia.Link.attributes = {
         // Its color (see `style.ts`)
@@ -79,11 +79,6 @@ export default class Arrow extends dia.Link {
             }
         }
     };
-
-    // The color of its line (see `ColorField`)
-    get colorField(): ColorField {
-        return LINE_COLOR_FIELD;
-    }
 
     defaults(): dia.Link.Attributes {
         return {

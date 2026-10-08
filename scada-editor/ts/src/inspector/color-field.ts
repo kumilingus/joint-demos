@@ -1,5 +1,6 @@
 import { type dia, type ui, util } from '@joint/plus';
 import type { ColorField } from '../shapes/common/Shape';
+import { featuresOf } from '../shapes/common/features';
 import { renderLabel } from './help';
 import { dataOf } from '../shapes/common/data';
 import { setBesidePanel } from '../tooltips';
@@ -45,17 +46,17 @@ const recentColors: string[] = [];
 
 /** The color the user sets on the cell (a shape, a link of ours), if any: see `ColorField` */
 export function colorFieldOf(cell: dia.Cell): ColorField | null {
-    return (cell as dia.Cell & { colorField?: ColorField | null }).colorField ?? null;
+    return featuresOf(cell)?.colorField ?? null;
 }
 
 /** The color of the outline the user sets on the cell, if any (see `ColorField`) */
 export function outlineFieldOf(cell: dia.Cell): ColorField | null {
-    return (cell as dia.Cell & { outlineField?: ColorField | null }).outlineField ?? null;
+    return featuresOf(cell)?.outlineField ?? null;
 }
 
 /** The color of the accent the user sets on the cell, if any (see `ColorField`) */
 export function accentFieldOf(cell: dia.Cell): ColorField | null {
-    return (cell as dia.Cell & { accentField?: ColorField | null }).accentField ?? null;
+    return featuresOf(cell)?.accentField ?? null;
 }
 
 /** The default of the color field of the cell: its own, or of the defaults of its shape; none - Auto */

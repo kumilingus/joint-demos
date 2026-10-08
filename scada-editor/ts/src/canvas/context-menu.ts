@@ -8,7 +8,7 @@ import {
 } from '../actions';
 import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
-import { getTag } from '../plant/tags';
+import { getTag } from '../shapes/common/tag';
 import Group from '../shapes/models/diagram/Group';
 import type { Layer } from '../const';
 

@@ -2,7 +2,7 @@ import type { dia } from '@joint/plus';
 import type { App } from '../app';
 import type { FindHooks } from './FindView';
 import { Mode } from '../const';
-import { getTag } from '../plant/tags';
+import { getTag } from '../shapes/common/tag';
 import { isLocked } from '../canvas/lock';
 import { descriptions } from '../palette/descriptions';
 import { type SelectionOptions, selectCells } from '../actions';

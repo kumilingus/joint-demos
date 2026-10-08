@@ -1,6 +1,7 @@
-import { dia, util } from '@joint/plus';
+import { type dia, util } from '@joint/plus';
 import { Layer, PIPE_COLOR, PIPE_OUTLINE } from '../../../const';
-import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
+import type { ColorField } from '../../common/Shape';
+import Connection from '../../common/Connection';
 import { lineWidthAttributes, scaledWidth, type StrokeWidths } from '../../common/line-width';
 import { fromStyleAttributes } from '../../attributes/from-style';
 import { outlineWidthOf } from '../../common/gradients';
@@ -22,7 +23,7 @@ const markup = util.svg/* xml */`
     <path @selector='flow' fill='none' />
 `;
 
-export default class Pipe extends dia.Link {
+export default class Pipe extends Connection {
 
     // The outline: as wide as the line plus the border on each side (the outline width, see `OutlineWidth`)
     static attributes: typeof dia.Link.attributes = {
@@ -35,11 +36,6 @@ export default class Pipe extends dia.Link {
             }
         }
     };
-
-    // The color of its line (see `ColorField`)
-    get colorField(): ColorField {
-        return LINE_COLOR_FIELD;
-    }
 
     // The color of its outline: the dark of the theme by default
     get outlineField(): ColorField {

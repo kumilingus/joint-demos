@@ -1,4 +1,5 @@
 import type { dia } from '@joint/plus';
+import type Shape from './Shape';
 import { styleOf } from './style';
 import { getCellDefaults } from '../defaults';
 
@@ -240,7 +241,7 @@ function outlineOf(model: dia.Cell): string | null {
 }
 
 /** Whether the color of the element is its outline (a gauge: its frame) - drawn as wide as the shape draws it */
-const isColorOutline = (model: dia.Cell) => (model as dia.Cell & { colorField?: { path: string[] } | null }).colorField?.path.join('/') === 'style/outline';
+const isColorOutline = (shape: Shape) => shape.colorField?.path.join('/') === 'style/outline';
 
 // A shaded surface made flat: the middle tone of its shading
 const FLAT_SHADING = 'var(--shape-metal-5)';
@@ -276,7 +277,8 @@ export const surfaceAttributes = {
     },
     // `surfaceStroke` in the attributes
     'surface-stroke': {
-        set(this: dia.ElementView, stroke: SurfaceStroke) {
+        // Of a shape only (see `Shape.attributes`)
+        set(this: dia.ElementView<Shape>, stroke: SurfaceStroke) {
             const outline = outlineOf(this.model);
             if (outline) return isColorOutline(this.model) ? { stroke: outline } : { stroke: outline, 'stroke-width': outlineWidthOf(this.model) };
             const color = styleOf(this.model, 'color');

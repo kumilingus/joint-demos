@@ -1,6 +1,6 @@
-import { dia, util } from '@joint/plus';
+import { type dia, util } from '@joint/plus';
 import { Layer } from '../../../const';
-import { type ColorField, LINE_COLOR_FIELD } from '../../common/Shape';
+import Connection from '../../common/Connection';
 import { lineWidthAttributes, type StrokeWidths } from '../../common/line-width';
 import { fromStyleAttributes } from '../../attributes/from-style';
 
@@ -17,15 +17,10 @@ const markup = util.svg/* xml */`
  * A wire: connects the terminals of the electrical shapes (see `terminalPorts()`).
  * In the runtime mode it shows whether it is live (see `electrical.ts`).
  */
-export default class Wire extends dia.Link {
+export default class Wire extends Connection {
 
     // Its color and its thickness (see `style.ts`)
     static attributes: typeof dia.Link.attributes = { ...fromStyleAttributes, ...lineWidthAttributes };
-
-    // The color of its line (see `ColorField`)
-    get colorField(): ColorField {
-        return LINE_COLOR_FIELD;
-    }
 
     // Thin, normal or thick (see `line-width.ts`)
     get strokeWidths(): StrokeWidths {

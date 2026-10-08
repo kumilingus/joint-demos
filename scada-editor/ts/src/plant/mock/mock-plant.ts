@@ -1,6 +1,6 @@
 import type { dia } from '@joint/plus';
 import { RUNTIME } from '../../history';
-import { getTag } from '../tags';
+import { getTag } from '../../shapes/common/tag';
 import type TagIndex from '../TagIndex';
 import type { Plant, PlantMessage } from '../plant';
 import { propertiesOf, readProperty, type TagValue } from '../properties';

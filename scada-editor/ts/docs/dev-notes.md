@@ -99,6 +99,9 @@ Every element extends `Shape` (`shapes/common/Shape.ts`) and overrides the gette
 | `overflow` | `{}` (a label below) | `{ top: 42 }`: drawing outside the bounding box |
 | `colorField` / `outlineField` | surface `color` / `outline` | `{ path: ['attrs', 'body', 'fill'] }` |
 | `accentField` | `null` | a boiler's flames |
+| `attrsOf(selector, bbox)` | `{}` | the computed parts (`computed: true`, `shapes/attributes/computed.ts`): a needle's rotation |
+
+Every link extends `Connection` (`shapes/common/Connection.ts`): `tagPrefix` (`null`; a conveyor `'CV'`), `autoTag`, `colorField` (its line), `outlineField`, `accentField` (`null`), `strokeWidths` (`null`; a pipe, a wire - their widths the user scales). What both share is `CellFeatures` (`Shape.ts`), read of any cell by `featuresOf()` (`shapes/common/features.ts`: `null` for a cell of neither - the screen).
 
 A shape showing a value by a part (level panel, battery bank, fuel tank, thermometer) defines `glideProperty` and `glideKeyframes(value)`; its view glides the parts from the value it drew last to the current one when it draws again (`shapes/views/glide.ts`; on a paper `Animations` lets glide: run mode, not alarms only).
 
@@ -211,7 +214,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 ## Gotchas
 
 - **Controls are in the paper's front layer**, not in the element views; the paper's `guard` (`app.ts`) ignores their events, or a slider press would be a blank-canvas press.
-- **Import cycles** - `shapes/common/footprint.ts` imports `Shape` as a type only.
+- **Import cycles** - `shapes/common/footprint.ts`, `gradients.ts`, `attributes/computed.ts` import `Shape` as a type only; the shapes don't import `plant/` (`plant/tags.ts` reads `featuresOf()`, which imports `Shape`: the tag of a cell is read by `getTag()` of `shapes/common/tag.ts`).
 - **Stencil** - `fitPaperToContent()` is overridden (not in the typings); the `cellCursor` option breaks link hit-testing, fixed in the theme.
 - **Context menus** (`ui.ContextToolbar`) - one open at a time, no submenus; kept inside the window by `keepInWindow()` (`canvas/context-menu.ts`).
 - **Workarounds of missing APIs** - the drag handed over to the copy of a duplicating drag (`canvas/drag.ts`, `ElementView`'s internal event data; a link's copy moved by `EditController` itself: clientIO/joint#3534), the guard of the vertices tool (`canvas/tools.ts`: clientIO/joint#3540) and `preventSelectionInteraction()` (`canvas/selection.ts`, `ui.Selection`'s internals): to be replaced when JointJS / JointJS+ expose them.

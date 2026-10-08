@@ -1,4 +1,4 @@
-import { dia } from '@joint/plus';
+import { dia, type g } from '@joint/plus';
 import type { Overflow } from './footprint';
 import { GRID_SIZE, Layer } from '../../const';
 import { DERIVED } from '../../history';
@@ -48,11 +48,22 @@ export interface ColorField {
     defaultValue?: string;
 }
 
-/** The color of a link: of its line (a pipe, a wire, a signal line, an arrow) */
-export const LINE_COLOR_FIELD: ColorField = { path: ['style', 'color'], part: ['line', 'stroke'] };
+/** What the editor needs to know about a cell of its own: a shape (see `ShapeFeatures`), a link (see `Connection`). */
+export interface CellFeatures {
+    /** The start of the generated tags (the IDs of the cells, see `tags.ts`): `P` for `P-101`; none - no IDs. */
+    tagPrefix: string | null;
+    /** Whether a new one gets an ID (a part of the plant, see `tags.ts`). */
+    autoTag: boolean;
+    /** The color the user sets, if any. */
+    colorField: ColorField | null;
+    /** The color of the outline the user sets, if any. */
+    outlineField: ColorField | null;
+    /** The color of the accent the user sets (a marking: the bands of a stack, a handwheel), if any. */
+    accentField: ColorField | null;
+}
 
-/** What the editor needs to know about a shape. */
-export interface ShapeFeatures {
+/** What the editor needs to know about a shape (an element). */
+export interface ShapeFeatures extends CellFeatures {
     /** Whether (and how) the element can be resized. */
     resizable: Resizable;
     /** Whether the element can be rotated. */
@@ -69,16 +80,6 @@ export interface ShapeFeatures {
     stubLength: number | null;
     /** How far the drawing reaches out of the bounding box (on top of the label below it, see `footprint.ts`). */
     overflow: Overflow;
-    /** The start of the generated tags (the IDs of the elements, see `tags.ts`): `P` for `P-101`; none - no IDs. */
-    tagPrefix: string | null;
-    /** Whether a new one gets an ID (a part of the plant, see `tags.ts`). */
-    autoTag: boolean;
-    /** The color the user sets, if any. */
-    colorField: ColorField | null;
-    /** The color of the outline the user sets, if any. */
-    outlineField: ColorField | null;
-    /** The color of the accent the user sets (a marking: the bands of a stack, a handwheel), if any. */
-    accentField: ColorField | null;
 }
 
 // An element can be made this much smaller than its default size (unless the shape says otherwise).
@@ -207,6 +208,14 @@ export default abstract class Shape extends dia.Element implements ShapeFeatures
             if (value && typeof value === 'object' && Object.keys(value).length === 0) delete json[key];
         });
         return json;
+    }
+
+    /**
+     * The attributes of a computed part (by its selector, see `computed.ts`) for the model of the element and its
+     * size: none by default - a shape with computed parts overrides it
+     */
+    attrsOf(_selector: string, _bbox: g.Rect): Record<string, unknown> {
+        return {};
     }
 
     /**

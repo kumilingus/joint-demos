@@ -1,7 +1,8 @@
 import type { dia } from '@joint/plus';
 import Controller from './Controller';
 import type { App } from '../app';
-import { ensureUniqueTag, getTag } from '../plant/tags';
+import { ensureUniqueTag } from '../plant/tags';
+import { getTag } from '../shapes/common/tag';
 
 /**
  * The tags are unique (the IDs, see `tags.ts`): a cell added with a tag of another one (a copy) gets the next free one of
