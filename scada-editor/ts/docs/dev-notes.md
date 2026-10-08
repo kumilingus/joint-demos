@@ -31,7 +31,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `RoutingController` | edit | paper: `link:connect` - the stored direction of the end forgotten; graph: `routing` - the stored router, connector removed |
 | `RuntimeController` | runtime | paper: a cell drag pans |
 | `MockPlantController` | runtime | the mock plant (`plant/mock/`) |
-| `LogController` | runtime | Log button, `Escape`; plant messages; element clicks filter the log |
+| `LogController` | runtime | Log button, `L`, `Escape`; plant messages; element clicks filter the log |
 | `AnimationsController` | runtime | graph: `data` - the animations again when a cell is switched, opened, closed |
 | `ElectricalController` | runtime | graph: `energized` |
 

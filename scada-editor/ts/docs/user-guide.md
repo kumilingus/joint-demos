@@ -130,7 +130,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
   - *Ping the changes* - an element pings when its message arrives (blue update, amber command).
   - Filter by words (dashes ignored: `p101` finds `P-101`), by All / Updates / Commands, or by clicking elements on the diagram.
   - Click a message to mark its element - a violet arrow pointing at it (and mark its messages); click it again to clear.
-  - `Escape` closes it.
+  - `L` opens it, `Escape` closes it.
 
 ## Files
 
@@ -155,6 +155,7 @@ Edit mode, not while typing. `Cmd` on macOS, `Ctrl` elsewhere.
 | Move the selection (a grid step / five) | Arrow keys / `Shift` + arrow keys |
 | Hide / show the palette and the inspector | `Cmd` + `\` |
 | Find (in both modes) | `Cmd` + `F` |
+| The plant messages (the log, in run mode) | `L` |
 | See the IDs on the diagram (in both modes) | hold `Alt` (`Option`) |
 | Duplicate (drag a copy) | `Cmd` + drag a shape, or a connection (the copy detached from what it connected) |
 | Delete | `Delete`, `Backspace` |

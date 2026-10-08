@@ -8,8 +8,9 @@ import { getTag } from '../shapes/common/tag';
 
 /**
  * The log of the messages between the diagram and the plant (see `log/LogView.ts`): opened by the Log button, closed by
- * it or by Escape. Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open,
- * the cell of the message clicked is marked (see `canvas/marker.ts`), the elements of the messages pinged if asked.
+ * it or by Escape; `L` opens it (or focuses its filter). Active in the runtime mode only: a new run starts a new
+ * log, closed with the mode. While it is open, the cell of the message clicked is marked (see `canvas/marker.ts`), the
+ * elements of the messages pinged if asked.
  */
 export default class LogController extends Controller<[App, LogView]> {
 
@@ -34,6 +35,7 @@ export default class LogController extends Controller<[App, LogView]> {
             'log:pointerclick': onLogPointerclick
         });
         this.listenTo(keyboard, {
+            'l': onLogKey,
             'escape': onEscape
         });
         // A cell clicked while the log is open: its tag in the filter of the log (or out of it)
@@ -65,6 +67,17 @@ function onPlantCommand(_app: App, log: LogView, message: PlantMessage) {
 function onLogPointerclick(app: App, log: LogView) {
     const { el, toolbar } = app;
     log.toggle(el, toolbar.getWidgetByName('log')?.el);
+}
+
+/**
+ * L: the log opened, or its filter focused if it is open (not typed into the filter: the keyboard skips the fields). A
+ * key of its own - Safari keeps `Cmd` + `L` (the address bar).
+ */
+function onLogKey(app: App, log: LogView, evt: dia.Event) {
+    const { el, toolbar } = app;
+    // Not typed into the filter it focuses
+    evt.preventDefault();
+    log.focusFilter(el, toolbar.getWidgetByName('log')?.el);
 }
 
 function onEscape(_app: App, log: LogView) {
