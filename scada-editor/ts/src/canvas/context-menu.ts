@@ -205,7 +205,7 @@ function flipItems(app: App): MenuItem[] {
     return items;
 }
 
-/** Disconnect: the links of the selected elements freed at their ends (how many), none - disabled */
+/** Disconnect: the links of the selected elements disconnected at their ends (how many), none - disabled */
 function disconnectItem(app: App): MenuItem {
     const count = connectedEnds(app).length;
     return {

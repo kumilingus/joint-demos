@@ -42,7 +42,7 @@ function trimPath(path: g.Path, start: number, end: number): g.Path {
 
 /**
  * An arrow: an annotation (from a note to a part of the plant, ...), with an arrowhead at either end
- * (`sourceArrowhead`, `targetArrowhead`, set in the inspector), free or connected to an element.
+ * (`sourceArrowhead`, `targetArrowhead`, set in the inspector), connected to an element or not.
  */
 export default class Arrow extends dia.Link {
 

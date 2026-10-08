@@ -3,6 +3,7 @@ import type { App } from '../app';
 import { GRID_SIZE } from '../const';
 import Join from '../shapes/models/piping/Join';
 import { selectCell } from './selection';
+import { rememberEndDirections, type LinkEnd } from '../shapes/common/routing';
 
 /*
  * A pipe split at a point: into two pipes, or with a join inserted. The elements disconnected from their links.
@@ -18,8 +19,8 @@ interface SplitLink {
 }
 
 /**
- * The link split at the point of its route nearest to the point (snapped to the grid) into two links with free
- * ends there: the first one from the source, the second one to the target, each with the vertices on its side.
+ * The link split at the point of its route nearest to the point (snapped to the grid) into two links with
+ * disconnected ends there: the first one from the source, the second one to the target, each with the vertices on its side.
  * The route is the rendered one (the link is under the pointer, its view rendered): the vertices before the point
  * along it go to the first half, the direction of the route there says from where the halves come.
  */
@@ -38,7 +39,7 @@ function splitAt(app: App, link: dia.Link, point: dia.Point): SplitLink {
     return { point: split, first, second, direction };
 }
 
-/** Split the link at the point into two links with free ends there: the first one selected, one step of the history. */
+/** Split the link at the point into two links with disconnected ends there: the first one selected, one step of the history. */
 export function splitLink(app: App, link: dia.Link, point: dia.Point): void {
     const { graph } = app;
     const { first, second } = splitAt(app, link, point);
@@ -94,24 +95,27 @@ export function connectedEnds(app: App): Array<[dia.Link, 'source' | 'target']> 
         .map(end => [link, end] as [dia.Link, 'source' | 'target']));
 }
 
-// How far the disconnected elements move: off the freed ends (a gap shows they are not connected)
+// How far the disconnected elements move: off the disconnected ends (a gap shows they are not connected)
 const DISCONNECT_SHIFT = 2 * GRID_SIZE;
 
 /**
- * The selected elements disconnected: the ends of their links freed where they are drawn (the end points of the
+ * The selected elements disconnected: the ends of their links disconnected where they are drawn (the end points of the
  * rendered links), the elements moved off them. One step of the history.
  */
 export function disconnectSelection(app: App): void {
     const { graph, paper } = app;
-    const ends = connectedEnds(app).flatMap(([link, end]) => {
-        // Rendered now if it isn't (out of the viewport): the end as drawn
-        const view = paper.requireView<dia.LinkView>(link);
-        const point = end === 'source' ? view.sourcePoint : view.targetPoint;
-        return [{ link, end, point: point.toJSON() }];
-    });
-    if (ends.length === 0) return;
+    // The ends disconnected of each link (both of them: a link between two selected elements)
+    const disconnected = new Map<dia.Link, LinkEnd[]>();
+    connectedEnds(app).forEach(([link, end]) => disconnected.set(link, [...(disconnected.get(link) ?? []), end]));
+    if (disconnected.size === 0) return;
     graph.startBatch('disconnect');
-    ends.forEach(({ link, end, point }) => link.prop(end, point, { rewrite: true }));
+    disconnected.forEach((ends, link) => {
+        // Rendered now if it isn't (out of the viewport): the ends as drawn, their directions (the route keeps its shape)
+        const view = paper.requireView<dia.LinkView>(link);
+        const points = ends.map(end => [end, (end === 'source' ? view.sourcePoint : view.targetPoint).toJSON()] as const);
+        rememberEndDirections(link, view, ends);
+        points.forEach(([end, point]) => link.prop(end, point, { rewrite: true }));
+    });
     // The members of a selected group move with it
     app.selection.filter(cell => cell.isElement() && !cell.getParentCell())
         .forEach(element => (element as dia.Element).translate(DISCONNECT_SHIFT, DISCONNECT_SHIFT));

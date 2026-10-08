@@ -50,7 +50,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Routing** - Straight, Orthogonal or Curved in the inspector; drag the handles to move ends and bends.
 - **Size** of a pipe (Small, Medium, Large), **Thickness** of a wire (Thin, Normal, Thick) - in the inspector.
 - **Split Here** / **Insert Join** - right-click a connection / a pipe.
-- **Disconnect** - right-click a shape: its connections stay, their ends freed where they were; the shape moves off them.
+- **Disconnect** - right-click a shape: its connections stay, their ends disconnected where they were; the shape moves off them.
 
 ## The inspector
 

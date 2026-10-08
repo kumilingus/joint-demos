@@ -4,6 +4,7 @@ import { GRID_SIZE } from '../const';
 import Screen from '../shapes/models/diagram/Screen';
 import { selectCell, selectCells, removeCells } from './selection';
 import { delegateDrag } from '../canvas/drag';
+import { rememberEndDirections, type LinkEnd } from '../shapes/common/routing';
 
 /*
  * Copy, cut and paste (`ui.Clipboard`).
@@ -17,14 +18,16 @@ const isCopied = (end: dia.Link.EndJSON, copied: Set<dia.Cell.ID>) => end.id !==
 
 /**
  * A copy of the link (not in the graph): connected at its ends to the copied elements (`copied`, by their ids), the
- * other ends where they are now, but not connected (the clipboard would copy the elements they are connected to).
+ * other ends where they are now, but not connected (the clipboard would copy the elements they are connected to) - in
+ * the directions they had (see `rememberEndDirections()`: the route keeps its shape).
  */
 function detachedCopy(app: App, link: dia.Link, copied: Set<dia.Cell.ID>): dia.Link {
     const copy = link.clone();
     // Rendered now if it isn't (out of the viewport: selected, scrolled away): its ends as drawn
     const linkView = app.paper.requireView<dia.LinkView>(link);
-    if (!isCopied(link.source(), copied)) copy.source(linkView.sourcePoint.toJSON());
-    if (!isCopied(link.target(), copied)) copy.target(linkView.targetPoint.toJSON());
+    const disconnected = (['source', 'target'] as LinkEnd[]).filter(end => !isCopied(link.prop(end), copied));
+    disconnected.forEach(end => copy.prop(end, (end === 'source' ? linkView.sourcePoint : linkView.targetPoint).toJSON(), { rewrite: true }));
+    rememberEndDirections(link, linkView, disconnected, copy);
     return copy;
 }
 

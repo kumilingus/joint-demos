@@ -28,6 +28,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `PaletteController` | edit | palette: click, drop; graph: the derived groups |
 | `KeyboardController` | edit | shortcuts |
 | `LockController` | edit | graph: `locked` - the pointer goes through a locked element (a class), not in the minimap |
+| `RoutingController` | edit | paper: `link:connect` - the stored direction of the end forgotten; graph: `routing` - the stored router, connector removed |
 | `RuntimeController` | runtime | paper: a cell drag pans |
 | `MockPlantController` | runtime | the mock plant (`plant/mock/`) |
 | `LogController` | runtime | Log button, `Escape`; plant messages; element clicks filter the log |
@@ -193,7 +194,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 | Palette packing (skyline, no labels) | `palette/packing.ts` |
 | Uploaded images (on the graph; one `<symbol>` per paper) | `palette/images.ts`, `shapes/models/custom/CustomImage.ts` |
 | Where a link end connects | `connectionStrategy` in `canvas/connections.ts` |
-| Routing straight / orthogonal / curved (a link stores its `routing` only: the router, the connector by the paper defaults) | `shapes/common/routing.ts` |
+| Routing straight / orthogonal / curved (a link stores its `routing`: the router, the connector by the paper defaults - `orthogonalRouting`, `smoothRouting`; a disconnected end (Disconnect, a copy) stores the direction it was drawn in as an explicit router / connector, so the route keeps its shape; forgotten when connected again) | `shapes/common/routing.ts`, `RoutingController` |
 | Conveyor (a link drawn as a belt) | `shapes/models/bulk/Conveyor.ts` |
 | Charts (paths from model data) | `shapes/common/charts.ts` |
 | Table (own view, per-cell updates) | `shapes/models/charts/Table.ts`, `shapes/views/TableView.ts` |

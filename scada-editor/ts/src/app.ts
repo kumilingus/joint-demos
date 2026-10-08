@@ -39,7 +39,8 @@ import {
     ToolbarController,
     LockController,
     FindController,
-    TagBadgesController
+    TagBadgesController,
+    RoutingController
 } from './controllers';
 // The mock of the plant (see `plant/mock/`): an app with a real plant deletes it and this line
 import MockPlantController from './plant/mock/MockPlantController';
@@ -158,6 +159,7 @@ export class App {
                 new KeyboardController(this),
                 new PaletteController(this),
                 new LockController(this),
+                new RoutingController(this),
                 findController
             ],
             [Mode.Runtime]: [
