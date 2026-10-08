@@ -44,6 +44,8 @@ Also: uploaded images (saved with the diagram, with an opacity), Favorites, and 
 - Routing straight, orthogonal or curved; pipe sizes and wire thicknesses; split a connection, insert a join into a pipe, disconnect a shape.
 - A pipe takes the color of its medium.
 
+![The Microgrid example: wires between the terminals of the generators, the breakers, the busbar and the loads](images/microgrid.png)
+
 ## Layers and groups
 
 - Five layers (background, pipes, equipment, instruments, foreground): pipes stay under the equipment, gauges over their tanks.
