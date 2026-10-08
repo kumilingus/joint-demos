@@ -21,8 +21,15 @@ import { preventSelectionInteraction, showHover } from '../canvas/selection';
  */
 export default class EditController extends Controller {
 
+    onWindowKey = (evt: KeyboardEvent) => onWindowKey(this.app, evt);
+    onWindowBlur = () => onWindowBlur(this.app);
+
     startListening(): void {
         const { paper } = this.app;
+        // Cmd / Ctrl held: a drag copies (the cursors, see `canvas.css`)
+        window.addEventListener('keydown', this.onWindowKey);
+        window.addEventListener('keyup', this.onWindowKey);
+        window.addEventListener('blur', this.onWindowBlur);
 
         this.listenTo(paper, {
             'cell:pointerclick': onCellPointerclick,
@@ -42,6 +49,24 @@ export default class EditController extends Controller {
             'link:pointerup': onLinkPointerup
         });
     }
+
+    stopListening(): void {
+        super.stopListening();
+        window.removeEventListener('keydown', this.onWindowKey);
+        window.removeEventListener('keyup', this.onWindowKey);
+        window.removeEventListener('blur', this.onWindowBlur);
+        onWindowBlur(this.app);
+    }
+}
+
+/** A key pressed or released: whether Cmd / Ctrl is held now - a drag copies (see `isDuplicateEvent()`) or moves */
+function onWindowKey(app: App, evt: KeyboardEvent) {
+    app.el.dataset.drag = evt.metaKey || evt.ctrlKey ? 'copy' : 'move';
+}
+
+/** The release would not come (the focus elsewhere), the edit mode left: not held */
+function onWindowBlur(app: App) {
+    app.el.dataset.drag = 'move';
 }
 
 function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {

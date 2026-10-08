@@ -100,6 +100,7 @@ export class App {
 
     constructor(el: HTMLElement) {
         this.el = el;
+        this.setMoveSelectedOnly(this.moveSelectedOnly);
         this.inspectorEl = el.querySelector<HTMLElement>('.scada-inspector-panel')!;
 
         this.graph = createGraph();
@@ -123,6 +124,8 @@ export class App {
             guard: (evt: dia.Event) => isControlEvent(evt),
             getImages: () => getImages(this.graph)
         });
+        // The paper of the diagram (not of the palette, the minimap, a preview): its cursors, ... (see `canvas.css`)
+        this.paper.el.classList.add('scada-diagram');
 
         this.scroller = new ui.PaperScroller({
             ...scrollerOptions,
@@ -294,6 +297,12 @@ export class App {
     protected destroyStencil(): void {
         this.stencil?.remove();
         this.stencil = null;
+    }
+
+    /** Whether a drag moves a selected cell only (see `moveSelectedOnly`): shown by the cursors too (see `canvas.css`) */
+    setMoveSelectedOnly(selectedOnly: boolean): void {
+        this.moveSelectedOnly = selectedOnly;
+        this.el.dataset.move = selectedOnly ? 'selected' : 'any';
     }
 
     /** Show or hide the group of the palette with the shapes in use. */

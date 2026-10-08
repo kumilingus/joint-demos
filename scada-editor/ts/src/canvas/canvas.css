@@ -4,11 +4,27 @@
  * The cursor on the canvas: the blank canvas is panned (`grab` of the paper scroller, see `config.ts`),
  * a cell is moved in the edit mode; in the runtime mode it is not (its controls have their own cursors).
  */
-.scada-app[data-mode="edit"] .joint-paper-scroller .joint-cell {
+.scada-app[data-mode="edit"] .scada-diagram .joint-cell {
     cursor: move;
 }
 
-.scada-app[data-mode="runtime"] .joint-paper-scroller .joint-cell {
+/* Moving the selected cells only (the settings, see `App.setMoveSelectedOnly()`): another one is panned, as the blank canvas */
+.scada-app[data-mode="edit"][data-move="selected"] .scada-diagram .joint-cell:not(.scada-selected) {
+    cursor: grab;
+}
+
+/* A selected link: a drag of its line adds a vertex (the vertices tool, see `tools.ts`) - as the tool's own cursor */
+.scada-app[data-mode="edit"] .scada-diagram .joint-link.scada-selected [joint-selector="line"] {
+    cursor: cell;
+}
+
+/* `Cmd` / `Ctrl` held (see `EditController`): a drag copies the cell - over the cursors above */
+.scada-app[data-mode="edit"][data-drag="copy"] .scada-diagram .joint-cell:is(.joint-element, .joint-link),
+.scada-app[data-mode="edit"][data-drag="copy"] .scada-diagram .joint-link.scada-selected [joint-selector="line"] {
+    cursor: copy;
+}
+
+.scada-app[data-mode="runtime"] .scada-diagram .joint-cell {
     cursor: default;
 }
 

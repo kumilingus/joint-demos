@@ -14,11 +14,14 @@ import { isLocked } from './lock';
  * (see `SelectionController` for its free transform and link tools).
  */
 
+// The class of the view of a selected cell (see `SelectionFrame`): its cursor (see `canvas.css`)
+const SELECTED_CLASS = 'scada-selected';
+
 /**
- * The frame of a selected cell: an element in a rectangle of its size (the model geometry: without
+ * The frame of a cell (selected, hovered): an element in a rectangle of its size (the model geometry: without
  * the pipe stubs and the label), rotated with it; a link along its route (the stroke highlighter).
  */
-export class SelectionFrame extends highlighters.stroke {
+class CellFrame extends highlighters.stroke {
 
     // A link framed again when it gets wider or narrower (see `linkFrameWidth()`)
     UPDATE_ATTRIBUTES = ['style'];
@@ -41,6 +44,20 @@ export class SelectionFrame extends highlighters.stroke {
             rx,
             ry
         }));
+    }
+}
+
+/** The frame of a selected cell: its view marked as selected meanwhile (`SELECTED_CLASS`) */
+export class SelectionFrame extends CellFrame {
+
+    protected highlight(cellView: dia.CellView, node: SVGElement): void {
+        super.highlight(cellView, node);
+        cellView.el.classList.add(SELECTED_CLASS);
+    }
+
+    protected unhighlight(cellView: dia.CellView, node: SVGElement): void {
+        super.unhighlight(cellView, node);
+        cellView.el.classList.remove(SELECTED_CLASS);
     }
 }
 
@@ -126,11 +143,11 @@ export function updateGroupBadge(paper: dia.Paper, group: dia.Cell): void {
 export function showHover(paper: dia.Paper, cell: dia.Cell | null): void {
     const view = cell && cell.findView(paper);
     // Framed already (the frames of the paper know the hovered cell)
-    if (view && SelectionFrame.get(view, HOVER_ID)) return;
-    SelectionFrame.removeAll(paper, HOVER_ID);
+    if (view && CellFrame.get(view, HOVER_ID)) return;
+    CellFrame.removeAll(paper, HOVER_ID);
     if (!cell || !view) return;
     const options = frameOptions(cell);
-    SelectionFrame.add(view, 'root', HOVER_ID, {
+    CellFrame.add(view, 'root', HOVER_ID, {
         ...options,
         attrs: { ...options.attrs, strokeOpacity: 0.4 }
     });

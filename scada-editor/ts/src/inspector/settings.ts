@@ -138,9 +138,7 @@ export function openSettings(app: App): void {
     });
     listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => app.setSnaplinesEnabled(enabled));
     listener.listenTo(settings, 'change:inUse', (_cell: dia.Cell, shown: boolean) => app.setInUseShown(shown));
-    listener.listenTo(settings, 'change:moveSelectedOnly', (_cell: dia.Cell, selectedOnly: boolean) => {
-        app.moveSelectedOnly = selectedOnly;
-    });
+    listener.listenTo(settings, 'change:moveSelectedOnly', (_cell: dia.Cell, selectedOnly: boolean) => app.setMoveSelectedOnly(selectedOnly));
     // ... and follow it.
     listener.listenTo(graph, 'add remove reset change:size', () => {
         const { screen, size } = getScreenSettings(graph);
