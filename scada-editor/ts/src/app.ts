@@ -11,6 +11,7 @@ import { createToolbar } from './toolbar/toolbar';
 import { historyOptions } from './history';
 import { tooltipOptions } from './tooltips';
 import { addImages, clearSelection, refreshPalette, storedColorScheme, storeColorScheme, zoomToFit } from './actions';
+import { loadPreferences } from './preferences';
 import { isControlEvent, setControlsOperable } from './runtime/controls';
 import { Plant } from './plant/plant';
 import TagIndex from './plant/TagIndex';
@@ -78,17 +79,24 @@ export class App {
 
     mode: Mode = Mode.Edit;
     colorScheme: ColorScheme = storedColorScheme();
+    /** The preferences of the user remembered in this browser (see `preferences.ts`), set with the setters below */
+    protected preferences = loadPreferences({
+        snaplines: true,
+        inUse: true,
+        // A device used with a finger (a tablet): a drag mostly means to scroll
+        moveSelectedOnly: window.matchMedia('(pointer: coarse)').matches
+    });
     /** Whether a moved or resized element aligns with the others (see the settings) */
-    snaplinesEnabled = true;
+    snaplinesEnabled = this.preferences.snaplines;
     /** The cells as they were before the runtime mode (put back when it is left: its changes are not the diagram's) */
     runtimeCells: dia.Cell.JSON[] | null = null;
     /** Whether the palette has the group of the shapes in use (see `refreshPalette()`) */
-    inUseShown = true;
+    inUseShown = this.preferences.inUse;
     /**
      * Whether a drag moves a selected cell only - on any other it pans the canvas (see `EditController`): by default
      * on a device used with a finger (a tablet), where a drag mostly means to scroll
      */
-    moveSelectedOnly = window.matchMedia('(pointer: coarse)').matches;
+    moveSelectedOnly = this.preferences.moveSelectedOnly;
     selection = new mvc.Collection<dia.Cell>();
     /** Shows the selection on the canvas: the region, the frames, moving the selected elements together */
     selectionView: ui.Selection;

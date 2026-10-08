@@ -9,6 +9,7 @@ import { type DiagramStyle, getStyle, LABEL_SIZES, STYLE_ATTRIBUTE } from '../di
 import { CANVAS_COLORS, getColorFieldValue, isColorField, renderColorField } from './color-field';
 import { OUTLINE_WIDTHS, type OutlineWidth } from '../shapes/common/gradients';
 import { closePanel, type PanelContent, showInPanel } from './panel';
+import { storePreference } from '../preferences';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
@@ -136,9 +137,19 @@ export function openSettings(app: App): void {
     listener.listenTo(settings, 'change:animations', (_cell: dia.Cell, level: AnimationLevel, options: SettingsOptions) => {
         if (!options.diagram) graph.set(ANIMATIONS_ATTRIBUTE, level);
     });
-    listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => app.setSnaplinesEnabled(enabled));
-    listener.listenTo(settings, 'change:inUse', (_cell: dia.Cell, shown: boolean) => app.setInUseShown(shown));
-    listener.listenTo(settings, 'change:moveSelectedOnly', (_cell: dia.Cell, selectedOnly: boolean) => app.setMoveSelectedOnly(selectedOnly));
+    // The settings of the editor: remembered in this browser (see `preferences.ts`)
+    listener.listenTo(settings, 'change:snaplines', (_cell: dia.Cell, enabled: boolean) => {
+        app.setSnaplinesEnabled(enabled);
+        storePreference('snaplines', enabled);
+    });
+    listener.listenTo(settings, 'change:inUse', (_cell: dia.Cell, shown: boolean) => {
+        app.setInUseShown(shown);
+        storePreference('inUse', shown);
+    });
+    listener.listenTo(settings, 'change:moveSelectedOnly', (_cell: dia.Cell, selectedOnly: boolean) => {
+        app.setMoveSelectedOnly(selectedOnly);
+        storePreference('moveSelectedOnly', selectedOnly);
+    });
     // ... and follow it.
     listener.listenTo(graph, 'add remove reset change:size', () => {
         const { screen, size } = getScreenSettings(graph);

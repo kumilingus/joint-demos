@@ -101,7 +101,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 **Run mode**
 - *Animations* - Full: everything animates (running equipment, flames, levels). Alarms only: only the levels and the alarms move.
 
-**Editor**
+**Editor** - remembered in this browser (not saved with the diagram).
 - *Snaplines* - guide lines that align a moved or resized shape with the others.
 - *In Use group* - shows or hides the In Use group in the palette.
 - *Move selected shapes only* - a drag on a shape that is not selected pans the canvas instead of moving it (a connection not attached to anything is then moved by its ends). On by default on a tablet or a phone.
