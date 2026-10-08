@@ -6,15 +6,14 @@ import { getTag } from '../plant/tags';
 import { isLocked } from '../canvas/lock';
 import { descriptions } from '../palette/descriptions';
 import { type SelectionOptions, selectCells } from '../actions';
-import { setTint } from '../canvas/tint';
-import { ping } from '../log/log-hooks';
+import { setMarker } from '../canvas/marker';
 import { isScreenShown } from '../canvas/screen';
 
 /*
  * What the find list reads from the diagram and shows on it (its hooks, see `FindController`): the cells with an ID or a
  * name (not the locked ones: the background); the cell of the entry clicked scrolled into view (to the middle: picked to close the
  * list) - selected in the edit mode (the inspector shows it; with Ctrl / Cmd / Shift added to the selection, or out of
- * it), tinted and pinged in the runtime mode (as the element of a message clicked in the log).
+ * it), marked in the runtime mode (as the element of a message clicked in the log).
  */
 
 /** A change of the selection by the find list (see `FindController`: not clearing its marks) */
@@ -35,7 +34,6 @@ function scrollIntoView(app: App, cells: dia.Cell[], center: boolean): void {
 
 export function findHooks(app: App): FindHooks {
     const { graph, paper } = app;
-    let tinted: dia.Element | null = null;
     return {
         // By an ID or a name (a shape with neither: nothing to find it by)
         entries: () => graph.getCells()
@@ -53,8 +51,6 @@ export function findHooks(app: App): FindHooks {
             .filter(({ tag, name }) => tag || name),
         multiple: () => app.mode === Mode.Edit,
         show: (ids, { focus, center = false } = {}) => {
-            if (tinted) setTint(paper, tinted, null);
-            tinted = null;
             const cells = ids.map(id => graph.getCell(id)).filter((cell): cell is dia.Cell => Boolean(cell));
             // Picked (`center`): all of them in the middle; the one clicked (or moved to) in view otherwise
             const focused = focus ? graph.getCell(focus) : undefined;
@@ -68,12 +64,10 @@ export function findHooks(app: App): FindHooks {
                 if (cells.length > 0 || focus) selectCells(app, cells, FROM_FIND);
                 return;
             }
-            // The runtime mode: one at a time (see `multiple`) - the tint and the ping draw on elements
+            // The runtime mode: one at a time (see `multiple`) - marked (an arrow pointing at it, flashed: see `marker.ts`) while
+            // the list is open; none (the list closed): not any more
             const [cell] = cells;
-            if (!cell?.isElement()) return;
-            tinted = cell;
-            setTint(paper, cell, 'var(--tint-highlight)');
-            ping(paper, cell, 'update');
+            setMarker(paper, cell ?? null);
         }
     };
 }

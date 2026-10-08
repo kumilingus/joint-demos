@@ -4,7 +4,7 @@ For programmers extending the demo or connecting a plant. Usage: [user guide](us
 
 ## Architecture
 
-`App` (`src/app.ts`) owns the graph, the paper, the scroller, the navigator, the toolbar, the stencil, the keyboard, the tooltips, the history, the plant of a run and what the inspector panel shows (`app.panel`, one at a time: the inspector of the selection, the settings, a shape of the palette - `inspector/panel.ts`). The state of an app belongs to the app, a controller (the log of `LogController`) or a view (the hovered cell is the paper's hover frame), not to a module - except the diagram style, applied to the document (see [Diagram style](#log-tint-theme-style-animations)). Two modes (`Mode` in `const.ts`):
+`App` (`src/app.ts`) owns the graph, the paper, the scroller, the navigator, the toolbar, the stencil, the keyboard, the tooltips, the history, the plant of a run and what the inspector panel shows (`app.panel`, one at a time: the inspector of the selection, the settings, a shape of the palette - `inspector/panel.ts`). The state of an app belongs to the app, a controller (the log of `LogController`) or a view (the hovered cell is the paper's hover frame), not to a module - except the diagram style, applied to the document (see [Diagram style](#log-marker-theme-style-animations)). Two modes (`Mode` in `const.ts`):
 
 - **Edit** - palette, inspector, history, file buttons.
 - **Runtime** - none of those; the controls can be operated, a screen fills the window. Entering snapshots the cells (`toJSON({ ignoreDefaults: false })`) and stops the history; leaving syncs them back (`graph.syncCells(..., { remove: true })`).
@@ -58,7 +58,7 @@ src/
   tokens.css, icons/  app tokens and icons (over the theme's)
   actions/            selection, history, clipboard, order, groups, pipes, file, palette, view
   canvas/             config (the paper, the scroller, the zoom), selection frames, snaplines, link tools, connections, layers,
-                      navigator, screen, context menu, tint
+                      navigator, screen, context menu, tag badges, marker, ping
   toolbar/            toolbar (of each mode), config (the tools in each mode), toolbar.css
   palette/            stencil, packing, preview, descriptions, images, favorites
   inspector/          inspector, selection inspector, panel (what it shows), placeholder (nothing in it: the examples), color field, help, settings
@@ -178,9 +178,9 @@ export default class PlantSocketController extends Controller {
 
 Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/mock/energized.ts`), the table readouts and the chart values; without it, your system has to send them.
 
-## Log, tint, theme, style, animations
+## Log, marker, theme, style, animations
 
-- **Log** (`log/LogView.ts`, owned by `LogController`) - listens to the plant's `update` and `command`, keeps the last 200 messages of a run; a `FilterListView` (as Find) in a `ui.Dialog`. Tags are badge highlighters, pings are ring highlighters behind the element, the element of the clicked message is tinted (`canvas/tint.ts`: a filter - gray multiplied by a theme color - on the children of the view but the ping).
+- **Log** (`log/LogView.ts`, owned by `LogController`) - listens to the plant's `update` and `command`, keeps the last 200 messages of a run; a `FilterListView` (as Find) in a `ui.Dialog`. Pings are ring highlighters behind the element (`canvas/ping.ts`, in a color). The cell of the clicked message is marked - as the one picked in Find in run mode, one at a time: `canvas/marker.ts`, a violet arrow in the front layer pointing at it (above it, clear of its drawing, its label and control there - below it, pointing up, if it would leave the screen), flashed by a ping in its color.
 - **Theme** (`theme/theme-minimal.css`, `setTheme('minimal')`) - styles the JointJS+ components, every rule scoped to `.joint-theme-minimal`, using only `theme/tokens.css` (shadcn/ui variable names). Cascade layers: `joint` → `theme` → the app (unlayered), so the app always wins. Reuse: `theme/README.md`.
 - **Shape colors** - CSS variables (`--shape-*` in `shapes/shapes.css`); the dark scheme redefines them.
 - **Diagram style** (`diagram-style.ts`, saved as `graph.get('style')`) - `finish`, `color`, `outline`, `outlineWidth` (the uniform outline of outlined surfaces, `gradients.ts`; the pipe border, `pipeOutline` in `Pipe.ts`), `accent` for shapes without their own; `labelSize` (`small` 12, `medium` 14, `large` 16, `x-large` 18 px), `labelColor` (theme colors only), `labels` (`name`, `tag`, `both`: the text of the shape labels - `fromModel.shapeLabel` in `attributes/label.ts`, read from the cell's graph, so the palette shows names; a shape without an ID: its name; a view update, see `isViewUpdateRequired()`), `canvas` (`--canvas-*`: a light and a dark tone; sets `--shape-canvas`, the grid is colored from it in `canvas.css`), `canvasGradient` (drawn on the `PaperScroller` element behind a transparent paper: it stays put while scrolling and zooming; added to the exported image). Applied as CSS variables, so the palette and the preview follow.

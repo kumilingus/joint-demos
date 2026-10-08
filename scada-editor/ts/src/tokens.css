@@ -1,13 +1,11 @@
 /*
  * The design tokens of the app, over the ones of the theme (see `theme/tokens.css`): the hover of its primary button,
- * the overlay of the canvas, the tint of a highlighted element, the icons of its tools (Lucide, files in `icons/`); the dark scheme as the theme's.
+ * the overlay of the canvas, the icons of its tools (Lucide, files in `icons/`); the dark scheme as the theme's.
  */
 
 :root {
     --primary-hover: #27272a;
     --overlay: rgb(255 255 255 / 0.92);
-    /* An element highlighted by a tint (see `canvas/tint.ts`): the selection lighter - multiplied by the shading, it darkens */
-    --tint-highlight: #60a5fa;
 
     --icon-fit: url("./icons/fit.svg");
     --icon-play: url("./icons/play.svg");
@@ -32,5 +30,4 @@
 :root[data-color-scheme="dark"] {
     --primary-hover: #c6d4e8;
     --overlay: rgb(11 21 38 / 0.92);
-    --tint-highlight: var(--selection);
 }

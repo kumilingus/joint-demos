@@ -31,7 +31,7 @@ export interface ShowOptions {
 export interface FindHooks {
     /** The cells listed */
     entries: () => FindEntry[];
-    /** Whether several cells can be shown at once (the selection of the edit mode; one tinted in the runtime mode) */
+    /** Whether several cells can be shown at once (the selection of the edit mode; one marked in the runtime mode) */
     multiple: () => boolean;
     /** The cells of the entries shown on the diagram, instead of the ones before (none: no more - the list closed) */
     show: (ids: string[], options?: ShowOptions) => void;
@@ -149,7 +149,7 @@ export default class FindView extends FilterListView<FindEntry> {
         super.onKeydown(evt);
     }
 
-    /** Nothing shown by the list any more (the tint of the runtime mode; the selection stays) */
+    /** Nothing shown by the list any more (the marked cell of the runtime mode; the selection stays) */
     protected onClose(): void {
         this.marked.clear();
         this.currentId = this.anchorId = null;

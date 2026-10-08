@@ -1,4 +1,4 @@
-/* The canvas: the cursors, the screen, the minimap, the context menu, the texts of the diagram, a tinted element */
+/* The canvas: the cursors, the screen, the minimap, the context menu, the texts of the diagram, the marked cell, the pings */
 
 /*
  * The cursor on the canvas: the blank canvas is panned (`grab` of the paper scroller, see `config.ts`),
@@ -138,12 +138,36 @@
     background: linear-gradient(var(--canvas-gradient-top), var(--canvas-gradient-bottom));
 }
 
-/* A tinted element (see `tint.ts`): recolored by its filter, glowing in its color - not its ping (in its view, see `LogController`) */
-.scada-tint > :not(.scada-ping) {
-    filter: var(--tint-filter) drop-shadow(0 0 6px var(--tint-color));
+
+/* The arrow of the marked cell (see `marker.ts`): dropped onto it once, as it is shown */
+.scada-marker-arrow {
+    animation: scada-marker-drop 0.35s cubic-bezier(0.3, 1.4, 0.6, 1);
+}
+
+@keyframes scada-marker-drop {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* A locked element (see `lock.ts`): as if it weren't there - the pointer on what is below it */
 .scada-locked {
     pointer-events: none;
+}
+
+/* An element pinged (see `ping.ts`): two rings out of its middle, growing and fading */
+.scada-ping circle {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    animation: scada-ping 1s cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
+}
+
+.scada-ping circle + circle {
+    animation-delay: 0.35s;
+}
+
+@keyframes scada-ping {
+    0% { opacity: 0.7; transform: scale(0.3); }
+    60% { opacity: 0.5; }
+    100% { opacity: 0; transform: scale(1); }
 }

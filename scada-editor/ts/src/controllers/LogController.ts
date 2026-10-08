@@ -7,10 +7,9 @@ import type { PlantMessage } from '../plant/plant';
 import { getTag } from '../plant/tags';
 
 /**
- * The log of the messages between the diagram and the plant (see `log/LogView.ts`): opened by the Log button, closed by it or
- * by Escape.
- * Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open, the element
- * of the message clicked is tinted blue; the tags of the elements are shown, the elements of the messages pinged if asked.
+ * The log of the messages between the diagram and the plant (see `log/LogView.ts`): opened by the Log button, closed by
+ * it or by Escape. Active in the runtime mode only: a new run starts a new log, closed with the mode. While it is open,
+ * the cell of the message clicked is marked (see `canvas/marker.ts`), the elements of the messages pinged if asked.
  */
 export default class LogController extends Controller<[App, LogView]> {
 

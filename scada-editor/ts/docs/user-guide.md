@@ -111,7 +111,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 **Find** in the toolbar, or `Cmd` + `F` - in both modes. The shapes with an ID or a name: their ID, name and kind (*P-101 · Feed Pump 1 · Pump*).
 
 - **Filter** - words of the ID, the name or the kind; every word has to match, dashes don't count (*p101* finds *P-101*).
-- **Click** a row - the shape is selected (edit mode) or highlighted (run mode), scrolled into view.
+- **Click** a row - the shape is selected (edit mode) or marked by an arrow (run mode, while the list is open), scrolled into view.
 - **Several** (edit mode) - `Cmd` + click adds or removes a row, `Shift` + click selects the rows from the one clicked before, `Cmd` + `Shift` + click adds them.
 - **Keys** - `↑` / `↓` go through the rows (with `Shift`: a range), `Enter` picks the row and closes the list; a double click too. `Escape` closes it.
 - A shape selected on the canvas closes it; the list keeps its filter for the next time.
@@ -129,7 +129,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - **Log** - the messages between the diagram and the plant: time, *update* or *command*, tag, property, value.
   - *Ping the changes* - an element pings when its message arrives (blue update, amber command).
   - Filter by words, by All / Updates / Commands, or by clicking elements on the diagram.
-  - Click a message to highlight its element (and mark its messages); click it again to clear.
+  - Click a message to mark its element - a violet arrow pointing at it (and mark its messages); click it again to clear.
   - `Escape` closes it.
 
 ## Files

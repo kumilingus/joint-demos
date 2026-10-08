@@ -4,7 +4,7 @@ import { getFootprint } from '../common/footprint';
 import { flipOf } from './flip';
 import { builtInSet } from './built-in';
 import { getTag } from '../../plant/tags';
-import { getStyle } from '../../diagram-style';
+import { getStyle, LABEL_SIZES } from '../../diagram-style';
 
 /**
  * Where the label of a shape is: below it (the default - as the shape draws it), above it, on its left or right -
@@ -271,3 +271,20 @@ export const labelAttributes = {
     // Its size and color: of the style of the diagram (see `diagram-style.ts`, `.scada-shape-label` in `shapes.css`)
     class: 'scada-shape-label'
 };
+
+// The height of a line of a label (of its size)
+const LINE_HEIGHT = 1.2;
+
+/**
+ * How far the label of the element reaches out of its drawing on the side (with the gap), if it is there (see
+ * `LabelPosition`; none set - below): its lines (see `shapeLabelText()`) in the label size of the diagram - of the model,
+ * not measured; 0 otherwise
+ */
+export function labelReach(element: dia.Element, side: 'top' | 'bottom'): number {
+    if (sideOf(element.prop(['label', 'position'])) !== side) return 0;
+    const name = element.prop(['label', 'text']);
+    const { text } = shapeLabelText(element, name == null ? '' : String(name));
+    if (!text) return 0;
+    const size = LABEL_SIZES[(element.graph && getStyle(element.graph).labelSize) || 'medium'].px;
+    return text.split('\n').length * size * LINE_HEIGHT + LABEL_GAP;
+}

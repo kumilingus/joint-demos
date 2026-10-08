@@ -320,3 +320,13 @@ export function setControlsOperable(paper: dia.Paper, value: boolean): void {
 export function removeControls(paper: dia.Paper): void {
     dia.HighlighterView.removeAll(paper, CONTROL_HIGHLIGHTER_ID);
 }
+
+/**
+ * How far the control of the element reaches out of its drawing on the side (with the gap), if it is there - beside
+ * the element (a switch, a slider: see `Control.placeBeside()`; a checkbox is in its corner); 0 otherwise
+ */
+export function controlReach(element: dia.Element, side: 'top' | 'bottom'): number {
+    if (!hasControl(element) || !usesControl(element) || sideOf(element.get('controlPosition')) !== side) return 0;
+    const size = element.control === 'toggle' ? TOGGLE_SIZE : element.control === 'slider' ? SLIDER_SIZE : null;
+    return size ? size.height + CONTROL_GAP : 0;
+}

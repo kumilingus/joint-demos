@@ -1,4 +1,4 @@
-/* The log of the messages between the diagram and the plant (see `LogView.ts`; the filter, the rows: `list/list.css`) - the pings of the elements */
+/* The log of the messages between the diagram and the plant (see `LogView.ts`; the filter, the rows: `list/list.css`) */
 
 .scada-log-intro {
     margin: 0;
@@ -94,22 +94,4 @@
 .scada-log-value {
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-/* A changed element pinged (the log open, see `LogController`): two rings out of its middle, growing and fading */
-.scada-ping circle {
-    transform-box: fill-box;
-    transform-origin: center;
-    opacity: 0;
-    animation: scada-ping 1s cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
-}
-
-.scada-ping circle + circle {
-    animation-delay: 0.35s;
-}
-
-@keyframes scada-ping {
-    0% { opacity: 0.7; transform: scale(0.3); }
-    60% { opacity: 0.5; }
-    100% { opacity: 0; transform: scale(1); }
 }
