@@ -148,7 +148,7 @@ export class App {
             // Hold Alt: the IDs (see `canvas/tag-badges.ts`)
             new TagBadgesController(this)
         ];
-        // In both modes: the filter of its list kept from one to the other
+        // In both modes: one controller (its list)
         const findController = new FindController(this);
         this.modeControllers = {
             // Each listens to the toolbar of its mode.

@@ -8,7 +8,7 @@ import type { SelectionOptions } from '../actions';
 /**
  * Find a shape (see `find/FindView.ts`): the list opened by the Find button, or Ctrl+F (its filter focused), closed by
  * Escape or by a selection on the canvas; kept up to date with the diagram while it is open. Active in both modes (one
- * controller: the filter kept), closed with a mode.
+ * controller), closed with a mode.
  */
 export default class FindController extends Controller<[App, FindView]> {
 

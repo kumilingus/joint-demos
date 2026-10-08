@@ -23,7 +23,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `GroupController` | always | graph: a member changed → its groups refit |
 | `TagBadgesController` | always | the window: `Alt` held - the ID badges (`canvas/tag-badges.ts`, highlighters); graph changes draw them again |
 | `ToolbarController` | each mode | toolbar buttons |
-| `FindController` | both (one instance: the filter kept) | Find button, `Cmd + F`, `Escape`; graph changes refresh the list; a selection on the canvas closes it |
+| `FindController` | both (one instance) | Find button, `Cmd + F`, `Escape`; graph changes refresh the list; a selection on the canvas closes it |
 | `EditController` | edit | paper: cell click, region, context menus; a cell not selected pans with *Move selected shapes only* |
 | `PaletteController` | edit | palette: click, drop; graph: the derived groups |
 | `KeyboardController` | edit | shortcuts |

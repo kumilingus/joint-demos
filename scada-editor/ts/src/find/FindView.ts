@@ -60,6 +60,12 @@ export default class FindView extends FilterListView<FindEntry> {
         this.attributes = { class: 'scada-list scada-find' };
     }
 
+    /** Opened with an empty filter: a new search (the filter of the last one is not kept) */
+    open(container: HTMLElement, button?: Element): void {
+        if (!this.isOpen) this.filter = '';
+        super.open(container, button);
+    }
+
     /** The entries listed again (the diagram changed) */
     refresh(): void {
         this.renderList();

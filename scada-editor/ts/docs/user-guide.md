@@ -114,7 +114,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - **Click** a row - the shape is selected (edit mode) or marked by an arrow (run mode, while the list is open), scrolled into view.
 - **Several** (edit mode) - `Cmd` + click adds or removes a row, `Shift` + click selects the rows from the one clicked before, `Cmd` + `Shift` + click adds them.
 - **Keys** - `↑` / `↓` go through the rows (with `Shift`: a range), `Enter` picks the row and closes the list; a double click too. `Escape` closes it.
-- A shape selected on the canvas closes it; the list keeps its filter for the next time.
+- A shape selected on the canvas closes it; it opens with an empty filter (a new search).
 
 ## Run mode
 
