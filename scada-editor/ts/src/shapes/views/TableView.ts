@@ -2,6 +2,7 @@ import { dia, util } from '@joint/plus';
 import { LABEL_COLOR } from '../../const';
 import { colorFieldOf, outlineFieldOf, accentFieldOf, fieldDefault } from '../../inspector/color-field';
 import type Table from '../models/charts/Table';
+import { markTag } from '../common/tag';
 import { columnLayout, HEAD_HEIGHT, ROW_HEIGHT, TITLE_HEIGHT, type CellValue } from '../models/charts/Table';
 
 /*
@@ -44,7 +45,8 @@ const Flags = {
     ...dia.ElementView.Flags,
     TABLE: 'TABLE',
     VALUES: 'VALUES',
-    COLORS: 'COLORS'
+    COLORS: 'COLORS',
+    TAG: 'TAG'
 };
 
 /** A new SVG element with the attributes, in the parent */
@@ -90,7 +92,9 @@ export default class TableView extends dia.ElementView {
             // Its values (see `data.ts`): the cells that changed
             data: [Flags.VALUES],
             // Its colors (see `style.ts`)
-            style: [Flags.COLORS]
+            style: [Flags.COLORS],
+            // Its ID on the view (see `markTag()`)
+            tag: [Flags.TAG]
         });
     }
 
@@ -108,6 +112,10 @@ export default class TableView extends dia.ElementView {
             this.updateColors();
             flags = this.removeFlag(flags, Flags.COLORS);
         }
+        if (this.hasFlag(flags, Flags.TAG)) {
+            markTag(this);
+            flags = this.removeFlag(flags, Flags.TAG);
+        }
         return flags;
     }
 
@@ -120,6 +128,7 @@ export default class TableView extends dia.ElementView {
         this.content = content instanceof SVGGElement ? content : null;
         this.update();
         this.updateTransformation();
+        markTag(this);
         return this;
     }
 

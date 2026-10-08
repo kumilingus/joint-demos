@@ -3,7 +3,8 @@ import { type dia, mvc, ui } from '@joint/plus';
 /*
  * A list of entries filtered by the words typed, its rows marked by their keys - shown in a dialog that can be moved
  * (the log of the plant, Find). The view is its content: it lives as long as its controller (its filter, its marks kept
- * from an opening to the next one), a dialog is created for each opening (see `open()`).
+ * from an opening to the next one), a dialog is created for each opening (see `open()`). Triggers `open` and `close`
+ * (closed by its button, by Escape, by the close button of the dialog).
  * A subclass gives the entries, their keys and texts, their rows; it adds to the parts and to the handling of the events
  * by overriding them (calling `super`).
  */
@@ -80,9 +81,11 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
             this.button?.classList.remove('active');
             this.button = null;
             this.onClose();
+            this.trigger('close');
         });
         dialog.open(container);
         this.onOpen();
+        this.trigger('open');
         this.focusInput();
     }
 

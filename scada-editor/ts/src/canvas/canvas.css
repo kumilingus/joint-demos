@@ -2,7 +2,7 @@
 
 /*
  * The cursor on the canvas: the blank canvas is panned (`grab` of the paper scroller, see `config.ts`),
- * a cell is moved in the edit mode; in the runtime mode it is not (its controls have their own cursors).
+ * a cell is moved in the edit mode; in the runtime mode it is panned too (its controls have their own cursors).
  */
 .scada-app[data-mode="edit"] .scada-diagram .joint-cell {
     cursor: move;
@@ -24,8 +24,19 @@
     cursor: copy;
 }
 
+/* The runtime mode: a drag of a cell pans the canvas (see `RuntimeController`) - as the blank canvas */
 .scada-app[data-mode="runtime"] .scada-diagram .joint-cell {
+    cursor: grab;
+}
+
+/* The screen shown: fitted to the window, a drag pans nothing (see `screen.ts`) - nothing to grab */
+.scada-app[data-mode="runtime"][data-screen="shown"] .scada-diagram .joint-cell {
     cursor: default;
+}
+
+/* The log open: a click on a cell with an ID filters the log by it (see `LogController`; the ID on the view: `markTag()`) */
+.scada-app[data-mode="runtime"][data-log="open"] .scada-diagram .joint-cell[data-tag] {
+    cursor: pointer;
 }
 
 /*

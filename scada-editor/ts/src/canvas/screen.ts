@@ -2,6 +2,7 @@ import { type dia, V } from '@joint/plus';
 import type { App } from '../app';
 import { GRID_SIZE, Mode } from '../const';
 import Screen from '../shapes/models/diagram/Screen';
+import { PAN_CURSOR } from './config';
 
 /*
  * The screen of the diagram (see `Screen`): in the runtime mode, the canvas shows it only,
@@ -41,6 +42,8 @@ export function showScreen(app: App): void {
     V(paper.defs).append(clipPath);
     paper.layers.setAttribute('clip-path', `url(#${CLIP_ID})`);
     app.el.dataset.screen = 'shown';
+    // Fitted to the window: nothing pans (the cells: see `canvas.css`)
+    app.scroller.setCursor('default');
     revealToolbar(app.toolbar.el);
     holdToolbarWhilePressed(app.toolbar.el);
 }
@@ -80,4 +83,5 @@ export function hideScreen(app: App): void {
     paper.layers.removeAttribute('clip-path');
     paper.defs.querySelector(`#${CLIP_ID}`)?.remove();
     delete app.el.dataset.screen;
+    app.scroller.setCursor(PAN_CURSOR);
 }

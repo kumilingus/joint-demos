@@ -40,11 +40,17 @@ export default class LogController extends Controller<[App, LogView]> {
         this.listenTo(paper, {
             'cell:pointerclick': onCellPointerclick
         });
+        // Whether it is open: the cursors (see `canvas.css`)
+        this.listenTo(this.log, {
+            'open': onLogOpen,
+            'close': onLogClose
+        });
     }
 
     stopListening(): void {
-        super.stopListening();
+        // Closed while it is listened to (its `close` handled)
         this.log.close();
+        super.stopListening();
     }
 }
 
@@ -63,6 +69,14 @@ function onLogPointerclick(app: App, log: LogView) {
 
 function onEscape(_app: App, log: LogView) {
     log.close();
+}
+
+function onLogOpen(app: App) {
+    app.el.dataset.log = 'open';
+}
+
+function onLogClose(app: App) {
+    app.el.dataset.log = 'closed';
 }
 
 function onCellPointerclick(_app: App, log: LogView, cellView: dia.CellView) {

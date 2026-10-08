@@ -138,11 +138,14 @@ export const snaplinesOptions: Partial<ui.Snaplines.Options> = {
     canSnap: elementView => elementView.model.get('type') !== 'Screen'
 };
 
+/** The cursor of the blank canvas: a drag of it pans (none with the screen shown, see `screen.ts`) */
+export const PAN_CURSOR = 'grab';
+
 export const scrollerOptions: Partial<ui.PaperScroller.Options> = {
     autoResizePaper: true,
     borderless: true,
     scrollWhileDragging: true,
-    cursor: 'grab',
+    cursor: PAN_CURSOR,
     baseWidth: 10,
     baseHeight: 10,
     contentOptions: {

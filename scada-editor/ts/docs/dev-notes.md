@@ -211,7 +211,7 @@ Then delete `plant/mock/`. The mock also derives the energized circuits (`plant/
 | A list filtered in a dialog (Find, the log): the filter, the rows marked by key, the dialog | `list/FilterListView.ts` (an `mvc.View`, kept between openings) |
 | Lock (`locked`, a group locks its members; skipped by the selection, the links, the minimap) | `canvas/lock.ts`, `actions/lock.ts`, `LockController`, `validateConnection` in `canvas/config.ts`, `cellVisibility` in `canvas/navigator.ts` |
 | Controls (front layer, upright, inert while editing) | `runtime/controls.ts` |
-| Cursors (what a drag does) - CSS only, from the state in the DOM: the app's `data-mode`, `data-move` (*Move selected shapes only*), `data-drag` (`copy` while `Cmd` / `Ctrl` is held, `EditController`); a selected cell's view `scada-selected` (`SelectionFrame`); scoped to the main paper (`scada-diagram`, not the palette, the minimap, a preview) | `canvas/canvas.css` |
+| Cursors (what a drag or a click does) - CSS only, from the state in the DOM: the app's `data-mode`, `data-move` (*Move selected shapes only*), `data-drag` (`copy` while `Cmd` / `Ctrl` is held, `EditController`), `data-screen`, `data-log` (the log's `open` / `close`, `LogController`); a selected cell's view `scada-selected` (`SelectionFrame`), a cell's ID `data-tag` (`markTag()`); scoped to the main paper (`scada-diagram`, not the palette, the minimap, a preview) | `canvas/canvas.css` |
 
 ## Gotchas
 

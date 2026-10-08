@@ -1,6 +1,7 @@
 import { dia } from '@joint/plus';
 import { CANVAS_COLOR } from '../../const';
 import { styleOf } from '../common/style';
+import { markTag } from '../common/tag';
 import { glide } from './glide';
 
 /**
@@ -15,6 +16,7 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
         update(this: dia.ElementView, ...args: unknown[]) {
             dia.ElementView.prototype.update.apply(this, args);
             this.el.toggleAttribute('data-canvas', styleOf(this.model, 'color') === CANVAS_COLOR);
+            markTag(this);
             // A value shown by a part: glides from the one drawn last (see `glide.ts`)
             glide(this);
         },
@@ -22,7 +24,8 @@ export function shapeView(attributes: string[] = []): typeof dia.ElementView {
             {
                 // Its style (see `style.ts`): the surfaces of the element and of its pipe stubs (ports)
                 style: [dia.ElementView.Flags.UPDATE, dia.ElementView.Flags.PORTS],
-                // Its texts (see `from-model`); its ID - the label shows it (see `labels` of the diagram style)
+                // Its texts (see `from-model`); its ID - the label shows it (see `labels` of the diagram style), the
+                // view has it (see `markTag()`)
                 label: dia.ElementView.Flags.UPDATE,
                 tag: dia.ElementView.Flags.UPDATE,
                 unit: dia.ElementView.Flags.UPDATE,
