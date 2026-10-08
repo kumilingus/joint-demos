@@ -76,14 +76,14 @@ function tipOf(cellView: dia.CellView): dia.Point & { up: boolean } {
     if (cellView instanceof dia.LinkView) return { ...cellView.getPointAtRatio(0.5), up: false };
     if (!(cellView instanceof dia.ElementView)) return { x: 0, y: 0, up: false };
     const { model } = cellView;
-    const bbox = model.getBBox();
+    const origin = model.position();
     const drawing = getFootprint(model, { label: false });
-    const x = drawing.x + drawing.width / 2 - bbox.x;
-    const above = drawing.y - bbox.y - Math.max(labelReach(model, 'top'), controlReach(model, 'top')) - ARROW_GAP;
+    // Above: the tip over the top of the drawing, its label and control there (in the coordinates of the element)
+    const above = drawing.topMiddle().offset(0, -Math.max(labelReach(model, 'top'), controlReach(model, 'top')) - ARROW_GAP);
     const screen = model.graph ? getScreen(model.graph) : undefined;
-    if (!screen || bbox.y + above - ARROW_HEIGHT >= screen.getBBox().y) return { x, y: above, up: false };
-    const below = drawing.y + drawing.height - bbox.y + Math.max(labelReach(model, 'bottom'), controlReach(model, 'bottom')) + ARROW_GAP;
-    return { x, y: below, up: true };
+    if (!screen || above.y - ARROW_HEIGHT >= screen.getBBox().y) return { ...above.difference(origin).toJSON(), up: false };
+    const below = drawing.bottomMiddle().offset(0, Math.max(labelReach(model, 'bottom'), controlReach(model, 'bottom')) + ARROW_GAP);
+    return { ...below.difference(origin).toJSON(), up: true };
 }
 
 /** The cell marked (an element flashed too: a ping in the color of the marker), or none (`null`): the one before unmarked */
