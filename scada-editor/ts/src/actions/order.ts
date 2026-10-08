@@ -58,7 +58,7 @@ export function layerUnder(app: App): Layer | null {
 function farthestLayer(app: App, direction: 1 | -1): Layer | null {
     const { graph } = app;
     const layers = Object.values(Layer);
-    const indexOf = (cell: dia.Cell) => layers.indexOf(graph.getCellLayerId(cell) as Layer);
+    const indexOf = (cell: dia.Cell) => layers.findIndex(layer => layer === graph.getCellLayerId(cell));
     const cells = drawnCells(app.selection.toArray());
     const beyond = cells.flatMap(cell => overlapping(app, cell)
         .filter(other => !Group.isGroup(other) && !Screen.isScreen(other) && !cells.includes(other))
@@ -76,6 +76,7 @@ function farthestLayer(app: App, direction: 1 | -1): Layer | null {
 function overlapping(app: App, cell: dia.Cell): dia.Element[] {
     const { graph, paper } = app;
     if (cell.isElement()) return graph.findElementsUnderElement(cell);
+    if (!cell.isLink()) return [];
     const view = paper.requireView<dia.LinkView>(cell);
     const connection = view?.getConnection();
     if (!connection) return [];
@@ -83,8 +84,7 @@ function overlapping(app: App, cell: dia.Cell): dia.Element[] {
     const segments = (connection.toPolylines() ?? []).flatMap(({ points }) => {
         return points.slice(1).map((point, index) => new g.Line(points[index], point));
     });
-    const link = cell as dia.Link;
-    const ends = [link.getSourceElement(), link.getTargetElement()];
+    const ends = [cell.getSourceElement(), cell.getTargetElement()];
     // The area of the connection as drawn (a curve reaches out of the bounding box of the link)
     const area = connection.bbox();
     if (!area) return [];
@@ -122,7 +122,9 @@ export function moveToLayer(app: App, layer: Layer, { back = false } = {}): void
 /** Where the cell is drawn: its layer (from the bottom one up, see `Layer`), then its place in the layer (by z) */
 export function drawingOrder(graph: dia.Graph, cell: dia.Cell): [number, number] {
     const layerId = graph.getCellLayerId(cell);
-    return [Object.values(Layer).indexOf(layerId as Layer), graph.getLayer(layerId).cellCollection.toArray().indexOf(cell)];
+    const layerIndex = Object.values(Layer).findIndex(layer => layer === layerId);
+    const indexInLayer = graph.getLayer(layerId).cellCollection.models.indexOf(cell);
+    return [layerIndex, indexInLayer];
 }
 
 /** Whether the cell is drawn below the other one */
@@ -155,7 +157,7 @@ export function menuCell(app: App, clicked: dia.Cell, point: dia.Point): dia.Cel
     const [selected] = selection.length === 1 ? selection.toArray() : [];
     if (!selected || selected === cell || !selected.isElement()) return cell;
     const drawn = drawnAt(graph, selected, point);
-    const atPoint = drawn !== null && graph.findElementsAtPoint(point).includes(drawn as dia.Element);
+    const atPoint = drawn !== null && graph.findElementsAtPoint(point).some(element => element === drawn);
     return atPoint && isDrawnBelow(graph, drawn, clicked) ? selected : cell;
 }
 
@@ -174,7 +176,8 @@ export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.El
         .map(element => ({ element, order: drawingOrder(graph, element) }));
     if (below.length === 0) return null;
     below.sort((a, b) => (b.order[0] - a.order[0]) || (b.order[1] - a.order[1]));
-    return levelBelow(below[0].element, cell) as dia.Element;
+    const level = levelBelow(below[0].element, cell);
+    return level.isElement() ? level : null;
 }
 
 /** The element as seen from the cell: its top group that the cell is not in (the element itself if none) */

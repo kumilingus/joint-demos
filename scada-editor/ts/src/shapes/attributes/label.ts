@@ -152,8 +152,8 @@ function drawText(
 ): ReturnType<dia.Cell.SetCallback<dia.ElementView>> {
     set.call(view, value, refBBox, node, attrs, view);
     // None: a text of its own (not a label at a side of the shape)
-    if (!position) return undefined;
-    const { width, height } = (node as SVGGraphicsElement).getBBox();
+    if (!position || !(node instanceof SVGGraphicsElement)) return undefined;
+    const { width, height } = node.getBBox();
     const layout = layoutOf(view, position, LABEL_GAP, { width, height });
     const transform = layout?.transform ?? 'matrix(1,0,0,1,0,0)';
     if (!layout) return { transform };
@@ -212,7 +212,7 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
             const drawn = wrap
                 ? drawText(this, textWrapSet, wrap, refBBox, node, textAttrs, label?.position)
                 : drawText(this, textSet, text, refBBox, node, textAttrs, label?.position);
-            return { ...own, ...((drawn ?? {}) as TextAttributes) };
+            return { ...own, ...(typeof drawn === 'object' && drawn !== null ? drawn : {}) };
         }
     }
 };

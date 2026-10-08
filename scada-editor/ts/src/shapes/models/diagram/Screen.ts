@@ -71,7 +71,10 @@ export default class Screen extends dia.Element {
         // are looked up in the kebab case), written again when it is resized.
         'size-label': {
             set(this: dia.ElementView, name: string, refBBox: dia.BBox, node: Element) {
-                V(node as SVGElement).text(`${name} ${Math.round(refBBox.width)} × ${Math.round(refBBox.height)}`, { textVerticalAnchor: 'bottom' });
+                const text = `${name} ${Math.round(refBBox.width)} × ${Math.round(refBBox.height)}`;
+                if (node instanceof SVGElement) {
+                    V(node).text(text, { textVerticalAnchor: 'bottom' });
+                }
                 return {};
             },
             unset(this: dia.ElementView, node: Element) {

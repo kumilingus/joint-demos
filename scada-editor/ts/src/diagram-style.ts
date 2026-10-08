@@ -2,6 +2,7 @@ import { type dia, util } from '@joint/plus';
 import type { App } from './app';
 import { type OutlineWidth, setStyleFinish, setStyleOutlineWidth, type SurfaceFinish } from './shapes/common/gradients';
 import { CANVAS_COLOR } from './const';
+import { keysOf } from './keys';
 
 /*
  * The style of the diagram (in the settings, saved with it): the finish of all the equipment (shaded, flat), one color
@@ -70,7 +71,7 @@ export function applyStyle(style: DiagramStyle): void {
     setStyleFinish(style.finish === 'flat' ? 'flat' : 'shaded');
     setStyleOutlineWidth(style.outlineWidth);
     const { style: css } = document.documentElement;
-    (Object.keys(VARIABLES) as (keyof typeof VARIABLES)[]).forEach((key) => {
+    keysOf(VARIABLES).forEach((key) => {
         const value = style[key];
         if (value) {
             css.setProperty(VARIABLES[key], value);

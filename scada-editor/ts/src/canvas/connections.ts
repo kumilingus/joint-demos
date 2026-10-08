@@ -47,7 +47,9 @@ function pinAnywhere(element: dia.Element, coords: g.PlainPoint): g.Point {
 }
 
 export const connectionStrategy: dia.Paper.Options['connectionStrategy'] = (end, view, magnet, coords, link) => {
-    const element = view.model as dia.Element;
+    const { model: element } = view;
+    // Connected to an element only (see `validateConnection`)
+    if (!element.isElement()) return end;
     const { width, height } = element.size();
     const type = link.get('type');
     // An arrow points anywhere on the element (see `Arrow`), a conveyor drops onto (or takes from) the equipment
@@ -78,7 +80,9 @@ const lengthOf = (value: number | string | undefined, length: number) =>
  * the element is resized (a pipe straight between the elements on the grid).
  */
 export const gridSide: anchors.GenericAnchor<'topLeft'> = function(this: dia.LinkView, view, magnet, ref, opt, endType, linkView) {
-    const element = view.model as dia.Element;
+    const { model: element } = view;
+    // Of an element only (see `connectionStrategy`): as `topLeft` otherwise
+    if (!element.isElement()) return anchors.topLeft.call(this, view, magnet, ref, opt, endType, linkView);
     const { width, height } = element.size();
     const { x: left, y: top } = element.position();
     let x = lengthOf(opt.dx, width);

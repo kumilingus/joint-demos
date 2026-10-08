@@ -77,7 +77,10 @@ export const plotAttributes = {
     'chart-scale': {
         set(this: dia.ElementView, fraction: number, _refBBox: dia.BBox, node: Element) {
             const { min, max } = getScale(this.model);
-            V(node as SVGElement).text(formatScale(g.scale.linear([0, 1], [min, max], fraction)), { textVerticalAnchor: 'middle' });
+            const text = formatScale(g.scale.linear([0, 1], [min, max], fraction));
+            if (node instanceof SVGElement) {
+                V(node).text(text, { textVerticalAnchor: 'middle' });
+            }
             return {};
         }
     }

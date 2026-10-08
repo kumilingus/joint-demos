@@ -19,7 +19,10 @@ export default class MockPlantController extends Controller {
 
     startListening(): void {
         // Sending to the plant of the run
-        this.mock.start(this.app.plant!);
+        const { plant } = this.app;
+        if (plant) {
+            this.mock.start(plant);
+        }
     }
 
     stopListening(): void {

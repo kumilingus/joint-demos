@@ -117,7 +117,7 @@ export function openDiagram(app: App): void {
             // Throws before anything changes if the file can't be loaded.
             app.loadJSON(json);
         } catch (error) {
-            window.alert(`"${file.name}" is not a diagram (${(error as Error).message}).`);
+            window.alert(`"${file.name}" is not a diagram (${error instanceof Error ? error.message : error}).`);
         }
     });
     input.click();

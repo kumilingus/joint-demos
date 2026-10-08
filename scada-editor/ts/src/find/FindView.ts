@@ -111,7 +111,7 @@ export default class FindView extends FilterListView<FindEntry> {
             cell.textContent = text;
             return cell;
         }));
-        row.lastElementChild!.setAttribute('data-tooltip', description);
+        row.lastElementChild?.setAttribute('data-tooltip', description);
         return row;
     }
 

@@ -81,7 +81,7 @@ export const paperOptions: dia.Paper.Options = {
         if (['Rectangle', 'Ellipse'].includes(view.model.get('type'))) return false;
         const element = view.model;
         const portId = magnet ? view.findAttribute('port', magnet) : null;
-        if (linkView.model instanceof Wire) return Boolean(portId) && isTerminal(element.getPort(portId!));
+        if (linkView.model instanceof Wire) return portId ? isTerminal(element.getPort(portId)) : false;
         if (SignalLine.isSignalLine(linkView.model) || Arrow.isArrow(linkView.model)) return !portId;
         // A conveyor: to the body of an element (not to a pipe stub nor a terminal), not to an electrical one
         if (linkView.model instanceof Conveyor) return !portId && !(element.getPorts().length > 0 && element.getPorts().every(isTerminal));
@@ -89,7 +89,7 @@ export const paperOptions: dia.Paper.Options = {
         const ports = element.getPorts();
         if (ports.length === 0) return true;
         if (ports.every(isTerminal)) return false;
-        return Boolean(portId) && !isTerminal(element.getPort(portId!));
+        return portId ? !isTerminal(element.getPort(portId)) : false;
     }
 };
 

@@ -41,7 +41,12 @@ export function readImageFile(file: File): Promise<ImageEntry | null> {
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.addEventListener('load', () => {
-            const href = reader.result as string;
+            const href = reader.result;
+            // Read as a data URL: a string
+            if (typeof href !== 'string') {
+                resolve(null);
+                return;
+            }
             const img = new Image();
             img.onload = () => resolve({ href, width: img.naturalWidth, height: img.naturalHeight, name: baseName(file.name) });
             img.onerror = () => resolve(null);

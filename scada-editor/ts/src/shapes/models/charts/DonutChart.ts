@@ -127,7 +127,9 @@ export default class DonutChart extends Shape {
                 const slice = slices[index];
                 if (!slice) return { display: 'none' };
                 const text = `${slice.label ?? ''} ${Math.round(shares(slices)[index] * 100)} %`;
-                V(node as SVGElement).text(text, { textVerticalAnchor: 'middle' });
+                if (node instanceof SVGElement) {
+                    V(node).text(text, { textVerticalAnchor: 'middle' });
+                }
                 return { display: 'inline', y: legendY(slices.length, index, refBBox) };
             }
         }

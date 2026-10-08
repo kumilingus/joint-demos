@@ -1,4 +1,4 @@
-import { type dia, V } from '@joint/plus';
+import { type dia, g, V } from '@joint/plus';
 import type { App } from '../app';
 import { GRID_SIZE, Mode } from '../const';
 import Screen from '../shapes/models/diagram/Screen';
@@ -21,8 +21,8 @@ export function addScreen(app: App): Screen {
     const screen = new Screen();
     const { width, height } = screen.size();
     const center = app.scroller.getVisibleArea().center();
-    const snap = (value: number) => Math.round(value / GRID_SIZE) * GRID_SIZE || 0;
-    screen.position(snap(center.x - width / 2), snap(center.y - height / 2));
+    const { x, y } = new g.Point(center.x - width / 2, center.y - height / 2).snapToGrid(GRID_SIZE);
+    screen.position(x, y);
     app.graph.addCell(screen);
     return screen;
 }

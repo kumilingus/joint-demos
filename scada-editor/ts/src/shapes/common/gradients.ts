@@ -2,6 +2,7 @@ import type { dia } from '@joint/plus';
 import type Shape from '../models/Shape';
 import { styleOf } from './style';
 import { getCellDefaults } from '../defaults';
+import { keysOf } from '../../keys';
 
 /*
  * The shading of the equipment: brushed steel lit from the top left.
@@ -220,7 +221,7 @@ export function setStyleOutlineWidth(width: OutlineWidth | undefined): void {
 /** The outline width of the cell: its own (`outlineWidth` set), else of the diagram (Auto: none, or `auto`) */
 export function outlineWidthOf(model: dia.Cell): number {
     const width = String(styleOf(model, 'outlineWidth'));
-    return OUTLINE_WIDTHS[width in OUTLINE_WIDTHS ? width as OutlineWidth : styleOutlineWidth].px;
+    return OUTLINE_WIDTHS[keysOf(OUTLINE_WIDTHS).find(key => key === width) ?? styleOutlineWidth].px;
 }
 
 /** The finish of the diagram (its style) */
@@ -295,13 +296,17 @@ function surfaceFillOf(view: dia.ElementView, fill: SurfaceFill): string {
     // Flat: the color as it is (nothing to shade) - a detail keeps its darker tone of it
     if (finishOf(model) === 'flat' && isTint(color) && !DETAILS.has(fill)) return color;
     // A flat one (a color of the shape, the flat metal), or a shaded one made flat
-    const flat = isSurfaceColor(fill) ? fill : FLAT_SURFACES[fill as keyof typeof FLAT_SURFACES];
+    const flatKey = keysOf(FLAT_SURFACES).find(key => key === fill);
+    const flat = isSurfaceColor(fill) ? fill : flatKey && FLAT_SURFACES[flatKey];
     if (flat || finishOf(model) === 'flat') {
         const base = flat ?? FLAT_SHADING;
         return isTint(color) ? tint(color, base) : base;
     }
-    const gradient = SURFACE_GRADIENTS[fill as keyof typeof SURFACE_GRADIENTS];
-    return `url(#${view.paper!.defineGradient(isTint(color) ? tintGradient(gradient, color) : gradient)})`;
+    const gradientKey = keysOf(SURFACE_GRADIENTS).find(key => key === fill);
+    const { paper } = view;
+    if (!gradientKey || !paper) return FLAT_SHADING;
+    const gradient = SURFACE_GRADIENTS[gradientKey];
+    return `url(#${paper.defineGradient(isTint(color) ? tintGradient(gradient, color) : gradient)})`;
 }
 
 // The materials other than the metal (their own colors, not tinted with the color of the element)
@@ -320,8 +325,10 @@ export const materialAttributes = {
     'material-fill': {
         set(this: dia.ElementView, material: MaterialFill) {
             const gradient = MATERIAL_GRADIENTS[material];
-            if (finishOf(this.model) === 'flat') return { fill: gradient.stops[1]?.color ?? gradient.stops[0].color };
-            return { fill: `url(#${this.paper!.defineGradient(gradient)})` };
+            const { paper } = this;
+            const flat = gradient.stops[1]?.color ?? gradient.stops[0].color;
+            if (!paper || finishOf(this.model) === 'flat') return { fill: flat };
+            return { fill: `url(#${paper.defineGradient(gradient)})` };
         }
     }
 };
@@ -332,16 +339,18 @@ const surfaceTypes = new Map<string, { fills: Set<SurfaceFill>; outlined: boolea
 /** The surfaces of the element: the fills (`surfaceFill`) in the attributes of its type, whether it has outlines (`surfaceStroke`) */
 function surfacesOf(element: dia.Element): { fills: Set<SurfaceFill>; outlined: boolean; materials: boolean } {
     const type = element.get('type');
-    if (!surfaceTypes.has(type)) {
+    let surfaces = surfaceTypes.get(type);
+    if (!surfaces) {
         const { attrs = {}} = getCellDefaults(element);
-        const nodes = Object.values(attrs).filter(Boolean) as Record<string, unknown>[];
-        surfaceTypes.set(type, {
-            fills: new Set(nodes.map(node => node.surfaceFill).filter(Boolean) as SurfaceFill[]),
+        const nodes = Object.values(attrs).filter(node => node !== undefined);
+        surfaces = {
+            fills: new Set(nodes.map(node => node.surfaceFill).filter(Boolean)),
             outlined: nodes.some(node => 'surfaceStroke' in node),
             materials: nodes.some(node => 'materialFill' in node)
-        });
+        };
+        surfaceTypes.set(type, surfaces);
     }
-    return surfaceTypes.get(type)!;
+    return surfaces;
 }
 
 const surfaceFills = (element: dia.Element) => surfacesOf(element).fills;

@@ -10,7 +10,8 @@ import { LAYER_NAMES } from './layers';
 import { descriptions } from '../palette/descriptions';
 import { getTag } from '../shapes/common/tag';
 import Group from '../shapes/models/diagram/Group';
-import type { Layer } from '../const';
+import Pipe from '../shapes/models/piping/Pipe';
+import { Layer } from '../const';
 
 /*
  * The context menus of the canvas (`ui.ContextToolbar`, in the edit mode): of a cell - the clipboard,
@@ -75,7 +76,7 @@ const WINDOW_MARGIN = 8;
 function keepInWindow(el: HTMLElement, evt: dia.Event): void {
     const { innerWidth, innerHeight } = window;
     const rect = el.getBoundingClientRect();
-    const [x, y] = [evt.clientX!, evt.clientY!];
+    const { clientX: x = 0, clientY: y = 0 } = evt;
     let dx = 0;
     let dy = 0;
     if (rect.bottom > innerHeight - WINDOW_MARGIN) {
@@ -100,7 +101,8 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
     // The front and the back are those of the layer of the cell (see `layers.ts`): named in the menu
     const layers = new Set(app.selection.map(selected => app.graph.getCellLayerId(selected)));
     const [layer] = layers;
-    const layerHint = `in ${layers.size === 1 ? LAYER_NAMES[layer as Layer] ?? layer : 'their layers'}`;
+    const known = Object.values(Layer).find(value => value === layer);
+    const layerHint = `in ${layers.size === 1 ? (known ? LAYER_NAMES[known] : layer) : 'their layers'}`;
     // Under an element of a layer above (out of the reach of the front), over one of a layer below (of the back):
     // moved into that layer instead
     const over = layerOver(app);
@@ -124,8 +126,8 @@ export function openCellMenu(app: App, clicked: dia.Cell, evt: dia.Event, x: num
             ? [{ action: 'split', label: 'Split Here', separated: true, run: () => splitLink(app, cell, { x, y }) }]
             : []),
         // A join is a fitting of the pipes.
-        ...(cell.get('type') === 'Pipe'
-            ? [{ action: 'join', label: 'Insert Join', run: () => insertJoin(app, cell as dia.Link, { x, y }) }]
+        ...(Pipe.isPipe(cell)
+            ? [{ action: 'join', label: 'Insert Join', run: () => insertJoin(app, cell, { x, y }) }]
             : []),
         // The element under this one at the pointer (hard to click otherwise): named (see `hintOf()`)
         {

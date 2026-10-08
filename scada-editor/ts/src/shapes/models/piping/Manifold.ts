@@ -40,8 +40,8 @@ export default class Manifold extends Shape {
 
     defaults(): dia.Element.Attributes {
         // The inlet under the rounded end of the header (no gap at its corners)
-        const inlet = fittingPorts(['left'], FITTING_STUB_LENGTH, BODY_RADIUS)!;
-        const outlets = branchPorts(OUTLETS, FITTING_STUB_LENGTH)!;
+        const inlet = fittingPorts(['left'], FITTING_STUB_LENGTH, BODY_RADIUS);
+        const outlets = branchPorts(OUTLETS, FITTING_STUB_LENGTH);
         return {
             ...super.defaults,
             type: 'Manifold',

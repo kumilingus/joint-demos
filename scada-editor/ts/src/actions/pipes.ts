@@ -3,7 +3,7 @@ import type { App } from '../app';
 import { GRID_SIZE } from '../const';
 import Join from '../shapes/models/piping/Join';
 import { selectCell } from './selection';
-import { rememberEndDirections, type LinkEnd } from '../shapes/common/routing';
+import { rememberEndDirections, sideOf, type LinkEnd } from '../shapes/common/routing';
 
 /*
  * A pipe split at a point: into two pipes, or with a join inserted. The elements disconnected from their links.
@@ -50,12 +50,6 @@ export function splitLink(app: App, link: dia.Link, point: dia.Point): void {
     selectCell(app, first);
 }
 
-/** The side of an element the direction points to (of the axis it goes along the most) */
-function sideOf(direction: g.Point): 'left' | 'right' | 'top' | 'bottom' {
-    if (Math.abs(direction.x) >= Math.abs(direction.y)) return direction.x < 0 ? 'left' : 'right';
-    return direction.y < 0 ? 'top' : 'bottom';
-}
-
 /**
  * Insert a join into the pipe at the point: the pipe split there (see `splitAt()`), both halves connected
  * to the join centered at the point, each to the side it comes from along the route. The join selected
@@ -92,7 +86,7 @@ export function connectedEnds(app: App): Array<[dia.Link, 'source' | 'target']> 
             const id = link.get(end)?.id;
             return id !== undefined && ids.has(id);
         })
-        .map(end => [link, end] as [dia.Link, 'source' | 'target']));
+        .map((end): [dia.Link, LinkEnd] => [link, end]));
 }
 
 // How far the disconnected elements move: off the disconnected ends (a gap shows they are not connected)
@@ -117,7 +111,7 @@ export function disconnectSelection(app: App): void {
         points.forEach(([end, point]) => link.prop(end, point, { rewrite: true }));
     });
     // The members of a selected group move with it
-    app.selection.filter(cell => cell.isElement() && !cell.getParentCell())
-        .forEach(element => (element as dia.Element).translate(DISCONNECT_SHIFT, DISCONNECT_SHIFT));
+    app.selection.toArray().filter((cell): cell is dia.Element => cell.isElement() && !cell.getParentCell())
+        .forEach(element => element.translate(DISCONNECT_SHIFT, DISCONNECT_SHIFT));
     graph.stopBatch('disconnect');
 }

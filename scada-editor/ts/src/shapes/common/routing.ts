@@ -1,4 +1,5 @@
 import { connectors, dia, g, routers } from '@joint/plus';
+import { keysOf } from '../../keys';
 
 /*
  * The routing of a link (a pipe, a signal line) as the user chooses it (its `routing`): the router and the connector
@@ -9,14 +10,17 @@ import { connectors, dia, g, routers } from '@joint/plus';
 /** How a link goes through its vertices. */
 export type Routing = 'straight' | 'orthogonal' | 'smooth';
 
+/** A router or a connector of the papers by its name (see `routerNamespace`, `connectorNamespace`), with its arguments */
+type Named<Namespace> = { name: keyof Namespace & string; args?: object };
+
 // The corners of the straight and orthogonal pipes are rounded.
-const roundedConnector = {
+const roundedConnector: Named<typeof connectorNamespace> = {
     name: 'straight',
     args: { cornerType: 'cubic', cornerRadius: 20, cornerPreserveAspectRatio: true }
 };
 
 /** The router and the connector of each routing. */
-const ROUTINGS: Record<Routing, Pick<dia.Link.Attributes, 'router' | 'connector'>> = {
+const ROUTINGS: Record<Routing, { router: Named<typeof routerNamespace>; connector: Named<typeof connectorNamespace> }> = {
     straight: {
         router: { name: 'normal' },
         connector: roundedConnector
@@ -41,11 +45,13 @@ export type EndDirection = 'top' | 'right' | 'bottom' | 'left';
 export type LinkEnd = 'source' | 'target';
 
 /**
- * The direction from the point to the next one: its angle (`theta()`, counter-clockwise) to the nearest side (see
- * `SIDE_BY_ANGLE`, clockwise)
+ * The side a direction points to: its angle (`theta()`, counter-clockwise) to the nearest side (see `SIDE_BY_ANGLE`,
+ * clockwise)
  */
-function sideTo(from: dia.Point, to: dia.Point): EndDirection {
-    return SIDE_BY_ANGLE[g.normalizeAngle(-Math.round(new g.Point(from).theta(to) / 90) * 90)];
+export function sideOf(direction: dia.Point): EndDirection {
+    const clockwise = g.normalizeAngle(-new g.Point(0, 0).theta(direction));
+    // Normalized after rounding: up to 360 (right) again
+    return SIDE_BY_ANGLE[g.normalizeAngle(Math.round(clockwise / 90) * 90)];
 }
 
 /** The direction the link leaves the end in as it is drawn: the tangent of its path there (out of the end), a unit vector */
@@ -76,7 +82,7 @@ export function rememberEndDirections(
         case 'orthogonal': {
             const args: Record<string, unknown> = { useVertices: true, ...link.prop(['router', 'args']) };
             ends.forEach((end) => {
-                args[DIRECTION_ARGS[end]] = sideTo({ x: 0, y: 0 }, drawnDirection(view, end));
+                args[DIRECTION_ARGS[end]] = sideOf(drawnDirection(view, end));
             });
             target.router({ name: 'orthogonalRouting', args }, options);
             break;
@@ -149,6 +155,7 @@ const orthogonalRouting = ((vertices: dia.Point[], args: Record<string, unknown>
     const link = linkView.model;
     const sourceDirection = isConnected(link, 'source') ? portDirection(link.source(), link.graph) : args.sourceDirection;
     const targetDirection = isConnected(link, 'target') ? portDirection(link.target(), link.graph) : args.targetDirection;
+    // The arguments as the link stores them (JSON, see `rememberEndDirections()`): not the library's types
     return routers.rightAngle(vertices, { ...args, sourceDirection, targetDirection } as never, linkView);
 });
 
@@ -159,11 +166,15 @@ const orthogonalRouting = ((vertices: dia.Point[], args: Record<string, unknown>
 export const routerNamespace = { ...routers, orthogonalRouting };
 
 /** The router and the connector of the routing of the link (orthogonal by default) */
-const routingOf = (link: dia.Link) => ROUTINGS[link.get('routing') as Routing] ?? ROUTINGS.orthogonal;
+function routingOf(link: dia.Link) {
+    const routing = keysOf(ROUTINGS).find(key => key === link.get('routing'));
+    return ROUTINGS[routing ?? 'orthogonal'];
+}
 
 /** The router of the papers: of the routing of the link */
 const routingRouter = ((vertices: dia.Point[], _args: unknown, linkView: dia.LinkView) => {
-    const { name, args } = routingOf(linkView.model).router as { name: keyof typeof routerNamespace; args?: object };
+    const { name, args } = routingOf(linkView.model).router;
+    // The routers of the library are typed one by one (their own arguments): called as any router
     return (routerNamespace[name] as routers.Router).call(linkView, vertices, { ...args }, linkView);
 });
 
@@ -179,6 +190,7 @@ const smoothRouting = ((
         sourceDirection: isConnected(link, 'source') ? 'outwards' : args?.sourceDirection ?? 'outwards',
         targetDirection: isConnected(link, 'target') ? 'outwards' : args?.targetDirection ?? 'outwards'
     };
+    // The arguments as the link stores them (JSON, see `rememberEndDirections()`): not the library's types
     return connectors.curve(sourcePoint, targetPoint, route, { ...args, ...directions } as never, linkView);
 });
 
@@ -187,7 +199,8 @@ export const connectorNamespace = { ...connectors, smoothRouting };
 
 /** The connector of the papers: of the routing of the link (its own options too: a raw path asked by the view) */
 const routingConnector = ((sourcePoint: g.Point, targetPoint: g.Point, route: g.Point[], options: object, linkView: dia.LinkView) => {
-    const { name, args } = routingOf(linkView.model).connector as { name: keyof typeof connectorNamespace; args?: object };
+    const { name, args } = routingOf(linkView.model).connector;
+    // The connectors of the library are typed one by one (their own arguments): called as any connector
     const connector = connectorNamespace[name] as connectors.Connector;
     return connector.call(linkView, sourcePoint, targetPoint, route, { ...args, ...options }, linkView);
 });

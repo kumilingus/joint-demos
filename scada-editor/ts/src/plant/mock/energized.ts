@@ -30,8 +30,7 @@ export function getEnergized(graph: dia.Graph): Set<dia.Cell> {
     const reached = new Set<dia.Element>();
     const queue = graph.getElements().filter(isSource);
     queue.forEach(element => reached.add(element));
-    while (queue.length > 0) {
-        const element = queue.shift()!;
+    for (let element = queue.shift(); element; element = queue.shift()) {
         if (!isPassing(element)) continue;
         graph.getConnectedLinks(element).forEach((link) => {
             if (!(link instanceof Wire)) return;

@@ -21,7 +21,10 @@ const SIZE_STEP = 2 * GRID_SIZE;
 
 /** The image of the element, from its paper (see `ImagesPaperOptions`); `null` for a paper without images. */
 function findImage(elementView: dia.ElementView, imageId: string): ImageEntry | null {
-    const options = elementView.paper!.options as ImagesPaperOptions;
+    const { paper } = elementView;
+    if (!paper) return null;
+    // Its own options (see `ImagesPaperOptions`): the options of a paper take any keys, typed as `any`
+    const options = paper.options as ImagesPaperOptions;
     return options.getImages?.()[imageId] ?? null;
 }
 

@@ -1,6 +1,7 @@
 import type { dia } from '@joint/plus';
 import { styleOf } from './style';
 import Connection from '../models/Connection';
+import { keysOf } from '../../keys';
 
 /*
  * The width of a link (a pipe, a wire): thin, normal or thick - its strokes scaled together (the line, the dashes of
@@ -29,7 +30,7 @@ export function lineWidthField(types: string[]): { label: string; options: Array
         : { thin: 'Thin', normal: 'Normal', thick: 'Thick' };
     return {
         label: pipes ? 'Size' : 'Thickness',
-        options: (Object.keys(names) as LineWidth[]).map(value => ({ value, content: names[value] }))
+        options: keysOf(names).map(value => ({ value, content: names[value] }))
     };
 }
 

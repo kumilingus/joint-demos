@@ -51,8 +51,9 @@ export interface FootprintOptions {
 export function getFootprint(cell: dia.Cell, { label = true }: FootprintOptions = {}): g.Rect {
     const bbox = cell.getBBox();
     if (cell.isLink()) return bbox.inflate(PIPE_HALF_WIDTH);
+    if (!cell.isElement()) return bbox;
 
-    const element = cell as dia.Element;
+    const element = cell;
     let footprint = bbox.clone();
 
     // A port is its pipe stub: centered on its position, turned by its angle.

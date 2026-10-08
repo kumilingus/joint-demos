@@ -101,7 +101,7 @@ export default class LogView extends FilterListView<LogEntry> {
         if (!this.isOpen) return;
         this.insertRow(message);
         const rows = this.rowsEl;
-        while (rows && rows.childElementCount > MAX_MESSAGES) rows.lastElementChild!.remove();
+        while (rows?.lastElementChild && rows.childElementCount > MAX_MESSAGES) rows.lastElementChild.remove();
         // Its tag shown, the tag of a message cropped out not any more
         this.updateFilter();
     }

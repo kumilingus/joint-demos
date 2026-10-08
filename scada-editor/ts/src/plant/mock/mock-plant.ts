@@ -387,7 +387,8 @@ function createRandomUpdate(graph: dia.Graph, tags: TagIndex): PlantUpdate | Tag
     const cells = graph.getCells().filter(cell => getTag(cell) && (cell.get('type') in generators || cell.get('type') in readoutGenerators));
     if (cells.length === 0) return null;
     const cell = cells[Math.floor(Math.random() * cells.length)];
-    const tag = getTag(cell)!;
+    const tag = getTag(cell);
+    if (!tag) return null;
     const type = cell.get('type');
     if (cell.isElement() && type in readoutGenerators) {
         const changes = readoutGenerators[type](cell, graph, tags);

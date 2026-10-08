@@ -1,4 +1,4 @@
-import { ui, util, type dia } from '@joint/plus';
+import { dia, ui, util } from '@joint/plus';
 import { hasControl } from '../runtime/controls';
 import { isRouted } from '../shapes/common/routing';
 import { LAYER_NAMES } from '../canvas/layers';
@@ -22,6 +22,7 @@ import { closePanel, type PanelContent, showInPanel } from './panel';
 import { openSettings } from './settings';
 import Screen from '../shapes/models/diagram/Screen';
 import { selectCell } from '../actions';
+import { keysOf } from '../keys';
 
 const groups: ui.Inspector.Options['groups'] = {
     general: { label: 'General', index: 1 },
@@ -36,6 +37,9 @@ const groups: ui.Inspector.Options['groups'] = {
 };
 
 type Inputs = Record<string, unknown>;
+
+/** Whether the value is inputs (a group of fields nested at a path) */
+const isInputs = (value: unknown): value is Inputs => typeof value === 'object' && value !== null;
 
 // The sides of a shape, as they are shown in the side picker: a triangle pointing to the side (turned from the top one)
 const SIDES: Array<[string, string, number]> = [['top', 'Top', 0], ['left', 'Left', -90], ['right', 'Right', 90], ['bottom', 'Bottom', 180]];
@@ -97,7 +101,7 @@ function getInputs(element: dia.Element): Inputs {
         // A text of its own (the Label shape): on several lines
         const type = element.get('type') === 'Label' && path[0] === 'label' ? 'textarea' : 'text';
         const ownText = path[0] === 'label' && ['Label', 'Zone'].includes(element.get('type'));
-        const input = { type, label: ownText ? 'Text' : label, group, index: index++ } as Inputs;
+        const input: Inputs = { type, label: ownText ? 'Text' : label, group, index: index++ };
         util.merge(inputs, path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input));
     });
     // The label of a shape at a side of it (see `LabelPosition`): the shapes with labels of their own have none
@@ -158,7 +162,7 @@ function getInputs(element: dia.Element): Inputs {
 
     // The finish of the surfaces (see `SurfaceFinish`): first, it decides how their color is drawn
     if (hasFinish(element)) {
-        inputs.style = { ...(inputs.style as Inputs), finish: {
+        inputs.style = { ...(isInputs(inputs.style) ? inputs.style : {}), finish: {
             type: 'select-button-group',
             label: 'Finish',
             help: 'finish',
@@ -248,7 +252,8 @@ function getInputs(element: dia.Element): Inputs {
     }
 
     // The value on the scale of a thermometer or a pressure gauge
-    const scaleLabel = ({ Thermometer: 'Temperature', PressureGauge: 'Pressure' } as Record<string, string>)[element.get('type')];
+    const scaleLabels: Record<string, string> = { Thermometer: 'Temperature', PressureGauge: 'Pressure' };
+    const scaleLabel = scaleLabels[element.get('type')];
     if (scaleLabel) {
         inputs.value = { type: 'range', label: scaleLabel, min: 0, max: 100, step: 1, unit: '%', group: 'values', index: index++ };
     }
@@ -385,8 +390,8 @@ function colorInputs(cell: dia.Cell, group: string, index: number): Inputs {
     const field = colorFieldOf(cell);
     if (!field) return {};
     const { path, defaultValue } = field;
-    const input = { type: 'color', label: 'Color', group, index, ...(defaultValue ? { defaultValue } : {}) };
-    return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as Inputs);
+    const input: Inputs = { type: 'color', label: 'Color', group, index, ...(defaultValue ? { defaultValue } : {}) };
+    return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input);
 }
 
 /**
@@ -422,8 +427,9 @@ function fieldInputs(cell: dia.Cell, field: ColorField | null, label: string, gr
     if (!field) return {};
     // No color of its own by default (none, or none at all): Auto
     const defaultColor = fieldDefault(cell, field);
-    const input = { type: 'color', label, group, index, ...(defaultColor === undefined || defaultColor === 'none' ? { auto: true } : {}) };
-    return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input as Inputs);
+    const auto = defaultColor === undefined || defaultColor === 'none';
+    const input: Inputs = { type: 'color', label, group, index, ...(auto ? { auto: true } : {}) };
+    return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input);
 }
 
 // Where the tip of an arrowhead of a button is (see `arrowheadIcon()`)
@@ -448,7 +454,7 @@ const ARROWHEAD_NAMES: Record<Arrowhead, string> = { none: 'None', arrow: 'Arrow
 const arrowheadInput = (end: 'source' | 'target', label: string, index: number) => ({
     type: 'select-button-group',
     label,
-    options: (Object.keys(ARROWHEAD_NAMES) as Arrowhead[]).map(value => ({ value, content: arrowheadIcon(value, end) })),
+    options: keysOf(ARROWHEAD_NAMES).map(value => ({ value, content: arrowheadIcon(value, end) })),
     group: 'link',
     index
 });
@@ -511,7 +517,9 @@ function renderMembersField(
     const label = document.createElement('label');
     label.textContent = options.label ?? '';
     const list = document.createElement('ul');
-    (inspector.options.cell as dia.Cell).getEmbeddedCells().filter(cell => cell.isElement()).forEach((member) => {
+    const { cell: group } = inspector.options;
+    const members = group instanceof dia.Cell ? group.getEmbeddedCells() : [];
+    members.filter(cell => cell.isElement()).forEach((member) => {
         const item = document.createElement('li');
         const button = document.createElement('button');
         button.type = 'button';
@@ -541,8 +549,9 @@ function inspectorInputs(cell: dia.Cell): Inputs {
     if (Group.isGroup(cell)) return groupInputs;
     if (cell.isElement()) return { ...getInputs(cell), ...layerInput('appearance') };
     // Merged deeply: the color and the outline of a pipe are both in its `attrs`
-    return util.merge(
-        {},
+    const inputs: Inputs = {};
+    util.merge(
+        inputs,
         // A link with a series of IDs (a conveyor, see `tags.ts`): its ID first
         isTaggable(cell) || getTag(cell) ? { tag: { type: 'text', label: 'ID', group: 'link', index: 0 }} : {},
         isRouted(cell) ? linkInputs : {},
@@ -555,7 +564,8 @@ function inspectorInputs(cell: dia.Cell): Inputs {
         // A conveyor runs or stands still
         hasData(cell, 'power') ? { data: { power: { type: 'toggle', label: 'Power', group: 'link', index: 5 }}} : {},
         layerInput('link')
-    ) as Inputs;
+    );
+    return inputs;
 }
 
 /**

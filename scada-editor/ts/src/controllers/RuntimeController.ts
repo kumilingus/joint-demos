@@ -12,9 +12,7 @@ import { isScreenShown } from '../canvas/screen';
  */
 export default class RuntimeController extends Controller {
 
-    onWindowResize = () => {
-        if (isScreenShown(this.app)) zoomToFit(this.app);
-    };
+    onWindowResize = () => onWindowResize(this.app);
 
     startListening(): void {
         const { paper } = this.app;
@@ -38,4 +36,11 @@ function onCellPointerdown(app: App, _cellView: dia.CellView, evt: dia.Event) {
     // Dragging the slider (or anything else on a control) must not pan the canvas.
     if (isControlEvent(evt) || isScreenShown(app)) return;
     scroller.startPanning(evt);
+}
+
+/** The window resized: the screen shown fills the canvas again */
+function onWindowResize(app: App) {
+    if (isScreenShown(app)) {
+        zoomToFit(app);
+    }
 }

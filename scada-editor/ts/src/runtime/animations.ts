@@ -49,9 +49,16 @@ export function getAnimationLevel(graph: dia.Graph): AnimationLevel {
 
 const LOOP: KeyframeAnimationOptions = { iterations: Infinity };
 
-/** A node of the view by its selector. */
+/** A node of the view by its selector (an SVG one). */
 function node(cellView: dia.CellView, selector: string): SVGElement | null {
-    return cellView.findNode(selector) as SVGElement | null;
+    const found = cellView.findNode(selector);
+    return found instanceof SVGElement ? found : null;
+}
+
+/** The size of the element of the view (none: a link) */
+function sizeOf(cellView: dia.CellView): dia.Size {
+    const { model } = cellView;
+    return model.isElement() ? model.size() : { width: 0, height: 0 };
 }
 
 /**
@@ -74,7 +81,7 @@ function spin(target: SVGElement | null, [x, y]: [number, number], duration: num
 function stir(view: dia.CellView, height: number, duration: number): Animation[] {
     const target = node(view, 'impeller');
     if (!target) return [];
-    const size = (view.model as dia.Element).size();
+    const size = sizeOf(view);
     const at = `translate(${size.width / 2}px, ${size.height * height}px)`;
     const origin = { transformBox: 'view-box', transformOrigin: '0px 0px' };
     return [target.animate([
@@ -93,7 +100,7 @@ const BELT_SPEED = 60;
  * (see `BOX_POSITIONS`): the ride is relative to it.
  */
 function carry(view: dia.CellView): Animation[] {
-    const { width, height } = (view.model as dia.Element).size();
+    const { width, height } = sizeOf(view);
     const [start, end] = [height / 2, width - height / 2 - BOX_WIDTH];
     if (end <= start) return [];
     const duration = (end - start) / BELT_SPEED * 1000;
@@ -160,7 +167,7 @@ function flicker(view: dia.CellView): Animation[] {
 
 /** A point of the element (relative to its size) in its own coordinates */
 const at = (cellView: dia.CellView, { x, y }: { x: number; y: number }): [number, number] => {
-    const { width, height } = (cellView.model as dia.Element).size();
+    const { width, height } = sizeOf(cellView);
     return [x * width, y * height];
 };
 
@@ -192,13 +199,14 @@ function flowAlong(target: SVGElement): Animation {
 
 const flow: Animator = (linkView) => {
     const target = node(linkView, 'flow');
-    if (!target || !isFlowing(linkView.model as dia.Link)) return [];
+    const { model } = linkView;
+    if (!target || !model.isLink() || !isFlowing(model)) return [];
     return [flowAlong(target)];
 };
 
 /** The center of the element in its own coordinates */
 const center = (cellView: dia.CellView): [number, number] => {
-    const { width, height } = (cellView.model as dia.Element).size();
+    const { width, height } = sizeOf(cellView);
     return [width / 2, height / 2];
 };
 
@@ -316,7 +324,7 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
         animate: view => {
             const target = node(view, 'plume');
             if (!target) return [];
-            const { width } = (view.model as dia.Element).size();
+            const { width } = sizeOf(view);
             // The plume grows out of the top of the tower.
             const origin = { transformBox: 'view-box', transformOrigin: `${width / 2}px 10px` };
             return [target.animate([
@@ -332,7 +340,7 @@ const animators: Record<string, { kind: AnimationKind; animate: Animator }> = {
     },
     Generator: {
         kind: 'equipment',
-        animate: view => isOn(view.model) ? turnShaft(view, (view.model as dia.Element).size().height * 0.12) : []
+        animate: view => isOn(view.model) ? turnShaft(view, sizeOf(view).height * 0.12) : []
     },
     // The steam streams through the casing (its dashes shown and moving)
     Turbine: {

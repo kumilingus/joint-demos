@@ -244,8 +244,9 @@ export default class Panel extends Shape {
         // The light on the track (`trackShine` in the attributes): shaded only - none in the flat finish
         'track-shine': {
             set(this: dia.ElementView) {
-                if (finishOf(this.model) === 'flat') return { fill: 'none' };
-                return { fill: `url(#${this.paper!.defineGradient(shineGradient)})` };
+                const { paper } = this;
+                if (!paper || finishOf(this.model) === 'flat') return { fill: 'none' };
+                return { fill: `url(#${paper.defineGradient(shineGradient)})` };
             }
         }
     };

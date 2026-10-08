@@ -82,7 +82,8 @@ abstract class Control extends dia.HighlighterView {
 
     /** A command of the operator (see `command()`): pending until the plant does it */
     protected request(property: string, value: TagValue): void {
-        const model = this.cellView.model as dia.Element;
+        const { model } = this.cellView;
+        if (!model.isElement()) return;
         if (this.pending) window.clearTimeout(this.pending.timer);
         // Not done in a while (no plant, refused): not pending any more, the state as it is
         const timer = window.setTimeout(() => {
@@ -109,7 +110,8 @@ abstract class Control extends dia.HighlighterView {
      * pointer through it then (to the element under it), the control dimmed
      */
     protected updateInert(cellView: dia.CellView): void {
-        const inert = !operable.get(cellView.paper!);
+        const { paper } = cellView;
+        const inert = !paper || !operable.get(paper);
         this.el.classList.toggle('scada-control-inert', inert);
         this.el.querySelectorAll('foreignObject > *').forEach(node => node.toggleAttribute('inert', inert));
     }
@@ -120,9 +122,10 @@ abstract class Control extends dia.HighlighterView {
         markTag(this.el, cellView.model);
     }
 
-    /** The nodes of `children` by their `@selector`. */
-    protected get nodes(): Record<string, HTMLElement> {
-        return this.childNodes as Record<string, HTMLElement>;
+    /** The node of `children` by its `@selector`, if it is of the type */
+    protected getNode<T extends Element>(selector: string, type: abstract new () => T): T | null {
+        const node = this.childNodes?.[selector];
+        return node instanceof type ? node : null;
     }
 
     /**
@@ -180,17 +183,25 @@ class PumpControl extends Control {
     }
 
     protected highlight(cellView: dia.CellView): void {
+        const { model } = cellView;
+        if (!model.isElement()) return;
         this.renderChildren();
-        this.placeInCorner(cellView.model as dia.Element);
-        (this.nodes.input as HTMLInputElement).checked = Boolean(dataOf(cellView.model, 'power'));
-        this.updatePending(cellView.model as dia.Element);
+        this.placeInCorner(model);
+        const input = this.getNode('input', HTMLInputElement);
+        if (input) {
+            input.checked = Boolean(dataOf(model, 'power'));
+        }
+        this.updatePending(model);
         this.updateInert(cellView);
         this.markElement(cellView);
     }
 
     /** Asked to run or to stop: the checkbox shows the state of the pump until the plant changes it (pending) */
     onChange(evt: dia.Event): void {
-        this.request('power', (evt.target as HTMLInputElement).checked);
+        const { target } = evt;
+        if (target instanceof HTMLInputElement) {
+            this.request('power', target.checked);
+        }
     }
 }
 
@@ -208,27 +219,29 @@ class ToggleValveControl extends Control {
     }
 
     protected highlight(cellView: dia.CellView): void {
+        const { model } = cellView;
+        if (!model.isElement()) return;
         this.renderChildren();
-        const model = cellView.model as dia.Element;
         const isOpen = Boolean(dataOf(model, 'open'));
-        const { buttonOn, buttonOff } = this.nodes;
         this.placeBeside(model, TOGGLE_SIZE.width, TOGGLE_SIZE.height);
-        // The state it is in: pressed (a segmented control, see `runtime.css`)
-        buttonOn.setAttribute('aria-pressed', String(isOpen));
-        buttonOff.setAttribute('aria-pressed', String(!isOpen));
-        // The state asked for: pending
+        // The state it is in: pressed (a segmented control, see `runtime.css`); the state asked for: pending
         this.updatePending(model);
         const asked = this.pending?.value;
-        buttonOn.toggleAttribute('data-pending', asked === true);
-        buttonOff.toggleAttribute('data-pending', asked === false);
+        ([['buttonOn', true], ['buttonOff', false]] as const).forEach(([selector, open]) => {
+            const button = this.getNode(selector, HTMLButtonElement);
+            button?.setAttribute('aria-pressed', String(isOpen === open));
+            button?.toggleAttribute('data-pending', asked === open);
+        });
         this.updateInert(cellView);
         this.markElement(cellView);
     }
 
     /** The state of the button (open or closed) asked for, unless the valve is in it */
     onButtonClick(evt: dia.Event): void {
-        const model = this.cellView.model as dia.Element;
-        const open = (evt.currentTarget as HTMLElement).dataset.open === 'true';
+        const { model } = this.cellView;
+        const { currentTarget } = evt;
+        if (!model.isElement() || !(currentTarget instanceof HTMLElement)) return;
+        const open = currentTarget.dataset.open === 'true';
         if (open !== readProperty(model, 'open')) this.request('open', open);
     }
 }
@@ -251,7 +264,8 @@ class SliderValveControl extends Control {
     protected moving = false;
 
     protected highlight(cellView: dia.CellView): void {
-        const model = cellView.model as dia.Element;
+        const { model } = cellView;
+        if (!model.isElement()) return;
         const open = dataOf<number>(model, 'open') ?? 0;
         if (!this.childNodes) {
             // Render the slider only once so that the user can keep dragging it.
@@ -262,22 +276,36 @@ class SliderValveControl extends Control {
         this.updatePending(model);
         if (!this.moving) {
             const asked = this.pending ? Number(this.pending.value) / 100 : null;
-            (this.nodes.slider as HTMLInputElement).value = String((asked ?? open) * 100);
-            this.nodes.value.textContent = asked === null ? getOpenText(open) : `→ ${getOpenText(asked)}`;
+            const slider = this.getNode('slider', HTMLInputElement);
+            const value = this.getNode('value', HTMLOutputElement);
+            if (slider) {
+                slider.value = String((asked ?? open) * 100);
+            }
+            if (value) {
+                value.textContent = asked === null ? getOpenText(open) : `→ ${getOpenText(asked)}`;
+            }
         }
         this.updateInert(cellView);
         this.markElement(cellView);
     }
 
     onInput(evt: dia.Event): void {
+        const { target } = evt;
+        const value = this.getNode('value', HTMLOutputElement);
+        if (!(target instanceof HTMLInputElement)) return;
         this.moving = true;
-        this.nodes.value.textContent = getOpenText(Number((evt.target as HTMLInputElement).value) / 100);
+        if (value) {
+            value.textContent = getOpenText(Number(target.value) / 100);
+        }
     }
 
     /** Released: how much open asked for (in %); the slider stays there until the plant moves the valve */
     onChange(evt: dia.Event): void {
+        const { target } = evt;
         this.moving = false;
-        this.request('open', Number((evt.target as HTMLInputElement).value));
+        if (target instanceof HTMLInputElement) {
+            this.request('open', Number(target.value));
+        }
     }
 }
 

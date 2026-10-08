@@ -162,10 +162,13 @@ export default class ControlValve extends Shape {
     /** Without the color of the pipe in its window: of the pipe it sits on, set again on load (see `PipeColorController`) */
     toJSON(options?: dia.Cell.ExportOptions): dia.Cell.JSON {
         const json = super.toJSON(options);
-        const liquid = json.attrs?.liquid;
-        if (liquid) {
+        const { attrs } = json;
+        const liquid = attrs?.liquid;
+        if (attrs && liquid) {
             delete liquid.stroke;
-            if (Object.keys(liquid).length === 0) delete (json.attrs as Record<string, unknown>).liquid;
+            if (Object.keys(liquid).length === 0) {
+                delete attrs.liquid;
+            }
         }
         return json;
     }

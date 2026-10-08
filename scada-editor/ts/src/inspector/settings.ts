@@ -7,9 +7,10 @@ import { renderLabel } from './help';
 import { ANIMATIONS_ATTRIBUTE, type AnimationLevel, getAnimationLevel } from '../runtime/animations';
 import { type DiagramStyle, getStyle, LABEL_SIZES, STYLE_ATTRIBUTE } from '../diagram-style';
 import { CANVAS_COLORS, getColorFieldValue, isColorField, renderColorField } from './color-field';
-import { OUTLINE_WIDTHS, type OutlineWidth } from '../shapes/common/gradients';
+import { OUTLINE_WIDTHS } from '../shapes/common/gradients';
 import { closePanel, type PanelContent, showInPanel } from './panel';
 import { storePreference } from '../preferences';
+import { keysOf } from '../keys';
 
 /*
  * The settings of the diagram (the cog in the toolbar), in the inspector panel: whether the diagram has
@@ -191,7 +192,7 @@ export function openSettings(app: App): void {
                 outlineWidth: {
                     type: 'select-button-group',
                     label: 'Outline width',
-                    options: (Object.keys(OUTLINE_WIDTHS) as OutlineWidth[]).map(value => ({ value, content: OUTLINE_WIDTHS[value].name })),
+                    options: keysOf(OUTLINE_WIDTHS).map(value => ({ value, content: OUTLINE_WIDTHS[value].name })),
                     defaultValue: 'normal',
                     group: 'style',
                     index: 2.5

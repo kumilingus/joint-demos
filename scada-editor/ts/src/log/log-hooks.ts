@@ -33,9 +33,9 @@ export function logHooks(app: App): LogHooks {
         pingChanges: (pinged) => {
             stopPinging?.();
             stopPinging = null;
-            if (!pinged) return;
             // A listener of the plant too: the element of a message pinged
-            const plant = app.plant!;
+            const { plant } = app;
+            if (!pinged || !plant) return;
             const onMessage = (kind: PlantEvent) => ({ tag }: PlantMessage) => {
                 const cell = tags.get(tag);
                 if (cell?.isElement()) ping(paper, cell, PING_COLORS[kind], PING_ID);

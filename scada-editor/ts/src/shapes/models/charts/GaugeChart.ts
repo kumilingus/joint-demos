@@ -67,7 +67,10 @@ export default class GaugeChart extends Shape {
         // The value of the model as a text
         'chart-value': {
             set(this: dia.ElementView, digits: number, _refBBox: dia.BBox, node: Element) {
-                V(node as SVGElement).text((Number(dataOf(this.model, 'value')) || 0).toFixed(digits), { textVerticalAnchor: 'middle' });
+                const text = (Number(dataOf(this.model, 'value')) || 0).toFixed(digits);
+                if (node instanceof SVGElement) {
+                    V(node).text(text, { textVerticalAnchor: 'middle' });
+                }
                 return {};
             }
         }

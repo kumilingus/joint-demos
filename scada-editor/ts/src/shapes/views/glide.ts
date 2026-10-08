@@ -14,7 +14,7 @@ export interface Gliding {
 }
 
 export function isGliding(cell: dia.Cell): cell is dia.Element & Gliding {
-    return cell.isElement() && typeof (cell as Partial<Gliding>).glideKeyframes === 'function';
+    return cell.isElement() && 'glideKeyframes' in cell && typeof cell.glideKeyframes === 'function';
 }
 
 // How long a glide takes (ms)
@@ -28,22 +28,23 @@ export function setGliding(paper: dia.Paper, gliding: boolean): void {
     if (gliding) glidingPapers.add(paper); else glidingPapers.delete(paper);
 }
 
-/** The view with the value it drew last, its glide */
-type GlidingView = dia.ElementView & { drawnValue?: number; glides?: Animation[] };
+/** The value a view drew last, its glide (by the view) */
+const glidesOf = new WeakMap<dia.ElementView, { drawnValue: number; glides: Animation[] }>();
 
 /** The parts of the element glide from the value the view drew last to the value now (drawn already): its view drawn again */
 export function glide(view: dia.ElementView): void {
     const { model } = view;
     if (!isGliding(model)) return;
-    const glidingView = view as GlidingView;
     const value = Number(dataOf(model, model.glideProperty)) || 0;
-    const drawn = glidingView.drawnValue;
-    glidingView.drawnValue = value;
+    const last = glidesOf.get(view);
+    const glides = last?.glides ?? [];
+    glidesOf.set(view, { drawnValue: value, glides });
+    const drawn = last?.drawnValue;
     if (drawn === undefined || drawn === value || !view.paper || !glidingPapers.has(view.paper)) return;
-    glidingView.glides?.forEach(animation => animation.cancel());
+    glides.forEach(animation => animation.cancel());
     const [from, to] = [model.glideKeyframes(drawn), model.glideKeyframes(value)];
-    glidingView.glides = Object.keys(to).flatMap((selector) => {
+    glidesOf.set(view, { drawnValue: value, glides: Object.keys(to).flatMap((selector) => {
         const node = view.findNode(selector);
         return node ? [node.animate([from[selector], to[selector]], { duration: GLIDE_DURATION, easing: 'ease-in-out' })] : [];
-    });
+    }) });
 }

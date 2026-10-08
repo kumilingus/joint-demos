@@ -1,4 +1,4 @@
-import { type dia, type ui, util } from '@joint/plus';
+import { dia, type ui, util } from '@joint/plus';
 import type { ColorField } from '../shapes/models/Shape';
 import { featuresOf } from '../shapes/common/features';
 import { renderLabel } from './help';
@@ -160,7 +160,8 @@ export function renderColorField(
     value: unknown,
     inspector: ui.Inspector
 ): HTMLElement | undefined {
-    if (options.type !== 'color' || /\/\d+\//.test(path)) return undefined;
+    const { cell } = inspector.options;
+    if (options.type !== 'color' || /\/\d+\//.test(path) || !(cell instanceof dia.Cell)) return undefined;
     const el = document.createElement('div');
     el.className = 'scada-color-field-content';
     // The content of a field includes its label (with the help of the field, if it has one).
@@ -195,7 +196,6 @@ export function renderColorField(
     row.append(input);
     el.append(row);
 
-    const cell = inspector.options.cell as dia.Cell;
     // As a picked color: the inspector saves it (one step of the history)
     const pick = (color: string) => {
         input.value = color;

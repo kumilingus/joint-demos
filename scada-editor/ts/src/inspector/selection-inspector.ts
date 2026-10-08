@@ -1,12 +1,14 @@
 import { dia, ui, util } from '@joint/plus';
 import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, isColorField, outlineFieldOf, renderColorField } from './color-field';
-import { hasFinish, OUTLINE_WIDTHS, type OutlineWidth, type SurfaceFinish } from '../shapes/common/gradients';
+import { hasFinish, OUTLINE_WIDTHS, type SurfaceFinish } from '../shapes/common/gradients';
 import Group from '../shapes/models/diagram/Group';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { hasLineWidth, lineWidthField, type LineWidth } from '../shapes/common/line-width';
 import { setStyle, styleOf, unsetStyle } from '../shapes/common/style';
 import { getCellDefaults } from '../shapes/defaults';
+import { keysOf } from '../keys';
+import type { ColorField } from '../shapes/models/Shape';
 
 /*
  * The appearance of several cells at once (a selection of them, the members of a group): an inspector
@@ -31,17 +33,22 @@ export function appearanceTargets(cells: dia.Cell[]): dia.Cell[] {
 /** The outline widths to pick (see `OutlineWidth`): Auto (none of its own - of the diagram), thin, normal, thick */
 export const OUTLINE_WIDTH_OPTIONS = [
     { value: 'auto', content: 'Auto' },
-    ...(Object.keys(OUTLINE_WIDTHS) as OutlineWidth[]).map(value => ({ value, content: OUTLINE_WIDTHS[value].name }))
+    ...keysOf(OUTLINE_WIDTHS).map(value => ({ value, content: OUTLINE_WIDTHS[value].name }))
 ];
 
 /** The default color of the cell (of its shape) */
 function defaultColorOf(cell: dia.Cell): unknown {
-    const { path, defaultValue } = colorFieldOf(cell)!;
+    const field = colorFieldOf(cell);
+    if (!field) return undefined;
+    const { path, defaultValue } = field;
     return util.getByPath(getCellDefaults(cell), path.join('/'), '/') ?? defaultValue;
 }
 
 /** The color of the cell as drawn: its own, or the default of its shape */
-const colorOf = (cell: dia.Cell): unknown => cell.prop(colorFieldOf(cell)!.path) ?? defaultColorOf(cell);
+function colorOf(cell: dia.Cell): unknown {
+    const field = colorFieldOf(cell);
+    return field ? cell.prop(field.path) ?? defaultColorOf(cell) : undefined;
+}
 
 // Its own finish, or Auto (none of its own)
 const finishOf = (cell: dia.Cell): string => styleOf<string>(cell, 'finish') ?? 'auto';
@@ -50,19 +57,35 @@ const AUTO = 'auto';
 
 /** The outline color of the cell: its own, or the default of its shape; `undefined` - none (Auto) */
 function outlineOf(cell: dia.Cell): string | undefined {
-    const field = outlineFieldOf(cell)!;
+    const field = outlineFieldOf(cell);
+    if (!field) return undefined;
     return cell.prop(field.path) ?? fieldDefault(cell, field);
 }
 
 /** The accent color of the cell: its own, or the default of its shape */
 function accentOf(cell: dia.Cell): string | undefined {
-    const field = accentFieldOf(cell)!;
+    const field = accentFieldOf(cell);
+    if (!field) return undefined;
     return cell.prop(field.path) ?? fieldDefault(cell, field);
+}
+
+/** The default accent color of the cell (of its shape) */
+function accentDefaultOf(cell: dia.Cell): string | undefined {
+    const field = accentFieldOf(cell);
+    return field ? fieldDefault(cell, field) : undefined;
+}
+
+/** Set the color of the field of the cell, if it has the field */
+function setField(cell: dia.Cell, field: ColorField | null, color: string): void {
+    if (field) {
+        cell.prop(field.path, color);
+    }
 }
 
 /** Set the outline color of the cell, or none (`undefined`, Auto): back to the default of its shape, if it has one */
 function setOutline(cell: dia.Cell, outline: string | undefined): void {
-    const field = outlineFieldOf(cell)!;
+    const field = outlineFieldOf(cell);
+    if (!field) return;
     const value = outline ?? fieldDefault(cell, field);
     if (value === undefined) {
         // The path as a string: `removeProp()` doesn't unset a top-level property given as an array
@@ -157,7 +180,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string, note
         };
     }
     standIn.on('change:color', (_cell: dia.Cell, color: string) => {
-        changeAll(colored, cell => cell.prop(colorFieldOf(cell)!.path, color));
+        changeAll(colored, cell => setField(cell, colorFieldOf(cell), color));
     });
     standIn.on('change:finish', (_cell: dia.Cell, finish: SurfaceFinish | 'auto') => {
         changeAll(surfaced, cell => (finish === 'auto' ? unsetStyle(cell, 'finish') : setStyle(cell, 'finish', finish)));
@@ -167,7 +190,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string, note
         inputs.accent = {
             type: 'color',
             label: 'Accent',
-            defaultValue: common(accented.map(cell => fieldDefault(cell, accentFieldOf(cell)!))),
+            defaultValue: common(accented.map(cell => accentDefaultOf(cell))),
             mixed: common(accented.map(accentOf)) === undefined,
             graph,
             group: 'appearance',
@@ -188,7 +211,7 @@ export function createAppearanceInspector(cells: dia.Cell[], label: string, note
         if (width) changeAll(bordered, cell => (width === 'auto' ? unsetStyle(cell, 'outlineWidth') : setStyle(cell, 'outlineWidth', width)));
     });
     standIn.on('change:accent', (_cell: dia.Cell, accent: string) => {
-        changeAll(accented, cell => cell.prop(accentFieldOf(cell)!.path, accent));
+        changeAll(accented, cell => setField(cell, accentFieldOf(cell), accent));
     });
     standIn.on('change:outline', (_cell: dia.Cell, outline: string | undefined) => {
         changeAll(outlined, cell => setOutline(cell, outline));

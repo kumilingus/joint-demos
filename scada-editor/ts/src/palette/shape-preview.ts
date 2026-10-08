@@ -71,8 +71,9 @@ function previewState(cell: dia.Cell): PreviewState | null {
         };
     }
     // A reading (see `plant/properties.ts`): between two values - of a scale (0 - 100), or around the one it shows (by a tenth)
-    const element = cell as dia.Element;
-    const property = cell.isElement() ? propertiesOf(element).find(name => typeof readProperty(element, name) === 'number') : undefined;
+    if (!cell.isElement()) return null;
+    const element = cell;
+    const property = propertiesOf(element).find(name => typeof readProperty(element, name) === 'number');
     if (!property) return null;
     const shown = Number(readProperty(element, property)) || 50;
     const scale = property === 'level' || SCALED_TYPES.includes(element.get('type'));

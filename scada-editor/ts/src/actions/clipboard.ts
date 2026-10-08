@@ -1,4 +1,4 @@
-import { type dia, g } from '@joint/plus';
+import { dia, g } from '@joint/plus';
 import type { App } from '../app';
 import { GRID_SIZE } from '../const';
 import Screen from '../shapes/models/diagram/Screen';
@@ -25,7 +25,8 @@ function detachedCopy(app: App, link: dia.Link, copied: Set<dia.Cell.ID>): dia.L
     const copy = link.clone();
     // Rendered now if it isn't (out of the viewport: selected, scrolled away): its ends as drawn
     const linkView = app.paper.requireView<dia.LinkView>(link);
-    const disconnected = (['source', 'target'] as LinkEnd[]).filter(end => !isCopied(link.prop(end), copied));
+    const ends: LinkEnd[] = ['source', 'target'];
+    const disconnected = ends.filter(end => !isCopied(link.prop(end), copied));
     disconnected.forEach(end => copy.prop(end, (end === 'source' ? linkView.sourcePoint : linkView.targetPoint).toJSON(), { rewrite: true }));
     rememberEndDirections(link, linkView, disconnected, copy);
     return copy;
@@ -91,11 +92,11 @@ export function pasteAt(app: App, point: dia.Point): void {
  * A copy of the element in place (in the graph): a group with its members and the links between them; the copies
  * get tags of their own (see `TagsController`). In the batch of the caller (one step of the history with the move).
  */
-export function duplicate(app: App, element: dia.Element): dia.Element {
+export function duplicate(app: App, element: dia.Element): dia.Cell {
     const { graph } = app;
     const clones = graph.cloneSubgraph(graph.getSubgraph([element], { deep: true }), { deep: true });
     graph.addCells(Object.values(clones));
-    return clones[element.id] as dia.Element;
+    return clones[element.id];
 }
 
 /** The batch of a drag of a copy (see `dragCopy()`): the copy and its move one step of the history */
@@ -117,8 +118,8 @@ export function dragCopy(
 ): boolean {
     app.graph.startBatch(DUPLICATE_BATCH);
     const copy = duplicate(app, moved.model);
-    const copyView = copy.findView(app.paper) as dia.ElementView | undefined;
-    if (!copyView) {
+    const copyView = copy.findView(app.paper);
+    if (!(copyView instanceof dia.ElementView)) {
         app.graph.stopBatch(DUPLICATE_BATCH);
         return false;
     }

@@ -60,7 +60,7 @@ export default class Arrow extends Connection {
                     if (!head) return 'none';
                     // As the library defines them: in the color of the line, the one at the end turned around
                     const definition = { stroke: color, fill: color, ...(turned ? { transform: 'rotate(180)' } : {}), ...head };
-                    return `url(#${this.paper!.defineMarker(definition)})`;
+                    return this.paper ? `url(#${this.paper.defineMarker(definition)})` : 'none';
                 };
                 return { 'marker-start': marker('source', false), 'marker-end': marker('target', true) };
             }

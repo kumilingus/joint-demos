@@ -23,7 +23,8 @@ export function topGroup(cell: dia.Cell): dia.Cell {
 
 /** The elements of the selection that can be grouped (not the screen; the siblings, see `toggleAtLevel()`) */
 export function groupable(app: App): dia.Element[] {
-    const elements = app.selection.filter(cell => cell.isElement() && !Screen.isScreen(cell)) as dia.Element[];
+    const elements = app.selection.toArray()
+        .filter((cell): cell is dia.Element => cell.isElement() && !Screen.isScreen(cell));
     const level = elements.length > 0 ? parentId(elements[0]) : null;
     return elements.filter(element => parentId(element) === level);
 }

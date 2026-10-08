@@ -116,6 +116,8 @@ function terminalGroup(): dia.Element.PortGroup {
 /** A side of an element. */
 export type Side = 'left' | 'right' | 'top' | 'bottom';
 
+const SIDES: Side[] = ['left', 'right', 'top', 'bottom'];
+
 // The angle of the stub on each side (a stub points to the right, turned clockwise)
 const SIDE_ANGLES: Record<Side, number> = { right: 0, bottom: 90, left: 180, top: 270 };
 
@@ -168,6 +170,22 @@ export interface Stub {
 /** A port of a pipe stub: with its stub (to be flipped, see `flippedPorts()`) */
 type StubPort = dia.Element.Port & { stub: Stub };
 
+/** The ports of a shape as the functions below make them: groups and items, both there */
+export interface ShapePorts {
+    groups: { [key: string]: dia.Element.PortGroup };
+    items: dia.Element.Port[];
+}
+
+/** The stub of the port, if it is the port of a stub (see `StubPort`) */
+function stubOf(item: dia.Element.Port): Stub | null {
+    if (!('stub' in item)) return null;
+    const { stub } = item;
+    if (typeof stub !== 'object' || stub === null || !('id' in stub) || !('side' in stub)) return null;
+    const side = SIDES.find(value => value === stub.side);
+    if (typeof stub.id !== 'string' || !side) return null;
+    return { ...stub, id: stub.id, side };
+}
+
 /** The port of the stub, `length` long, in the group */
 function stubPort(stub: Stub, group: string, length: number): StubPort {
     const { id, side, at = 0.5, z } = stub;
@@ -195,7 +213,7 @@ export function flipStub(stub: Stub, flip: string): Stub {
 export function flippedPorts(ports: dia.Element.Attributes['ports'], flip: string): dia.Element.Attributes['ports'] {
     if (!ports?.items) return ports;
     const items = ports.items.map((item) => {
-        const { stub } = item as Partial<StubPort>;
+        const stub = stubOf(item);
         const length = Number(ports.groups?.[item.group ?? '']?.size?.width) || 0;
         return stub ? stubPort(flipStub(stub, flip), item.group ?? 'pipes', length) : item;
     });
@@ -211,7 +229,7 @@ export function pipePorts(
     length: number,
     { left, right }: { left?: number; right?: number } = {},
     [leftZ, rightZ]: [number, number] = [0, 0]
-): dia.Element.Attributes['ports'] {
+): ShapePorts {
     return {
         groups: {
             pipes: pipeStubGroup(length)
@@ -227,7 +245,7 @@ export function pipePorts(
  * The pipe stubs of a fitting (a tee, a cross, ...): one in the middle of each of the sides (`tuck` under a rounded one).
  * The ports are named after the sides.
  */
-export function fittingPorts(sides: Side[], length: number, tuck = 0): dia.Element.Attributes['ports'] {
+export function fittingPorts(sides: Side[], length: number, tuck = 0): ShapePorts {
     return {
         groups: {
             pipes: pipeStubGroup(length, tuck)
@@ -254,7 +272,7 @@ export function terminal({ id, side, along }: Terminal): dia.Element.Port {
 }
 
 /** The electrical terminals of an element (see `terminalGroup()`) */
-export function terminalPorts(terminals: Terminal[]): dia.Element.Attributes['ports'] {
+export function terminalPorts(terminals: Terminal[]): ShapePorts {
     return {
         groups: {
             terminals: terminalGroup()
@@ -264,7 +282,7 @@ export function terminalPorts(terminals: Terminal[]): dia.Element.Attributes['po
 }
 
 /** The stubs going down from the bottom at the parts of the width: the outlets of a manifold. */
-export function branchPorts(ats: number[], length: number): dia.Element.Attributes['ports'] {
+export function branchPorts(ats: number[], length: number): ShapePorts {
     return {
         groups: {
             branches: pipeStubGroup(length, 0)

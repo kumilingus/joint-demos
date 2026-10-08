@@ -109,7 +109,7 @@ export class App {
     constructor(el: HTMLElement) {
         this.el = el;
         this.setMoveSelectedOnly(this.moveSelectedOnly);
-        this.inspectorEl = el.querySelector<HTMLElement>('.scada-inspector-panel')!;
+        this.inspectorEl = partOf(el, '.scada-inspector-panel');
 
         this.graph = createGraph();
         // The first listener of the graph: up to date for all the others
@@ -139,12 +139,12 @@ export class App {
             ...scrollerOptions,
             paper: this.paper
         });
-        el.querySelector('.scada-canvas')!.appendChild(this.scroller.el);
+        partOf(el, '.scada-canvas').appendChild(this.scroller.el);
         this.scroller.render();
 
         this.selectionView = createSelection(this.scroller, this.selection);
 
-        this.navigator = createNavigator(el.querySelector('.scada-navigator-panel')!, this.scroller);
+        this.navigator = createNavigator(partOf(el, '.scada-navigator-panel'), this.scroller);
 
         this.keyboard = new ui.Keyboard();
 
@@ -246,8 +246,8 @@ export class App {
     protected enterMode(mode: Mode): void {
         this.toolbar = createToolbar(this, mode);
         if (mode === Mode.Edit) {
-            this.createSnaplines();
-            this.stencil = createStencil(this.el.querySelector('.scada-main')!, this.scroller, this.snaplines!, {
+            const snaplines = this.createSnaplines();
+            this.stencil = createStencil(partOf(this.el, '.scada-main'), this.scroller, snaplines, {
                 getImages: () => getImages(this.graph),
                 onUpload: images => addImages(this, images),
                 // A part of the plant gets an ID (see `plant/tags.ts`)
@@ -329,10 +329,13 @@ export class App {
         }
     }
 
-    protected createSnaplines(): void {
+    protected createSnaplines(): ui.Snaplines {
         // With a fix of the library for the dragged groups (see `Snaplines`)
-        this.snaplines = new Snaplines({ ...snaplinesOptions, paper: this.paper });
-        if (!this.snaplinesEnabled) this.snaplines.disable();
+        const snaplines = this.snaplines = new Snaplines({ ...snaplinesOptions, paper: this.paper });
+        if (!this.snaplinesEnabled) {
+            snaplines.disable();
+        }
+        return snaplines;
     }
 
     protected destroySnaplines(): void {
@@ -341,7 +344,14 @@ export class App {
     }
 }
 
-export function init(el: HTMLElement = document.querySelector<HTMLElement>('.scada-app')!): App {
+/** A part of the markup of the app (see `index.html`): there, or the app can't start */
+function partOf(container: ParentNode, selector: string): HTMLElement {
+    const part = container.querySelector<HTMLElement>(selector);
+    if (!part) throw new Error(`The SCADA editor: no "${selector}" in the page`);
+    return part;
+}
+
+export function init(el: HTMLElement = partOf(document, '.scada-app')): App {
     const app = new App(el);
     // The first example (a boiler house), saved with the Save button: its cells, its images and favorites
     app.loadJSON(EXAMPLES[0].json);

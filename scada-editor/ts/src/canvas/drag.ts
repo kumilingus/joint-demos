@@ -38,5 +38,6 @@ export function delegateDrag(
         pointerOffset: position.difference(pressed.x, pressed.y),
         restrictedArea: paper.getRestrictedArea(delegate, x, y)
     });
+    // `drag()` is protected in the typings (a library internal, see the TODO above)
     (delegate as dia.ElementView & { drag(evt: dia.Event, x: number, y: number): void }).drag(evt, x, y);
 }

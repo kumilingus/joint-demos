@@ -56,7 +56,7 @@ const SEARCH_PATHS: Record<string, string[]> = {
  */
 function matchShape(cell: dia.Cell, keyword: string, groupId: string): boolean {
     if (!keyword) return true;
-    if (Object.values(DerivedGroup).includes(groupId as DerivedGroup)) return false;
+    if (Object.values(DerivedGroup).some(group => group === groupId)) return false;
     const paths = [...SEARCH_PATHS['*'], ...(SEARCH_PATHS[cell.get('type')] ?? [])];
     const search = keyword.toLowerCase();
     return paths.some(path => String(util.getByPath(cell.attributes, path, '/') ?? '').toLowerCase().includes(search));
@@ -91,7 +91,8 @@ const groups: Record<string, ui.Stencil.Group> = {
 const PALETTE_HINT = 'Click for details · drag to add';
 
 /** The text as HTML (the tooltips render their content as such): the name of an image of the user safe */
-const escapeHtml = (text: string) => text.replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char]!);
+const HTML_ENTITIES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
+const escapeHtml = (text: string) => text.replace(/[&<>"]/g, char => HTML_ENTITIES[char] ?? char);
 
 /** The attributes of the tooltip of a shape of the palette: its name and the hint, outside the palette (see `besidePanel()`) */
 function paletteTooltip(name: string): Record<string, string> {

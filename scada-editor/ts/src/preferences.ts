@@ -1,3 +1,5 @@
+import { keysOf } from './keys';
+
 /*
  * The preferences of the user (the settings of the editor, not of the diagram): remembered in this browser
  * (`localStorage`), the defaults where there is none - a private window, a first visit, a value of another shape.
@@ -20,7 +22,7 @@ const PREFERENCES_KEY = 'scada-editor:preferences';
 export function loadPreferences(defaults: Preferences): Preferences {
     const stored = readStored();
     const preferences = { ...defaults };
-    (Object.keys(defaults) as Array<keyof Preferences>).forEach((key) => {
+    keysOf(defaults).forEach((key) => {
         if (typeof stored[key] === 'boolean') preferences[key] = stored[key];
     });
     return preferences;

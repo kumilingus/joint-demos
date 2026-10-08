@@ -24,7 +24,9 @@ export const computedAttributes = {
                 if (name === 'text') {
                     textSet.call(this, value, refBBox, node, attrs, this);
                 } else if (name === 'style') {
-                    Object.assign((node as HTMLElement).style, value);
+                    if (node instanceof SVGElement || node instanceof HTMLElement) {
+                        Object.assign(node.style, value);
+                    }
                 } else {
                     computed[util.toKebabCase(name)] = typeof value === 'string' && util.isCalcExpression(value)
                         ? util.evalCalcExpression(value, refBBox)
