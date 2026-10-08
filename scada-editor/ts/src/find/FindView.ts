@@ -102,11 +102,6 @@ export default class FindView extends FilterListView<FindEntry> {
         return `${tag} ${name} ${kind}`;
     }
 
-    /** Without the dashes too: `b101` finds `B-101` */
-    protected normalize(text: string): string {
-        return super.normalize(text).replaceAll('-', '');
-    }
-
     protected renderRow({ tag, name, kind, description }: FindEntry): HTMLElement {
         const row = document.createElement('div');
         const cells: Array<[string, string]> = [['tag', tag], ['name', name], ['kind', kind]];

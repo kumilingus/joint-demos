@@ -128,7 +128,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 
 - **Log** - the messages between the diagram and the plant: time, *update* or *command*, tag, property, value.
   - *Ping the changes* - an element pings when its message arrives (blue update, amber command).
-  - Filter by words, by All / Updates / Commands, or by clicking elements on the diagram.
+  - Filter by words (dashes ignored: `p101` finds `P-101`), by All / Updates / Commands, or by clicking elements on the diagram.
   - Click a message to mark its element - a violet arrow pointing at it (and mark its messages); click it again to clear.
   - `Escape` closes it.
 

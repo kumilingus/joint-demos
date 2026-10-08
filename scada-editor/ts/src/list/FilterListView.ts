@@ -9,6 +9,11 @@ import { type dia, mvc, ui } from '@joint/plus';
  * by overriding them (calling `super`).
  */
 
+/** A text as it is searched (the filter, the texts of the entries): lower case, without the dashes - `b101` finds `B-101` */
+export function normalizeSearch(text: string): string {
+    return text.toLowerCase().replaceAll('-', '');
+}
+
 export default abstract class FilterListView<T> extends mvc.View<undefined> {
 
     /** The title of the dialog */
@@ -171,9 +176,9 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
         return this.entries().filter(entry => this.matches(entry, words));
     }
 
-    /** A text as it is searched (the filter, the texts of the entries): lower case */
+    /** A text as it is searched (the filter, the texts of the entries, see `normalizeSearch()`) */
     protected normalize(text: string): string {
-        return text.toLowerCase();
+        return normalizeSearch(text);
     }
 
     /** The words of the filter (see `normalize()`) */
