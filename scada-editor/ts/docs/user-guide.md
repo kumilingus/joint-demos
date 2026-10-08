@@ -92,7 +92,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 - *Finish* - Shaded (gradients) or Flat.
 - *Color*, *Outline*, *Accent* - the body, edge and detail colors.
 - *Outline width* - Thin, Normal or Thick: the outlines of outlined shapes and the borders of the pipes.
-- *Labels* - what the shape labels show: the *Name*, the *ID* (as a P&ID), or *ID + name* (the ID in bold above the name, as an operator display). A shape without a name shows its ID alone, one without an ID its name; the Label shape and zones keep their text.
+- *Labels* - what the shape labels show (to see the IDs for a moment, hold `Alt`): the *Name*, the *ID* (as a P&ID), or *ID + name* (the ID in bold above the name, as an operator display). A shape without a name shows its ID alone, one without an ID its name; the Label shape and zones keep their text.
 - *Label size* - Small to X-Large, for shape labels and zones (not for the Label shape).
 - *Label color* - the text color of those labels.
 - *Canvas* - the background color (White / Black, Blue, Green, Violet, Gray as in ISA-101, Sand; each with a light and a dark tone); the grid follows.
@@ -127,7 +127,6 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
   ![A valve switch pending](images/control-pending.png)
 
 - **Log** - the messages between the diagram and the plant: time, *update* or *command*, tag, property, value.
-  - *Show the tags* - the IDs on the diagram.
   - *Ping the changes* - an element pings when its message arrives (blue update, amber command).
   - Filter by words, by All / Updates / Commands, or by clicking elements on the diagram.
   - Click a message to highlight its element (and mark its messages); click it again to clear.
@@ -156,6 +155,7 @@ Edit mode, not while typing. `Cmd` on macOS, `Ctrl` elsewhere.
 | Move the selection (a grid step / five) | Arrow keys / `Shift` + arrow keys |
 | Hide / show the palette and the inspector | `Cmd` + `\` |
 | Find (in both modes) | `Cmd` + `F` |
-| Duplicate (drag a copy) | `Cmd` or `Alt` + drag an element |
+| See the IDs on the diagram (in both modes) | hold `Alt` (`Option`) |
+| Duplicate (drag a copy) | `Cmd` + drag an element |
 | Delete | `Delete`, `Backspace` |
 | Close a menu or Find, one group level up, clear the selection | `Escape` |

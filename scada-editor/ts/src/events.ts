@@ -9,12 +9,12 @@ export function isSelectionEvent(evt: dia.Event): boolean {
     return Boolean(evt.shiftKey || evt.ctrlKey || evt.metaKey);
 }
 
-/** Whether the press drags a copy: with Cmd / Ctrl (as PowerPoint, Visio) or Alt / Option (as Figma, Illustrator) */
+/** Whether the press drags a copy: with Cmd / Ctrl (as PowerPoint, Visio; Alt shows the IDs, see `TagBadgesController`) */
 export function isDuplicateEvent(evt: dia.Event): boolean {
-    return Boolean(evt.metaKey || evt.ctrlKey || evt.altKey);
+    return Boolean(evt.metaKey || evt.ctrlKey);
 }
 
 /** Whether the key was pressed while typing (e.g. into the inspector). */
-export function isTyping(evt: dia.Event): boolean {
+export function isTyping(evt: dia.Event | Event): boolean {
     return evt.target instanceof Element && evt.target.closest('input, textarea, select, [contenteditable]') !== null;
 }

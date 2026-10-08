@@ -15,3 +15,4 @@ export { default as GroupController } from './GroupController';
 export { default as ToolbarController } from './ToolbarController';
 export { default as LockController } from './LockController';
 export { default as FindController } from './FindController';
+export { default as TagBadgesController } from './TagBadgesController';

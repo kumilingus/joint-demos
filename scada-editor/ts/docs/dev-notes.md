@@ -21,6 +21,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `TagsController` | always | graph: the tags unique (a copy: the next free one of its series), an empty one removed |
 | `PipeColorController` | always | graph: pipe colors; a control valve shows its pipe's |
 | `GroupController` | always | graph: a member changed → its groups refit |
+| `TagBadgesController` | always | the window: `Alt` held - the ID badges (`canvas/tag-badges.ts`, highlighters); graph changes draw them again |
 | `ToolbarController` | each mode | toolbar buttons |
 | `FindController` | both (one instance: the filter kept) | Find button, `Cmd + F`, `Escape`; graph changes refresh the list; a selection on the canvas closes it |
 | `EditController` | edit | paper: cell click, region, context menus; a cell not selected pans with *Move selected shapes only* |

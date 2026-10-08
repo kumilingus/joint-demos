@@ -94,6 +94,8 @@ const FIELD_HELP: Record<string, string> = {
         <strong class="scada-tooltip-heading">ID + name</strong>
         The ID in bold above the name - as the operator displays (ISA-101): the plant speaks in tags, the name
         says what it is. A shape without a name shows its ID alone.
+        <strong class="scada-tooltip-heading">For a moment</strong>
+        Hold <em>Alt</em> to see the IDs on the diagram (in both modes).
         <strong class="scada-tooltip-heading">Without an ID</strong>
         A shape not bound to the plant (a picture, a background) shows its name. The Label shape and the zones keep
         their text.`,

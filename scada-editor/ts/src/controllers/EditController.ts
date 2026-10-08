@@ -13,7 +13,7 @@ import { preventSelectionInteraction, showHover } from '../canvas/selection';
  * (or removes it, of the same level only), a hovered cell is framed faintly with what the click selects,
  * a drag with Shift on the blank canvas selects the cells it touches (see `selection.ts`). The right click opens the
  * context menu of a cell or of the blank
- * canvas (see `context-menu.ts`). A drag with Cmd / Ctrl or Alt / Option moves a copy (the original stays, connected);
+ * canvas (see `context-menu.ts`). A drag with Cmd / Ctrl moves a copy (the original stays, connected);
  * a click with Cmd / Ctrl is still a click (it adds to the selection). With *Move selected shapes only* (the settings,
  * on by default on a tablet) a drag moves a selected cell only: on any other it pans the canvas (as the drag of the
  * blank canvas) - a click selects it first.
@@ -33,7 +33,7 @@ export default class EditController extends Controller {
             'cell:mouseenter': onCellMouseenter,
             'cell:mouseleave': onCellMouseleave,
             'blank:contextmenu': onBlankContextmenu,
-            // A drag with Cmd / Ctrl or Alt / Option: a copy dragged
+            // A drag with Cmd / Ctrl: a copy dragged
             'element:pointerdown': onElementPointerdown,
             'element:pointermove': onElementPointermove,
             'element:pointerup': onElementPointerup
@@ -96,7 +96,7 @@ function onCellMouseleave(app: App) {
 }
 
 /**
- * Cmd / Ctrl or Alt / Option pressed on an element: not moved (see `onElementPointermove()`), the point of the press
+ * Cmd / Ctrl pressed on an element: not moved (see `onElementPointermove()`), the point of the press
  * kept - a click with it is a click
  */
 function onElementPointerdown(app: App, view: dia.ElementView, evt: dia.Event, x: number, y: number) {

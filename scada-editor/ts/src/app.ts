@@ -38,7 +38,8 @@ import {
     GroupController,
     ToolbarController,
     LockController,
-    FindController
+    FindController,
+    TagBadgesController
 } from './controllers';
 // The mock of the plant (see `plant/mock/`): an app with a real plant deletes it and this line
 import MockPlantController from './plant/mock/MockPlantController';
@@ -143,7 +144,9 @@ export class App {
             new SelectionController(this),
             new TagsController(this),
             new PipeColorController(this),
-            new GroupController(this)
+            new GroupController(this),
+            // Hold Alt: the IDs (see `canvas/tag-badges.ts`)
+            new TagBadgesController(this)
         ];
         // In both modes: the filter of its list kept from one to the other
         const findController = new FindController(this);

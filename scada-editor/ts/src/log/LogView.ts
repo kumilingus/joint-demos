@@ -27,8 +27,6 @@ const KIND_ARROWS: Record<PlantEvent, string> = {
 export interface LogHooks {
     /** The element of the tag highlighted (a message of it clicked), or none */
     highlight: (tag: string | null) => void;
-    /** The tags of the elements shown on the diagram, or not */
-    showTags: (shown: boolean) => void;
     /** The elements pinged when a message of them comes, or not */
     pingChanges: (pinged: boolean) => void;
 }
@@ -38,9 +36,8 @@ type DirectionFilter = 'all' | PlantEvent;
 
 const DIRECTION_FILTERS: Array<[DirectionFilter, string]> = [['all', 'All'], ['update', 'Updates'], ['command', 'Commands']];
 
-/** What the log shows on the diagram: the tags, the pings of the changes */
+/** What the log shows on the diagram: the pings of the changes */
 interface LogDisplay {
-    tags: boolean;
     pings: boolean;
 }
 
@@ -60,7 +57,7 @@ export default class LogView extends FilterListView<LogEntry> {
     /** The direction of the messages shown (kept for the next opening) */
     protected direction: DirectionFilter = 'all';
     /** What it shows on the diagram (kept for the next opening) */
-    protected display: LogDisplay = { tags: false, pings: false };
+    protected display: LogDisplay = { pings: false };
 
     constructor(hooks: LogHooks) {
         super();
@@ -139,11 +136,11 @@ export default class LogView extends FilterListView<LogEntry> {
     protected renderHeader(): HTMLElement[] {
         const intro = document.createElement('p');
         intro.className = 'scada-log-intro';
-        intro.textContent = 'Live traffic between this diagram and the plant. Readings come in addressed by element tags, and whatever you do to a valve or a pump goes out as a command. The plant is simulated here - in a real deployment, the same messages would travel over OPC UA, MQTT, WebSockets or a REST API.';
+        intro.textContent = 'Live traffic between this diagram and the plant. Readings come in addressed by element tags, and whatever you do to a valve or a pump goes out as a command. The plant is simulated here - in a real deployment, the same messages would travel over OPC UA, MQTT, WebSockets or a REST API. Hold Alt to see the tags of the elements.';
         // On the diagram: the tags (where the messages go), the elements pinged as their messages come
         const settings = document.createElement('div');
         settings.className = 'scada-log-options';
-        settings.append(this.renderOption('Show the tags', 'tags'), this.renderOption('Ping the changes', 'pings'));
+        settings.append(this.renderOption('Ping the changes', 'pings'));
         return [intro, settings];
     }
 
@@ -192,7 +189,6 @@ export default class LogView extends FilterListView<LogEntry> {
     /** What it shows on the diagram: as asked */
     protected onOpen(): void {
         const { hooks, display } = this;
-        hooks.showTags(display.tags);
         hooks.pingChanges(display.pings);
     }
 
@@ -200,7 +196,6 @@ export default class LogView extends FilterListView<LogEntry> {
     protected onClose(): void {
         const { hooks } = this;
         this.selectTag(null);
-        hooks.showTags(false);
         hooks.pingChanges(false);
     }
 
@@ -239,10 +234,7 @@ export default class LogView extends FilterListView<LogEntry> {
         const { target } = evt;
         if (!(target instanceof HTMLInputElement)) return;
         const { hooks, display } = this;
-        if (target.dataset.option === 'tags') {
-            display.tags = target.checked;
-            hooks.showTags(target.checked);
-        } else if (target.dataset.option === 'pings') {
+        if (target.dataset.option === 'pings') {
             display.pings = target.checked;
             hooks.pingChanges(target.checked);
         }
