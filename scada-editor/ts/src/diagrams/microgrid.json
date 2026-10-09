@@ -1321,8 +1321,8 @@
     },
     {
       "position": {
-        "x": 1240,
-        "y": 124
+        "x": 980,
+        "y": 460
       },
       "size": {
         "width": 240,
@@ -1350,10 +1350,12 @@
       "source": {
         "id": "29febbff-570a-4707-9c07-b76036dfb495",
         "anchor": {
-          "name": "left",
+          "name": "topLeft",
           "args": {
-            "useModelGeometry": true,
-            "rotate": true
+            "dx": "0%",
+            "dy": "50%",
+            "rotate": true,
+            "useModelGeometry": true
           }
         }
       },
@@ -1362,8 +1364,8 @@
         "anchor": {
           "name": "topLeft",
           "args": {
-            "dx": "85%",
-            "dy": "0%",
+            "dx": "10%",
+            "dy": "100%",
             "rotate": true,
             "useModelGeometry": true
           }
