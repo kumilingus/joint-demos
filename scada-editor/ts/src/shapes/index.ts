@@ -42,7 +42,6 @@ import OrificePlate from './models/piping/OrificePlate';
 import AirCooler from './models/process/AirCooler';
 import Scrubber from './models/process/Scrubber';
 import WaterTower from './models/storage/WaterTower';
-import Trend from './models/charts/Trend';
 import Zone from './models/piping/Zone';
 import Join from './models/piping/Join';
 import Pipe from './models/piping/Pipe';
@@ -102,7 +101,7 @@ export {
     HeatExchanger, Filter, Boiler, Reactor, DistillationColumn, Separator, Cyclone, AirCooler, Scrubber,
     LiquidTank, ConicTank, MixingTank, Silo, SphericalTank, Hopper, HorizontalTank, WaterTower,
     Stack, CoolingTower,
-    Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display, Trend,
+    Instrument, PressureGauge, Panel, Thermometer, FlowMeter, Beacon, Display,
     Zone, Join, Tee, Cross, Elbow, EndCap, Manifold, Pipe, Label, SignalLine, Arrow, CustomImage, YStrainer, OrificePlate,
     Screen,
     Generator, Transformer, Busbar, Battery, CircuitBreaker, Disconnector, Fuse, SurgeArrester, Ground, Lamp, Heater, ElectricMeter, Wire,
@@ -157,8 +156,6 @@ export const cellNamespace = {
     AirCooler,
     Scrubber,
     WaterTower,
-    // Not in the palette anymore (the line chart instead): a saved diagram with it still loads.
-    Trend,
     Zone,
     Join,
     Label,

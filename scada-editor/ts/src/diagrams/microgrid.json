@@ -1245,7 +1245,7 @@
         "height": 130
       },
       "angle": 0,
-      "type": "Trend",
+      "type": "LineChart",
       "label": {
         "text": "Load (kW)",
         "position": "bottom"

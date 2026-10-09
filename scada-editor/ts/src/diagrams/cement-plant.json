@@ -1225,7 +1225,7 @@
         "height": 170
       },
       "angle": 0,
-      "type": "Trend",
+      "type": "LineChart",
       "id": "53ecd45b-5812-49bb-a2bf-174d57ba9027",
       "layer": "instruments",
       "z": 2,

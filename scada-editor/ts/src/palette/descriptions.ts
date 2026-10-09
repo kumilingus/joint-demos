@@ -80,7 +80,6 @@ export const descriptions: Record<string, ShapeDescription> = {
     FlowMeter: { title: 'Flow Meter', description: 'Measures and shows the flow through the line.' },
     Beacon: { title: 'Beacon', description: 'An alarm light: it pulses while the alarm is on.' },
     Display: { title: 'Display', description: 'Shows a value of the plant with its unit.' },
-    Trend: { title: 'Trend', description: 'Shows the recent history of a value: the newest on the right.' },
     SignalLine: { title: 'Signal Line', description: 'Connects an instrument (a transmitter) to what it measures or controls.' },
     Label: { title: 'Label', description: 'A text on the diagram: a name of an area, a note.' },
     Arrow: { title: 'Arrow', description: 'Points at a part of the plant (from a note, ...): an arrowhead at either end and its color set in the inspector.' },

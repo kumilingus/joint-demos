@@ -157,8 +157,6 @@ const generators: Record<string, Generator> = {
     BallValve: toggle(0.1),
     SolenoidValve: toggle(0.1),
     GateValve: toggle(0.1),
-    // The newest value of a trend
-    Trend: element => Math.round(drift(Number(valueOf(element) ?? 50), 8, 5, 95)),
     // The electrical equipment: a breaker trips now and then, a generator stops; a meter shows the voltage.
     CircuitBreaker: toggle(0.08),
     Generator: toggle(0.05),

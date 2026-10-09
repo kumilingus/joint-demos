@@ -54,15 +54,6 @@ const reading: Property = {
     write: (_element, value) => ({ 'data/value': Number(Number(value).toFixed(1)) })
 };
 
-/** The newest value of a history (a trend): on the right, the oldest one drops out on the left */
-const newest: Property = {
-    read: (element) => {
-        const values = dataOf<number[]>(element, 'values') ?? [];
-        return values[values.length - 1] ?? 0;
-    },
-    write: (element, value) => ({ 'data/values': [...(dataOf<number[]>(element, 'values') ?? []).slice(1), Number(value)] })
-};
-
 const RUNNING = [
     'Pump', 'Compressor', 'Fan', 'Blower', 'Motor', 'Turbine', 'ConveyorBelt', 'Conveyor', 'AirCooler', 'MixingTank',
     'BucketElevator', 'Crusher', 'Mill', 'RotaryKiln', 'Reactor', 'Boiler', 'Generator', 'DieselGenerator', 'WindTurbine', 'Beacon'
@@ -80,7 +71,6 @@ const properties: Record<string, Record<string, Property>> = {
     FlowMeter: { value: reading },
     Display: { value: reading },
     ElectricMeter: { value: reading },
-    Trend: { value: newest },
     ControlValve: { open: opening },
     ...Object.fromEntries(SWITCHED.map(type => [type, { open }])),
     ...Object.fromEntries(RUNNING.map(type => [type, { power }]))
