@@ -4,6 +4,7 @@ import { besideElement, seenBBox, sideOf } from '../shapes/attributes/label';
 import { readProperty, type TagValue } from '../plant/properties';
 import { flipOf } from '../shapes/attributes/flip';
 import { dataOf } from '../shapes/common/data';
+import { getTag } from '../shapes/common/tag';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -49,7 +50,7 @@ const pumpControlMarkup = util.svg/* xml */`
 
 const toggleValveControlMarkup = util.svg/* xml */`
     <foreignObject class="${CONTROL_CLASS}" width="${TOGGLE_SIZE.width}" height="${TOGGLE_SIZE.height}">
-        <div class="scada-control-switch" xmlns="http://www.w3.org/1999/xhtml">
+        <div @selector="switch" class="scada-control-switch" role="group" xmlns="http://www.w3.org/1999/xhtml">
             <button @selector="buttonOn" class="scada-control-switch-on" data-open="true">Open</button>
             <button @selector="buttonOff" class="scada-control-switch-off" data-open="false">Closed</button>
         </div>
@@ -116,6 +117,11 @@ abstract class Control extends dia.HighlighterView {
         const inert = !paper || !operable.get(paper);
         this.el.classList.toggle('scada-control-inert', inert);
         this.el.querySelectorAll('foreignObject > *').forEach(node => node.toggleAttribute('inert', inert));
+    }
+
+    /** The name of the element for screen readers (the control has no visible label): its tag, else its label */
+    protected getElementName(element: dia.Element): string {
+        return getTag(element) ?? element.prop(['label', 'text']) ?? '';
     }
 
     /** The node of `children` by its `@selector`, if it is of the type */
@@ -190,6 +196,7 @@ class PumpControl extends Control {
         const input = this.getNode('input', HTMLInputElement);
         if (input) {
             input.checked = Boolean(dataOf(model, 'power'));
+            input.setAttribute('aria-label', `${this.getElementName(model)} running`);
         }
         this.updatePending(model);
         this.updateInert(cellView);
@@ -225,6 +232,7 @@ class ToggleValveControl extends Control {
         this.renderChildren();
         const isOpen = Boolean(dataOf(model, 'open'));
         this.placeBeside(model, TOGGLE_SIZE.width, TOGGLE_SIZE.height);
+        this.getNode('switch', HTMLDivElement)?.setAttribute('aria-label', this.getElementName(model));
         // The state it is in: pressed (a segmented control, see `runtime.css`); the state asked for: pending
         this.updatePending(model);
         const asked = this.pending?.value;
@@ -286,6 +294,7 @@ class SliderValveControl extends Control {
             const value = this.getNode('value', HTMLOutputElement);
             if (slider) {
                 slider.value = String((asked ?? open) * 100);
+                slider.setAttribute('aria-label', `${this.getElementName(model)} opening`);
             }
             if (value) {
                 value.textContent = asked === null ? getOpenText(open) : `→ ${getOpenText(asked)}`;

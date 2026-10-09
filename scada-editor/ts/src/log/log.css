@@ -76,11 +76,12 @@
 }
 
 .scada-log-message[data-kind="update"] .scada-log-kind {
-    color: var(--selection);
+    /* Toward the text: readable on a marked row too (4.5:1) */
+    color: color-mix(in oklab, var(--selection), var(--foreground) 30%);
 }
 
 .scada-log-message[data-kind="command"] .scada-log-kind {
-    color: var(--color-amber);
+    color: color-mix(in oklab, var(--color-amber), var(--foreground) 30%);
 }
 
 .scada-log-tag {

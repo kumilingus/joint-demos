@@ -41,7 +41,7 @@ function createInspectorPlaceholder(app: App): HTMLElement {
 function createExamples(app: App): HTMLElement {
     const el = document.createElement('div');
     el.className = 'scada-inspector-examples';
-    const title = document.createElement('h4');
+    const title = document.createElement('h2');
     title.textContent = 'Examples';
     el.append(title);
     EXAMPLES.forEach((example) => {

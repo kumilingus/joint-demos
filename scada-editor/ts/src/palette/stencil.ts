@@ -189,8 +189,9 @@ export function createStencil(
     { getImages, onUpload, onDrop }: StencilHooks
 ): ui.Stencil {
 
-    const el = document.createElement('div');
+    const el = document.createElement('aside');
     el.className = 'scada-stencil-panel';
+    el.setAttribute('aria-label', 'Palette');
     container.prepend(el);
 
     // The labels with icons (elements of this palette)

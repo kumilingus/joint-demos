@@ -81,6 +81,7 @@ Also: uploaded images (saved with the diagram, with an opacity), Favorites, and 
 - The plant sends tag, property, value (`FM-101 value 18.6`); the editor sends commands the same way. Nothing about the drawings is part of it.
 - Any transport (WebSocket, MQTT, OPC UA, REST): replace the simulated plant with an adapter. Example in the [developer notes](dev-notes.md#connecting-a-plant).
 - The UI theme of the editor's JointJS+ components is reusable in other apps.
+- Screen readers: named toolbar buttons, swatches and run-mode controls (by the equipment's ID), page landmarks; the text contrast at least 4.5:1 in both schemes.
 
 ## Files and examples
 

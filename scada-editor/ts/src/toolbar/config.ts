@@ -22,28 +22,31 @@ const modeButtonTooltip: Record<Mode, string> = {
 /** The attributes of a button with its tooltip: below it */
 const tooltip = (text: string) => ({ button: { 'data-tooltip': text, ...BELOW }});
 
+/** The attributes of a button with an icon only: its name (for screen readers) and its tooltip below it */
+const iconButton = (name: string, text: string) => ({ button: { 'aria-label': name, 'data-tooltip': text, ...BELOW }});
+
 export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
     // A new diagram is started, the diagram is saved (as JSON) and opened in the edit mode.
     const file: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
         type: 'button',
         name: 'new',
         group: 'file',
-        attrs: tooltip('A new diagram')
+        attrs: iconButton('New diagram', 'A new diagram')
     }, {
         type: 'button',
         name: 'open',
         group: 'file',
-        attrs: tooltip('Open a diagram (JSON)')
+        attrs: iconButton('Open', 'Open a diagram (JSON)')
     }, {
         type: 'button',
         name: 'save',
         group: 'file',
-        attrs: tooltip('Save the diagram (JSON)')
+        attrs: iconButton('Save', 'Save the diagram (JSON)')
     }, {
         type: 'button',
         name: 'export',
         group: 'file',
-        attrs: tooltip('Export the diagram as an image (WebP): the screen if there is one')
+        attrs: iconButton('Export image', 'Export the diagram as an image (WebP): the screen if there is one')
     }] : [];
     // The settings of the diagram (see `settings.ts`): edited in the edit mode
     const settings: ui.Toolbar.Options['tools'] = mode === Mode.Edit ? [{
@@ -67,12 +70,12 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         type: 'button',
         name: 'palette',
         group: 'view',
-        attrs: tooltip('Show / hide the palette (Ctrl+\\ both panels)')
+        attrs: iconButton('Palette', 'Show / hide the palette (Ctrl+\\ both panels)')
     }, {
         type: 'button',
         name: 'inspector',
         group: 'view',
-        attrs: tooltip('Show / hide the inspector (Ctrl+\\ both panels)')
+        attrs: iconButton('Inspector', 'Show / hide the inspector (Ctrl+\\ both panels)')
     }] : [];
     // Find a shape (see `find/FindList.ts`): in both modes
     const find: ui.Toolbar.Options['tools'] = [{
@@ -86,12 +89,12 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
         type: 'undo',
         name: 'undo',
         group: 'history',
-        attrs: tooltip('Undo (Ctrl+Z)')
+        attrs: iconButton('Undo', 'Undo (Ctrl+Z)')
     }, {
         type: 'redo',
         name: 'redo',
         group: 'history',
-        attrs: tooltip('Redo (Ctrl+Y)')
+        attrs: iconButton('Redo', 'Redo (Ctrl+Y)')
     }] : [];
     return {
         // Disable the undo / redo buttons when there's nothing to undo / redo (and the zoom ones at the limits).
@@ -121,19 +124,19 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             name: 'zoomOut',
             group: 'zoom',
             min: ZOOM.min,
-            attrs: tooltip('Zoom out')
+            attrs: iconButton('Zoom out', 'Zoom out')
         }, {
             type: 'zoomIn',
             name: 'zoomIn',
             group: 'zoom',
             max: ZOOM.max,
-            attrs: tooltip('Zoom in')
+            attrs: iconButton('Zoom in', 'Zoom in')
         }, {
             // Not the `zoomToFit` tool (it rounds the zoom): the same fit as on loading (see `zoomToFit()`)
             type: 'button',
             name: 'zoomToFit',
             group: 'zoom',
-            attrs: tooltip('Zoom to fit the diagram')
+            attrs: iconButton('Zoom to fit', 'Zoom to fit the diagram')
         },
         ...settings,
         ...log,
@@ -145,12 +148,12 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             name: 'fullscreen',
             group: 'view',
             target: document.documentElement,
-            attrs: tooltip('Full screen')
+            attrs: iconButton('Full screen', 'Full screen')
         }, {
             type: 'button',
             name: 'colorScheme',
             group: 'view',
-            attrs: tooltip('Light / dark')
+            attrs: iconButton('Light / dark', 'Light / dark')
         }, {
             type: 'button',
             name: 'mode',

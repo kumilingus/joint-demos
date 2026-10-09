@@ -82,6 +82,7 @@ function createSwatch(color: string, tooltip: string, onClick: () => void): HTML
     swatch.className = 'scada-color-swatch';
     swatch.style.background = color;
     swatch.dataset.tooltip = tooltip;
+    swatch.setAttribute('aria-label', tooltip);
     setBesidePanel(swatch, 'inspector');
     swatch.addEventListener('click', onClick);
     return swatch;
@@ -166,6 +167,8 @@ export function renderColorField(
     input.className = 'color';
     input.dataset.attribute = path;
     input.dataset.type = 'color';
+    // Named by the label of the field (the label is not of the input: it may hold the help of the field)
+    input.setAttribute('aria-label', options.label ?? path);
     if (options.mixed) {
         // None of the colors (the inspector gives the field its default instead of no value)
         el.classList.add('mixed');

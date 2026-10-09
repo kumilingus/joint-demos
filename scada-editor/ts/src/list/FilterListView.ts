@@ -152,6 +152,7 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
         const input = document.createElement('input');
         input.type = 'search';
         input.placeholder = this.placeholder;
+        input.setAttribute('aria-label', this.placeholder);
         input.value = this.filter;
         row.append(input);
         return row;
