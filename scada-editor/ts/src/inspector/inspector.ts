@@ -117,6 +117,17 @@ function getInputs(element: dia.Element): Inputs {
             // How the label is drawn: after the colors, before the layer
             group: 'appearance',
             index: 90
+        }, offset: {
+            // Further from the shape: clear of what is drawn beside it (a pipe under a silo)
+            type: 'number',
+            label: 'Label offset',
+            min: 0,
+            max: 200,
+            step: 2,
+            defaultValue: 0,
+            when: { regex: { 'label/text': '\\S' }},
+            group: 'appearance',
+            index: 91
         }}});
     }
 

@@ -35,7 +35,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Lock** - right-click a shape or a group: it stays where it is and the pointer goes through it (an image in the background, a frame) - not selected by a click, a region or *Select All*, no link connects to it, not in the minimap. To unlock, right-click it: the canvas menu offers *Unlock* (its ID) and *Unlock All*.
 - **Move** by dragging, or with the arrow keys (a grid step, five with `Shift`); **resize** and **rotate** a single shape with its handles. With *Move selected shapes only* (Settings) a drag moves a selected shape only - on any other it pans the canvas: click (tap) the shape first.
 - **Flip** - shapes that face a way (pump, check valve, strainer, manifold, turbine, compressor, fan, blower, cyclone, kiln, crusher, mill, bucket elevator): right-click *Flip Horizontally* (`Shift` + `H`) or *Flip Vertically* (`Shift` + `V`) mirrors them instead of turning them upside down; connected pipes stay on their stubs. The strainer and the manifold flip vertically too (the leg up, the outlets up).
-- **Name** - in the inspector; the label of the shape shows it (or its ID, or both - *Labels* in the [settings](#settings)), at its *Label position* (top, left, right, bottom).
+- **Name** - in the inspector; the label of the shape shows it (or its ID, or both - *Labels* in the [settings](#settings)), at its *Label position* (top, left, right, bottom) - further from the shape by its *Label offset* (clear of a pipe under it).
 - **Label shape** (a text on its own) - several lines (`Enter` in its text), its font size, style, weight and *Alignment* (left, center, right).
 - **Control position** - the side of a valve's buttons or slider (Controls group).
 
@@ -58,7 +58,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 
 - **ID** - the tag the plant uses (*HV-101*): optional - the equipment gets one when it is dropped, a picture or a background shape only when you type one or press *Generate* (the next free one of its kind); a copy gets a new one. A Label shape and a zone have none.
 - **Name**, **Unit**, ... - the texts.
-- **Appearance** - Finish (Auto, Shaded, Flat), Color, Outline, Outline width, Accent (the slashed swatch is Auto), Label position, Layer. *Outline width* shows while the shape is outlined: an outline color of its own, or flat.
+- **Appearance** - Finish (Auto, Shaded, Flat), Color, Outline, Outline width, Accent (the slashed swatch is Auto), Label position, Label offset, Layer. *Outline width* shows while the shape is outlined: an outline color of its own, or flat.
 - **Values**, **Thresholds**, **Slices**, **Columns** - the data of the shape.
 - **Controls** - *Use controls* and *Control position*.
 

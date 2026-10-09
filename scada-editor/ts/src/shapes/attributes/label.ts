@@ -99,6 +99,11 @@ export function besideElement(element: dia.Element, side: LabelPosition, size: {
     };
 }
 
+/** How much further from the shape the label is (see `ModelLabel.offset`): 0 if none */
+export function labelOffset(label: ModelLabel | undefined): number {
+    return Math.max(0, Number(label?.offset) || 0);
+}
+
 /** The side of the label (see `LabelPosition`), the bottom if none */
 export function sideOf(position: unknown): LabelPosition {
     return position === 'top' || position === 'left' || position === 'right' ? position : 'bottom';
@@ -160,19 +165,22 @@ function drawText(
     refBBox: g.Rect,
     node: Element,
     attrs: TextAttributes,
-    position: LabelPosition | undefined
+    label: ModelLabel | undefined
 ): TextAttributes | undefined {
     set.call(view, value, refBBox, node, attrs, view);
+    const position = label?.position;
     // None: a text of its own (not a label at a side of the shape)
     if (!position || !(node instanceof SVGGraphicsElement)) {
         return undefined;
     }
+    const offset = labelOffset(label);
     const { width, height } = node.getBBox();
-    const layout = layoutOf(view, position, LABEL_GAP, { width, height });
-    const transform = layout?.transform ?? 'matrix(1,0,0,1,0,0)';
+    const layout = layoutOf(view, position, LABEL_GAP + offset, { width, height });
+    // Below, as the shape draws it: moved down by the offset
     if (!layout) {
-        return { transform };
+        return { transform: `matrix(1,0,0,1,0,${offset})` };
     }
+    const transform = layout.transform ?? 'matrix(1,0,0,1,0,0)';
     set.call(view, value, refBBox, node, { ...attrs, x: layout.x, 'text-vertical-anchor': layout.verticalAnchor }, view);
     return { x: layout.x, y: layout.y, 'text-anchor': layout.anchor, transform };
 }
@@ -230,8 +238,8 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
             const textAttrs: TextAttributes = { ...attrs, ...own, text, ...(annotations ? { annotations } : {}) };
             const wrap = attrs['text-wrap'];
             const drawn = wrap
-                ? drawText(this, textWrapSet, wrap, refBBox, node, textAttrs, label?.position)
-                : drawText(this, textSet, text, refBBox, node, textAttrs, label?.position);
+                ? drawText(this, textWrapSet, wrap, refBBox, node, textAttrs, label)
+                : drawText(this, textSet, text, refBBox, node, textAttrs, label);
             if (!drawn) {
                 return own;
             }
@@ -250,6 +258,8 @@ interface FromModel {
 export interface ModelLabel {
     text?: string;
     position?: LabelPosition;
+    /** How much further from the shape it is (px): clear of what is drawn beside it (a pipe under a silo) */
+    offset?: number;
     size?: number;
     weight?: number;
     styles?: TextStyle[];
@@ -313,5 +323,5 @@ export function labelReach(element: dia.Element, side: 'top' | 'bottom'): number
         return 0;
     }
     const size = LABEL_SIZES[(element.graph && getStyle(element.graph).labelSize) || 'medium'].px;
-    return text.split('\n').length * size * LINE_HEIGHT + LABEL_GAP;
+    return text.split('\n').length * size * LINE_HEIGHT + LABEL_GAP + labelOffset(element.get('label'));
 }

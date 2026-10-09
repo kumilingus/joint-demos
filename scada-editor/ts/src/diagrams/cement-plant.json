@@ -774,12 +774,8 @@
       "z": 5,
       "tag": "SL-101",
       "label": {
-        "text": "Raw Meal 1"
-      },
-      "attrs": {
-        "label": {
-          "y": "calc(h + 50)"
-        }
+        "text": "Raw Meal 1",
+        "offset": 36
       }
     },
     {
@@ -798,12 +794,8 @@
       "z": 6,
       "tag": "SL-102",
       "label": {
-        "text": "Raw Meal 2"
-      },
-      "attrs": {
-        "label": {
-          "y": "calc(h + 50)"
-        }
+        "text": "Raw Meal 2",
+        "offset": 36
       }
     },
     {

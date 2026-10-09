@@ -46,6 +46,15 @@ function withoutLabel(element: dia.Element, overflow: Required<Overflow>): Requi
     return overflow;
 }
 
+/**
+ * How much further down the label below the element is (`label.offset`, see `ModelLabel`): the room of the label counted
+ * in the overflow below (the labels on the other sides are not)
+ */
+function bottomLabelOffset(element: dia.Element): number {
+    const { position = 'bottom', offset = 0 } = element.get('label') ?? {};
+    return position === 'bottom' ? Math.max(0, Number(offset) || 0) : 0;
+}
+
 export interface FootprintOptions {
     /** Whether the label of the element is shown (and counted), `true` by default */
     label?: boolean;
@@ -95,7 +104,7 @@ export function getFootprint(cell: dia.Cell, { label = true }: FootprintOptions 
     const defined = Object.fromEntries(Object.entries(own).filter(([, value]) => value !== undefined));
     const { top = 0, right = 0, bottom = 0, left = 0 } = { ...DEFAULT_OVERFLOW, ...defined };
     const drawing = label
-        ? { top, right, bottom, left }
+        ? { top, right, bottom: bottom + bottomLabelOffset(element), left }
         : withoutLabel(element, { top, right, bottom, left });
     return footprint.moveAndExpand({
         x: -drawing.left,
