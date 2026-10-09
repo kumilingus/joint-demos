@@ -29,9 +29,10 @@ export default class Conveyor extends Connection {
     // Its colors (see `style.ts`)
     static attributes: typeof dia.Link.attributes = { ...fromStyleAttributes };
 
-    // A conveyor is equipment (it runs or stands still): it has a tag (see `tags.ts`), as the shapes do
+    // A conveyor is equipment (it runs or stands still): it has a tag (see `tags.ts`), as the shapes do - `CNV`, not
+    // `CV` (a control valve)
     get tagPrefix(): string {
-        return 'CV';
+        return 'CNV';
     }
 
     // The color of the belt (see `ColorField`)

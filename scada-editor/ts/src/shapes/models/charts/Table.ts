@@ -82,8 +82,9 @@ export default class Table extends Shape {
         return { bottom: 0 };
     }
 
+    // The series of its IDs (see `tags.ts`): `TBL`, not the initials `TB` (a turbine)
     get tagPrefix(): string {
-        return 'TB';
+        return 'TBL';
     }
 
     // Its color: the fill; its outline: the border and the grid; its accent: the head with the names of the columns

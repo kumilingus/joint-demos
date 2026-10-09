@@ -90,7 +90,7 @@
       "data": {
         "power": 1
       },
-      "tag": "CV-101"
+      "tag": "CNV-101"
     },
     {
       "source": {
@@ -129,7 +129,7 @@
       "data": {
         "power": 1
       },
-      "tag": "CV-102"
+      "tag": "CNV-102"
     },
     {
       "source": {
@@ -169,7 +169,7 @@
       "data": {
         "power": 1
       },
-      "tag": "CV-103"
+      "tag": "CNV-103"
     },
     {
       "source": {
@@ -199,7 +199,7 @@
       "data": {
         "power": 1
       },
-      "tag": "CV-104"
+      "tag": "CNV-104"
     },
     {
       "source": {
@@ -598,7 +598,7 @@
       "data": {
         "power": 1
       },
-      "tag": "CV-105"
+      "tag": "CNV-105"
     },
     {
       "source": {
@@ -635,7 +635,7 @@
       "data": {
         "power": 1
       },
-      "tag": "CV-106"
+      "tag": "CNV-106"
     },
     {
       "source": {
@@ -1017,7 +1017,7 @@
       "id": "75f57af8-6425-4275-8c08-e1a7e55f826c",
       "layer": "equipment",
       "z": 17,
-      "tag": "TB-101",
+      "tag": "TBL-101",
       "sourceTag": "CR-101",
       "data": {
         "values": [
@@ -1067,7 +1067,7 @@
       "id": "5fcb055b-3c9f-48ba-8909-bb9ce5ee014f",
       "layer": "equipment",
       "z": 18,
-      "tag": "TB-102",
+      "tag": "TBL-102",
       "sourceTag": "ML-101",
       "data": {
         "values": [
@@ -1117,7 +1117,7 @@
       "id": "3a6ee97e-c447-480a-8483-e2deb28d4287",
       "layer": "equipment",
       "z": 19,
-      "tag": "TB-103",
+      "tag": "TBL-103",
       "sourceTag": "BL-101",
       "data": {
         "values": [
@@ -1166,7 +1166,7 @@
       "id": "e28654fc-5981-443f-9c7f-02e590780b10",
       "layer": "equipment",
       "z": 20,
-      "tag": "TB-104",
+      "tag": "TBL-104",
       "data": {
         "values": [
           [

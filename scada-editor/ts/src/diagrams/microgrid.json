@@ -795,7 +795,7 @@
       "id": "14afbcc8-bb8c-4254-ab33-20222d3b08cc",
       "layer": "equipment",
       "z": 11,
-      "tag": "TB-101",
+      "tag": "TBL-101",
       "sourceTag": "WT-101"
     },
     {
@@ -845,7 +845,7 @@
       "id": "6e84ae8d-d4f7-4dfe-8d9c-45baffb49188",
       "layer": "equipment",
       "z": 12,
-      "tag": "TB-102",
+      "tag": "TBL-102",
       "sourceTag": "PV-101"
     },
     {
@@ -895,7 +895,7 @@
       "id": "ce2728aa-841c-4734-ac63-4cccd7358fbe",
       "layer": "equipment",
       "z": 13,
-      "tag": "TB-103",
+      "tag": "TBL-103",
       "sourceTag": "DG-101"
     },
     {
@@ -945,7 +945,7 @@
       "id": "1aa2195e-00c6-489e-91a9-29aca864b0ef",
       "layer": "equipment",
       "z": 14,
-      "tag": "TB-104",
+      "tag": "TBL-104",
       "sourceTag": "BESS-101"
     },
     {

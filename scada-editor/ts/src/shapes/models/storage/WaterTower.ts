@@ -23,8 +23,9 @@ export default class WaterTower extends Shape {
         return { top: 16, bottom: 34 };
     }
 
+    // The series of its IDs (see `tags.ts`): `WTW`, not the initials `WT` (a wind turbine)
     get tagPrefix(): string {
-        return 'WT';
+        return 'WTW';
     }
 
     defaults(): dia.Element.Attributes {
