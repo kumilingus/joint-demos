@@ -43,11 +43,11 @@ export default class TagIndex extends mvc.Listener<[]> {
 
     /** The next free tag with the prefix: `P-103` after `P-101` and `P-102` */
     next(prefix: string): string {
-        const pattern = new RegExp(`^${prefix}-(\\d+)$`);
+        // The prefix as it is (any characters of an ID typed), the number after it
+        const start = `${prefix}-`;
         const numbers = [...this.cells.keys()]
-            .map(tag => tag.match(pattern))
-            .filter((match): match is RegExpMatchArray => Boolean(match))
-            .map(match => Number(match[1]));
+            .filter(tag => tag.startsWith(start) && /^\d+$/.test(tag.slice(start.length)))
+            .map(tag => Number(tag.slice(start.length)));
         return `${prefix}-${numbers.length > 0 ? Math.max(...numbers) + 1 : FIRST_NUMBER}`;
     }
 
