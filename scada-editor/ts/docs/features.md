@@ -41,7 +41,7 @@ Also: uploaded images (saved with the diagram, with an opacity), Favorites, and 
 ## Connections
 
 - Pipes connect to pipe stubs, wires to electrical terminals only, signal lines and arrows to shapes, conveyors to bulk equipment.
-- Routing straight, orthogonal or curved; pipe sizes and wire thicknesses; split a connection, insert a join into a pipe, disconnect a shape.
+- Routing straight, orthogonal or curved; pipe and arrow sizes (an arrow's arrowheads with it), wire thicknesses; split a connection, insert a join into a pipe, disconnect a shape.
 - A pipe takes the color of its medium.
 
 ![The Microgrid example: wires between the terminals of the generators, the breakers, the busbar and the loads](images/microgrid.png)

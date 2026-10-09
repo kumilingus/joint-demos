@@ -48,7 +48,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **Signal lines** and **arrows** - to a shape; an arrow can also point from a Label. Its ends and color are in the inspector.
 - **Conveyors** - to the body of the equipment, where the end is dropped (a chute, an inlet).
 - **Routing** - Straight, Orthogonal or Curved in the inspector; drag the handles to move ends and bends.
-- **Size** of a pipe (Small, Medium, Large), **Thickness** of a wire (Thin, Normal, Thick) - in the inspector.
+- **Size** of a pipe or an arrow (Small, Medium, Large: an arrow's arrowheads too), **Thickness** of a wire (Thin, Normal, Thick) - in the inspector.
 - **Split Here** / **Insert Join** - right-click a connection / a pipe.
 - **Disconnect** - right-click a shape: its connections stay, their ends disconnected where they were; the shape moves off them.
 

@@ -19,17 +19,20 @@ export const LINE_WIDTHS: Record<LineWidth, { scale: number }> = {
     thick: { scale: 1.5 }
 };
 
+// The links whose width the user calls their size (small, medium, large): a pipe, an arrow (its line and its arrowheads)
+const SIZED_TYPES = ['Pipe', 'Arrow'];
+
 /**
- * The field of the width, as the user calls it: the size of a pipe (small, medium, large), the thickness of a wire
- * (thin, normal, thick) - of several kinds of the links, their thickness
+ * The field of the width, as the user calls it: the size of a pipe, an arrow (small, medium, large), the thickness of a
+ * wire (thin, normal, thick) - of several kinds of the links, their thickness
  */
 export function lineWidthField(types: string[]): { label: string; options: Array<{ value: LineWidth; content: string }> } {
-    const pipes = types.length > 0 && types.every(type => type === 'Pipe');
-    const names: Record<LineWidth, string> = pipes
+    const sized = types.length > 0 && types.every(type => SIZED_TYPES.includes(type));
+    const names: Record<LineWidth, string> = sized
         ? { thin: 'Small', normal: 'Medium', thick: 'Large' }
         : { thin: 'Thin', normal: 'Normal', thick: 'Thick' };
     return {
-        label: pipes ? 'Size' : 'Thickness',
+        label: sized ? 'Size' : 'Thickness',
         options: keysOf(names).map(value => ({ value, content: names[value] }))
     };
 }
@@ -37,10 +40,14 @@ export function lineWidthField(types: string[]): { label: string; options: Array
 /** The widths of the strokes of a link (normal), by their selectors */
 export type StrokeWidths = Record<string, number>;
 
-/** A width of a stroke (normal) at the size of the link (its `lineWidth`, see `style.ts`), to half a pixel */
+/** How much the strokes of the link are scaled: by its size (its `lineWidth`, see `style.ts`) */
+export function lineWidthScale(cell: dia.Cell): number {
+    return (LINE_WIDTHS[styleOf<LineWidth>(cell, 'lineWidth') ?? 'normal'] ?? LINE_WIDTHS.normal).scale;
+}
+
+/** A width of a stroke (normal) at the size of the link, to half a pixel */
 export function scaledWidth(cell: dia.Cell, strokeWidth: number): number {
-    const { scale } = LINE_WIDTHS[styleOf<LineWidth>(cell, 'lineWidth') ?? 'normal'] ?? LINE_WIDTHS.normal;
-    return Math.round(strokeWidth * scale * 2) / 2;
+    return Math.round(strokeWidth * lineWidthScale(cell) * 2) / 2;
 }
 
 export const lineWidthAttributes = {

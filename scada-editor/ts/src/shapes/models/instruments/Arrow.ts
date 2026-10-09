@@ -3,6 +3,10 @@ import { Layer, LABEL_COLOR } from '../../../const';
 import Connection from '../Connection';
 import { fromStyleAttributes } from '../../attributes/from-style';
 import { styleOf } from '../../common/style';
+import { lineWidthAttributes, lineWidthScale, type StrokeWidths } from '../../common/line-width';
+
+// The width of its line (normal, see `lineWidth`): its arrowheads scaled with it (see `arrowheads`)
+const STROKE_WIDTHS: StrokeWidths = { line: 2 };
 
 /** The markup of the shape: parsed once, shared by all its elements. */
 const markup = util.svg/* xml */`
@@ -51,21 +55,24 @@ function trimPath(path: g.Path, start: number, end: number): g.Path {
 export default class Arrow extends Connection {
 
     static attributes: typeof dia.Link.attributes = {
-        // Its color (see `style.ts`)
+        // Its color (see `style.ts`), its size (see `line-width.ts`)
         ...fromStyleAttributes,
+        ...lineWidthAttributes,
         // `arrowheads` in the attributes of the line: its arrowheads (`sourceArrowhead`, `targetArrowhead`) in its color
-        // (of its style, else its own) - the markers defined here: the library takes the color of a marker from the
-        // `stroke` set on the line, not from one computed
+        // (of its style, else its own), at its size - the markers defined here: the library takes the color of a marker
+        // from the `stroke` set on the line, not from one computed
         arrowheads: {
             set(this: dia.LinkView, _arrowheads: boolean, _refBBox: dia.BBox, _node: Element, attrs: Record<string, unknown>) {
                 const color = styleOf<string>(this.model, 'color') ?? String(attrs.stroke ?? LABEL_COLOR);
+                const scale = lineWidthScale(this.model);
                 const marker = (end: 'source' | 'target', turned: boolean) => {
                     const head = arrowheadMarker(this.model.get(`${end}Arrowhead`));
                     if (!head) {
                         return 'none';
                     }
                     // As the library defines them: in the color of the line, the one at the end turned around
-                    const definition = { stroke: color, fill: color, ...(turned ? { transform: 'rotate(180)' } : {}), ...head };
+                    const transform = `${turned ? 'rotate(180) ' : ''}scale(${scale})`;
+                    const definition = { stroke: color, fill: color, transform, ...head };
                     return this.paper ? `url(#${this.paper.defineMarker(definition)})` : 'none';
                 };
                 return { 'marker-start': marker('source', false), 'marker-end': marker('target', true) };
@@ -77,9 +84,11 @@ export default class Arrow extends Connection {
         'arrow-connection': {
             set(this: dia.LinkView) {
                 const { model } = this;
+                // At the size of the arrow (see `arrowheads`)
+                const scale = lineWidthScale(model);
                 const length = (end: 'source' | 'target'): number => {
                     const head: Arrowhead = model.get(`${end}Arrowhead`);
-                    return ARROWHEAD_LENGTHS[head] ?? 0;
+                    return (ARROWHEAD_LENGTHS[head] ?? 0) * scale;
                 };
                 return { d: trimPath(this.getConnection(), length('source'), length('target')).serialize() };
             }
@@ -109,7 +118,8 @@ export default class Arrow extends Connection {
                     // Ends where its arrowheads start (see `arrow-connection`)
                     arrowConnection: true,
                     stroke: LABEL_COLOR,
-                    strokeWidth: 2,
+                    // Its width at its size (see `line-width.ts`)
+                    strokeWidthBase: STROKE_WIDTHS.line,
                     strokeLinejoin: 'round',
                     strokeLinecap: 'round',
                     pointerEvents: 'none',
@@ -118,6 +128,11 @@ export default class Arrow extends Connection {
                 }
             }
         };
+    }
+
+    // Small, medium or large (see `line-width.ts`)
+    get strokeWidths(): StrokeWidths {
+        return STROKE_WIDTHS;
     }
 
     preinitialize(): void {
