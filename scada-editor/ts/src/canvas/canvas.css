@@ -84,7 +84,7 @@
     position: relative;
 }
 
-.scada-app[data-screen="shown"] > .joint-toolbar {
+.scada-app[data-screen="shown"] .scada-toolbar {
     position: absolute;
     top: 0;
     left: 0;
@@ -94,7 +94,7 @@
 }
 
 /* The strip at the top of the window it is shown from (a part of the toolbar: hovered with it) */
-.scada-app[data-screen="shown"] > .joint-toolbar::after {
+.scada-app[data-screen="shown"] .scada-toolbar::after {
     content: '';
     position: absolute;
     top: 100%;
@@ -107,12 +107,12 @@
  * Down while hovered, focused from the keyboard (not a clicked button), just shown (see `revealToolbar()`)
  * or pressed (see `holdToolbarWhilePressed()`)
  */
-.scada-app[data-screen="shown"] > .joint-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
+.scada-app[data-screen="shown"] .scada-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
     transform: translateY(0);
     box-shadow: var(--shadow-md);
 }
 
-.scada-app[data-screen="shown"] :is(.scada-navigator-panel, .joint-toolbar [data-group="zoom"]) {
+.scada-app[data-screen="shown"] :is(.scada-navigator-panel, .scada-toolbar [data-group="zoom"]) {
     display: none;
 }
 

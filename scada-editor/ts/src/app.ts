@@ -248,7 +248,7 @@ export class App {
      * the palette is created for the edit mode only, the toolbar for each mode (with its tools).
      */
     protected enterMode(mode: Mode): void {
-        this.toolbar = createToolbar(this, mode);
+        this.toolbar = createToolbar(partOf(this.el, '.scada-toolbar-panel'), this, mode);
         if (mode === Mode.Edit) {
             const snaplines = this.createSnaplines();
             this.stencil = createStencil(partOf(this.el, '.scada-main'), this.scroller, snaplines, {
