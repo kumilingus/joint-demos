@@ -134,7 +134,7 @@ function getInputs(element: dia.Element): Inputs {
     // A label (a text on its own) has a size, a style and a weight of the text too (a zone: the label size of the diagram).
     if (element.get('type') === 'Label') {
         util.merge(inputs, { label: {
-            size: { type: 'number', label: 'Font size', min: 8, max: 72, group: 'appearance', index: index++ },
+            size: { type: 'number', label: 'Font size', min: 8, max: 96, group: 'appearance', index: index++ },
             // Several at once: an array (see `textStyles`)
             styles: {
                 type: 'select-button-group',
