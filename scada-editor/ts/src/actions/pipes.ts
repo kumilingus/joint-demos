@@ -3,7 +3,7 @@ import type { App } from '../app';
 import { GRID_SIZE } from '../const';
 import Join from '../shapes/models/piping/Join';
 import { selectCell } from './selection';
-import { rememberEndDirections, sideOf, type LinkEnd } from '../shapes/common/routing';
+import { forgetEndDirection, rememberEndDirections, sideOf, type LinkEnd } from '../shapes/common/routing';
 
 /*
  * A pipe split at a point: into two pipes, or with a join inserted. The elements disconnected from their links.
@@ -36,7 +36,15 @@ function splitAt(app: App, link: dia.Link, point: dia.Point): SplitLink {
     first.set({ target: split.toJSON(), vertices: vertices.filter(isBefore) });
     const second = link.clone();
     second.set({ source: split.toJSON(), vertices: vertices.filter(vertex => !isBefore(vertex)) });
+    // The new ends: not in a direction an end of the link had (see `rememberEndDirections()`)
+    forgetEndDirection(first, 'target');
+    forgetEndDirection(second, 'source');
     return { point: split, first, second, direction };
+}
+
+/** The cells in the group of the link, if it is in one (added: they replace it) */
+function embedInGroupOf(link: dia.Link, cells: dia.Cell[]): void {
+    link.getParentCell()?.embed(cells);
 }
 
 /** Split the link at the point into two links with disconnected ends there: the first one selected, one step of the history. */
@@ -44,8 +52,9 @@ export function splitLink(app: App, link: dia.Link, point: dia.Point): void {
     const { graph } = app;
     const { first, second } = splitAt(app, link, point);
     graph.startBatch('split-link');
-    link.remove();
     graph.addCells([first, second]);
+    embedInGroupOf(link, [first, second]);
+    link.remove();
     graph.stopBatch('split-link');
     selectCell(app, first);
 }
@@ -69,8 +78,9 @@ export function insertJoin(app: App, link: dia.Link, point: dia.Point): void {
     first.set({ target: end(sideOf(direction.clone().scale(-1, -1))) });
     second.set({ source: end(sideOf(direction)) });
     graph.startBatch('insert-join');
-    link.remove();
     graph.addCells([join, first, second]);
+    embedInGroupOf(link, [join, first, second]);
+    link.remove();
     graph.stopBatch('insert-join');
     selectCell(app, join);
 }
@@ -112,8 +122,10 @@ export function disconnectSelection(app: App): void {
         rememberEndDirections(link, view, ends);
         points.forEach(([end, point]) => link.prop(end, point, { rewrite: true }));
     });
-    // The members of a selected group move with it
-    app.selection.toArray().filter((cell): cell is dia.Element => cell.isElement() && !cell.getParentCell())
+    // A member of a group too (selected on its own); with its group selected it moves with the group
+    const { selection } = app;
+    selection.toArray()
+        .filter((cell): cell is dia.Element => cell.isElement() && !cell.getAncestors().some(group => selection.has(group)))
         .forEach(element => element.translate(DISCONNECT_SHIFT, DISCONNECT_SHIFT));
     graph.stopBatch('disconnect');
 }
