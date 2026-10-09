@@ -253,8 +253,8 @@ export function createStencil(
     });
 
     // Every load, reload and search of a group fits its paper (see `fitToFootprints()`).
-    // `fitPaperToContent()` is a method of the stencil not in its typings; `contentOptions` can't fit
-    // a filtered group from the models (the hidden shapes are fitted too).
+    // TODO: `fitPaperToContent()` is an internal method of the stencil (not in its typings); `contentOptions` can't fit
+    // a filtered group from the models (the hidden shapes are fitted too) - until it can (requested from JointJS+)
     (stencil as ui.Stencil & { fitPaperToContent: (paper: dia.Paper) => void }).fitPaperToContent = fitToFootprints;
     stencil.render();
 
@@ -471,6 +471,7 @@ export function customShapes(images: ImageLibrary): dia.Cell[] {
  */
 function fitToFootprints(paper: dia.Paper): void {
     const footprints = paper.model.getCells()
+        // TODO: the class of a shape the search hides is internal to the stencil - until it tells (requested from JointJS+)
         .filter(cell => !paper.findViewByModel(cell)?.el.classList.contains('unmatched'))
         .map(cell => getFootprint(cell, { label: false }));
     const contentArea = footprints.length > 0
@@ -515,7 +516,8 @@ function addUploadButton(stencil: ui.Stencil, onUpload: StencilHooks['onUpload']
     setBesidePanel(button, 'palette');
     button.textContent = 'Upload images';
     button.append(input);
-    // Under the header of the group: its element by the stencil's markup (internal - no API for content of a group)
+    // Under the header of the group: its element by the stencil's markup
+    // TODO: internal - until a group can have content of an app's own (requested from JointJS+)
     groupEl.querySelector('.group-label')?.after(button);
 
     input.addEventListener('change', async() => {

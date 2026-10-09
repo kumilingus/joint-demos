@@ -17,6 +17,7 @@ export const computedAttributes = {
     computed: {
         // Of a shape only (see `Shape.attributes`)
         set(this: dia.ElementView<Shape>, _drawn: boolean, refBBox: g.Rect, node: Element, attrs: Record<string, unknown>) {
+            // TODO: the selector of the node by its DOM attribute (internal) - until a view tells it (clientIO/joint#3541)
             const selector = node.getAttribute('joint-selector');
             if (!selector) {
                 return {};

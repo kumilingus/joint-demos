@@ -186,7 +186,9 @@ export function createSelection(scroller: ui.PaperScroller, collection: mvc.Coll
 /**
  * The selection doesn't move the selected cells with the pressed one (as `preventDefaultInteraction()` of a view), after
  * it handled the press: by its data of the event - `interactionPrevented`, and its batch (started at the press) closed,
- * as it doesn't close it then. Internals of `ui.Selection`: until it has an API of its own.
+ * as it doesn't close it then.
+ * TODO: internals of `ui.Selection` (the keys of its event data, the name of its batch) - removed once it has an API
+ * of its own (requested from JointJS+)
  */
 export function preventSelectionInteraction(selection: ui.Selection, evt: dia.Event): void {
     const { action, interactionPrevented } = selection.eventData(evt);

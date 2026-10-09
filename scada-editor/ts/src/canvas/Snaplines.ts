@@ -6,6 +6,8 @@ import { getDragDelegate } from './drag';
  * the top-most ancestor of a member of a group, see `Group`; the copy of a duplicating drag, see `drag.ts`), and the library
  * snaps that one - but it takes the offset of the pointer from the pressed element, which has none (the offset is
  * stored on the delegate): the moved view jumped (its corner to the pointer).
+ * TODO: overrides an internal method of `ui.Snaplines` (not in its typings) and writes its event data - removed once
+ * the library fixes it (reported to JointJS+)
  */
 export default class Snaplines extends ui.Snaplines {
 
