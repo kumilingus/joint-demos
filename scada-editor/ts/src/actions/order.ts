@@ -117,11 +117,10 @@ function overlapping(app: App, cell: dia.Cell): dia.Element[] {
  */
 export function moveToLayer(app: App, layer: Layer, { back = false } = {}): void {
     const { graph } = app;
-    // In their drawing order (to the back the top one first): kept over each other in the layer
-    const cells = drawnCells(app.selection.toArray())
-        .map(cell => ({ cell, order: drawingOrder(graph, cell) }))
-        .sort((a, b) => ((a.order[0] - b.order[0]) || (a.order[1] - b.order[1])) * (back ? -1 : 1))
-        .map(({ cell }) => cell);
+    // By their layers, then their `z` (to the back the top one first): kept over each other in the layer
+    const layerIndex = (cell: dia.Cell) => Object.values(Layer).findIndex(id => id === graph.getCellLayerId(cell));
+    const sorted: dia.Cell[] = util.sortBy(drawnCells(app.selection.toArray()), [layerIndex, cell => cell.z()]);
+    const cells = back ? sorted.reverse() : sorted;
     if (cells.length === 0) {
         return;
     }
@@ -137,35 +136,39 @@ export function moveToLayer(app: App, layer: Layer, { back = false } = {}): void
     graph.stopBatch('to-layer');
 }
 
-/** Where the cell is drawn: its layer (from the bottom one up, see `Layer`), then its place in the layer (by z) */
-export function drawingOrder(graph: dia.Graph, cell: dia.Cell): [number, number] {
-    const layerId = graph.getCellLayerId(cell);
-    const layerIndex = Object.values(Layer).findIndex(layer => layer === layerId);
-    const indexInLayer = graph.getLayer(layerId).cellCollection.models.indexOf(cell);
-    return [layerIndex, indexInLayer];
+/**
+ * Whether the cell is drawn below the other one: its view before the other's in the document (the layers of the paper
+ * are in their order too) - as they are painted, equal `z` too. Of cells at a point of the canvas: shown, rendered.
+ */
+function isDrawnBelow(paper: dia.Paper, cell: dia.Cell, other: dia.Cell): boolean {
+    const el = cell.findView(paper)?.el;
+    const otherEl = other.findView(paper)?.el;
+    if (!el || !otherEl) {
+        return false;
+    }
+    return (el.compareDocumentPosition(otherEl) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
 }
 
-/** Whether the cell is drawn below the other one */
-function isDrawnBelow(graph: dia.Graph, cell: dia.Cell, other: dia.Cell): boolean {
-    const [layer, index] = drawingOrder(graph, cell);
-    const [otherLayer, otherIndex] = drawingOrder(graph, other);
-    return layer < otherLayer || (layer === otherLayer && index < otherIndex);
+/** Of the cells (at a point of the canvas), the one drawn on top; none of none */
+export function topDrawn<T extends dia.Cell>(paper: dia.Paper, cells: T[]): T | undefined {
+    if (cells.length === 0) {
+        return undefined;
+    }
+    return cells.reduce((top, cell) => (isDrawnBelow(paper, top, cell) ? cell : top));
 }
 
 /**
  * The element drawn for the cell at the point: the cell itself, or for a group the top one of its members
  * there (a group draws nothing); `null` if none of its members is there.
  */
-function drawnAt(graph: dia.Graph, cell: dia.Cell, point: dia.Point): dia.Cell | null {
+function drawnAt(app: App, cell: dia.Cell, point: dia.Point): dia.Cell | null {
+    const { graph, paper } = app;
     if (!Group.isGroup(cell)) {
         return cell;
     }
     const members = graph.findElementsAtPoint(point)
         .filter(element => !Group.isGroup(element) && element.isEmbeddedIn(cell, { deep: true }));
-    if (members.length === 0) {
-        return null;
-    }
-    return members.reduce((top, member) => (isDrawnBelow(graph, top, member) ? member : top));
+    return topDrawn(paper, members) ?? null;
 }
 
 /**
@@ -173,16 +176,16 @@ function drawnAt(graph: dia.Graph, cell: dia.Cell, point: dia.Point): dia.Cell |
  * under it there (selected with the menu, see `elementBelow()`) - the next menu goes on down from it.
  */
 export function menuCell(app: App, clicked: dia.Cell, point: dia.Point): dia.Cell {
-    const { graph, selection } = app;
+    const { graph, paper, selection } = app;
     // The selected one of the clicked cell and its groups, else the top group
     const cell = withGroups(clicked).find(level => selection.has(level)) ?? topGroup(clicked);
     const [selected] = selection.length === 1 ? selection.toArray() : [];
     if (!selected || selected === cell || !selected.isElement()) {
         return cell;
     }
-    const drawn = drawnAt(graph, selected, point);
+    const drawn = drawnAt(app, selected, point);
     const atPoint = drawn !== null && graph.findElementsAtPoint(point).some(element => element === drawn);
-    return atPoint && isDrawnBelow(graph, drawn, clicked) ? selected : cell;
+    return atPoint && isDrawnBelow(paper, drawn, clicked) ? selected : cell;
 }
 
 /**
@@ -192,17 +195,16 @@ export function menuCell(app: App, clicked: dia.Cell, point: dia.Point): dia.Cel
  * (a member: its sibling below it, see `levelBelow()`). Not the screen (a frame edited in the settings, see `settings.ts`).
  */
 export function elementBelow(app: App, cell: dia.Cell, point: dia.Point): dia.Element | null {
-    const { graph } = app;
-    const reference = drawnAt(graph, cell, point) ?? cell;
+    const { graph, paper } = app;
+    const reference = drawnAt(app, cell, point) ?? cell;
     const below = graph.findElementsAtPoint(point)
         .filter(element => element !== cell && !Group.isGroup(element) && !Screen.isScreen(element))
-        .filter(element => !element.isEmbeddedIn(cell, { deep: true }) && isDrawnBelow(graph, element, reference))
-        .map(element => ({ element, order: drawingOrder(graph, element) }));
-    if (below.length === 0) {
+        .filter(element => !element.isEmbeddedIn(cell, { deep: true }) && isDrawnBelow(paper, element, reference));
+    const top = topDrawn(paper, below);
+    if (!top) {
         return null;
     }
-    below.sort((a, b) => (b.order[0] - a.order[0]) || (b.order[1] - a.order[1]));
-    const level = levelBelow(below[0].element, cell);
+    const level = levelBelow(top, cell);
     return level.isElement() ? level : null;
 }
 

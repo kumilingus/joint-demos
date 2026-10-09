@@ -4,7 +4,7 @@ import Screen from '../shapes/models/diagram/Screen';
 import Group from '../shapes/models/diagram/Group';
 import { isLocked, lockOwner } from '../canvas/lock';
 import { clearSelection, selectCells } from './selection';
-import { drawingOrder } from './order';
+import { topDrawn } from './order';
 
 /*
  * Locking: a locked element is as if it weren't there while editing (an image in the background, a frame) - the
@@ -40,10 +40,9 @@ export function lockedElements(app: App): dia.Element[] {
  * draws nothing), unlocked as a whole - itself, or the locked group it is in (see `lockOwner()`)
  */
 export function lockedAt(app: App, point: dia.Point): dia.Element | null {
-    const { graph } = app;
+    const { graph, paper } = app;
     const locked = graph.findElementsAtPoint(point).filter(element => !Group.isGroup(element) && isLocked(element));
-    const order = (element: dia.Element) => drawingOrder(graph, element);
-    const [top] = locked.sort((a, b) => order(b)[0] - order(a)[0] || order(b)[1] - order(a)[1]);
+    const top = topDrawn(paper, locked);
     const owner = top ? lockOwner(top) : null;
     return owner?.isElement() ? owner : null;
 }
