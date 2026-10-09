@@ -7,10 +7,12 @@ import {
 } from '../actions';
 import { closeMenu } from '../canvas/context-menu';
 import { isTyping } from '../events';
+import { isListOpen } from '../list/FilterListView';
 
 /**
  * Keyboard shortcuts of the editor: delete, undo / redo, the clipboard, select all, group / ungroup, flip, the arrows moving
- * the selection, the side panels shown or hidden, `Escape` one level up (the group of the selected member, then nothing).
+ * the selection, the side panels shown or hidden, `Escape` - the menu or the list open closed, else one level up (the group
+ * of the selected member, then nothing).
  * Active in the edit mode only.
  */
 export default class KeyboardController extends Controller {
@@ -54,7 +56,10 @@ function onEscape(app: App, evt: dia.Event) {
     if (isTyping(evt)) {
         return;
     }
-    closeMenu();
+    // A menu, a list (Find: see `FindController`) closed first - one thing a press
+    if (closeMenu() || isListOpen(app.el)) {
+        return;
+    }
     // One level up: the group of the selected member (see `Group`)
     selectUp(app);
 }

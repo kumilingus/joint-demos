@@ -236,8 +236,11 @@ function sameTypeHint(app: App): string | undefined {
     return `${name} · ${sameTypeCells(app).length}`;
 }
 
-export function closeMenu(): void {
+/** Close the context menu, if one is open: whether it was */
+export function closeMenu(): boolean {
+    const open = ui.ContextToolbar.opened !== undefined;
     ui.ContextToolbar.close();
+    return open;
 }
 
 /** A cell named in a menu (the hint of an item): by its ID, else its name, else its kind (`Image`) */

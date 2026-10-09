@@ -2,9 +2,10 @@ import { type dia, mvc, ui } from '@joint/plus';
 
 /*
  * A list of entries filtered by the words typed, its rows marked by their keys - shown in a dialog that can be moved
- * (the log of the plant, Find). The view is its content: it lives as long as its controller (its filter, its marks kept
- * from an opening to the next one), a dialog is created for each opening (see `open()`). Triggers `open` and `close`
- * (closed by its button, by Escape, by the close button of the dialog).
+ * (the log of the plant, Find). The view is its content: it lives as long as its controller (the log keeps its filter
+ * from an opening to the next one), a dialog is created for each opening (see `open()`) - one list open in a container
+ * at a time (see `openLists`). Triggers `open` and `close` (closed by its button, by Escape, by the close button of the
+ * dialog, by another list opened).
  * A subclass gives the entries, their keys and texts, their rows; it adds to the parts and to the handling of the events
  * by overriding them (calling `super`).
  */
@@ -12,6 +13,17 @@ import { type dia, mvc, ui } from '@joint/plus';
 /** A text as it is searched (the filter, the texts of the entries): lower case, without the dashes - `b101` finds `B-101` */
 export function normalizeSearch(text: string): string {
     return text.toLowerCase().replaceAll('-', '');
+}
+
+/**
+ * The list open in a container: one at a time (Find and the log both mark a cell of the diagram - one arrow, see
+ * `canvas/marker.ts`); another one opened there closes it
+ */
+const openLists = new WeakMap<HTMLElement, { close(): void }>();
+
+/** Whether a list is open in the container (see `openLists`) */
+export function isListOpen(container: HTMLElement): boolean {
+    return openLists.has(container);
 }
 
 export default abstract class FilterListView<T> extends mvc.View<undefined> {
@@ -67,6 +79,8 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
         if (this.dialog) {
             return;
         }
+        openLists.get(container)?.close();
+        openLists.set(container, this);
         this.button = button ?? null;
         this.button?.classList.add('active');
         this.render();
@@ -85,6 +99,9 @@ export default abstract class FilterListView<T> extends mvc.View<undefined> {
             // The view kept for the next opening (out of the dialog)
             this.el.remove();
             this.dialog = null;
+            if (openLists.get(container) === this) {
+                openLists.delete(container);
+            }
             this.button?.classList.remove('active');
             this.button = null;
             this.onClose();
