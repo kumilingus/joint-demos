@@ -83,7 +83,7 @@ export default class Zone extends Shape {
             attrs: {
                 body: {
                     // In the colors of its style (see `from-style.ts`)
-                    fromStyle: { stroke: 'outline', fill: 'color' },
+                    fromStyle: { stroke: 'outline', fill: 'color', strokeWidth: 'outlineWidth' },
                     fill: 'var(--shape-face)',
                     stroke: 'var(--shape-zone-stroke)',
                     strokeWidth: 1,

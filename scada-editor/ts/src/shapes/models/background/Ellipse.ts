@@ -52,7 +52,7 @@ export default class Ellipse extends Shape {
             attrs: {
                 body: {
                     // In the colors of its style (see `from-style.ts`)
-                    fromStyle: { stroke: 'outline', fill: 'color', fillOpacity: 'opacity' },
+                    fromStyle: { stroke: 'outline', fill: 'color', fillOpacity: 'opacity', strokeWidth: 'outlineWidth' },
                     cx: 'calc(0.5 * w)',
                     cy: 'calc(0.5 * h)',
                     rx: 'calc(0.5 * w)',

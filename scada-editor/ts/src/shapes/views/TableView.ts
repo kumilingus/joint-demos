@@ -3,6 +3,8 @@ import { LABEL_COLOR } from '../../const';
 import { colorFieldOf, outlineFieldOf, accentFieldOf, fieldDefault } from '../../inspector/color-field';
 import type Table from '../models/charts/Table';
 import { markTag } from '../common/tag';
+import { outlineWidthOf } from '../common/gradients';
+import { styleOf } from '../common/style';
 import { columnLayout, HEAD_HEIGHT, ROW_HEIGHT, TITLE_HEIGHT, type CellValue } from '../models/charts/Table';
 
 /*
@@ -70,6 +72,10 @@ function colorOf(table: dia.Element, field: ReturnType<typeof colorFieldOf>): st
     }
     return table.prop(field.path) ?? fieldDefault(table, field) ?? 'none';
 }
+
+// The widths of the lines of the grid and of the border (none of its own outline width, see `updateColors()`)
+const GRID_WIDTH = 1;
+const BORDER_WIDTH = 1.5;
 
 export default class TableView extends dia.ElementView {
 
@@ -163,9 +169,9 @@ export default class TableView extends dia.ElementView {
             ...[...ys].filter(y => y > 0 && y < height).map(y => `M 0 ${y} H ${width}`),
             ...starts.slice(1).map(x => `M ${x} ${top} V ${height}`)
         ];
-        this.grid = svg(el, 'path', { d: lines.join(' '), fill: 'none' });
+        this.grid = svg(el, 'path', { d: lines.join(' '), fill: 'none', 'stroke-width': GRID_WIDTH });
         // The border over the head and the grid
-        this.border = svg(el, 'rect', { width, height, rx: 4, ry: 4, fill: 'none', 'stroke-width': 1.5 });
+        this.border = svg(el, 'rect', { width, height, rx: 4, ry: 4, fill: 'none', 'stroke-width': BORDER_WIDTH });
 
         if (header) {
             this.text(el, String(model.get('title') ?? ''), width / 2, TITLE_HEIGHT / 2, width - 2 * CELL_PADDING, 'middle', { 'font-weight': 'bold', 'font-size': 15 });
@@ -230,6 +236,10 @@ export default class TableView extends dia.ElementView {
         this.head?.setAttribute('fill', colorOf(model, accentFieldOf(model)));
         this.grid?.setAttribute('stroke', stroke);
         this.border?.setAttribute('stroke', stroke);
+        // Its own outline width (its default style has an outline: the diagram's width would thicken every table)
+        const width = styleOf(model, 'outlineWidth') === undefined ? undefined : outlineWidthOf(model);
+        this.grid?.setAttribute('stroke-width', String(width ?? GRID_WIDTH));
+        this.border?.setAttribute('stroke-width', String(width ?? BORDER_WIDTH));
     }
 
     /** A text centered on a line at the point, cut with an ellipsis to the width */

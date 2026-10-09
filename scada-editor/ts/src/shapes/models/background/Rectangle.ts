@@ -52,7 +52,7 @@ export default class Rectangle extends Shape {
             attrs: {
                 body: {
                     // In the colors of its style (see `from-style.ts`)
-                    fromStyle: { stroke: 'outline', fill: 'color', fillOpacity: 'opacity' },
+                    fromStyle: { stroke: 'outline', fill: 'color', fillOpacity: 'opacity', strokeWidth: 'outlineWidth' },
                     width: 'calc(w)',
                     height: 'calc(h)',
                     rx: 8,
