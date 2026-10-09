@@ -1999,7 +1999,8 @@
       "z": 2,
       "tag": "TK-102",
       "label": {
-        "text": "Condensate Tank"
+        "text": "Condensate Tank",
+        "position": "top"
       }
     },
     {
