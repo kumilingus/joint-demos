@@ -1,17 +1,17 @@
-import type { App } from '../app';
-import { CONTROL_VIEW_CLASS } from '../runtime/controls';
+import { type dia, highlighters } from '@joint/plus';
+import Screen from '../shapes/models/diagram/Screen';
+import { getControl } from '../runtime/controls';
 
 /*
- * The cells of some IDs brought forward, the others dimmed with their controls (the log filtered by them): one CSS rule
- * listing the IDs matched (on the views and the controls: `data-tag`, see `markTag()`), nothing of the diagram changes.
- * The screen is not dimmed (it is the canvas of the runtime mode).
+ * Cells of the diagram dimmed (by the log: the ones its filter leaves out, the ones without an ID): a class on their views
+ * (a highlighter: nothing of the diagram changes) and on their controls. Never the screen (the canvas of the runtime mode).
  */
 
-const STYLE_ID = 'scada-dim';
+const DIM_ID = 'dim';
 
 // A dimmed cell: gray and flat - in the background (its shapes still read); faded in Safari, which does not draw the
-// CSS filter functions on the SVG elements (an SVG filter there: blurred, or a straight pipe gone)
-const DIMMED = isSafari() ? 'opacity: 0.25;' : 'filter: grayscale(1) contrast(0.5) brightness(1.15);';
+// CSS filter functions on the SVG elements (see `canvas.css`)
+const DIMMED_CLASS = isSafari() ? 'scada-faded' : 'scada-grayed';
 
 /** Whether the browser is Safari (its engine: on iOS every browser) */
 function isSafari(): boolean {
@@ -19,27 +19,26 @@ function isSafari(): boolean {
     return /AppleWebKit/.test(userAgent) && !/Chrome|Chromium|Edg|Android/.test(userAgent);
 }
 
-/**
- * The cells of the diagram dimmed but the cells of the tags. No tags (nothing found): none dimmed - a filter finding
- * nothing does not hide the diagram.
- */
-export function dimCellsExceptTags(app: App, tags: string[]): void {
-    if (tags.length === 0) {
-        undimCells();
-        return;
-    }
-    let style = document.getElementById(STYLE_ID);
-    if (!style) {
-        style = document.createElement('style');
-        style.id = STYLE_ID;
-        document.head.append(style);
-    }
-    const kept = ['[data-type="Screen"]', ...tags.map(tag => `[data-tag=${CSS.escape(tag)}]`)].join(', ');
-    const dimmed = `:is(.joint-cell, .${CONTROL_VIEW_CLASS}):not(${kept})`;
-    style.textContent = `.scada-app[data-mode="${app.mode}"] .scada-diagram ${dimmed} { ${DIMMED} }`;
+/** The cells of the paper dimmed (the ones dimmed before not any more) */
+export function dimCells(paper: dia.Paper, cells: Set<dia.Cell>): void {
+    undimCells(paper);
+    cells.forEach((cell) => {
+        const view = cell.findView(paper);
+        if (!view || Screen.isScreen(cell)) {
+            return;
+        }
+        highlighters.addClass.add(view, 'root', DIM_ID, { className: DIMMED_CLASS });
+        getControl(view)?.el.classList.add(DIMMED_CLASS);
+    });
 }
 
-/** None of the cells dimmed */
-export function undimCells(): void {
-    document.getElementById(STYLE_ID)?.remove();
+/** None of the cells of the paper dimmed */
+function undimCells(paper: dia.Paper): void {
+    highlighters.addClass.removeAll(paper, DIM_ID);
+    paper.model.getElements().forEach((element) => {
+        const view = element.findView(paper);
+        if (view) {
+            getControl(view)?.el.classList.remove(DIMMED_CLASS);
+        }
+    });
 }

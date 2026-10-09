@@ -34,9 +34,21 @@
     cursor: default;
 }
 
-/* The log open: a click on a cell with an ID filters the log by it (see `LogController`; the ID on the view: `markTag()`) */
-.scada-app[data-mode="runtime"][data-log="open"] .scada-diagram .joint-cell[data-tag] {
+/* The log open: a click on a cell with an ID filters the log by it (see `LogController`, the class: `log-hooks.ts`) */
+.scada-app[data-mode="runtime"] .scada-diagram .joint-cell.scada-log-clickable {
     cursor: pointer;
+}
+
+/*
+ * The cells the log's filter leaves out (see `canvas/dim.ts`): gray and flat - in the background; faded in Safari, which
+ * does not draw the CSS filter functions on the SVG elements (an SVG filter there: blurred, or a straight pipe gone)
+ */
+.scada-diagram .scada-grayed {
+    filter: grayscale(1) contrast(0.5) brightness(1.15);
+}
+
+.scada-diagram .scada-faded {
+    opacity: 0.25;
 }
 
 /*

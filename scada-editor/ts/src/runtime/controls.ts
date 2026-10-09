@@ -4,7 +4,6 @@ import { besideElement, seenBBox, sideOf } from '../shapes/attributes/label';
 import { readProperty, type TagValue } from '../plant/properties';
 import { flipOf } from '../shapes/attributes/flip';
 import { dataOf } from '../shapes/common/data';
-import { markTag } from '../shapes/common/tag';
 
 /*
  * The controls of the equipment: highlighters embedding HTML form controls
@@ -30,9 +29,6 @@ const CONTROL_GAP = 6;
 
 /** The class of the root of every control. */
 const CONTROL_CLASS = 'scada-control';
-
-/** The class of the view of a control (the highlighter): its element's ID on it (see `Control.markElement()`) */
-export const CONTROL_VIEW_CLASS = 'scada-control-view';
 
 /** Whether the event started on a control (and not on the element under it). */
 export function isControlEvent(evt: dia.Event): boolean {
@@ -122,12 +118,6 @@ abstract class Control extends dia.HighlighterView {
         this.el.querySelectorAll('foreignObject > *').forEach(node => node.toggleAttribute('inert', inert));
     }
 
-    /** Its element's ID on it, as on the element's view (see `markTag()`): dimmed with the element (see `canvas/dim.ts`) */
-    protected markElement(cellView: dia.CellView): void {
-        this.el.classList.add(CONTROL_VIEW_CLASS);
-        markTag(this.el, cellView.model);
-    }
-
     /** The node of `children` by its `@selector`, if it is of the type */
     protected getNode<T extends Element>(selector: string, type: abstract new () => T): T | null {
         const node = this.childNodes?.[selector];
@@ -203,7 +193,6 @@ class PumpControl extends Control {
         }
         this.updatePending(model);
         this.updateInert(cellView);
-        this.markElement(cellView);
     }
 
     /** Asked to run or to stop: the checkbox shows the state of the pump until the plant changes it (pending) */
@@ -245,7 +234,6 @@ class ToggleValveControl extends Control {
             button?.toggleAttribute('data-pending', asked === open);
         });
         this.updateInert(cellView);
-        this.markElement(cellView);
     }
 
     /** The state of the button (open or closed) asked for, unless the valve is in it */
@@ -304,7 +292,6 @@ class SliderValveControl extends Control {
             }
         }
         this.updateInert(cellView);
-        this.markElement(cellView);
     }
 
     onInput(evt: dia.Event): void {
@@ -340,6 +327,11 @@ function getOpenText(open: number): string {
 }
 
 const CONTROL_HIGHLIGHTER_ID = 'control';
+
+/** The control of the element of the view, if it has one (see `updateControl()`) */
+export function getControl(view: dia.CellView): dia.HighlighterView | null {
+    return dia.HighlighterView.get(view, CONTROL_HIGHLIGHTER_ID);
+}
 
 /** Whether the element has a control (it can be turned off in the inspector). */
 export function hasControl(element: dia.Element): element is Shape {

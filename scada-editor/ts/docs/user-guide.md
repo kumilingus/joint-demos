@@ -128,6 +128,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 
 - **Log** - the messages between the diagram and the plant: time, *update* or *command*, tag, property, value.
   - *Ping the changes* - an element pings when its message arrives (blue update, amber command).
+  - *Gray what has no ID* - the shapes and connections without an ID grayed while the log is open: the ones a click filters by stand out.
   - Filter by words (dashes ignored: `p101` finds `P-101`), by All / Updates / Commands, or by clicking elements on the diagram. While it is filtered, the rest of the diagram is grayed (faded in Safari): the elements of the messages shown and the elements whose IDs start with the words (with their controls) stay as they are.
   - Click a message to mark its element - a violet arrow pointing at it (and mark its messages); click it again to clear.
   - `L` opens it, `Escape` closes it.

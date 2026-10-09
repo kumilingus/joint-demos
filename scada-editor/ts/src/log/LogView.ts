@@ -34,6 +34,8 @@ export interface LogHooks {
      * find by their tags brought forward; `null` - not filtered, all as they are
      */
     filterChange: (filter: LogFilter | null) => void;
+    /** The cells a click filters it by (with an ID) marked while it is open - the others grayed if asked - or not */
+    markClickable: (marked: boolean, grayOthers: boolean) => void;
 }
 
 /** What the log is filtered by (see `LogHooks.filterChange`) */
@@ -52,6 +54,8 @@ const DIRECTION_FILTERS: Array<[DirectionFilter, string]> = [['all', 'All'], ['u
 /** What the log shows on the diagram: the pings of the changes */
 interface LogDisplay {
     pings: boolean;
+    /** The cells without an ID grayed (a click does not filter by them) */
+    grayUntagged: boolean;
 }
 
 /**
@@ -70,7 +74,7 @@ export default class LogView extends FilterListView<LogEntry> {
     /** The direction of the messages shown (kept for the next opening) */
     protected direction: DirectionFilter = 'all';
     /** What it shows on the diagram (kept for the next opening) */
-    protected display: LogDisplay = { pings: false };
+    protected display: LogDisplay = { pings: false, grayUntagged: false };
     /** The filter the diagram shows last (see `updateFilter()`): only a change of it shown */
     protected shownFilter = '';
 
@@ -169,7 +173,7 @@ export default class LogView extends FilterListView<LogEntry> {
         // On the diagram: the tags (where the messages go), the elements pinged as their messages come
         const settings = document.createElement('div');
         settings.className = 'scada-log-options';
-        settings.append(this.renderOption('Ping the changes', 'pings'));
+        settings.append(this.renderOption('Ping the changes', 'pings'), this.renderOption('Gray what has no ID', 'grayUntagged'));
         return [intro, settings];
     }
 
@@ -238,6 +242,7 @@ export default class LogView extends FilterListView<LogEntry> {
     protected onOpen(): void {
         const { hooks, display } = this;
         hooks.pingChanges(display.pings);
+        hooks.markClickable(true, display.grayUntagged);
         this.updateFilter();
     }
 
@@ -246,6 +251,7 @@ export default class LogView extends FilterListView<LogEntry> {
         const { hooks } = this;
         this.selectTag(null);
         hooks.pingChanges(false);
+        hooks.markClickable(false, false);
         this.updateFilter();
     }
 
@@ -291,6 +297,10 @@ export default class LogView extends FilterListView<LogEntry> {
         if (target.dataset.option === 'pings') {
             display.pings = target.checked;
             hooks.pingChanges(target.checked);
+        }
+        if (target.dataset.option === 'grayUntagged') {
+            display.grayUntagged = target.checked;
+            hooks.markClickable(true, target.checked);
         }
     }
 }
