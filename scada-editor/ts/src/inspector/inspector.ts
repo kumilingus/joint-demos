@@ -453,10 +453,11 @@ function fieldInputs(cell: dia.Cell, field: ColorField | null, label: string, gr
     if (!field) {
         return {};
     }
-    // No color of its own by default (none, or none at all): Auto
+    // No color of its own by default (none, or none at all): Auto - else its default (of the shape, of its part: the
+    // handwheel of a valve - the first swatch)
     const defaultColor = fieldDefault(cell, field);
     const auto = defaultColor === undefined || defaultColor === 'none';
-    const input: Inputs = { type: 'color', label, group, index, ...(auto ? { auto: true } : {}) };
+    const input: Inputs = { type: 'color', label, group, index, ...(auto ? { auto: true } : { defaultValue: defaultColor }) };
     return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input);
 }
 
