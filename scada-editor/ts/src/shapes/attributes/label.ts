@@ -185,6 +185,12 @@ function drawText(
     return { x: layout.x, y: layout.y, 'text-anchor': layout.anchor, transform };
 }
 
+/** The font size of the labels of the diagram of the element (its style), none for an element of no diagram (the palette) */
+function styleLabelSize(element: dia.Element): TextAttributes {
+    const { graph } = element;
+    return graph ? { 'font-size': LABEL_SIZES[getStyle(graph).labelSize ?? 'medium'].px } : {};
+}
+
 /** A part of a text in bold (the built-in `annotations` of a text) */
 type TextAnnotation = { start: number; end: number; attrs: TextAttributes };
 
@@ -235,8 +241,11 @@ export const fromModelAttributes: Record<string, dia.Cell.PresentationAttributeD
                 // Aligned in its box (a text of its own: the Label shape)
                 ...(label?.align ? alignedText(label.align, refBBox) : {})
             };
-            const textAttrs: TextAttributes = { ...attrs, ...own, text, ...(annotations ? { annotations } : {}) };
             const wrap = attrs['text-wrap'];
+            // Wrapped, in the label size of the diagram (a zone: the CSS sizes its text, see `--style-label-size`) -
+            // measured in it too, unless it has a size of its own
+            const measured = wrap && !label?.size ? styleLabelSize(model) : {};
+            const textAttrs: TextAttributes = { ...attrs, ...measured, ...own, text, ...(annotations ? { annotations } : {}) };
             const drawn = wrap
                 ? drawText(this, textWrapSet, wrap, refBBox, node, textAttrs, label)
                 : drawText(this, textSet, text, refBBox, node, textAttrs, label);

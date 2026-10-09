@@ -89,9 +89,9 @@ export function applyStyle(style: DiagramStyle): void {
     }
 }
 
-// The keys of the style whose change requires an update of the views (read when they are drawn, see `gradients.ts`); the
-// others are CSS variables
-const VIEW_UPDATE_KEYS: (keyof DiagramStyle)[] = ['finish', 'outlineWidth', 'labels'];
+// The keys of the style whose change requires an update of the views (read when they are drawn, see `gradients.ts`; the
+// label size: the texts wrapped and laid out in it, see `label.ts`); the others are CSS variables only
+const VIEW_UPDATE_KEYS: (keyof DiagramStyle)[] = ['finish', 'outlineWidth', 'labels', 'labelSize'];
 
 /** Whether the change of the style requires an update of the views (see `VIEW_UPDATE_KEYS`): always without a previous one */
 function isViewUpdateRequired(style: DiagramStyle, previous?: DiagramStyle): boolean {
