@@ -1,6 +1,5 @@
 import { dia, type ui, util } from '@joint/plus';
-import type { ColorField } from '../shapes/models/Shape';
-import { featuresOf } from '../shapes/common/features';
+import { accentFieldOf, colorFieldOf, outlineFieldOf } from '../shapes/common/color-fields';
 import { renderLabel } from './help';
 import { dataOf } from '../shapes/common/data';
 import { setBesidePanel } from '../tooltips';
@@ -43,31 +42,6 @@ const MAX_RECENT = 5;
 
 /** The colors picked lately (in this session), the latest first */
 const recentColors: string[] = [];
-
-/** The color the user sets on the cell (a shape, a link of ours), if any: see `ColorField` */
-export function colorFieldOf(cell: dia.Cell): ColorField | null {
-    return featuresOf(cell)?.colorField ?? null;
-}
-
-/** The color of the outline the user sets on the cell, if any (see `ColorField`) */
-export function outlineFieldOf(cell: dia.Cell): ColorField | null {
-    return featuresOf(cell)?.outlineField ?? null;
-}
-
-/** The color of the accent the user sets on the cell, if any (see `ColorField`) */
-export function accentFieldOf(cell: dia.Cell): ColorField | null {
-    return featuresOf(cell)?.accentField ?? null;
-}
-
-/** The default of the color field of the cell: its own, or of the defaults of its shape; none - Auto */
-export function fieldDefault(cell: dia.Cell, field: ColorField): string | undefined {
-    const defaults = getCellDefaults(cell);
-    // The color of its part (its own in the defaults of the shape), or of the default of the style
-    if (field.part) {
-        return field.defaultValue ?? util.getByPath(defaults, ['attrs', ...field.part].join('/'), '/');
-    }
-    return field.defaultValue ?? util.getByPath(defaults, field.path.join('/'), '/');
-}
 
 const isHexColor = (value: unknown): value is string => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 

@@ -1,6 +1,6 @@
 import { dia, util } from '@joint/plus';
 import { LABEL_COLOR } from '../../const';
-import { colorFieldOf, outlineFieldOf, accentFieldOf, fieldDefault } from '../../inspector/color-field';
+import { colorFieldOf, outlineFieldOf, accentFieldOf, fieldDefault } from '../common/color-fields';
 import type Table from '../models/charts/Table';
 import { markTag } from '../common/tag';
 import { outlineWidthOf } from '../common/gradients';

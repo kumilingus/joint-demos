@@ -3,7 +3,8 @@ import { hasControl } from '../runtime/controls';
 import { isRouted } from '../shapes/common/routing';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
-import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, isColorField, outlineFieldOf, rememberColor, renderColorField } from './color-field';
+import { getColorFieldValue, isColorField, rememberColor, renderColorField } from './color-field';
+import { accentFieldOf, colorFieldOf, fieldDefault, outlineFieldOf } from '../shapes/common/color-fields';
 import type { ColorField } from '../shapes/models/Shape';
 import Group from '../shapes/models/diagram/Group';
 import { appearanceTargets, createAppearanceInspector, OUTLINE_WIDTH_OPTIONS } from './selection-inspector';
@@ -409,9 +410,10 @@ function colorInputs(cell: dia.Cell, group: string, index: number): Inputs {
     if (!field) {
         return {};
     }
-    const { path, defaultValue } = field;
+    // Its default: of the shape, of the field, of its part (a wire: the color of its line)
+    const defaultValue = fieldDefault(cell, field);
     const input: Inputs = { type: 'color', label: 'Color', group, index, ...(defaultValue ? { defaultValue } : {}) };
-    return path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input);
+    return field.path.reduceRight<Inputs>((nested, key) => ({ [key]: nested }), input);
 }
 
 /**

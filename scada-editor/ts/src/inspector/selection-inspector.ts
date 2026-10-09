@@ -1,12 +1,12 @@
-import { dia, ui, util } from '@joint/plus';
-import { accentFieldOf, colorFieldOf, fieldDefault, getColorFieldValue, isColorField, outlineFieldOf, renderColorField } from './color-field';
+import { dia, ui } from '@joint/plus';
+import { getColorFieldValue, isColorField, renderColorField } from './color-field';
+import { accentFieldOf, colorFieldOf, fieldDefault, outlineFieldOf } from '../shapes/common/color-fields';
 import { hasFinish, OUTLINE_WIDTHS, type SurfaceFinish } from '../shapes/common/gradients';
 import Group from '../shapes/models/diagram/Group';
 import { LAYER_NAMES } from '../canvas/layers';
 import { renderLabel } from './help';
 import { hasLineWidth, lineWidthField, type LineWidth } from '../shapes/common/line-width';
 import { setStyle, styleOf, unsetStyle } from '../shapes/common/style';
-import { getCellDefaults } from '../shapes/defaults';
 import { keysOf } from '../keys';
 import type { ColorField } from '../shapes/models/Shape';
 
@@ -39,11 +39,7 @@ export const OUTLINE_WIDTH_OPTIONS = [
 /** The default color of the cell (of its shape) */
 function defaultColorOf(cell: dia.Cell): unknown {
     const field = colorFieldOf(cell);
-    if (!field) {
-        return undefined;
-    }
-    const { path, defaultValue } = field;
-    return util.getByPath(getCellDefaults(cell), path.join('/'), '/') ?? defaultValue;
+    return field ? fieldDefault(cell, field) : undefined;
 }
 
 /** The color of the cell as drawn: its own, or the default of its shape */
