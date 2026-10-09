@@ -52,15 +52,16 @@ export function copySelection(app: App): void {
     clipboard.copyElements([...elements, ...links], graph, { deep: true });
 }
 
-/** Copy the selected cells and remove them (in one step of the history). */
+/** Copy the selected cells and remove them (in one step of the history): not the screen (it isn't copied either) */
 export function cutSelection(app: App): void {
     const { selection, graph } = app;
-    if (selection.length === 0) {
+    const cut = selection.toArray().filter(cell => !Screen.isScreen(cell));
+    if (cut.length === 0) {
         return;
     }
     copySelection(app);
     graph.startBatch('cut');
-    removeCells(app, selection.toArray());
+    removeCells(app, cut);
     graph.stopBatch('cut');
 }
 
