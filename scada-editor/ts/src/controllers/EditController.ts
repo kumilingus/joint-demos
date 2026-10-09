@@ -3,7 +3,7 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { clearSelection, clickTarget, dragCopy, dragLinkCopy, dropCopy, selectAtLevel, toggleAtLevel } from '../actions';
 import { getDragDelegate } from '../canvas/drag';
-import { isDuplicateEvent, isSelectionEvent } from '../events';
+import { blurField, isDuplicateEvent, isSelectionEvent } from '../events';
 import { openBlankMenu, openCellMenu } from '../canvas/context-menu';
 import { preventSelectionInteraction, showHover } from '../canvas/selection';
 
@@ -82,11 +82,14 @@ function onCellPointerclick(app: App, cellView: dia.CellView, evt: dia.Event) {
 }
 
 /**
- * Moving the selected cells only (see `App.moveSelectedOnly`): a press on a cell that is not selected (nor the group it
- * would move) pans the canvas, the cell not moved - as Keynote, Pages on a tablet
+ * A press on a cell: the keys to the canvas (out of a field, see `blurField()`). Moving the selected cells only (see
+ * `App.moveSelectedOnly`): a press on a cell that is not selected (nor the group it would move) pans the canvas, the
+ * cell not moved - as Keynote, Pages on a tablet
  */
 function onCellPointerdown(app: App, view: dia.CellView, evt: dia.Event) {
     const { scroller, selection, moveSelectedOnly } = app;
+    // The canvas has the keys now (not a field of the inspector)
+    blurField();
     // A drag of a copy (see `onElementPointerdown()`, `onLinkPointerdown()`): not panned
     if (!moveSelectedOnly || isDuplicateEvent(evt)) {
         return;
@@ -102,6 +105,7 @@ function onCellPointerdown(app: App, view: dia.CellView, evt: dia.Event) {
 
 function onBlankPointerdown(app: App, evt: dia.Event) {
     const { selectionView } = app;
+    blurField();
     // Otherwise the canvas is panned (see `CanvasController`).
     if (!evt.shiftKey) {
         clearSelection(app);

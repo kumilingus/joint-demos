@@ -14,6 +14,17 @@ export function isDuplicateEvent(evt: dia.Event): boolean {
     return Boolean(evt.metaKey || evt.ctrlKey);
 }
 
+/**
+ * The field typed into, if any, left (its value committed: its `change`): a press on the canvas does not move the focus
+ * itself (the paper prevents it) - the keys would go on to the field (the arrows, Delete, the undo of its text)
+ */
+export function blurField(): void {
+    const { activeElement } = document;
+    if (activeElement instanceof HTMLElement && activeElement.closest('input, textarea, select, [contenteditable]')) {
+        activeElement.blur();
+    }
+}
+
 /** Whether the key was pressed while typing (e.g. into the inspector). */
 export function isTyping(evt: dia.Event | Event): boolean {
     return evt.target instanceof Element && evt.target.closest('input, textarea, select, [contenteditable]') !== null;
