@@ -30,8 +30,8 @@ export interface LogHooks {
     /** The elements pinged when a message of them comes, or not */
     pingChanges: (pinged: boolean) => void;
     /**
-     * The log filtered (by words, by a direction): the cells of the tags of the messages shown and the cells the words
-     * find by their tags brought forward; `null` - not filtered, all as they are
+     * The log filtered by words: the cells of the tags of the messages shown (of the direction picked too) and the cells
+     * the words find by their tags brought forward; `null` - not filtered by words, all as they are
      */
     filterChange: (filter: LogFilter | null) => void;
     /** The cells a click filters it by (with an ID) marked while it is open - the others grayed if asked - or not */
@@ -225,10 +225,13 @@ export default class LogView extends FilterListView<LogEntry> {
         this.updateFilter();
     }
 
-    /** The filter shown on the diagram (see `LogHooks.filterChange`), if it changed: none while the log is closed */
+    /**
+     * The filter shown on the diagram (see `LogHooks.filterChange`), if it changed: by words only (a direction alone picks
+     * the messages, not the cells); none while the log is closed
+     */
     protected updateFilter(): void {
         const words = this.filterWords();
-        const filtered = this.isOpen && (words.length > 0 || this.direction !== 'all');
+        const filtered = this.isOpen && words.length > 0;
         const tags = filtered ? [...new Set(this.shownEntries().map(({ tag }) => tag))].sort() : [];
         const key = filtered ? `${words.join(' ')}|${tags.join(' ')}` : '';
         if (key === this.shownFilter) {
