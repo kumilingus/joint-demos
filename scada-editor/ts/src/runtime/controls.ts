@@ -28,6 +28,16 @@ const TOGGLE_SIZE = { width: 100, height: 30 };
 const SLIDER_SIZE = { width: 100, height: 42 };
 const CONTROL_GAP = 6;
 
+/**
+ * The room around a control in its `foreignObject` for the focus ring (outside of the control, see `runtime.css`): the
+ * `foreignObject` that much bigger on each side, the control placed as without it
+ */
+const FOCUS_MARGIN = 4;
+
+/** The attributes of the `foreignObject` of a control of the size: with the room for its focus ring */
+const foreignObjectAttributes = ({ width, height }: { width: number; height: number }) =>
+    `x="${-FOCUS_MARGIN}" y="${-FOCUS_MARGIN}" width="${width + 2 * FOCUS_MARGIN}" height="${height + 2 * FOCUS_MARGIN}"`;
+
 /** The class of the root of every control. */
 const CONTROL_CLASS = 'scada-control';
 
@@ -41,7 +51,7 @@ export function isControlEvent(evt: dia.Event): boolean {
 const CHECKBOX_SIZE = 20;
 
 const pumpControlMarkup = util.svg/* xml */`
-    <foreignObject class="${CONTROL_CLASS}" width="${CHECKBOX_SIZE}" height="${CHECKBOX_SIZE}">
+    <foreignObject class="${CONTROL_CLASS}" ${foreignObjectAttributes({ width: CHECKBOX_SIZE, height: CHECKBOX_SIZE })}>
         <div class="scada-control-checkbox" xmlns="http://www.w3.org/1999/xhtml">
             <input @selector="input" class="scada-control-checkbox-input" type="checkbox"/>
         </div>
@@ -49,7 +59,7 @@ const pumpControlMarkup = util.svg/* xml */`
 `;
 
 const toggleValveControlMarkup = util.svg/* xml */`
-    <foreignObject class="${CONTROL_CLASS}" width="${TOGGLE_SIZE.width}" height="${TOGGLE_SIZE.height}">
+    <foreignObject class="${CONTROL_CLASS}" ${foreignObjectAttributes(TOGGLE_SIZE)}>
         <div @selector="switch" class="scada-control-switch" role="group" xmlns="http://www.w3.org/1999/xhtml">
             <button @selector="buttonOn" class="scada-control-switch-on" data-open="true">Open</button>
             <button @selector="buttonOff" class="scada-control-switch-off" data-open="false">Closed</button>
@@ -58,7 +68,7 @@ const toggleValveControlMarkup = util.svg/* xml */`
 `;
 
 const sliderValveControlMarkup = util.svg/* xml */`
-    <foreignObject class="${CONTROL_CLASS}" width="${SLIDER_SIZE.width}" height="${SLIDER_SIZE.height}">
+    <foreignObject class="${CONTROL_CLASS}" ${foreignObjectAttributes(SLIDER_SIZE)}>
         <div class="scada-control-slider" xmlns="http://www.w3.org/1999/xhtml">
             <input @selector="slider" class="scada-control-slider-input" type="range" min="0" max="100" step="25"/>
             <output @selector="value" class="scada-control-slider-output"></output>

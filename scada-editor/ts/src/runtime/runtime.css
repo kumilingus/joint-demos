@@ -27,8 +27,10 @@
 .scada-control-switch,
 .scada-control-checkbox,
 .scada-control-slider {
-    width: 100%;
-    height: 100%;
+    /* In the room for the focus ring (see below) */
+    margin: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     background: var(--background);
@@ -96,6 +98,41 @@
     font-size: 11px;
     font-variant-numeric: tabular-nums;
     text-align: center;
+}
+
+/*
+ * Focused from the keyboard: a ring around the control (on the focused button of a switch), clear of it - in the room
+ * its `foreignObject` has around it (`FOCUS_MARGIN` in `controls.ts`); the room is not a part of the control (the
+ * pointer goes through it to the element)
+ */
+.scada-control {
+    overflow: visible;
+    pointer-events: none;
+}
+
+.scada-control > * {
+    pointer-events: auto;
+}
+
+.scada-control-inert .scada-control > * {
+    pointer-events: none;
+}
+
+.scada-control-checkbox :focus-visible,
+.scada-control-slider :focus-visible {
+    outline: none;
+}
+
+.scada-control-switch :focus-visible,
+.scada-control-checkbox:has(:focus-visible),
+.scada-control-slider:has(:focus-visible) {
+    outline: 2px solid var(--selection);
+    outline-offset: 2px;
+}
+
+/* A button of a switch: in the switch, between its padding and the other button */
+.scada-control-switch :focus-visible {
+    outline-offset: 0;
 }
 
 /* While editing (see `controls.ts`): not operated - the pointer goes through to the element (selected, moved), dimmed */

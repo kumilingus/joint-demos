@@ -85,7 +85,7 @@ src/
 - **Model geometry** - routes, positions and sizes come from the models (`getFootprint()`, the getters), never from the rendered DOM.
 - **Embedding** - `config.storeEmbeds = false` (`main.ts`): the members of a group are known by their `parent` only, no `embeds` stored; listen to `change:parent`.
 - **Example JSON** - when edited by a script, set only what the inspector can set (fields, positions, sizes, link ends, vertices).
-- **Accessibility** - a control without visible text gets an `aria-label` (an icon button of the toolbar: `iconButton()` in `toolbar/config.ts`; a swatch, a run-mode control: by the element's ID, else its label); the page landmarks are in `index.html` (the `header` the toolbar is appended to, `main`, the `aside`s) with a visually hidden `h1`. Checked with axe-core; what is left comes from JointJS+ (the inspector's labels, the scroll areas' focus, the group heading levels, the dialog's role).
+- **Accessibility** - a control without visible text gets an `aria-label` (an icon button of the toolbar: `iconButton()` in `toolbar/config.ts`; a swatch, a run-mode control: by the element's ID, else its label); the page landmarks are in `index.html` (the `header` the toolbar is appended to, `main`, the `aside`s) with a visually hidden `h1`. A run-mode control's focus ring is drawn outside of it, in the room its `foreignObject` has around it (`FOCUS_MARGIN` in `runtime/controls.ts`; the pointer goes through that room). Checked with axe-core; what is left comes from JointJS+ (the inspector's labels, the scroll areas' focus, the group heading levels, the dialog's role).
 
 ## Shapes
 
