@@ -13,6 +13,7 @@ import { paletteKey } from './stencil';
 import { Animations, getAnimationLevel } from '../runtime/animations';
 import { dataOf, hasData, setData } from '../shapes/common/data';
 import { routingPaperOptions } from '../shapes/common/routing';
+import ShapeView from '../shapes/views/ShapeView';
 import { type PanelContent, showInPanel } from '../inspector/panel';
 
 /*
@@ -149,6 +150,8 @@ export function showShapePreview(app: App, cellView: dia.CellView): void {
         cellViewNamespace: cellNamespace,
         // The links by their routing (see `routing.ts`)
         ...routingPaperOptions,
+        // Drawn again when an attribute its special attributes read changes - the value it shows (see `ShapeView`)
+        elementView: (_element, namespaceView) => namespaceView ?? ShapeView,
         // As wide as the panel (without its border)
         width: previewEl.clientWidth,
         height: PREVIEW_HEIGHT,
