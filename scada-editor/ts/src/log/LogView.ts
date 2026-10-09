@@ -1,5 +1,5 @@
 import type { dia, mvc } from '@joint/plus';
-import FilterListView from '../list/FilterListView';
+import FilterListView, { normalizeSearch } from '../list/FilterListView';
 import type { PlantEvent, PlantMessage } from '../plant/plant';
 
 /*
@@ -97,14 +97,17 @@ export default class LogView extends FilterListView<LogEntry> {
         const message: LogEntry = { kind, ...plantMessage };
         const { messages } = this;
         messages.unshift(message);
-        messages.length = Math.min(messages.length, MAX_MESSAGES);
+        // The oldest one dropped (the log keeps the last ones)
+        const dropped = messages.length > MAX_MESSAGES ? messages.pop() : undefined;
         if (!this.isOpen) {
             return;
         }
         this.insertRow(message);
-        const rows = this.rowsEl;
-        while (rows?.lastElementChild && rows.childElementCount > MAX_MESSAGES) rows.lastElementChild.remove();
-        // Its tag shown, the tag of a message cropped out not any more
+        // Its row too, if it is shown: the last one (the newest first)
+        if (dropped && this.matches(dropped, this.filterWords())) {
+            this.rowsEl?.lastElementChild?.remove();
+        }
+        // Its tag shown, the tag of a message dropped not any more
         this.updateFilter();
     }
 
@@ -121,7 +124,8 @@ export default class LogView extends FilterListView<LogEntry> {
             return;
         }
         const words = this.filter.split(/\s+/).filter(Boolean);
-        const index = words.findIndex(word => word.toLowerCase() === tag.toLowerCase());
+        // As the filter finds it (`p101` is `P-101`, see `normalizeSearch()`)
+        const index = words.findIndex(word => normalizeSearch(word) === normalizeSearch(tag));
         if (index === -1) {
             words.push(tag);
         } else {
