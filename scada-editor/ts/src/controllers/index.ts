@@ -8,6 +8,7 @@ export { default as KeyboardController } from './KeyboardController';
 export { default as LogController } from './LogController';
 export { default as PaletteController } from './PaletteController';
 export { default as RuntimeController } from './RuntimeController';
+export { default as CursorController } from './CursorController';
 export { default as SelectionController } from './SelectionController';
 export { default as TagsController } from './TagsController';
 export { default as PipeColorController } from './PipeColorController';

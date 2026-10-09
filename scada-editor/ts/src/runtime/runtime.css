@@ -135,6 +135,12 @@
     outline-offset: 0;
 }
 
+/* The pointer resting on the canvas in the runtime mode (see `CursorController`): no cursor - over the controls and the clickable cells too */
+.joint-paper-scroller.scada-cursor-hidden,
+.joint-paper-scroller.scada-cursor-hidden * {
+    cursor: none !important;
+}
+
 /* While editing (see `controls.ts`): not operated - the pointer goes through to the element (selected, moved), dimmed */
 .scada-control-inert {
     opacity: 0.6;

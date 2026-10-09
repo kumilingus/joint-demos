@@ -30,6 +30,7 @@ A controller (`controllers/Controller.ts`) is an `mvc.Listener` with the app as 
 | `LockController` | edit | graph: `locked` - the pointer goes through a locked element (a class), not in the minimap |
 | `RoutingController` | edit | paper: `link:connect` - the stored direction of the end forgotten; graph: `routing` - the stored router, connector removed |
 | `RuntimeController` | runtime | paper: a cell drag pans |
+| `CursorController` | runtime | the paper scroller: the pointer at rest (3 s) - the cursor hidden (`scada-cursor-hidden`), shown when it moves or leaves |
 | `MockPlantController` | runtime | the mock plant (`plant/mock/`) |
 | `LogController` | runtime | Log button, `L`, `Escape`; plant messages; element clicks filter the log |
 | `AnimationsController` | runtime | graph: `data` - the animations again when a cell is switched, opened, closed |

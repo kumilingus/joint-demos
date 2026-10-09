@@ -33,6 +33,7 @@ import {
     LogController,
     PaletteController,
     RuntimeController,
+    CursorController,
     SelectionController,
     TagsController,
     PipeColorController,
@@ -178,6 +179,8 @@ export class App {
             [Mode.Runtime]: [
                 new ToolbarController(this),
                 new RuntimeController(this),
+                // The cursor hidden while the pointer rests on the canvas
+                new CursorController(this),
                 new MockPlantController(this),
                 new LogController(this),
                 new AnimationsController(this),

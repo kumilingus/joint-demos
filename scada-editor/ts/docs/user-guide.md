@@ -120,7 +120,7 @@ Background, Pipes, Equipment, Instruments, Foreground - pipes under the equipmen
 
 ![Run mode with the log and the tags shown](images/run-mode-log.png)
 
-**Run** starts the plant; **Edit** goes back (nothing of the run is kept). A screen fills the window; move the pointer to the top for the toolbar.
+**Run** starts the plant; **Edit** goes back (nothing of the run is kept). A screen fills the window; move the pointer to the top for the toolbar. The mouse cursor hides after 3 s at rest on the canvas and shows again when it moves.
 
 - **Controls** - a checkbox starts or stops a pump or a burner, *Open* / *Closed* switches a valve or a breaker, a slider sets a control valve. The request shows as **pending** until the plant confirms it (5 s at most).
 
