@@ -271,7 +271,8 @@ function tintGradient(gradient: dia.SVGGradientJSON, color: string): dia.SVGGrad
 export const surfaceAttributes = {
     // `surfaceFill` in the attributes
     'surface-fill': {
-        set(this: dia.ElementView, fill: SurfaceFill) {
+        // Of a shape only (see `Shape.attributes`)
+        set(this: dia.ElementView<Shape>, fill: SurfaceFill) {
             // Outlined: every surface (one without an outline of its own too)
             const outline = outlineOf(this.model);
             const outlined = outline ? { stroke: outline, 'stroke-width': outlineWidthOf(this.model) } : {};
@@ -286,17 +287,25 @@ export const surfaceAttributes = {
             if (outline) {
                 return isColorOutline(this.model) ? { stroke: outline } : { stroke: outline, 'stroke-width': outlineWidthOf(this.model) };
             }
-            const color = styleOf(this.model, 'color');
+            const color = surfaceColorOf(this.model);
             const base = isSurfaceColor(stroke) ? stroke : SURFACE_STROKES[stroke];
             return { stroke: isTint(color) ? tint(color, base) : base };
         }
     }
 };
 
+/**
+ * The color the surfaces of the shape are tinted with: its color - not when it is the color of a part (the liquid of a
+ * thermometer, see `ColorField.part`)
+ */
+function surfaceColorOf(shape: Shape): unknown {
+    return shape.colorField?.part ? undefined : styleOf(shape, 'color');
+}
+
 /** The fill of the surface of the element view: in its finish and its color */
-function surfaceFillOf(view: dia.ElementView, fill: SurfaceFill): string {
+function surfaceFillOf(view: dia.ElementView<Shape>, fill: SurfaceFill): string {
     const { model } = view;
-    const color = styleOf(model, 'color');
+    const color = surfaceColorOf(model);
     // Flat: the color as it is (nothing to shade) - a detail keeps its darker tone of it
     if (finishOf(model) === 'flat' && isTint(color) && !DETAILS.has(fill)) {
         return color;
