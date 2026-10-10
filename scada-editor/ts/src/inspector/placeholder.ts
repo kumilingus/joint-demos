@@ -1,5 +1,5 @@
 import type { App } from '../app';
-import { EXAMPLES } from '../examples';
+import { createExampleButtons } from '../example-buttons';
 import { openExample } from '../actions';
 import { toggleSettings } from './settings';
 
@@ -43,17 +43,6 @@ function createExamples(app: App): HTMLElement {
     el.className = 'scada-inspector-examples';
     const title = document.createElement('h2');
     title.textContent = 'Examples';
-    el.append(title);
-    EXAMPLES.forEach((example) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        const name = document.createElement('strong');
-        name.textContent = example.name;
-        const description = document.createElement('span');
-        description.textContent = example.description;
-        button.append(name, description);
-        button.addEventListener('click', () => openExample(app, example));
-        el.append(button);
-    });
+    el.append(title, ...createExampleButtons(example => openExample(app, example)));
     return el;
 }
