@@ -3,7 +3,8 @@ import Controller from './Controller';
 import type { App } from '../app';
 import { isControlEvent } from '../runtime/controls';
 import { zoomToFit } from '../actions';
-import { isScreenShown } from '../canvas/screen';
+import { getScreen, isScreenShown } from '../canvas/screen';
+import { isPhone, setNativeZoom } from '../phone';
 
 /**
  * The runtime mode: the diagram can't be changed, but the equipment
@@ -15,7 +16,7 @@ export default class RuntimeController extends Controller {
     onWindowResize = () => onWindowResize(this.app);
 
     startListening(): void {
-        const { paper } = this.app;
+        const { paper, graph } = this.app;
 
         // The controls are shown in every mode (see `ControlsController`),
         // operated in this one.
@@ -23,11 +24,16 @@ export default class RuntimeController extends Controller {
             'cell:pointerdown': onCellPointerdown
         });
         window.addEventListener('resize', this.onWindowResize);
+        // On a phone, a screen (fitted to it: small, not zoomed nor panned on the canvas) zoomed with the page by a pinch
+        if (isPhone() && getScreen(graph)) {
+            setNativeZoom(paper, true);
+        }
     }
 
     stopListening(): void {
         super.stopListening();
         window.removeEventListener('resize', this.onWindowResize);
+        setNativeZoom(this.app.paper, false);
     }
 }
 

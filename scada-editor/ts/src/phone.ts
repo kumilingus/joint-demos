@@ -1,3 +1,4 @@
+import type { dia } from '@joint/plus';
 import type { App } from './app';
 import { Mode } from './const';
 import { openExample } from './actions';
@@ -31,4 +32,13 @@ export function renderPhoneExamples(app: App): void {
         }
     });
     el.append(title, text, ...buttons);
+}
+
+/**
+ * The browser zooms the page by a pinch on the paper (a screen fitted to a phone is small), or not: the paper lets the
+ * browser have the touches (the actions it cancels by default, see `preventDefaultViewAction`, `preventDefaultBlankAction`)
+ */
+export function setNativeZoom(paper: dia.Paper, enabled: boolean): void {
+    paper.options.preventDefaultViewAction = !enabled;
+    paper.options.preventDefaultBlankAction = !enabled;
 }
