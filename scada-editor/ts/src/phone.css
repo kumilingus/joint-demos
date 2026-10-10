@@ -44,11 +44,12 @@
     }
 
     /*
-     * The toolbar: the title, the color scheme and (running) Exit - the diagram zoomed by a pinch; no log, no Find (their
-     * dialogs are for a mouse: dragged, a double click)
+     * The toolbar: the title and the color scheme on the page, the color scheme and Exit running - the diagram zoomed by a
+     * pinch; no log, no Find (their dialogs are for a mouse: dragged, a double click)
      */
     .scada-toolbar .joint-widget:not([data-name="title"], [data-name="colorScheme"], [data-name="mode"]),
-    .scada-app[data-mode="edit"] .scada-toolbar [data-name="mode"] {
+    .scada-app[data-mode="edit"] .scada-toolbar [data-name="mode"],
+    .scada-app[data-mode="runtime"] .scada-toolbar [data-group="title"] {
         display: none;
     }
 
@@ -61,15 +62,40 @@
         --icon: var(--icon-close);
     }
 
-    /* A screen shown: the toolbar stays (no pointer to hover the top of the window with) */
-    .scada-app[data-screen="shown"] .scada-toolbar,
-    .scada-app[data-screen="shown"] .scada-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
-        position: static;
-        transform: none;
-        box-shadow: none;
+    /*
+     * Running: no bar - its buttons (the color scheme, Exit) float in the top right corner of the diagram, which has the
+     * whole height; with a screen shown too (instead of sliding away, see `canvas.css`: no pointer to hover the top with)
+     */
+    .scada-app[data-mode="runtime"] {
+        position: relative;
     }
 
-    .scada-app[data-screen="shown"] .scada-toolbar::after {
+    .scada-app[data-mode="runtime"] .scada-toolbar,
+    .scada-app[data-mode="runtime"] .scada-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        left: auto;
+        height: auto;
+        gap: 8px;
+        padding: 0;
+        border: none;
+        background: none;
+        box-shadow: none;
+        transform: none;
+    }
+
+    .scada-app[data-mode="runtime"] .scada-toolbar::after {
         display: none;
+    }
+
+    .scada-app[data-mode="runtime"] .scada-toolbar button {
+        min-width: 0;
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Over the diagram: the icon in the color of the text (not muted, as on the bar - see `toolbar.css`) */
+    .scada-app[data-mode="runtime"] .scada-toolbar [data-group="view"] button[data-name="colorScheme"] {
+        color: var(--foreground);
     }
 }
