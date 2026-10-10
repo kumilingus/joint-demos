@@ -31,7 +31,8 @@ body {
 .scada-app {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    /* The space visible (`dvh`: without the browser's bars - iOS Safari's `vh` is the height with them hidden) */
+    height: 100dvh;
 }
 
 .scada-main {
