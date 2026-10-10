@@ -1,0 +1,75 @@
+/*
+ * A phone (see `phone.ts`, `PHONE_QUERY`: the same query): the edit mode a page of the examples, the runtime mode the
+ * diagram only - no palette, no inspector, no minimap; the toolbar simplified.
+ */
+
+/* The page of the examples (see `renderPhoneExamples()`): over the canvas */
+.scada-phone-examples {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px 16px;
+    overflow: auto;
+    background: var(--background);
+}
+
+.scada-phone-examples h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.scada-phone-examples p {
+    margin: 0 0 8px;
+    color: var(--muted-foreground);
+}
+
+@media (max-width: 640px), (max-height: 480px) {
+    .scada-stencil-panel,
+    .scada-inspector-panel,
+    .scada-navigator-panel {
+        display: none;
+    }
+
+    /* The edit mode: the page of the examples - the canvas hidden, not removed (the texts of the diagram are measured) */
+    .scada-app[data-mode="edit"] .joint-paper-scroller {
+        visibility: hidden;
+    }
+
+    .scada-app[data-mode="edit"] .scada-phone-examples {
+        display: flex;
+    }
+
+    /*
+     * The toolbar: the title, the color scheme and (running) Exit - the diagram zoomed by a pinch; no log, no Find (their
+     * dialogs are for a mouse: dragged, a double click)
+     */
+    .scada-toolbar .joint-widget:not([data-name="title"], [data-name="colorScheme"], [data-name="mode"]),
+    .scada-app[data-mode="edit"] .scada-toolbar [data-name="mode"] {
+        display: none;
+    }
+
+    /* Alone in its group (the others hidden): rounded on both sides (see `toolbar.css`) */
+    .scada-toolbar [data-group="view"] button[data-name="colorScheme"] {
+        border-radius: var(--radius-md);
+    }
+
+    .scada-app[data-mode="runtime"] .scada-toolbar [data-name="mode"] {
+        --icon: var(--icon-close);
+    }
+
+    /* A screen shown: the toolbar stays (no pointer to hover the top of the window with) */
+    .scada-app[data-screen="shown"] .scada-toolbar,
+    .scada-app[data-screen="shown"] .scada-toolbar:is(:hover, :has(:focus-visible), .revealed, .pressed) {
+        position: static;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .scada-app[data-screen="shown"] .scada-toolbar::after {
+        display: none;
+    }
+}

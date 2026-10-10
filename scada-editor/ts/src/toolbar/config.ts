@@ -2,6 +2,7 @@ import { ui } from '@joint/plus';
 import { Mode } from '../const';
 import { ZOOM } from '../canvas/config';
 import { BELOW } from '../tooltips';
+import { isPhone } from '../phone';
 
 /*
  * The toolbar of the app in each mode: its tools, their groups (see `toolbar.css` for how they look).
@@ -158,8 +159,10 @@ export function getToolbarOptions(mode: Mode): Partial<ui.Toolbar.Options> {
             type: 'button',
             name: 'mode',
             group: 'mode',
-            text: modeButtonText[mode],
-            attrs: tooltip(modeButtonTooltip[mode])
+            // On a phone: back to the examples (see `phone.ts`)
+            ...(isPhone() && mode === Mode.Runtime
+                ? { text: 'Exit', attrs: tooltip('Back to the examples') }
+                : { text: modeButtonText[mode], attrs: tooltip(modeButtonTooltip[mode]) })
         }]
     };
 }

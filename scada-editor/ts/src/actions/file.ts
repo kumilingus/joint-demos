@@ -142,9 +142,10 @@ export function openDiagram(app: App): void {
 }
 
 /** Open the example instead of the diagram: as a file, asked first if the diagram was changed */
-export function openExample(app: App, example: Example): void {
+export function openExample(app: App, example: Example): boolean {
     if (!confirmReplace(app, `Open the ${example.name} example?`)) {
-        return;
+        return false;
     }
     app.loadJSON(example.json);
+    return true;
 }

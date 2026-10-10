@@ -88,6 +88,7 @@ Also: uploaded images (saved with the diagram, with an opacity), Favorites, and 
 
 - New, open, save as JSON (with images, favorites, style); export a WebP image of the screen or the whole diagram.
 - A screen (e.g. 1920 × 1080) marks what the operator sees; in run mode it fills the window.
+- On a phone: the examples run (no editing); the toolbar simplified.
 - Three examples: a boiler house, a microgrid (wind, solar, diesel, battery on a 400 V bus), a cement plant.
 
 ## Not included

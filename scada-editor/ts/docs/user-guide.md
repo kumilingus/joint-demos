@@ -13,6 +13,7 @@ Palette on the left, canvas in the middle, inspector panel on the right. The too
 - **The screen** - the dashed frame (*Screen 1920 × 1080*) is what the operator sees in run mode.
 - **Pan** by dragging the blank canvas, **zoom** with the toolbar or a pinch.
 - **More room** - hide the palette or the inspector with their toolbar buttons, or both with `Cmd` + `\`; the diagram stays where it is.
+- **On a phone** - no editing (no room for the palette and the inspector), no log, no Find: the examples to run; **Exit** goes back to them.
 
 ![The Cement Plant example](images/cement-plant.png)
 

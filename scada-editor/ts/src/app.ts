@@ -8,6 +8,7 @@ import { EXAMPLES } from './examples';
 import { type ColorScheme, Mode } from './const';
 import { getGrid, interactivity, paperOptions, scrollerOptions, snaplinesOptions } from './canvas/config';
 import { createToolbar } from './toolbar/toolbar';
+import { isPhone, renderPhoneExamples } from './phone';
 import { historyOptions } from './history';
 import { tooltipOptions } from './tooltips';
 import { addImages, clearSelection, refreshPalette, storedColorScheme, storeColorScheme, zoomToFit } from './actions';
@@ -194,6 +195,8 @@ export class App {
         this.setColorScheme(this.colorScheme);
         // What the inspector panel shows with nothing in it (see `inspector/placeholder.ts`): the app complete
         showInspectorPlaceholder(this);
+        // On a phone: the examples to run (see `phone.ts`)
+        renderPhoneExamples(this);
         // The edited cell seen without its tools while the pointer is in the panel (see `panel.ts`)
         hideToolsOverPanel(this);
     }
@@ -254,12 +257,15 @@ export class App {
         this.toolbar = createToolbar(partOf(this.el, '.scada-toolbar-panel'), this, mode);
         if (mode === Mode.Edit) {
             const snaplines = this.createSnaplines();
-            this.stencil = createStencil(partOf(this.el, '.scada-main'), this.scroller, snaplines, {
-                getImages: () => getImages(this.graph),
-                onUpload: images => addImages(this, images),
-                // A part of the plant gets an ID (see `plant/tags.ts`)
-                onDrop: cell => tagNewCell(this.tags, cell)
-            });
+            // Not on a phone: no editing there (see `phone.ts`)
+            if (!isPhone()) {
+                this.stencil = createStencil(partOf(this.el, '.scada-main'), this.scroller, snaplines, {
+                    getImages: () => getImages(this.graph),
+                    onUpload: images => addImages(this, images),
+                    // A part of the plant gets an ID (see `plant/tags.ts`)
+                    onDrop: cell => tagNewCell(this.tags, cell)
+                });
+            }
         }
         if (mode === Mode.Runtime) {
             // Nothing of the runtime mode in the history; the diagram kept as it is
@@ -366,7 +372,10 @@ function partOf(container: ParentNode, selector: string): HTMLElement {
 
 export function init(el: HTMLElement = partOf(document, '.scada-app')): App {
     const app = new App(el);
-    // The first example (a boiler house), saved with the Save button: its cells, its images and favorites
-    app.loadJSON(EXAMPLES[0].json);
+    // The first example (a boiler house), saved with the Save button: its cells, its images and favorites. Not on a
+    // phone: an example is loaded when picked (see `phone.ts`)
+    if (!isPhone()) {
+        app.loadJSON(EXAMPLES[0].json);
+    }
     return app;
 }
